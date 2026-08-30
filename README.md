@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BugFlow – Step 1: Issue Database
 
 Module 1 foundation: Issue Reporting & Management.
@@ -21,3 +22,7 @@ severity, priority, status, affected module, environment, screenshot URL,
 project, reporter, assignee, created time and updated time.
 
 Next: Step 2 – FastAPI Issue Reporting API.
+=======
+# BugFlow
+Intelligent Software Defect Tracking System with Resolution Assistance. A web-based defect tracking platform built with Python, FastAPI, SQLAlchemy, PostgreSQL, pgAdmin 4, HTML, CSS, and JavaScript.
+>>>>>>> 3653c0df9461aa17c484c062d1b12269be6d0b10
