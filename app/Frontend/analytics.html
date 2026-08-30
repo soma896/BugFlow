@@ -1,0 +1,5679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow | Analytics Reports</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        :root {
+
+            --bg: #050b15;
+
+            --sidebar: #081221;
+
+            --panel: #0b1626;
+
+            --panel-2: #0a1423;
+
+            --border: #1d304a;
+
+            --border-light: #243850;
+
+            --text: #f8fafc;
+
+            --muted: #8291a7;
+
+            --muted-2: #61718a;
+
+            --purple: #8057e9;
+
+            --purple-soft: rgba(
+                128,
+                87,
+                233,
+                .15
+            );
+
+            --green: #24c96b;
+
+            --yellow: #f5b80a;
+
+            --red: #ef3e3e;
+
+            --blue: #198ff5;
+
+        }
+
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 75% -5%,
+                    rgba(
+                        128,
+                        87,
+                        233,
+                        .12
+                    ),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 100% 50%,
+                    rgba(
+                        25,
+                        143,
+                        245,
+                        .05
+                    ),
+                    transparent 27%
+                ),
+                var(--bg);
+
+            color:
+                var(--text);
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+        }
+
+
+        button {
+            font: inherit;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ====================================================== */
+
+
+        .sidebar {
+
+            position: fixed;
+
+            inset:
+                0 auto 0 0;
+
+            width:
+                214px;
+
+            padding:
+                17px 12px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #081221 0%,
+                    #06101d 100%
+                );
+
+            border-right:
+                1px solid #16263b;
+
+            z-index:
+                20;
+
+        }
+
+
+        .brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            padding:
+                0 7px 29px;
+
+        }
+
+
+        .brand-logo {
+
+            width:
+                40px;
+
+            height:
+                40px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7957ed,
+                    #9357dc
+                );
+
+            box-shadow:
+                0 9px 26px
+                rgba(
+                    128,
+                    87,
+                    233,
+                    .22
+                );
+
+            font-size:
+                19px;
+
+            font-weight:
+                900;
+
+        }
+
+
+        .brand-name {
+
+            font-size:
+                18px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -.03em;
+
+        }
+
+
+        .side-label {
+
+            color:
+                #71819a;
+
+            font-size:
+                9px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .12em;
+
+            text-transform:
+                uppercase;
+
+            padding:
+                0 9px 10px;
+
+        }
+
+
+        .nav {
+
+            display:
+                grid;
+
+            gap:
+                4px;
+
+        }
+
+
+        .nav-link {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            padding:
+                12px 11px;
+
+            border-radius:
+                9px;
+
+            color:
+                #a6b3c6;
+
+            font-size:
+                11px;
+
+        }
+
+
+        .nav-link:hover {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .03
+                );
+
+            color:
+                white;
+
+        }
+
+
+        .nav-link.active {
+
+            color:
+                white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(
+                        128,
+                        87,
+                        233,
+                        .19
+                    ),
+                    rgba(
+                        128,
+                        87,
+                        233,
+                        .07
+                    )
+                );
+
+            box-shadow:
+                inset 3px 0 0 #845cf1;
+
+        }
+
+
+        .nav-icon {
+
+            width:
+                17px;
+
+            text-align:
+                center;
+
+            color:
+                #9eaec1;
+
+        }
+
+
+        .nav-link.active
+        .nav-icon {
+
+            color:
+                #c0b3ff;
+
+        }
+
+
+        .admin-card {
+
+            position:
+                absolute;
+
+            left:
+                12px;
+
+            right:
+                12px;
+
+            bottom:
+                15px;
+
+            padding:
+                10px;
+
+            border:
+                1px solid #23364f;
+
+            border-radius:
+                11px;
+
+            background:
+                #0b1727;
+
+        }
+
+
+        .admin-row {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+        }
+
+
+        .admin-avatar {
+
+            width:
+                34px;
+
+            height:
+                34px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7658ed,
+                    #8b56df
+                );
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .admin-name {
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .admin-role {
+
+            margin-top:
+                2px;
+
+            color:
+                #63738a;
+
+            font-size:
+                8px;
+
+        }
+
+
+        .online-mini {
+
+            margin-top:
+                7px;
+
+            color:
+                #91a0b4;
+
+            font-size:
+                8px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                5px;
+
+        }
+
+
+        .dot {
+
+            width:
+                6px;
+
+            height:
+                6px;
+
+            border-radius:
+                50%;
+
+            background:
+                #28cc6f;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+
+        .main {
+
+            margin-left:
+                214px;
+
+            width:
+                calc(
+                    100% - 214px
+                );
+
+            min-height:
+                100vh;
+
+            padding:
+                22px 25px 38px;
+
+        }
+
+
+        .topbar {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+
+            margin-bottom:
+                17px;
+
+        }
+
+
+        .title-row {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+        }
+
+
+        .title-icon {
+
+            width:
+                45px;
+
+            height:
+                45px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--purple-soft);
+
+            border:
+                1px solid
+                rgba(
+                    128,
+                    87,
+                    233,
+                    .25
+                );
+
+            color:
+                #b7a8ff;
+
+            font-size:
+                18px;
+
+        }
+
+
+        .eyebrow {
+
+            color:
+                #967df3;
+
+            font-size:
+                9px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                .12em;
+
+            text-transform:
+                uppercase;
+
+            margin-bottom:
+                3px;
+
+        }
+
+
+        h1 {
+
+            font-size:
+                25px;
+
+            line-height:
+                1.05;
+
+            letter-spacing:
+                -.035em;
+
+        }
+
+
+        .subtitle {
+
+            margin-top:
+                5px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+        }
+
+
+        .top-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+        }
+
+
+        .online-pill {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            padding:
+                8px 11px;
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(
+                    36,
+                    201,
+                    107,
+                    .08
+                );
+
+            color:
+                #8ee6ad;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .admin-pill {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            padding:
+                8px 10px;
+
+            border:
+                1px solid #253750;
+
+            border-radius:
+                9px;
+
+            background:
+                #0a1423;
+
+            color:
+                #d5deea;
+
+            font-size:
+                10px;
+
+        }
+
+
+        .header-button {
+
+            height:
+                34px;
+
+            padding:
+                0 12px;
+
+            border:
+                1px solid #2c3c55;
+
+            border-radius:
+                8px;
+
+            background:
+                #0d1a2d;
+
+            color:
+                #d8e0eb;
+
+            cursor:
+                pointer;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .header-button:hover {
+
+            background:
+                #16263c;
+
+        }
+
+
+        /* =====================================================
+           KPI
+        ====================================================== */
+
+
+        .kpis {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    5,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                10px;
+
+            margin-bottom:
+                16px;
+
+        }
+
+
+        .kpi {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            min-height:
+                101px;
+
+            padding:
+                14px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        10,
+                        21,
+                        37,
+                        .97
+                    ),
+                    rgba(
+                        8,
+                        18,
+                        31,
+                        .95
+                    )
+                );
+
+        }
+
+
+        .kpi::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                92px;
+
+            height:
+                92px;
+
+            right:
+                -40px;
+
+            bottom:
+                -48px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--kpi-color);
+
+            opacity:
+                .09;
+
+        }
+
+
+        .kpi-total {
+            --kpi-color:
+                #8057e9;
+        }
+
+
+        .kpi-assigned {
+            --kpi-color:
+                #198ff5;
+        }
+
+
+        .kpi-resolved {
+            --kpi-color:
+                #24c96b;
+        }
+
+
+        .kpi-pending {
+            --kpi-color:
+                #f5b80a;
+        }
+
+
+        .kpi-rejected {
+            --kpi-color:
+                #ef3e3e;
+        }
+
+
+        .kpi-label {
+
+            color:
+                #6c7c94;
+
+            font-size:
+                8px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .07em;
+
+        }
+
+
+        .kpi-value {
+
+            margin-top:
+                9px;
+
+            font-size:
+                27px;
+
+            font-weight:
+                850;
+
+            letter-spacing:
+                -.03em;
+
+        }
+
+
+        .value-purple {
+            color:
+                #b7a9ff;
+        }
+
+
+        .value-blue {
+            color:
+                #70bbff;
+        }
+
+
+        .value-green {
+            color:
+                #51df8d;
+        }
+
+
+        .value-yellow {
+            color:
+                #f6ca43;
+        }
+
+
+        .value-red {
+            color:
+                #ff7676;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ====================================================== */
+
+
+        .section-head {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin:
+                6px 0 11px;
+
+        }
+
+
+        .section-title {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            font-size:
+                14px;
+
+            font-weight:
+                850;
+
+        }
+
+
+        .section-title-icon {
+
+            color:
+                #a99bff;
+
+        }
+
+
+        .section-note {
+
+            color:
+                #62728a;
+
+            font-size:
+                8px;
+
+        }
+
+
+        /* =====================================================
+           CHARTS
+        ====================================================== */
+
+
+        .chart-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+
+        }
+
+
+        .chart-card {
+
+            min-width:
+                0;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                11px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(
+                        9,
+                        22,
+                        38,
+                        .98
+                    ),
+                    rgba(
+                        7,
+                        18,
+                        31,
+                        .96
+                    )
+                );
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .chart-head {
+
+            padding:
+                12px 14px 8px;
+
+            border-bottom:
+                1px solid #192a40;
+
+        }
+
+
+        .chart-title {
+
+            font-size:
+                11px;
+
+            font-weight:
+                850;
+
+        }
+
+
+        .chart-info {
+
+            display:
+                inline-grid;
+
+            place-items:
+                center;
+
+            width:
+                13px;
+
+            height:
+                13px;
+
+            margin-left:
+                3px;
+
+            border:
+                1px solid #78879a;
+
+            border-radius:
+                50%;
+
+            color:
+                #8b99aa;
+
+            font-size:
+                7px;
+
+        }
+
+
+        .chart-subtitle {
+
+            margin-top:
+                3px;
+
+            color:
+                #65758c;
+
+            font-size:
+                8px;
+
+        }
+
+
+        .chart-body {
+
+            height:
+                250px;
+
+            padding:
+                12px;
+
+        }
+
+
+        .svg-chart {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            display:
+                block;
+
+        }
+
+
+        .grid-line {
+
+            stroke:
+                #24364e;
+
+            stroke-width:
+                1;
+
+            opacity:
+                .58;
+
+        }
+
+
+        .axis-label {
+
+            fill:
+                #64758d;
+
+            font-size:
+                10px;
+
+            font-family:
+                inherit;
+
+        }
+
+
+        .axis-title {
+
+            fill:
+                #74849a;
+
+            font-size:
+                9px;
+
+            font-family:
+                inherit;
+
+        }
+
+
+        .chart-line {
+
+            fill:
+                none;
+
+            stroke-width:
+                2.3;
+
+            stroke-linecap:
+                round;
+
+            stroke-linejoin:
+                round;
+
+        }
+
+
+        .line-low {
+            stroke:
+                var(--green);
+        }
+
+
+        .line-medium {
+            stroke:
+                var(--blue);
+        }
+
+
+        .line-high {
+            stroke:
+                var(--yellow);
+        }
+
+
+        .line-urgent {
+            stroke:
+                var(--red);
+        }
+
+
+        .chart-point {
+
+            fill:
+                #081523;
+
+            stroke-width:
+                1.5;
+
+        }
+
+
+        .bar-purple {
+
+            fill:
+                var(--purple);
+
+        }
+
+
+        .bar-green {
+
+            fill:
+                var(--green);
+
+        }
+
+
+        .bar-yellow {
+
+            fill:
+                var(--yellow);
+
+        }
+
+
+        .bar-red {
+
+            fill:
+                var(--red);
+
+        }
+
+
+        .bar-label {
+
+            fill:
+                #c9d5e4;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+            text-anchor:
+                middle;
+
+        }
+
+
+        .bar-name {
+
+            fill:
+                #73839a;
+
+            font-size:
+                8px;
+
+            text-anchor:
+                middle;
+
+        }
+
+
+        /* =====================================================
+           STATUS + METRICS
+        ====================================================== */
+
+
+        .lower-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                2fr;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+
+        }
+
+
+        .status-body {
+
+            height:
+                250px;
+
+            padding:
+                18px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+        }
+
+
+        .donut-wrap {
+
+            position:
+                relative;
+
+            width:
+                175px;
+
+            height:
+                175px;
+
+            margin:
+                auto;
+
+        }
+
+
+        .donut {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            border-radius:
+                50%;
+
+            background:
+                conic-gradient(
+                    var(--green) 0deg 0deg,
+                    var(--yellow) 0deg 0deg,
+                    var(--red) 0deg 0deg,
+                    #112137 0deg 360deg
+                );
+
+            transform:
+                rotate(-90deg);
+
+            padding:
+                22px;
+
+        }
+
+
+        .donut-center {
+
+            position:
+                absolute;
+
+            inset:
+                22px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            background:
+                #091626;
+
+            border-radius:
+                50%;
+
+        }
+
+
+        .donut-number {
+
+            font-size:
+                25px;
+
+            font-weight:
+                850;
+
+        }
+
+
+        .donut-label {
+
+            color:
+                #70819a;
+
+            margin-top:
+                2px;
+
+            font-size:
+                8px;
+
+        }
+
+
+        .status-legend {
+
+            display:
+                grid;
+
+            gap:
+                13px;
+
+        }
+
+
+        .legend-item {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                8px
+                1fr
+                auto;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            font-size:
+                9px;
+
+        }
+
+
+        .legend-dot {
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                2px;
+
+        }
+
+
+        .legend-name {
+
+            color:
+                #b9c6d6;
+
+        }
+
+
+        .legend-value {
+
+            color:
+                #e7edf5;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .legend-percent {
+
+            grid-column:
+                2 / 4;
+
+            color:
+                #66768e;
+
+            font-size:
+                8px;
+
+            margin-top:
+                -4px;
+
+        }
+
+
+        .metrics-body {
+
+            height:
+                250px;
+
+            padding:
+                15px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap:
+                9px;
+
+        }
+
+
+        .metric {
+
+            border:
+                1px solid #20334b;
+
+            border-radius:
+                10px;
+
+            background:
+                #0b1727;
+
+            padding:
+                11px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            text-align:
+                center;
+
+        }
+
+
+        .metric-icon {
+
+            width:
+                31px;
+
+            height:
+                31px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                50%;
+
+            margin-bottom:
+                7px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                900;
+
+        }
+
+
+        .metric-title {
+
+            color:
+                #cfd9e6;
+
+            font-size:
+                8px;
+
+            line-height:
+                1.35;
+
+            min-height:
+                22px;
+
+        }
+
+
+        .metric-value {
+
+            margin-top:
+                5px;
+
+            font-size:
+                20px;
+
+            font-weight:
+                850;
+
+        }
+
+
+        /* =====================================================
+           TABLE
+        ====================================================== */
+
+
+        .table-card {
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                11px;
+
+            background:
+                rgba(
+                    8,
+                    20,
+                    35,
+                    .95
+                );
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .table-head {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+            padding:
+                13px 15px;
+
+            border-bottom:
+                1px solid #1b2b40;
+
+        }
+
+
+        .table-title {
+
+            font-size:
+                12px;
+
+            font-weight:
+                850;
+
+        }
+
+
+        .table-sub {
+
+            margin-top:
+                3px;
+
+            color:
+                #65758c;
+
+            font-size:
+                8px;
+
+        }
+
+
+        .search {
+
+            height:
+                32px;
+
+            width:
+                220px;
+
+            padding:
+                0 9px;
+
+            border:
+                1px solid #293b53;
+
+            border-radius:
+                7px;
+
+            background:
+                #091625;
+
+            color:
+                white;
+
+            outline:
+                none;
+
+            font-size:
+                9px;
+
+        }
+
+
+        .search:focus {
+
+            border-color:
+                var(--purple);
+
+        }
+
+
+        .table-wrap {
+
+            overflow:
+                auto;
+
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            min-width:
+                980px;
+
+            border-collapse:
+                collapse;
+
+        }
+
+
+        th {
+
+            padding:
+                10px 12px;
+
+            background:
+                #091524;
+
+            color:
+                #63758f;
+
+            border-bottom:
+                1px solid #1a2a40;
+
+            text-align:
+                left;
+
+            font-size:
+                7px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .08em;
+
+        }
+
+
+        td {
+
+            padding:
+                10px 12px;
+
+            color:
+                #cdd7e4;
+
+            border-bottom:
+                1px solid #15253a;
+
+            font-size:
+                8px;
+
+        }
+
+
+        tbody tr:hover {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .012
+                );
+
+        }
+
+
+        .badge {
+
+            display:
+                inline-flex;
+
+            padding:
+                4px 7px;
+
+            border-radius:
+                5px;
+
+            font-size:
+                7px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .priority-low {
+
+            color:
+                #9bacbf;
+
+            background:
+                rgba(
+                    128,
+                    146,
+                    170,
+                    .12
+                );
+
+        }
+
+
+        .priority-medium {
+
+            color:
+                #70bbff;
+
+            background:
+                rgba(
+                    25,
+                    143,
+                    245,
+                    .13
+                );
+
+        }
+
+
+        .priority-high {
+
+            color:
+                #f5ca46;
+
+            background:
+                rgba(
+                    245,
+                    184,
+                    10,
+                    .14
+                );
+
+        }
+
+
+        .priority-urgent {
+
+            color:
+                #ff7777;
+
+            background:
+                rgba(
+                    239,
+                    62,
+                    62,
+                    .15
+                );
+
+        }
+
+
+        .status-resolved {
+
+            color:
+                #52db89;
+
+            background:
+                rgba(
+                    36,
+                    201,
+                    107,
+                    .13
+                );
+
+        }
+
+
+        .status-pending {
+
+            color:
+                #f5ca46;
+
+            background:
+                rgba(
+                    245,
+                    184,
+                    10,
+                    .13
+                );
+
+        }
+
+
+        .status-rejected {
+
+            color:
+                #ff7777;
+
+            background:
+                rgba(
+                    239,
+                    62,
+                    62,
+                    .15
+                );
+
+        }
+
+
+        .loading,
+        .error,
+        .empty {
+
+            padding:
+                35px;
+
+            text-align:
+                center;
+
+            color:
+                #667890;
+
+            font-size:
+                9px;
+
+        }
+
+
+        .error {
+
+            color:
+                #ff8888;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+
+        @media (
+            max-width: 1250px
+        ) {
+
+            .kpis {
+
+                grid-template-columns:
+                    repeat(
+                        3,
+                        1fr
+                    );
+
+            }
+
+
+            .chart-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+
+            .lower-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .sidebar {
+
+                width:
+                    70px;
+
+                padding:
+                    17px 8px;
+
+            }
+
+
+            .brand {
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .brand-name,
+            .side-label,
+            .nav-text,
+            .admin-name,
+            .admin-role,
+            .online-mini {
+
+                display:
+                    none;
+
+            }
+
+
+            .nav-link {
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .admin-card {
+
+                left:
+                    8px;
+
+                right:
+                    8px;
+
+            }
+
+
+            .admin-row {
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .main {
+
+                margin-left:
+                    70px;
+
+                width:
+                    calc(
+                        100% - 70px
+                    );
+
+                padding:
+                    18px;
+
+            }
+
+
+            .topbar {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .top-actions {
+
+                align-self:
+                    flex-end;
+
+            }
+
+
+            .metrics-body {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 650px
+        ) {
+
+            .kpis {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+
+            .chart-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .status-body {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .status-legend {
+
+                grid-template-columns:
+                    1fr 1fr 1fr;
+
+            }
+
+
+            .metrics-body {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .search {
+
+                width:
+                    100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            B
+        </div>
+
+        <div class="brand-name">
+            BugFlow
+        </div>
+
+    </div>
+
+
+    <div class="side-label">
+        Administration
+    </div>
+
+
+    <nav class="nav">
+
+
+        <a
+            href="/admin-ui"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                ▣
+            </span>
+
+            <span class="nav-text">
+                Overview
+            </span>
+
+        </a>
+
+
+        <a
+            href="/admin-ui#defectsSection"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                ☷
+            </span>
+
+            <span class="nav-text">
+                All Defects
+            </span>
+
+        </a>
+
+
+        <a
+            href="/analytics-ui"
+            class="nav-link active"
+        >
+
+            <span class="nav-icon">
+                ▥
+            </span>
+
+            <span class="nav-text">
+                Analytics Reports
+            </span>
+
+        </a>
+
+
+        <a
+            href="/login-ui"
+            class="nav-link"
+            id="logoutLink"
+        >
+
+            <span class="nav-icon">
+                ↪
+            </span>
+
+            <span class="nav-text">
+                Logout
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+    <div class="admin-card">
+
+
+        <div class="admin-row">
+
+
+            <div
+                id="adminAvatar"
+                class="admin-avatar"
+            >
+                A
+            </div>
+
+
+            <div>
+
+                <div
+                    id="adminName"
+                    class="admin-name"
+                >
+                    Admin
+                </div>
+
+                <div class="admin-role">
+                    System Administrator
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="online-mini">
+
+            <span class="dot"></span>
+
+            Online
+
+        </div>
+
+
+    </div>
+
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================== -->
+
+<main class="main">
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+
+        <div>
+
+
+            <div class="eyebrow">
+                BugFlow Control Center
+            </div>
+
+
+            <div class="title-row">
+
+
+                <div class="title-icon">
+                    ▥
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Analytics Reports
+                    </h1>
+
+
+                    <div class="subtitle">
+                        Live analytics from all existing BugFlow defects.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="top-actions">
+
+
+            <div class="online-pill">
+
+                <span class="dot"></span>
+
+                System Online
+
+            </div>
+
+
+            <div class="admin-pill">
+
+                ♙
+
+                <span id="topAdminName">
+                    Admin
+                </span>
+
+                ⌄
+
+            </div>
+
+
+            <button
+                id="refreshButton"
+                class="header-button"
+                type="button"
+            >
+                ↻ Refresh
+            </button>
+
+
+            <button
+                id="exportButton"
+                class="header-button"
+                type="button"
+            >
+                ↓ Export
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+    <!-- =====================================================
+         KPI
+    ====================================================== -->
+
+    <section class="kpis">
+
+
+        <div class="kpi kpi-total">
+
+
+            <div class="kpi-label">
+                Total Defects
+            </div>
+
+
+            <div
+                id="totalCount"
+                class="kpi-value value-purple"
+            >
+                0
+            </div>
+
+
+        </div>
+
+
+        <div class="kpi kpi-assigned">
+
+
+            <div class="kpi-label">
+                Assigned Defects
+            </div>
+
+
+            <div
+                id="assignedCount"
+                class="kpi-value value-blue"
+            >
+                0
+            </div>
+
+
+        </div>
+
+
+        <div class="kpi kpi-resolved">
+
+
+            <div class="kpi-label">
+                Resolved
+            </div>
+
+
+            <div
+                id="resolvedCount"
+                class="kpi-value value-green"
+            >
+                0
+            </div>
+
+
+        </div>
+
+
+        <div class="kpi kpi-pending">
+
+
+            <div class="kpi-label">
+                Pending
+            </div>
+
+
+            <div
+                id="pendingCount"
+                class="kpi-value value-yellow"
+            >
+                0
+            </div>
+
+
+        </div>
+
+
+        <div class="kpi kpi-rejected">
+
+
+            <div class="kpi-label">
+                Rejected
+            </div>
+
+
+            <div
+                id="rejectedCount"
+                class="kpi-value value-red"
+            >
+                0
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ANALYTICS
+    ====================================================== -->
+
+    <div class="section-head">
+
+
+        <div class="section-title">
+
+            <span class="section-title-icon">
+                ▥
+            </span>
+
+            Analytics Reports
+
+        </div>
+
+
+        <div class="section-note">
+            Live data from the existing PostgreSQL defect workflow
+        </div>
+
+
+    </div>
+
+
+    <section class="chart-grid">
+
+
+        <!-- =================================================
+             1. PRIORITIES
+        ================================================== -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-head">
+
+
+                <div class="chart-title">
+
+                    1. Priorities Plot
+
+                    <span class="chart-info">
+                        i
+                    </span>
+
+                </div>
+
+
+                <div class="chart-subtitle">
+
+                    Low, Medium, High and Urgent defect distribution.
+
+                </div>
+
+
+            </div>
+
+
+            <div class="chart-body">
+
+
+                <svg
+                    id="priorityChart"
+                    class="svg-chart"
+                    viewBox="0 0 520 250"
+                    preserveAspectRatio="none"
+                ></svg>
+
+
+            </div>
+
+
+        </article>
+
+
+        <!-- =================================================
+             2. ASSIGNED ROLES
+        ================================================== -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-head">
+
+
+                <div class="chart-title">
+
+                    2. Assigned Roles Work Plot
+
+                    <span class="chart-info">
+                        i
+                    </span>
+
+                </div>
+
+
+                <div class="chart-subtitle">
+
+                    Current defect workload for each assigned role or person.
+
+                </div>
+
+
+            </div>
+
+
+            <div class="chart-body">
+
+
+                <svg
+                    id="assignmentChart"
+                    class="svg-chart"
+                    viewBox="0 0 520 250"
+                    preserveAspectRatio="none"
+                ></svg>
+
+
+            </div>
+
+
+        </article>
+
+
+        <!-- =================================================
+             3. FINAL OVERVIEW
+        ================================================== -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-head">
+
+
+                <div class="chart-title">
+
+                    3. Final Overview Plot
+
+                    <span class="chart-info">
+                        i
+                    </span>
+
+                </div>
+
+
+                <div class="chart-subtitle">
+
+                    Total, Resolved, Pending and Rejected comparison.
+
+                </div>
+
+
+            </div>
+
+
+            <div class="chart-body">
+
+
+                <svg
+                    id="overviewChart"
+                    class="svg-chart"
+                    viewBox="0 0 520 250"
+                    preserveAspectRatio="none"
+                ></svg>
+
+
+            </div>
+
+
+        </article>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         STATUS + KEY METRICS
+    ====================================================== -->
+
+    <section class="lower-grid">
+
+
+        <!-- =================================================
+             4. STATUS
+        ================================================== -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-head">
+
+
+                <div class="chart-title">
+
+                    4. Status Distribution
+
+                    <span class="chart-info">
+                        i
+                    </span>
+
+                </div>
+
+
+                <div class="chart-subtitle">
+
+                    Current status distribution of all defects.
+
+                </div>
+
+
+            </div>
+
+
+            <div class="status-body">
+
+
+                <div class="donut-wrap">
+
+
+                    <div
+                        id="donut"
+                        class="donut"
+                    ></div>
+
+
+                    <div class="donut-center">
+
+
+                        <div
+                            id="donutNumber"
+                            class="donut-number"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="donut-label">
+                            Total
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div
+                    id="statusLegend"
+                    class="status-legend"
+                ></div>
+
+
+            </div>
+
+
+        </article>
+
+
+        <!-- =================================================
+             5. METRICS
+        ================================================== -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-head">
+
+
+                <div class="chart-title">
+
+                    5. Key Metrics
+
+                    <span class="chart-info">
+                        i
+                    </span>
+
+                </div>
+
+
+                <div class="chart-subtitle">
+
+                    Current operational metrics from existing defects.
+
+                </div>
+
+
+            </div>
+
+
+            <div class="metrics-body">
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    36,
+                                    201,
+                                    107,
+                                    .14
+                                );
+                            color:
+                                #4fe08b;
+                        "
+                    >
+                        ↗
+                    </div>
+
+
+                    <div class="metric-title">
+                        Resolution Rate
+                    </div>
+
+
+                    <div
+                        id="resolutionRate"
+                        class="metric-value value-green"
+                    >
+                        0%
+                    </div>
+
+
+                </div>
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    239,
+                                    62,
+                                    62,
+                                    .14
+                                );
+                            color:
+                                #ff7777;
+                        "
+                    >
+                        ×
+                    </div>
+
+
+                    <div class="metric-title">
+                        Rejection Rate
+                    </div>
+
+
+                    <div
+                        id="rejectionRate"
+                        class="metric-value value-red"
+                    >
+                        0%
+                    </div>
+
+
+                </div>
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    25,
+                                    143,
+                                    245,
+                                    .14
+                                );
+                            color:
+                                #70bbff;
+                        "
+                    >
+                        ✓
+                    </div>
+
+
+                    <div class="metric-title">
+                        Assignment Rate
+                    </div>
+
+
+                    <div
+                        id="assignmentRate"
+                        class="metric-value value-blue"
+                    >
+                        0%
+                    </div>
+
+
+                </div>
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    245,
+                                    184,
+                                    10,
+                                    .14
+                                );
+                            color:
+                                #f6cc48;
+                        "
+                    >
+                        ◷
+                    </div>
+
+
+                    <div class="metric-title">
+                        Open Defects
+                    </div>
+
+
+                    <div
+                        id="openDefects"
+                        class="metric-value value-yellow"
+                    >
+                        0
+                    </div>
+
+
+                </div>
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    128,
+                                    87,
+                                    233,
+                                    .14
+                                );
+                            color:
+                                #b8a8ff;
+                        "
+                    >
+                        #
+                    </div>
+
+
+                    <div class="metric-title">
+                        Active Assigned Roles
+                    </div>
+
+
+                    <div
+                        id="activeRoles"
+                        class="metric-value value-purple"
+                    >
+                        0
+                    </div>
+
+
+                </div>
+
+
+                <div class="metric">
+
+
+                    <div
+                        class="metric-icon"
+                        style="
+                            background:
+                                rgba(
+                                    245,
+                                    184,
+                                    10,
+                                    .14
+                                );
+                            color:
+                                #f6cc48;
+                        "
+                    >
+                        !
+                    </div>
+
+
+                    <div class="metric-title">
+                        Highest Priority
+                    </div>
+
+
+                    <div
+                        id="highestPriority"
+                        class="metric-value"
+                    >
+                        —
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </article>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         DEFECT ANALYTICS SUMMARY
+    ====================================================== -->
+
+    <section class="table-card">
+
+
+        <div class="table-head">
+
+
+            <div>
+
+
+                <div class="table-title">
+                    Defect Analytics Summary
+                </div>
+
+
+                <div class="table-sub">
+                    All existing defects from the current BugFlow workflow.
+                </div>
+
+
+            </div>
+
+
+            <input
+                id="searchInput"
+                class="search"
+                type="text"
+                placeholder="Search defects..."
+            >
+
+
+        </div>
+
+
+        <div
+            id="tableLoading"
+            class="loading"
+        >
+            Loading existing defects...
+        </div>
+
+
+        <div
+            id="tableError"
+            class="error"
+            style="display:none;"
+        ></div>
+
+
+        <div
+            id="tableEmpty"
+            class="empty"
+            style="display:none;"
+        >
+            No defects found.
+        </div>
+
+
+        <div
+            id="tableWrap"
+            class="table-wrap"
+            style="display:none;"
+        >
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Title
+                        </th>
+
+                        <th>
+                            Reporter
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Priority
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Assigned To
+                        </th>
+
+                        <th>
+                            Created At
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="defectTable"
+                ></tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+    // =========================================================
+    // SESSION
+    // =========================================================
+
+    const token =
+        localStorage.getItem(
+            "bugflow_token"
+        );
+
+
+    const storedUser =
+        localStorage.getItem(
+            "bugflow_user"
+        );
+
+
+    if (
+        !token ||
+        !storedUser
+    ) {
+
+        window.location.href =
+            "/login-ui";
+
+    }
+
+
+    let currentUser =
+        null;
+
+
+    try {
+
+        currentUser =
+            JSON.parse(
+                storedUser
+            );
+
+    } catch (error) {
+
+        localStorage.clear();
+
+        window.location.href =
+            "/login-ui";
+
+    }
+
+
+    if (
+        currentUser &&
+        String(
+            currentUser.role ||
+            ""
+        ).toLowerCase() !==
+        "admin"
+    ) {
+
+        window.location.href =
+            "/user-ui";
+
+    }
+
+
+    document.getElementById(
+        "adminName"
+    ).textContent =
+        currentUser?.name ||
+        "Admin";
+
+
+    document.getElementById(
+        "topAdminName"
+    ).textContent =
+        currentUser?.name ||
+        "Admin";
+
+
+    document.getElementById(
+        "adminAvatar"
+    ).textContent =
+        (
+            currentUser?.name ||
+            "Admin"
+        )
+        .charAt(0)
+        .toUpperCase();
+
+
+    // =========================================================
+    // DATA
+    // =========================================================
+
+    let defects = [];
+
+    let actions = [];
+
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+
+    function escapeHtml(
+        value
+    ) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+    }
+
+
+    function getStatus(
+        defect
+    ) {
+
+        const status =
+            String(
+                defect.status ||
+                "Pending"
+            )
+            .trim();
+
+
+        if (
+            status === "Resolved" ||
+            status === "Rejected" ||
+            status === "Pending"
+        ) {
+
+            return status;
+
+        }
+
+
+        return "Pending";
+
+    }
+
+
+    function getPriority(
+        defect
+    ) {
+
+        return String(
+            defect.priority ||
+            "Low"
+        )
+        .trim();
+
+    }
+
+
+    function priorityLevel(
+        priority
+    ) {
+
+        const value =
+            String(
+                priority ||
+                ""
+            )
+            .toLowerCase();
+
+
+        if (
+            value === "urgent"
+        ) {
+
+            return 4;
+
+        }
+
+
+        if (
+            value === "high"
+        ) {
+
+            return 3;
+
+        }
+
+
+        if (
+            value === "medium"
+        ) {
+
+            return 2;
+
+        }
+
+
+        return 1;
+
+    }
+
+
+    function priorityClass(
+        priority
+    ) {
+
+        const value =
+            String(
+                priority ||
+                ""
+            )
+            .toLowerCase();
+
+
+        if (
+            value === "urgent"
+        ) {
+
+            return "priority-urgent";
+
+        }
+
+
+        if (
+            value === "high"
+        ) {
+
+            return "priority-high";
+
+        }
+
+
+        if (
+            value === "medium"
+        ) {
+
+            return "priority-medium";
+
+        }
+
+
+        return "priority-low";
+
+    }
+
+
+    function statusClass(
+        status
+    ) {
+
+        if (
+            status === "Resolved"
+        ) {
+
+            return "status-resolved";
+
+        }
+
+
+        if (
+            status === "Rejected"
+        ) {
+
+            return "status-rejected";
+
+        }
+
+
+        return "status-pending";
+
+    }
+
+
+    function getAssignment(
+        defect
+    ) {
+
+        if (
+            defect.assigned_display &&
+            defect.assigned_display !==
+                "Unassigned"
+        ) {
+
+            return defect.assigned_display;
+
+        }
+
+
+        if (
+            defect.assigned_user_name
+        ) {
+
+            if (
+                defect.assigned_user_role
+            ) {
+
+                return (
+                    `${defect.assigned_user_name} ` +
+                    `(${defect.assigned_user_role})`
+                );
+
+            }
+
+
+            return defect.assigned_user_name;
+
+        }
+
+
+        const roleMap = {
+
+            admin:
+                "System Administrator (Admin)",
+
+            senior_dev:
+                "John Doe (Senior Developer)",
+
+            developer:
+                "Alex Rivera (Developer)",
+
+            tester:
+                "Bruce Wayne (Tester)"
+
+        };
+
+
+        const role =
+            String(
+                defect.assigned_role ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if (
+            role &&
+            roleMap[role]
+        ) {
+
+            return roleMap[role];
+
+        }
+
+
+        if (
+            defect.assigned_role_name
+        ) {
+
+            return defect.assigned_role_name;
+
+        }
+
+
+        return "Unassigned";
+
+    }
+
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "—";
+
+        }
+
+
+        return date.toLocaleString(
+            undefined,
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "2-digit",
+
+                year:
+                    "numeric",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                hour12:
+                    false
+
+            }
+        );
+
+    }
+
+
+    async function apiFetch(
+        url
+    ) {
+
+        const response =
+            await fetch(
+                url,
+                {
+
+                    headers: {
+
+                        "Authorization":
+                            `Bearer ${token}`
+
+                    }
+
+                }
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            localStorage.clear();
+
+            window.location.href =
+                "/login-ui";
+
+            throw new Error(
+                "Your admin session expired. Please login again."
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            const data =
+                await response
+                    .json()
+                    .catch(
+                        () => ({})
+                    );
+
+
+            throw new Error(
+                data.detail ||
+                `Request failed (${response.status})`
+            );
+
+        }
+
+
+        return response.json();
+
+    }
+
+
+    // =========================================================
+    // BUILD ANALYTICS
+    // =========================================================
+
+    function buildAnalytics() {
+
+        const total =
+            defects.length;
+
+
+        const counts = {
+
+            low:
+                0,
+
+            medium:
+                0,
+
+            high:
+                0,
+
+            urgent:
+                0,
+
+            resolved:
+                0,
+
+            pending:
+                0,
+
+            rejected:
+                0,
+
+            assigned:
+                0
+
+        };
+
+
+        const assignments = {};
+
+
+        defects.forEach(
+            defect => {
+
+                const priority =
+                    getPriority(
+                        defect
+                    )
+                    .toLowerCase();
+
+
+                if (
+                    priority ===
+                    "low"
+                ) {
+
+                    counts.low++;
+
+                }
+
+                else if (
+                    priority ===
+                    "medium"
+                ) {
+
+                    counts.medium++;
+
+                }
+
+                else if (
+                    priority ===
+                    "high"
+                ) {
+
+                    counts.high++;
+
+                }
+
+                else if (
+                    priority ===
+                    "urgent"
+                ) {
+
+                    counts.urgent++;
+
+                }
+
+
+                const status =
+                    getStatus(
+                        defect
+                    );
+
+
+                if (
+                    status ===
+                    "Resolved"
+                ) {
+
+                    counts.resolved++;
+
+                }
+
+                else if (
+                    status ===
+                    "Rejected"
+                ) {
+
+                    counts.rejected++;
+
+                }
+
+                else {
+
+                    counts.pending++;
+
+                }
+
+
+                const assigned =
+                    getAssignment(
+                        defect
+                    );
+
+
+                if (
+                    assigned !==
+                    "Unassigned"
+                ) {
+
+                    counts.assigned++;
+
+
+                    assignments[
+                        assigned
+                    ] =
+                        (
+                            assignments[
+                                assigned
+                            ] ||
+                            0
+                        ) + 1;
+
+                }
+
+            }
+        );
+
+
+        const assignmentList =
+            Object.entries(
+                assignments
+            )
+            .map(
+                (
+                    [
+                        name,
+                        count
+                    ]
+                ) => ({
+
+                    name:
+
+                        name,
+
+                    count:
+
+                        count
+
+                })
+            )
+            .sort(
+                (a,b) =>
+                    b.count -
+                    a.count
+            )
+            .slice(
+                0,
+                6
+            );
+
+
+        let highestPriority =
+            "—";
+
+
+        if (
+            counts.urgent > 0
+        ) {
+
+            highestPriority =
+                "Urgent";
+
+        }
+
+        else if (
+            counts.high > 0
+        ) {
+
+            highestPriority =
+                "High";
+
+        }
+
+        else if (
+            counts.medium > 0
+        ) {
+
+            highestPriority =
+                "Medium";
+
+        }
+
+        else if (
+            counts.low > 0
+        ) {
+
+            highestPriority =
+                "Low";
+
+        }
+
+
+        return {
+
+            total:
+
+                total,
+
+            counts:
+
+                counts,
+
+            assignments:
+
+                assignmentList,
+
+            highestPriority:
+
+                highestPriority
+
+        };
+
+    }
+
+
+    // =========================================================
+    // UPDATE KPI
+    // =========================================================
+
+    function updateKpis(
+        data
+    ) {
+
+        document.getElementById(
+            "totalCount"
+        ).textContent =
+            data.total;
+
+
+        document.getElementById(
+            "assignedCount"
+        ).textContent =
+            data.counts.assigned;
+
+
+        document.getElementById(
+            "resolvedCount"
+        ).textContent =
+            data.counts.resolved;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            data.counts.pending;
+
+
+        document.getElementById(
+            "rejectedCount"
+        ).textContent =
+            data.counts.rejected;
+
+    }
+
+
+    // =========================================================
+    // SVG GRID
+    // =========================================================
+
+    function chartGrid(
+        width,
+        height,
+        padding,
+        maxValue
+    ) {
+
+        const usableHeight =
+            height -
+            padding.top -
+            padding.bottom;
+
+
+        const lines =
+            5;
+
+
+        let output =
+            "";
+
+
+        for (
+            let index = 0;
+            index <= lines;
+            index++
+        ) {
+
+            const ratio =
+                index /
+                lines;
+
+
+            const y =
+                padding.top +
+                (
+                    ratio *
+                    usableHeight
+                );
+
+
+            const value =
+                Math.round(
+                    maxValue *
+                    (
+                        1 -
+                        ratio
+                    )
+                );
+
+
+            output += `
+
+                <line
+                    x1="${padding.left}"
+                    y1="${y}"
+                    x2="${
+                        width -
+                        padding.right
+                    }"
+                    y2="${y}"
+                    class="grid-line"
+                ></line>
+
+
+                <text
+                    x="${
+                        padding.left -
+                        8
+                    }"
+                    y="${y + 3}"
+                    class="axis-label"
+                    text-anchor="end"
+                >
+                    ${value}
+                </text>
+
+            `;
+
+        }
+
+
+        return output;
+
+    }
+
+
+    // =========================================================
+    // PRIORITY CHART
+    // =========================================================
+
+    function renderPriorityChart(
+        data
+    ) {
+
+        const svg =
+            document.getElementById(
+                "priorityChart"
+            );
+
+
+        const width =
+            520;
+
+        const height =
+            250;
+
+
+        const padding = {
+
+            left:
+                38,
+
+            right:
+                14,
+
+            top:
+                22,
+
+            bottom:
+                33
+
+        };
+
+
+        const values = [
+
+            data.counts.low,
+
+            data.counts.medium,
+
+            data.counts.high,
+
+            data.counts.urgent
+
+        ];
+
+
+        const maxValue =
+            Math.max(
+                ...values,
+                1
+            );
+
+
+        let html =
+            chartGrid(
+                width,
+                height,
+                padding,
+                maxValue
+            );
+
+
+        const names = [
+
+            "Low",
+            "Medium",
+            "High",
+            "Urgent"
+
+        ];
+
+
+        const colors = [
+
+            "var(--green)",
+            "var(--blue)",
+            "var(--yellow)",
+            "var(--red)"
+
+        ];
+
+
+        const points = [
+
+            data.counts.low,
+            data.counts.medium,
+            data.counts.high,
+            data.counts.urgent
+
+        ];
+
+
+        const usableWidth =
+            width -
+            padding.left -
+            padding.right;
+
+
+        points.forEach(
+            (
+                value,
+                index
+            ) => {
+
+                const x =
+                    padding.left +
+                    (
+                        index /
+                        (
+                            points.length -
+                            1
+                        )
+                    ) *
+                    usableWidth;
+
+
+                const y =
+                    height -
+                    padding.bottom -
+                    (
+                        value /
+                        maxValue
+                    ) *
+                    (
+                        height -
+                        padding.top -
+                        padding.bottom
+                    );
+
+
+                if (
+                    index > 0
+                ) {
+
+                    const previous =
+                        points[
+                            index - 1
+                        ];
+
+
+                    const previousX =
+                        padding.left +
+                        (
+                            (
+                                index -
+                                1
+                            ) /
+                            (
+                                points.length -
+                                1
+                            )
+                        ) *
+                        usableWidth;
+
+
+                    const previousY =
+                        height -
+                        padding.bottom -
+                        (
+                            previous /
+                            maxValue
+                        ) *
+                        (
+                            height -
+                            padding.top -
+                            padding.bottom
+                        );
+
+
+                    html += `
+
+                        <line
+                            x1="${previousX}"
+                            y1="${previousY}"
+                            x2="${x}"
+                            y2="${y}"
+                            stroke="${colors[index]}"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                        ></line>
+
+                    `;
+
+                }
+
+
+                html += `
+
+                    <circle
+                        cx="${x}"
+                        cy="${y}"
+                        r="4"
+                        fill="${colors[index]}"
+                        stroke="#081523"
+                        stroke-width="2"
+                    ></circle>
+
+
+                    <text
+                        x="${x}"
+                        y="${y - 9}"
+                        class="bar-label"
+                    >
+                        ${value}
+                    </text>
+
+
+                    <text
+                        x="${x}"
+                        y="${height - 12}"
+                        class="bar-name"
+                    >
+                        ${names[index]}
+                    </text>
+
+                `;
+
+            }
+        );
+
+
+        svg.innerHTML =
+            html;
+
+    }
+
+
+    // =========================================================
+    // ASSIGNMENT CHART
+    // =========================================================
+
+    function renderAssignmentChart(
+        data
+    ) {
+
+        const svg =
+            document.getElementById(
+                "assignmentChart"
+            );
+
+
+        const width =
+            520;
+
+        const height =
+            250;
+
+
+        const padding = {
+
+            left:
+                42,
+
+            right:
+                14,
+
+            top:
+                22,
+
+            bottom:
+                48
+
+        };
+
+
+        const list =
+            data.assignments;
+
+
+        const maxValue =
+            Math.max(
+                ...list.map(
+                    item =>
+                        item.count
+                ),
+                1
+            );
+
+
+        let html =
+            chartGrid(
+                width,
+                height,
+                padding,
+                maxValue
+            );
+
+
+        if (
+            !list.length
+        ) {
+
+            html += `
+
+                <text
+                    x="${width / 2}"
+                    y="${height / 2}"
+                    class="axis-label"
+                    text-anchor="middle"
+                >
+                    No assigned defects yet
+                </text>
+
+            `;
+
+
+            svg.innerHTML =
+                html;
+
+
+            return;
+
+        }
+
+
+        const usableWidth =
+            width -
+            padding.left -
+            padding.right;
+
+
+        const slot =
+            usableWidth /
+            list.length;
+
+
+        const barWidth =
+            Math.min(
+                48,
+                slot * .55
+            );
+
+
+        list.forEach(
+            (
+                item,
+                index
+            ) => {
+
+                const centerX =
+                    padding.left +
+                    slot *
+                    (
+                        index +
+                        .5
+                    );
+
+
+                const barHeight =
+                    (
+                        item.count /
+                        maxValue
+                    ) *
+                    (
+                        height -
+                        padding.top -
+                        padding.bottom
+                    );
+
+
+                const y =
+                    height -
+                    padding.bottom -
+                    barHeight;
+
+
+                html += `
+
+                    <rect
+                        x="${
+                            centerX -
+                            (
+                                barWidth /
+                                2
+                            )
+                        }"
+                        y="${y}"
+                        width="${barWidth}"
+                        height="${Math.max(
+                            barHeight,
+                            1
+                        )}"
+                        rx="5"
+                        class="bar-purple"
+                    ></rect>
+
+
+                    <text
+                        x="${centerX}"
+                        y="${Math.max(
+                            y - 7,
+                            13
+                        )}"
+                        class="bar-label"
+                    >
+                        ${item.count}
+                    </text>
+
+                `;
+
+
+                const firstPart =
+                    String(
+                        item.name
+                    )
+                    .replace(
+                        /\s+\(/,
+                        "|("
+                    )
+                    .split("|")[0];
+
+
+                html += `
+
+                    <text
+                        x="${centerX}"
+                        y="${height - 27}"
+                        class="bar-name"
+                    >
+                        ${escapeHtml(
+                            firstPart
+                        )}
+                    </text>
+
+                `;
+
+            }
+        );
+
+
+        svg.innerHTML =
+            html;
+
+    }
+
+
+    // =========================================================
+    // OVERVIEW CHART
+    // =========================================================
+
+    function renderOverviewChart(
+        data
+    ) {
+
+        const svg =
+            document.getElementById(
+                "overviewChart"
+            );
+
+
+        const width =
+            520;
+
+        const height =
+            250;
+
+
+        const padding = {
+
+            left:
+                42,
+
+            right:
+                14,
+
+            top:
+                22,
+
+            bottom:
+                43
+
+        };
+
+
+        const items = [
+
+            {
+                name:
+                    "Total",
+
+                value:
+                    data.total,
+
+                className:
+                    "bar-purple"
+
+            },
+
+            {
+                name:
+                    "Resolved",
+
+                value:
+                    data.counts.resolved,
+
+                className:
+                    "bar-green"
+
+            },
+
+            {
+                name:
+                    "Pending",
+
+                value:
+                    data.counts.pending,
+
+                className:
+                    "bar-yellow"
+
+            },
+
+            {
+                name:
+                    "Rejected",
+
+                value:
+                    data.counts.rejected,
+
+                className:
+                    "bar-red"
+
+            }
+
+        ];
+
+
+        const maxValue =
+            Math.max(
+                ...items.map(
+                    item =>
+                        item.value
+                ),
+                1
+            );
+
+
+        let html =
+            chartGrid(
+                width,
+                height,
+                padding,
+                maxValue
+            );
+
+
+        const usableWidth =
+            width -
+            padding.left -
+            padding.right;
+
+
+        const slot =
+            usableWidth /
+            items.length;
+
+
+        const barWidth =
+            Math.min(
+                55,
+                slot * .48
+            );
+
+
+        items.forEach(
+            (
+                item,
+                index
+            ) => {
+
+                const centerX =
+                    padding.left +
+                    slot *
+                    (
+                        index +
+                        .5
+                    );
+
+
+                const barHeight =
+                    (
+                        item.value /
+                        maxValue
+                    ) *
+                    (
+                        height -
+                        padding.top -
+                        padding.bottom
+                    );
+
+
+                const y =
+                    height -
+                    padding.bottom -
+                    barHeight;
+
+
+                html += `
+
+                    <rect
+                        x="${
+                            centerX -
+                            (
+                                barWidth /
+                                2
+                            )
+                        }"
+                        y="${y}"
+                        width="${barWidth}"
+                        height="${Math.max(
+                            barHeight,
+                            1
+                        )}"
+                        rx="5"
+                        class="${item.className}"
+                    ></rect>
+
+
+                    <text
+                        x="${centerX}"
+                        y="${Math.max(
+                            y - 7,
+                            13
+                        )}"
+                        class="bar-label"
+                    >
+                        ${item.value}
+                    </text>
+
+
+                    <text
+                        x="${centerX}"
+                        y="${height - 16}"
+                        class="bar-name"
+                    >
+                        ${item.name}
+                    </text>
+
+                `;
+
+            }
+        );
+
+
+        svg.innerHTML =
+            html;
+
+    }
+
+
+    // =========================================================
+    // STATUS
+    // =========================================================
+
+    function renderStatus(
+        data
+    ) {
+
+        const total =
+            data.total;
+
+
+        const resolved =
+            data.counts.resolved;
+
+
+        const pending =
+            data.counts.pending;
+
+
+        const rejected =
+            data.counts.rejected;
+
+
+        const resolvedAngle =
+            total
+                ? (
+                    resolved /
+                    total
+                ) *
+                360
+                : 0;
+
+
+        const pendingAngle =
+            total
+                ? (
+                    pending /
+                    total
+                ) *
+                360
+                : 0;
+
+
+        const rejectedAngle =
+            total
+                ? (
+                    rejected /
+                    total
+                ) *
+                360
+                : 0;
+
+
+        const pendingEnd =
+            resolvedAngle +
+            pendingAngle;
+
+
+        const rejectedEnd =
+            pendingEnd +
+            rejectedAngle;
+
+
+        document.getElementById(
+            "donut"
+        ).style.background =
+            `conic-gradient(
+                var(--green)
+                0deg
+                ${resolvedAngle}deg,
+
+                var(--yellow)
+                ${resolvedAngle}deg
+                ${pendingEnd}deg,
+
+                var(--red)
+                ${pendingEnd}deg
+                ${rejectedEnd}deg,
+
+                #112137
+                ${rejectedEnd}deg
+                360deg
+            )`;
+
+
+        document.getElementById(
+            "donutNumber"
+        ).textContent =
+            total;
+
+
+        const items = [
+
+            {
+                name:
+                    "Resolved",
+
+                value:
+                    resolved,
+
+                color:
+                    "var(--green)"
+
+            },
+
+            {
+                name:
+                    "Pending",
+
+                value:
+                    pending,
+
+                color:
+                    "var(--yellow)"
+
+            },
+
+            {
+                name:
+                    "Rejected",
+
+                value:
+                    rejected,
+
+                color:
+                    "var(--red)"
+
+            }
+
+        ];
+
+
+        document.getElementById(
+            "statusLegend"
+        ).innerHTML =
+            items
+                .map(
+                    item => {
+
+                        const percent =
+                            total
+                                ? (
+                                    item.value /
+                                    total
+                                ) *
+                                100
+                                : 0;
+
+
+                        return `
+
+                            <div
+                                class="legend-item"
+                            >
+
+                                <span
+                                    class="legend-dot"
+                                    style="
+                                        background:
+                                            ${item.color};
+                                    "
+                                ></span>
+
+
+                                <span
+                                    class="legend-name"
+                                >
+                                    ${item.name}
+                                </span>
+
+
+                                <span
+                                    class="legend-value"
+                                >
+                                    ${item.value}
+                                </span>
+
+
+                                <span
+                                    class="legend-percent"
+                                >
+                                    ${percent.toFixed(1)}%
+                                </span>
+
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    // =========================================================
+    // METRICS
+    // =========================================================
+
+    function updateMetrics(
+        data
+    ) {
+
+        const total =
+            data.total;
+
+
+        const resolutionRate =
+            total
+                ? (
+                    data.counts.resolved /
+                    total
+                ) *
+                100
+                : 0;
+
+
+        const rejectionRate =
+            total
+                ? (
+                    data.counts.rejected /
+                    total
+                ) *
+                100
+                : 0;
+
+
+        const assignmentRate =
+            total
+                ? (
+                    data.counts.assigned /
+                    total
+                ) *
+                100
+                : 0;
+
+
+        document.getElementById(
+            "resolutionRate"
+        ).textContent =
+            `${resolutionRate.toFixed(1)}%`;
+
+
+        document.getElementById(
+            "rejectionRate"
+        ).textContent =
+            `${rejectionRate.toFixed(1)}%`;
+
+
+        document.getElementById(
+            "assignmentRate"
+        ).textContent =
+            `${assignmentRate.toFixed(1)}%`;
+
+
+        document.getElementById(
+            "openDefects"
+        ).textContent =
+            data.counts.pending;
+
+
+        document.getElementById(
+            "activeRoles"
+        ).textContent =
+            data.assignments.length;
+
+
+        document.getElementById(
+            "highestPriority"
+        ).textContent =
+            data.highestPriority;
+
+    }
+
+
+    // =========================================================
+    // TABLE
+    // =========================================================
+
+    function renderTable() {
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const filtered =
+            defects.filter(
+                defect => {
+
+                    if (!search) {
+
+                        return true;
+
+                    }
+
+
+                    const text =
+                        [
+
+                            defect.title,
+
+                            defect.description,
+
+                            defect.category,
+
+                            defect.priority,
+
+                            defect.status,
+
+                            defect.user_name,
+
+                            defect.reporter_name,
+
+                            getAssignment(
+                                defect
+                            )
+
+                        ]
+
+                        .filter(
+                            Boolean
+                        )
+
+                        .join(" ")
+
+                        .toLowerCase();
+
+
+                    return text.includes(
+                        search
+                    );
+
+                }
+            );
+
+
+        const table =
+            document.getElementById(
+                "defectTable"
+            );
+
+
+        table.innerHTML =
+            "";
+
+
+        if (
+            !filtered.length
+        ) {
+
+            document.getElementById(
+                "tableWrap"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "tableEmpty"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "tableEmpty"
+            ).textContent =
+                search
+                    ? "No defects match your search."
+                    : "No defects found.";
+
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "tableEmpty"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "tableWrap"
+        ).style.display =
+            "block";
+
+
+        filtered.forEach(
+            defect => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const reporter =
+                    defect.user_name ||
+                    defect.reporter_name ||
+                    `User #${defect.user_id}`;
+
+
+                const assigned =
+                    getAssignment(
+                        defect
+                    );
+
+
+                const priority =
+                    getPriority(
+                        defect
+                    );
+
+
+                const status =
+                    getStatus(
+                        defect
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        #${Number(
+                            defect.id
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            defect.title
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            reporter
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            defect.category ||
+                            "—"
+                        )}
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="badge ${priorityClass(
+                                priority
+                            )}"
+                        >
+                            ${escapeHtml(
+                                priority
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="badge ${statusClass(
+                                status
+                            )}"
+                        >
+                            ${escapeHtml(
+                                status
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            assigned
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${formatDate(
+                            defect.created_at
+                        )}
+                    </td>
+
+                `;
+
+
+                table.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // LOAD ANALYTICS
+    // =========================================================
+
+    async function loadAnalytics() {
+
+        document.getElementById(
+            "tableLoading"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "tableError"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "tableEmpty"
+        ).style.display =
+            "none";
+
+
+        try {
+
+            /*
+             * THIS PAGE USES THE EXISTING
+             * ADMIN DEFECT DATA.
+             */
+
+            defects =
+                await apiFetch(
+                    "/admin/defects"
+                );
+
+
+            if (
+                !Array.isArray(
+                    defects
+                )
+            ) {
+
+                defects = [];
+
+            }
+
+
+            /*
+             * Admin actions are optional.
+             * They are loaded only for compatibility
+             * with the existing workflow.
+             */
+
+            try {
+
+                actions =
+                    await apiFetch(
+                        "/admin/actions"
+                    );
+
+            } catch {
+
+                actions = [];
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    actions
+                )
+            ) {
+
+                actions = [];
+
+            }
+
+
+            const data =
+                buildAnalytics();
+
+
+            updateKpis(
+                data
+            );
+
+
+            renderPriorityChart(
+                data
+            );
+
+
+            renderAssignmentChart(
+                data
+            );
+
+
+            renderOverviewChart(
+                data
+            );
+
+
+            renderStatus(
+                data
+            );
+
+
+            updateMetrics(
+                data
+            );
+
+
+            renderTable();
+
+
+            document.getElementById(
+                "tableLoading"
+            ).style.display =
+                "none";
+
+
+        } catch (error) {
+
+            console.error(
+                "Analytics error:",
+                error
+            );
+
+
+            document.getElementById(
+                "tableLoading"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "tableError"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "tableError"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+
+
+    // =========================================================
+    // SEARCH
+    // =========================================================
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "input",
+        renderTable
+    );
+
+
+    // =========================================================
+    // REFRESH
+    // =========================================================
+
+    document.getElementById(
+        "refreshButton"
+    ).addEventListener(
+        "click",
+        loadAnalytics
+    );
+
+
+    // =========================================================
+    // EXPORT CSV
+    // =========================================================
+
+    document.getElementById(
+        "exportButton"
+    ).addEventListener(
+        "click",
+        () => {
+
+            if (
+                !defects.length
+            ) {
+
+                alert(
+                    "There are no defects to export."
+                );
+
+                return;
+
+            }
+
+
+            const rows = [
+
+                [
+                    "ID",
+                    "Title",
+                    "Reporter",
+                    "Category",
+                    "Priority",
+                    "Status",
+                    "Assigned To",
+                    "Created At"
+                ]
+
+            ];
+
+
+            defects.forEach(
+                defect => {
+
+                    rows.push(
+                        [
+
+                            defect.id,
+
+                            defect.title,
+
+                            defect.user_name ||
+                            defect.reporter_name ||
+                            `User #${defect.user_id}`,
+
+                            defect.category,
+
+                            defect.priority,
+
+                            defect.status,
+
+                            getAssignment(
+                                defect
+                            ),
+
+                            formatDate(
+                                defect.created_at
+                            )
+
+                        ]
+                    );
+
+                }
+            );
+
+
+            const csv =
+                rows
+                    .map(
+                        row =>
+                            row
+                                .map(
+                                    value =>
+                                        `"${String(
+                                            value ??
+                                            ""
+                                        ).replaceAll(
+                                            '"',
+                                            '""'
+                                        )}"`
+                                )
+                                .join(",")
+                    )
+                    .join("\n");
+
+
+            const blob =
+                new Blob(
+                    [csv],
+                    {
+                        type:
+                            "text/csv;charset=utf-8;"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href =
+                url;
+
+
+            link.download =
+                "bugflow-analytics-report.csv";
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            link.remove();
+
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        }
+    );
+
+
+    // =========================================================
+    // LOGOUT
+    // =========================================================
+
+    document.getElementById(
+        "logoutLink"
+    ).addEventListener(
+        "click",
+        async event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                await fetch(
+                    "/logout",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Authorization":
+                                `Bearer ${token}`
+
+                        }
+
+                    }
+                );
+
+            } catch (
+                error
+            ) {
+
+                console.log(
+                    "Logout request failed."
+                );
+
+            }
+
+
+            localStorage.clear();
+
+
+            window.location.href =
+                "/login-ui";
+
+        }
+    );
+
+
+    // =========================================================
+    // START
+    // =========================================================
+
+    loadAnalytics();
+
+</script>
+
+
+</body>
+
+</html>

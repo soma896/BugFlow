@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow | Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #f8fafc;
+
+            background:
+                radial-gradient(
+                    circle at 10% 15%,
+                    rgba(99, 102, 241, 0.17),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 85%,
+                    rgba(124, 58, 237, 0.15),
+                    transparent 30%
+                ),
+                #080d1a;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 24px;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .page {
+
+            width:
+                min(
+                    1120px,
+                    100%
+                );
+
+            min-height: 700px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            background:
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.94
+                );
+
+            border:
+                1px solid
+                rgba(
+                    148,
+                    163,
+                    184,
+                    0.15
+                );
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 90px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.48
+                );
+
+        }
+
+
+        /* =====================================================
+           LEFT PANEL
+        ====================================================== */
+
+        .left-panel {
+
+            padding:
+                52px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content:
+                space-between;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        99,
+                        102,
+                        241,
+                        0.17
+                    ),
+                    rgba(
+                        18,
+                        27,
+                        51,
+                        0.85
+                    )
+                );
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .logo {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 13px;
+
+            display: grid;
+
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6966ef,
+                    #8b5cf6
+                );
+
+            color: white;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    0.28
+                );
+
+        }
+
+
+        .brand-name {
+
+            font-size: 23px;
+
+            font-weight: 800;
+
+        }
+
+
+        .hero {
+
+            max-width: 500px;
+
+        }
+
+
+        .eyebrow {
+
+            margin-bottom: 16px;
+
+            color: #a5b4fc;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.12em;
+
+        }
+
+
+        .hero h1 {
+
+            margin-bottom: 20px;
+
+            font-size:
+                clamp(
+                    45px,
+                    5vw,
+                    63px
+                );
+
+            line-height: 1;
+
+            letter-spacing:
+                -0.04em;
+
+        }
+
+
+        .hero h1 span {
+
+            color: #8b5cf6;
+
+        }
+
+
+        .hero p {
+
+            color: #a1aec3;
+
+            font-size: 15px;
+
+            line-height: 1.75;
+
+            max-width: 470px;
+
+        }
+
+
+        .features {
+
+            display: grid;
+
+            gap: 14px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #d6ddea;
+
+            font-size: 13px;
+
+        }
+
+
+        .feature-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 9px;
+
+            display: grid;
+
+            place-items: center;
+
+            background:
+                rgba(
+                    99,
+                    102,
+                    241,
+                    0.10
+                );
+
+            border:
+                1px solid
+                rgba(
+                    99,
+                    102,
+                    241,
+                    0.18
+                );
+
+        }
+
+
+        .footer {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           RIGHT PANEL
+        ====================================================== */
+
+        .right-panel {
+
+            padding:
+                42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(
+                    8,
+                    13,
+                    26,
+                    0.52
+                );
+
+        }
+
+
+        .login-area {
+
+            width:
+                min(
+                    450px,
+                    100%
+                );
+
+        }
+
+
+        .login-heading {
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .login-heading h2 {
+
+            margin-bottom: 8px;
+
+            font-size: 31px;
+
+        }
+
+
+        .login-heading p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           ADMIN / USER OPTIONS
+        ====================================================== */
+
+        .access-label {
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.08em;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .access-options {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 12px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .access-card {
+
+            border:
+                1px solid
+                #263247;
+
+            background:
+                #101827;
+
+            border-radius: 14px;
+
+            padding:
+                17px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            color: #cbd5e1;
+
+            transition:
+                border-color .2s,
+                background .2s,
+                transform .2s,
+                box-shadow .2s;
+
+        }
+
+
+        .access-card:hover {
+
+            border-color:
+                #475569;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .access-card.active {
+
+            border-color:
+                #6366f1;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        99,
+                        102,
+                        241,
+                        .17
+                    ),
+                    rgba(
+                        124,
+                        58,
+                        237,
+                        .10
+                    )
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .12
+                );
+
+        }
+
+
+        .access-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 10px;
+
+            display: grid;
+
+            place-items: center;
+
+            background:
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .11
+                );
+
+            border:
+                1px solid
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .16
+                );
+
+            margin-bottom: 10px;
+
+            font-size: 18px;
+
+        }
+
+
+        .access-card.active
+        .access-icon {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+        }
+
+
+        .access-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 4px;
+
+            color: #f8fafc;
+
+        }
+
+
+        .access-description {
+
+            font-size: 10px;
+
+            line-height: 1.4;
+
+            color: #64748b;
+
+        }
+
+
+        .access-card.active
+        .access-description {
+
+            color: #a5b4fc;
+
+        }
+
+
+        /* =====================================================
+           SELECTED ACCESS
+        ====================================================== */
+
+        .selected-access {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 20px;
+
+            padding:
+                10px 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(
+                    99,
+                    102,
+                    241,
+                    0.07
+                );
+
+            border:
+                1px solid
+                rgba(
+                    99,
+                    102,
+                    241,
+                    0.13
+                );
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+        }
+
+
+        .selected-access strong {
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ====================================================== */
+
+        .message {
+
+            display: none;
+
+            padding:
+                11px 13px;
+
+            margin-bottom: 16px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            line-height: 1.45;
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            color: #fca5a5;
+
+            background:
+                rgba(
+                    239,
+                    68,
+                    68,
+                    .08
+                );
+
+            border:
+                1px solid
+                rgba(
+                    239,
+                    68,
+                    68,
+                    .18
+                );
+
+        }
+
+
+        .message.success {
+
+            display: block;
+
+            color: #86efac;
+
+            background:
+                rgba(
+                    34,
+                    197,
+                    94,
+                    .08
+                );
+
+            border:
+                1px solid
+                rgba(
+                    34,
+                    197,
+                    94,
+                    .18
+                );
+
+        }
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #d5dce7;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            height: 50px;
+
+            padding:
+                0 45px
+                0 14px;
+
+            border:
+                1px solid
+                #334155;
+
+            border-radius: 10px;
+
+            background:
+                #0f172a;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition:
+                border-color .2s,
+                box-shadow .2s;
+
+        }
+
+
+        input::placeholder {
+
+            color: #64748b;
+
+        }
+
+
+        input:focus {
+
+            border-color:
+                #6366f1;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .12
+                );
+
+        }
+
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 7px;
+
+            top: 50%;
+
+            width: 34px;
+
+            height: 34px;
+
+            transform:
+                translateY(-50%);
+
+            border: 0;
+
+            border-radius: 8px;
+
+            background:
+                transparent;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+        }
+
+
+        .password-toggle:hover {
+
+            color: white;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .05
+                );
+
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 50px;
+
+            margin-top: 5px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s,
+                box-shadow .2s,
+                opacity .2s;
+
+            box-shadow:
+                0 12px 25px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .18
+                );
+
+        }
+
+
+        .login-button:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 16px 30px
+                rgba(
+                    99,
+                    102,
+                    241,
+                    .25
+                );
+
+        }
+
+
+        .login-button:disabled {
+
+            opacity: .65;
+
+            cursor:
+                not-allowed;
+
+            transform: none;
+
+        }
+
+
+        .button-content {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+        }
+
+
+        .spinner {
+
+            display: none;
+
+            width: 15px;
+
+            height: 15px;
+
+            border:
+                2px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .35
+                );
+
+            border-top-color:
+                white;
+
+            border-radius: 50%;
+
+            animation:
+                spin .7s linear infinite;
+
+        }
+
+
+        .loading .spinner {
+
+            display: inline-block;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+
+                transform:
+                    rotate(360deg);
+
+            }
+
+        }
+
+
+        .security-note {
+
+            margin-top: 17px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 850px) {
+
+            .page {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .left-panel {
+
+                display: none;
+
+            }
+
+
+            .right-panel {
+
+                min-height:
+                    700px;
+
+                padding:
+                    30px 22px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .access-options {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .right-panel {
+
+                padding:
+                    25px 16px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- =====================================================
+         LEFT BRANDING PANEL
+    ====================================================== -->
+
+    <section class="left-panel">
+
+
+        <div class="brand">
+
+
+            <div class="logo">
+                B
+            </div>
+
+
+            <div class="brand-name">
+                BugFlow
+            </div>
+
+
+        </div>
+
+
+        <div class="hero">
+
+
+            <div class="eyebrow">
+                Issue Tracking Platform
+            </div>
+
+
+            <h1>
+                Track bugs.<br>
+
+                <span>
+                    Fix faster.
+                </span>
+            </h1>
+
+
+            <p>
+                A centralized issue tracking system
+                for reporting, managing, reviewing,
+                and resolving software defects.
+            </p>
+
+
+            <div class="features">
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🐞
+                    </div>
+
+                    <span>
+                        Detailed defect reporting
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <span>
+                        Live dashboards and status tracking
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🔐
+                    </div>
+
+                    <span>
+                        Role-based user and admin access
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer">
+            BugFlow · Software Issue Management System
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         RIGHT LOGIN PANEL
+    ====================================================== -->
+
+    <section class="right-panel">
+
+
+        <div class="login-area">
+
+
+            <div class="login-heading">
+
+                <h2 id="loginTitle">
+                    Choose your access
+                </h2>
+
+                <p id="loginSubtitle">
+                    Select Admin or User to continue.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ADMIN / USER OPTIONS
+            ================================================== -->
+
+            <div class="access-label">
+                Continue as
+            </div>
+
+
+            <div class="access-options">
+
+
+                <!-- ADMIN -->
+
+                <button
+                    type="button"
+                    id="adminOption"
+                    class="access-card active"
+                >
+
+                    <div class="access-icon">
+                        🛡️
+                    </div>
+
+
+                    <div class="access-title">
+                        Admin
+                    </div>
+
+
+                    <div class="access-description">
+                        Manage defects, users and system actions
+                    </div>
+
+                </button>
+
+
+                <!-- USER -->
+
+                <button
+                    type="button"
+                    id="userOption"
+                    class="access-card"
+                >
+
+                    <div class="access-icon">
+                        👤
+                    </div>
+
+
+                    <div class="access-title">
+                        User
+                    </div>
+
+
+                    <div class="access-description">
+                        Report defects and track your issues
+                    </div>
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 SELECTED ACCESS
+            ================================================== -->
+
+            <div class="selected-access">
+
+                <span id="selectedIcon">
+                    🛡️
+                </span>
+
+                <span>
+
+                    Signing in as
+
+                    <strong id="selectedText">
+                        Admin
+                    </strong>
+
+                </span>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form id="loginForm">
+
+
+                <div class="form-group">
+
+
+                    <label for="email">
+                        Email
+                    </label>
+
+
+                    <input
+                        id="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Enter admin email"
+                        required
+                    >
+
+
+                </div>
+
+
+                <div class="form-group">
+
+
+                    <label for="password">
+                        Password
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <input
+                            id="password"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Enter admin password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            id="passwordToggle"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+                            ◉
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-button"
+                >
+
+                    <span class="button-content">
+
+                        <span
+                            id="spinner"
+                            class="spinner"
+                        ></span>
+
+                        <span id="buttonText">
+                            Sign In as Admin
+                        </span>
+
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+            <div class="security-note">
+                Your session is protected by BugFlow authentication.
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
+
+    const adminOption =
+        document.getElementById(
+            "adminOption"
+        );
+
+
+    const userOption =
+        document.getElementById(
+            "userOption"
+        );
+
+
+    const loginTitle =
+        document.getElementById(
+            "loginTitle"
+        );
+
+
+    const loginSubtitle =
+        document.getElementById(
+            "loginSubtitle"
+        );
+
+
+    const selectedIcon =
+        document.getElementById(
+            "selectedIcon"
+        );
+
+
+    const selectedText =
+        document.getElementById(
+            "selectedText"
+        );
+
+
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
+
+
+    const passwordInput =
+        document.getElementById(
+            "password"
+        );
+
+
+    const passwordToggle =
+        document.getElementById(
+            "passwordToggle"
+        );
+
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+
+    const loginButton =
+        document.getElementById(
+            "loginButton"
+        );
+
+
+    const buttonText =
+        document.getElementById(
+            "buttonText"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    // =========================================================
+    // CURRENT ACCESS
+    // =========================================================
+
+    let selectedAccess = "admin";
+
+
+    // =========================================================
+    // ACCESS DETAILS
+    // =========================================================
+
+    const accessData = {
+
+        admin: {
+
+            label:
+                "Admin",
+
+            icon:
+                "🛡️",
+
+            title:
+                "Admin Login",
+
+            subtitle:
+                "Sign in to manage your BugFlow system.",
+
+            emailPlaceholder:
+                "Enter admin email",
+
+            passwordPlaceholder:
+                "Enter admin password",
+
+            button:
+                "Sign In as Admin"
+
+        },
+
+
+        user: {
+
+            label:
+                "User",
+
+            icon:
+                "👤",
+
+            title:
+                "User Login",
+
+            subtitle:
+                "Sign in to continue to your BugFlow dashboard.",
+
+            emailPlaceholder:
+                "Enter user email",
+
+            passwordPlaceholder:
+                "Enter user password",
+
+            button:
+                "Sign In as User"
+
+        }
+
+    };
+
+
+    // =========================================================
+    // MESSAGE
+    // =========================================================
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.className =
+            `message ${type}`;
+
+        message.textContent =
+            text;
+
+    }
+
+
+    function clearMessage() {
+
+        message.className =
+            "message";
+
+        message.textContent =
+            "";
+
+    }
+
+
+    // =========================================================
+    // SELECT ACCESS
+    // =========================================================
+
+    function selectAccess(
+        access
+    ) {
+
+        selectedAccess =
+            access;
+
+
+        const data =
+            accessData[
+                access
+            ];
+
+
+        adminOption.classList.toggle(
+            "active",
+            access === "admin"
+        );
+
+
+        userOption.classList.toggle(
+            "active",
+            access === "user"
+        );
+
+
+        loginTitle.textContent =
+            data.title;
+
+
+        loginSubtitle.textContent =
+            data.subtitle;
+
+
+        selectedIcon.textContent =
+            data.icon;
+
+
+        selectedText.textContent =
+            data.label;
+
+
+        emailInput.placeholder =
+            data.emailPlaceholder;
+
+
+        passwordInput.placeholder =
+            data.passwordPlaceholder;
+
+
+        buttonText.textContent =
+            data.button;
+
+
+        clearMessage();
+
+    }
+
+
+    // =========================================================
+    // ADMIN CLICK
+    // =========================================================
+
+    adminOption.addEventListener(
+        "click",
+        function () {
+
+            selectAccess(
+                "admin"
+            );
+
+        }
+    );
+
+
+    // =========================================================
+    // USER CLICK
+    // =========================================================
+
+    userOption.addEventListener(
+        "click",
+        function () {
+
+            selectAccess(
+                "user"
+            );
+
+        }
+    );
+
+
+    // =========================================================
+    // PASSWORD SHOW / HIDE
+    // =========================================================
+
+    passwordToggle.addEventListener(
+        "click",
+        function () {
+
+            const hidden =
+                passwordInput.type ===
+                "password";
+
+
+            passwordInput.type =
+                hidden
+                    ? "text"
+                    : "password";
+
+
+            passwordToggle.textContent =
+                hidden
+                    ? "◉"
+                    : "◉";
+
+
+            passwordToggle.setAttribute(
+                "aria-label",
+                hidden
+                    ? "Hide password"
+                    : "Show password"
+            );
+
+        }
+    );
+
+
+    // =========================================================
+    // LOGIN
+    // =========================================================
+
+    loginForm.addEventListener(
+        "submit",
+        async function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            clearMessage();
+
+
+            const email =
+                emailInput.value.trim();
+
+
+            const password =
+                passwordInput.value;
+
+
+            if (
+                !email ||
+                !password
+            ) {
+
+                showMessage(
+                    "Please enter your email and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            loginButton.disabled =
+                true;
+
+
+            loginButton.classList.add(
+                "loading"
+            );
+
+
+            buttonText.textContent =
+                "Signing In...";
+
+
+            try {
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * We send ONLY email and password.
+                 *
+                 * We do NOT send admin/user role.
+                 *
+                 * The backend decides the actual
+                 * account role from PostgreSQL.
+                 */
+
+                const response =
+                    await fetch(
+                        "/login",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    email:
+                                        email,
+
+                                    password:
+                                        password
+
+                                })
+
+                        }
+                    );
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        await response.json();
+
+                } catch (
+                    error
+                ) {
+
+                    data = {};
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.detail ||
+                        "Invalid email or password."
+                    );
+
+                }
+
+
+                if (
+                    !data.access_token
+                ) {
+
+                    throw new Error(
+                        "Login succeeded but no session token was returned."
+                    );
+
+                }
+
+
+                // -------------------------------------------------
+                // Store authentication session
+                // -------------------------------------------------
+
+                localStorage.setItem(
+                    "bugflow_token",
+                    data.access_token
+                );
+
+
+                localStorage.setItem(
+                    "bugflow_token_type",
+                    data.token_type ||
+                    "bearer"
+                );
+
+
+                localStorage.setItem(
+                    "bugflow_user",
+                    JSON.stringify(
+                        data
+                    )
+                );
+
+
+                // -------------------------------------------------
+                // Get actual database role
+                // -------------------------------------------------
+
+                const actualRole =
+                    String(
+                        data.role ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                // -------------------------------------------------
+                // Verify selected access matches account
+                // -------------------------------------------------
+
+                if (
+                    selectedAccess ===
+                    "admin"
+                ) {
+
+                    if (
+                        actualRole !==
+                        "admin"
+                    ) {
+
+                        throw new Error(
+                            "This account is not an Admin account. Please select User."
+                        );
+
+                    }
+
+                } else {
+
+                    if (
+                        actualRole ===
+                        "admin"
+                    ) {
+
+                        throw new Error(
+                            "This is an Admin account. Please select Admin."
+                        );
+
+                    }
+
+                }
+
+
+                // -------------------------------------------------
+                // Success
+                // -------------------------------------------------
+
+                showMessage(
+                    `Welcome, ${
+                        data.name ||
+                        accessData[
+                            selectedAccess
+                        ].label
+                    }! Redirecting...`,
+                    "success"
+                );
+
+
+                setTimeout(
+                    function () {
+
+
+                        if (
+                            actualRole ===
+                            "admin"
+                        ) {
+
+                            window.location.href =
+                                "/admin-ui";
+
+                        } else {
+
+                            window.location.href =
+                                "/user-ui";
+
+                        }
+
+
+                    },
+                    500
+                );
+
+
+            } catch (
+                error
+            ) {
+
+
+                // Remove session if verification fails.
+
+                localStorage.removeItem(
+                    "bugflow_token"
+                );
+
+                localStorage.removeItem(
+                    "bugflow_token_type"
+                );
+
+                localStorage.removeItem(
+                    "bugflow_user"
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "Login failed. Please try again.",
+                    "error"
+                );
+
+
+                loginButton.disabled =
+                    false;
+
+
+                loginButton.classList.remove(
+                    "loading"
+                );
+
+
+                buttonText.textContent =
+                    accessData[
+                        selectedAccess
+                    ].button;
+
+            }
+
+        }
+    );
+
+
+    // =========================================================
+    // DEFAULT
+    // =========================================================
+
+    selectAccess(
+        "admin"
+    );
+
+</script>
+
+
+</body>
+
+</html>

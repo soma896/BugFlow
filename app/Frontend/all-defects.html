@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BugFlow | All Defects</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050b15;--sidebar:#081221;--panel:#0b1626;--panel2:#091523;
+  --border:#1d304a;--text:#f8fafc;--muted:#8291a7;--muted2:#61718a;
+  --purple:#8057e9;--green:#24c96b;--yellow:#f5b80a;--red:#ef3e3e;--blue:#198ff5
+}
+body{
+  min-height:100vh;background:
+  radial-gradient(circle at 78% -5%,rgba(128,87,233,.12),transparent 28%),
+  radial-gradient(circle at 100% 50%,rgba(25,143,245,.05),transparent 25%),
+  var(--bg);color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+button,input,select{font:inherit}a{text-decoration:none;color:inherit}
+.sidebar{position:fixed;inset:0 auto 0 0;width:214px;padding:17px 12px;background:linear-gradient(180deg,#081221,#06101d);border-right:1px solid #16263b;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;padding:0 7px 29px}
+.brand-logo{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,#7957ed,#9357dc);box-shadow:0 9px 26px rgba(128,87,233,.22);font-size:19px;font-weight:900}
+.brand-name{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.side-label{color:#71819a;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:0 9px 10px}
+.nav{display:grid;gap:4px}.nav-link{display:flex;align-items:center;gap:12px;padding:12px 11px;border-radius:9px;color:#a6b3c6;font-size:11px}
+.nav-link:hover{background:rgba(255,255,255,.03);color:#fff}.nav-link.active{color:#fff;background:linear-gradient(90deg,rgba(128,87,233,.19),rgba(128,87,233,.07));box-shadow:inset 3px 0 0 #845cf1}
+.nav-icon{width:17px;text-align:center;color:#9eaec1}.nav-link.active .nav-icon{color:#c0b3ff}
+.admin-card{position:absolute;left:12px;right:12px;bottom:15px;padding:10px;border:1px solid #23364f;border-radius:11px;background:#0b1727}
+.admin-row{display:flex;align-items:center;gap:9px}.admin-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#7658ed,#8b56df);font-size:10px;font-weight:800}
+.admin-name{font-size:10px;font-weight:800}.admin-role{margin-top:2px;color:#63738a;font-size:8px}.online-mini{margin-top:7px;display:flex;align-items:center;gap:5px;color:#91a0b4;font-size:8px}.dot{width:6px;height:6px;border-radius:50%;background:#28cc6f}
+
+.main{margin-left:214px;width:calc(100% - 214px);min-height:100vh;padding:22px 25px 38px}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:17px}
+.eyebrow{color:#967df3;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+h1{font-size:27px;line-height:1.05;letter-spacing:-.04em}.subtitle{margin-top:5px;color:var(--muted);font-size:10px}
+.top-actions{display:flex;align-items:center;gap:8px}.online-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:999px;background:rgba(36,201,107,.08);color:#8ee6ad;font-size:9px;font-weight:700}
+.admin-pill{display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #253750;border-radius:9px;background:#0a1423;color:#d5deea;font-size:10px}
+.header-btn,.clear-btn,.view-btn{height:34px;padding:0 12px;border:1px solid #2c3c55;border-radius:8px;background:#0d1a2d;color:#d8e0eb;cursor:pointer;font-size:9px;font-weight:700}
+.header-btn:hover,.clear-btn:hover,.view-btn:hover{background:#16263c}
+
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:13px}
+.kpi{min-height:101px;padding:15px;border:1px solid var(--border);border-radius:12px;background:linear-gradient(145deg,rgba(10,21,37,.97),rgba(8,18,31,.95))}
+.kpi-label{color:#6c7c94;font-size:8px;text-transform:uppercase;letter-spacing:.07em}.kpi-value{margin-top:9px;font-size:29px;font-weight:850}
+.purple{color:#b7a9ff}.yellow{color:#f6ca43}.green{color:#51df8d}.red{color:#ff7676}
+
+.panel{border:1px solid var(--border);border-radius:12px;background:rgba(9,20,35,.96);overflow:hidden}
+.panel-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 15px;border-bottom:1px solid #1b2b40}
+.panel-title{font-size:13px;font-weight:850}.panel-sub{margin-top:3px;color:#65758c;font-size:8px}
+.filters{display:grid;grid-template-columns:1fr 160px 160px auto;gap:8px;padding:12px 15px;border-bottom:1px solid #1b2b40}
+.filter,.search{height:38px;width:100%;padding:0 10px;border:1px solid #293b53;border-radius:8px;background:#091625;color:#eef4fb;outline:none;font-size:9px}
+.filter:focus,.search:focus{border-color:var(--purple)}
+.count{padding:10px 15px;color:#65758c;font-size:8px}
+.table-wrap{overflow:auto}
+table{width:100%;min-width:1180px;border-collapse:collapse}
+th{padding:11px 12px;background:#091524;color:#63758f;border-bottom:1px solid #1a2a40;text-align:left;font-size:7px;text-transform:uppercase;letter-spacing:.08em}
+td{padding:11px 12px;color:#cdd7e4;border-bottom:1px solid #15253a;font-size:8px}
+tbody tr:hover{background:rgba(255,255,255,.015)}
+.badge{display:inline-flex;padding:4px 7px;border-radius:5px;font-size:7px;font-weight:800}
+.p-low{background:rgba(128,146,170,.12);color:#aab6c5}.p-medium{background:rgba(25,143,245,.13);color:#70bbff}
+.p-high{background:rgba(245,184,10,.14);color:#f6ca43}.p-urgent{background:rgba(239,62,62,.15);color:#ff7777}
+.s-resolved{background:rgba(36,201,107,.13);color:#52db89}.s-pending{background:rgba(245,184,10,.13);color:#f6ca43}.s-rejected{background:rgba(239,62,62,.15);color:#ff7777}
+.assigned{color:#e1e8f1;font-weight:700}.unassigned{color:#64758c}
+.loading,.empty,.error{padding:40px;text-align:center;color:#63738a;font-size:9px}.error{color:#ff8888}
+
+.modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,6,15,.8);backdrop-filter:blur(8px);z-index:100}
+.modal-overlay.show{display:flex}.modal{width:min(900px,100%);max-height:90vh;overflow:auto;background:#101827;border:1px solid #2b3a52;border-radius:16px;box-shadow:0 35px 90px rgba(0,0,0,.5)}
+.modal-header{display:flex;justify-content:space-between;padding:17px;border-bottom:1px solid #1d2a40}.modal-title{font-size:16px;font-weight:850}.modal-sub{margin-top:3px;color:#65758e;font-size:8px}
+.close{width:30px;height:30px;border:1px solid #30405a;border-radius:7px;background:#162033;color:#fff;cursor:pointer;font-size:17px}
+.modal-body{padding:17px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail{padding:12px;border:1px solid #202e45;border-radius:9px;background:#0d1625}.full{grid-column:1/-1}
+.detail-label{margin-bottom:5px;color:#62718a;font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.detail-value{color:#dbe4ef;font-size:9px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.modal-footer{display:flex;justify-content:flex-end;padding:13px 17px;border-top:1px solid #1d2a40}
+
+
+        .action-buttons{
+            display:flex;
+            align-items:center;
+            gap:5px;
+            flex-wrap:wrap;
+        }
+
+        .accept-btn,
+        .reject-btn{
+            height:28px;
+            padding:0 8px;
+            border-radius:7px;
+            cursor:pointer;
+            font-size:7px;
+            font-weight:800;
+            border:1px solid;
+        }
+
+        .accept-btn{
+            color:#62e397;
+            background:rgba(36,201,107,.09);
+            border-color:rgba(36,201,107,.25);
+        }
+
+        .accept-btn:hover{
+            background:rgba(36,201,107,.18);
+        }
+
+        .reject-btn{
+            color:#ff7777;
+            background:rgba(239,62,62,.09);
+            border-color:rgba(239,62,62,.25);
+        }
+
+        .reject-btn:hover{
+            background:rgba(239,62,62,.18);
+        }
+
+        .action-status{
+            font-size:7px;
+            color:#72839a;
+            margin-top:3px;
+        }
+
+        @media(max-width:1200px)
+    {.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr 1fr}.main{padding-right:18px}}
+@media(max-width:850px){.sidebar{width:70px;padding:17px 8px}.brand{justify-content:center}.brand-name,.side-label,.nav-text,.admin-name,.admin-role,.online-mini{display:none}.nav-link{justify-content:center}.admin-card{left:8px;right:8px}.admin-row{justify-content:center}.main{margin-left:70px;width:calc(100% - 70px);padding:18px}.topbar{flex-direction:column}.top-actions{align-self:flex-end}}
+@media(max-width:600px){.kpis{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.top-actions{width:100%;flex-wrap:wrap;justify-content:flex-end}.detail-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-logo">B</div>
+        <div class="brand-name">BugFlow</div>
+    </div>
+
+    <div class="side-label">Administration</div>
+
+    <nav class="nav">
+
+        <a href="/admin-ui" class="nav-link">
+            <span class="nav-icon">▣</span>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="/all-defects-ui" class="nav-link active">
+            <span class="nav-icon">☷</span>
+            <span class="nav-text">All Defects</span>
+        </a>
+
+        <a href="/analytics-ui" class="nav-link">
+            <span class="nav-icon">▥</span>
+            <span class="nav-text">Analytics Reports</span>
+        </a>
+
+        <a href="/login-ui" class="nav-link" id="logoutLink">
+            <span class="nav-icon">↪</span>
+            <span class="nav-text">Logout</span>
+        </a>
+
+    </nav>
+
+    <div class="admin-card">
+        <div class="admin-row">
+            <div id="adminAvatar" class="admin-avatar">A</div>
+            <div>
+                <div id="adminName" class="admin-name">Admin</div>
+                <div class="admin-role">System Administrator</div>
+            </div>
+        </div>
+
+        <div class="online-mini">
+            <span class="dot"></span>
+            Online
+        </div>
+    </div>
+</aside>
+
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div>
+            <div class="eyebrow">BugFlow Control Center</div>
+            <h1>All Defects</h1>
+            <div class="subtitle">
+                Complete defect register with reporter, status and assignment details.
+            </div>
+        </div>
+
+        <div class="top-actions">
+
+            <div class="online-pill">
+                <span class="dot"></span>
+                System Online
+            </div>
+
+            <div class="admin-pill">
+                ♙
+                <span id="topAdminName">Admin</span>
+                ⌄
+            </div>
+
+            <button
+                id="refreshButton"
+                class="header-btn"
+                type="button"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+    </header>
+
+
+    <section class="kpis">
+
+        <div class="kpi">
+            <div class="kpi-label">Total Defects</div>
+            <div id="totalCount" class="kpi-value purple">0</div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">Pending</div>
+            <div id="pendingCount" class="kpi-value yellow">0</div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">Resolved</div>
+            <div id="resolvedCount" class="kpi-value green">0</div>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-label">Rejected</div>
+            <div id="rejectedCount" class="kpi-value red">0</div>
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <div class="panel-title">All Defects</div>
+                <div class="panel-sub">
+                    Search and filter all existing PostgreSQL defect records.
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <input
+                id="searchInput"
+                class="filter"
+                type="text"
+                placeholder="Search defects..."
+            >
+
+            <select id="statusFilter" class="filter">
+
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+
+            </select>
+
+
+            <select id="priorityFilter" class="filter">
+
+                <option value="">All Priorities</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+
+            </select>
+
+
+            <button
+                id="clearButton"
+                class="clear-btn"
+                type="button"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+        <div
+            id="countLabel"
+            class="count"
+        >
+            Loading defects...
+        </div>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Loading existing defects...
+        </div>
+
+
+        <div
+            id="error"
+            class="error"
+            style="display:none"
+        ></div>
+
+
+        <div
+            id="empty"
+            class="empty"
+            style="display:none"
+        >
+            No defects found.
+        </div>
+
+
+        <div
+            id="tableWrap"
+            class="table-wrap"
+            style="display:none"
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Reporter</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Assigned To</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="defectsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     DETAILS MODAL
+========================================================== -->
+
+<div
+    id="detailsModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+                <div id="modalTitle" class="modal-title">
+                    Defect Details
+                </div>
+
+                <div id="modalSub" class="modal-sub">
+                    Complete defect information
+                </div>
+            </div>
+
+            <button
+                id="closeModal"
+                class="close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="detail-grid">
+
+                <div class="detail">
+                    <div class="detail-label">ID</div>
+                    <div id="dId" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Status</div>
+                    <div id="dStatus" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Reporter</div>
+                    <div id="dReporter" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Category</div>
+                    <div id="dCategory" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Priority</div>
+                    <div id="dPriority" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Assigned To</div>
+                    <div id="dAssigned" class="detail-value">—</div>
+                </div>
+
+                <div class="detail full">
+                    <div class="detail-label">Description</div>
+                    <div id="dDescription" class="detail-value">—</div>
+                </div>
+
+                <div class="detail full">
+                    <div class="detail-label">Reproduction Steps</div>
+                    <div id="dSteps" class="detail-value">—</div>
+                </div>
+
+                <div class="detail full">
+                    <div class="detail-label">Expected Result</div>
+                    <div id="dExpected" class="detail-value">—</div>
+                </div>
+
+                <div class="detail full">
+                    <div class="detail-label">Actual Result</div>
+                    <div id="dActual" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Environment</div>
+                    <div id="dEnvironment" class="detail-value">—</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Created At</div>
+                    <div id="dCreated" class="detail-value">—</div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                id="modalCloseButton"
+                class="view-btn"
+                type="button"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const token =
+    localStorage.getItem(
+        "bugflow_token"
+    );
+
+const storedUser =
+    localStorage.getItem(
+        "bugflow_user"
+    );
+
+
+if (
+    !token ||
+    !storedUser
+) {
+
+    window.location.href =
+        "/login-ui";
+
+}
+
+
+let currentUser = null;
+let allDefects = [];
+
+
+try {
+
+    currentUser =
+        JSON.parse(
+            storedUser
+        );
+
+} catch (error) {
+
+    localStorage.clear();
+
+    window.location.href =
+        "/login-ui";
+
+}
+
+
+if (
+    currentUser &&
+    String(
+        currentUser.role ||
+        ""
+    ).toLowerCase() !==
+    "admin"
+) {
+
+    window.location.href =
+        "/user-ui";
+
+}
+
+
+const adminName =
+    currentUser?.name ||
+    "Admin";
+
+
+document.getElementById(
+    "adminName"
+).textContent =
+    adminName;
+
+
+document.getElementById(
+    "topAdminName"
+).textContent =
+    adminName;
+
+
+document.getElementById(
+    "adminAvatar"
+).textContent =
+    adminName
+        .charAt(0)
+        .toUpperCase();
+
+
+async function apiFetch(
+    url,
+    options = {}
+) {
+
+    const mergedHeaders = {
+        "Authorization":
+            `Bearer ${token}`,
+        ...(options.headers || {})
+    };
+
+    const response =
+        await fetch(
+            url,
+            {
+                ...options,
+                headers: mergedHeaders
+            }
+        );
+
+
+    if (
+        response.status ===
+        401
+    ) {
+
+        localStorage.clear();
+
+        window.location.href =
+            "/login-ui";
+
+        throw new Error(
+            "Your admin session has expired."
+        );
+
+    }
+
+
+    if (!response.ok) {
+
+        const data =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+
+        throw new Error(
+            data.detail ||
+            `Request failed (${response.status})`
+        );
+
+    }
+
+
+    return response.json();
+
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(
+        value
+    )
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "—";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "—";
+
+    }
+
+
+    return date.toLocaleString(
+        undefined,
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        }
+    );
+
+}
+
+
+function priorityClass(
+    priority
+) {
+
+    const value =
+        String(
+            priority ||
+            ""
+        )
+        .toLowerCase();
+
+
+    if (
+        value === "urgent"
+    ) {
+
+        return "p-urgent";
+
+    }
+
+
+    if (
+        value === "high"
+    ) {
+
+        return "p-high";
+
+    }
+
+
+    if (
+        value === "medium"
+    ) {
+
+        return "p-medium";
+
+    }
+
+
+    return "p-low";
+
+}
+
+
+function statusClass(
+    status
+) {
+
+    if (
+        status ===
+        "Resolved"
+    ) {
+
+        return "s-resolved";
+
+    }
+
+
+    if (
+        status ===
+        "Rejected"
+    ) {
+
+        return "s-rejected";
+
+    }
+
+
+    return "s-pending";
+
+}
+
+
+function getAssignment(
+    defect
+) {
+
+    if (
+        defect.assigned_display &&
+        defect.assigned_display !==
+        "Unassigned"
+    ) {
+
+        return defect.assigned_display;
+
+    }
+
+
+    if (
+        defect.assigned_user_name
+    ) {
+
+        if (
+            defect.assigned_user_role
+        ) {
+
+            return (
+                `${defect.assigned_user_name} ` +
+                `(${defect.assigned_user_role})`
+            );
+
+        }
+
+
+        return defect.assigned_user_name;
+
+    }
+
+
+    const map = {
+
+        admin:
+            "System Administrator (Admin)",
+
+        senior_dev:
+            "John Doe (Senior Developer)",
+
+        developer:
+            "Alex Rivera (Developer)",
+
+        tester:
+            "Bruce Wayne (Tester)"
+
+    };
+
+
+    const role =
+        String(
+            defect.assigned_role ||
+            ""
+        )
+        .toLowerCase();
+
+
+    return map[role] ||
+        "Unassigned";
+
+}
+
+
+function renderTable() {
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const selectedStatus =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const selectedPriority =
+        document.getElementById(
+            "priorityFilter"
+        ).value;
+
+
+    const filtered =
+        allDefects.filter(
+            defect => {
+
+                const text =
+                    [
+                        defect.title,
+                        defect.description,
+                        defect.category,
+                        defect.priority,
+                        defect.status,
+                        defect.user_name,
+                        getAssignment(defect)
+                    ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return (
+
+                    (!search ||
+                        text.includes(search))
+
+                    &&
+
+                    (!selectedStatus ||
+                        defect.status === selectedStatus)
+
+                    &&
+
+                    (!selectedPriority ||
+                        defect.priority === selectedPriority)
+
+                );
+
+            }
+        );
+
+
+    document.getElementById(
+        "countLabel"
+    ).textContent =
+        `${filtered.length} defect${
+            filtered.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    const table =
+        document.getElementById(
+            "defectsTable"
+        );
+
+
+    table.innerHTML =
+        "";
+
+
+    if (
+        !filtered.length
+    ) {
+
+        document.getElementById(
+            "tableWrap"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "empty"
+        ).style.display =
+            "block";
+
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "empty"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "tableWrap"
+    ).style.display =
+        "block";
+
+
+    filtered.forEach(
+        defect => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const reporter =
+                defect.user_name ||
+                defect.reporter_name ||
+                `User #${defect.user_id}`;
+
+
+            const assigned =
+                getAssignment(
+                    defect
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    #${Number(defect.id)}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        defect.title
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        reporter
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        defect.category ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+
+                    <span
+                        class="badge ${priorityClass(
+                            defect.priority
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.priority ||
+                            "—"
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span
+                        class="badge ${statusClass(
+                            defect.status
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.status ||
+                            "Pending"
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+                    ${
+                        assigned ===
+                        "Unassigned"
+                            ? `<span class="unassigned">Unassigned</span>`
+                            : `<span class="assigned">${escapeHtml(assigned)}</span>`
+                    }
+                </td>
+
+                <td>
+                    ${formatDate(
+                        defect.created_at
+                    )}
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <button
+                            type="button"
+                            class="view-btn"
+                            onclick="openDetails(${Number(defect.id)})"
+                        >
+                            View
+                        </button>
+
+                        ${
+                            String(defect.status || "Pending") === "Pending"
+                                ? `
+                                    <button
+                                        type="button"
+                                        class="accept-btn"
+                                        onclick="updateStatus(${Number(defect.id)}, 'Resolved')"
+                                    >
+                                        Accept
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="reject-btn"
+                                        onclick="updateStatus(${Number(defect.id)}, 'Rejected')"
+                                    >
+                                        Reject
+                                    </button>
+                                  `
+                                : `
+                                    <span class="action-status">
+                                        ${
+                                            String(defect.status || "").toLowerCase() === "resolved"
+                                                ? "Accepted"
+                                                : "Rejected"
+                                        }
+                                    </span>
+                                  `
+                        }
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+
+async function updateStatus(
+    defectId,
+    newStatus
+) {
+
+    const actionLabel =
+        newStatus === "Resolved"
+            ? "Accept"
+            : "Reject";
+
+
+    const confirmed =
+        window.confirm(
+            `${actionLabel} defect #${defectId}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const loggedInAdminId =
+        Number(
+            currentUser?.user_id ??
+            currentUser?.id
+        );
+
+
+    if (!Number.isInteger(loggedInAdminId)) {
+
+        alert(
+            "Admin session information is missing. Please login again."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/actions",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            `Bearer ${token}`
+                    },
+
+                    body:
+                        JSON.stringify(
+                            {
+                                admin_id:
+                                    loggedInAdminId,
+
+                                defect_id:
+                                    Number(defectId),
+
+                                action:
+                                    newStatus
+                            }
+                        )
+                }
+            );
+
+
+        let responseData = null;
+
+
+        try {
+
+            responseData =
+                await response.json();
+
+        } catch {
+
+            responseData = null;
+
+        }
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            localStorage.clear();
+
+            window.location.href =
+                "/login-ui";
+
+            return;
+
+        }
+
+
+        if (!response.ok) {
+
+            let message =
+                `Unable to ${actionLabel.toLowerCase()} defect.`;
+
+
+            if (
+                responseData &&
+                typeof responseData ===
+                "object"
+            ) {
+
+                if (
+                    typeof responseData.detail ===
+                    "string"
+                ) {
+
+                    message =
+                        responseData.detail;
+
+                }
+
+                else if (
+                    responseData.detail
+                ) {
+
+                    message =
+                        JSON.stringify(
+                            responseData.detail
+                        );
+
+                }
+
+                else if (
+                    typeof responseData.message ===
+                    "string"
+                ) {
+
+                    message =
+                        responseData.message;
+
+                }
+
+            }
+
+
+            throw new Error(
+                message
+            );
+
+        }
+
+
+        /*
+         * Update the local row immediately so the
+         * user sees the new status without waiting.
+         */
+
+        const defect =
+            allDefects.find(
+                item =>
+                    Number(item.id) ===
+                    Number(defectId)
+            );
+
+
+        if (defect) {
+
+            defect.status =
+                newStatus;
+
+        }
+
+
+        renderTable();
+
+
+        /*
+         * Refresh from PostgreSQL so both the status
+         * and dashboard data are definitely synchronized.
+         */
+
+        await loadDefects();
+
+
+        alert(
+            newStatus === "Resolved"
+                ? `Defect #${defectId} accepted successfully.`
+                : `Defect #${defectId} rejected successfully.`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        alert(
+            error?.message ||
+            String(error) ||
+            `Unable to ${actionLabel.toLowerCase()} defect.`
+        );
+
+    }
+
+}
+
+
+async function loadDefects() {
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "error"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "empty"
+    ).style.display =
+        "none";
+
+
+    try {
+
+        const dashboard =
+            await apiFetch(
+                "/admin/dashboard"
+            );
+
+
+        allDefects =
+            await apiFetch(
+                "/admin/defects"
+            );
+
+
+        if (
+            !Array.isArray(
+                allDefects
+            )
+        ) {
+
+            allDefects = [];
+
+        }
+
+
+        document.getElementById(
+            "totalCount"
+        ).textContent =
+            dashboard.total_defects;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            dashboard.pending;
+
+
+        document.getElementById(
+            "resolvedCount"
+        ).textContent =
+            dashboard.resolved;
+
+
+        document.getElementById(
+            "rejectedCount"
+        ).textContent =
+            dashboard.rejected;
+
+
+        renderTable();
+
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+    } catch (error) {
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "error"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "error"
+        ).textContent =
+            error.message;
+
+    }
+
+}
+
+
+function openDetails(
+    defectId
+) {
+
+    const defect =
+        allDefects.find(
+            item =>
+                Number(item.id) ===
+                Number(defectId)
+        );
+
+
+    if (!defect) {
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        defect.title;
+
+
+    document.getElementById(
+        "modalSub"
+    ).textContent =
+        `Defect #${defect.id}`;
+
+
+    document.getElementById(
+        "dId"
+    ).textContent =
+        defect.id;
+
+
+    document.getElementById(
+        "dStatus"
+    ).textContent =
+        defect.status ||
+        "Pending";
+
+
+    document.getElementById(
+        "dReporter"
+    ).textContent =
+        defect.user_name ||
+        defect.reporter_name ||
+        `User #${defect.user_id}`;
+
+
+    document.getElementById(
+        "dCategory"
+    ).textContent =
+        defect.category ||
+        "—";
+
+
+    document.getElementById(
+        "dPriority"
+    ).textContent =
+        defect.priority ||
+        "—";
+
+
+    document.getElementById(
+        "dAssigned"
+    ).textContent =
+        getAssignment(
+            defect
+        );
+
+
+    document.getElementById(
+        "dDescription"
+    ).textContent =
+        defect.description ||
+        "—";
+
+
+    document.getElementById(
+        "dSteps"
+    ).textContent =
+        defect.reproduction_steps ||
+        "—";
+
+
+    document.getElementById(
+        "dExpected"
+    ).textContent =
+        defect.expected_result ||
+        "—";
+
+
+    document.getElementById(
+        "dActual"
+    ).textContent =
+        defect.actual_result ||
+        "—";
+
+
+    document.getElementById(
+        "dEnvironment"
+    ).textContent =
+        defect.environment ||
+        "—";
+
+
+    document.getElementById(
+        "dCreated"
+    ).textContent =
+        formatDate(
+            defect.created_at
+        );
+
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    renderTable
+);
+
+
+document.getElementById(
+    "statusFilter"
+).addEventListener(
+    "change",
+    renderTable
+);
+
+
+document.getElementById(
+    "priorityFilter"
+).addEventListener(
+    "change",
+    renderTable
+);
+
+
+document.getElementById(
+    "clearButton"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "searchInput"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "statusFilter"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "priorityFilter"
+        ).value =
+            "";
+
+
+        renderTable();
+
+    }
+);
+
+
+document.getElementById(
+    "refreshButton"
+).addEventListener(
+    "click",
+    loadDefects
+);
+
+
+document.getElementById(
+    "closeModal"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "detailsModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "modalCloseButton"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "detailsModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "detailsModal"
+).addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target.id ===
+            "detailsModal"
+        ) {
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "logoutLink"
+).addEventListener(
+    "click",
+    async event => {
+
+        event.preventDefault();
+
+
+        try {
+
+            await fetch(
+                "/logout",
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+        } catch (
+            error
+        ) {
+            console.log(
+                "Logout request failed."
+            );
+        }
+
+
+        localStorage.clear();
+
+
+        window.location.href =
+            "/login-ui";
+
+    }
+);
+
+
+loadDefects();
+
+</script>
+
+</body>
+</html>
