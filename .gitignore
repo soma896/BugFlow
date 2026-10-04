@@ -7,3 +7,16 @@ __pycache__/
 *.log
 .vscode/
 .idea/
+
+# Local backup files
+app/*_backup*.py
+app/main_original_from_git.py
+app/main_before_clean_replace.py
+app/main_team_collaboration_final.py
+app/setup_workflow_tables.py
+
+# Local test/scratch files
+scratch/
+
+# Runtime uploaded files
+app/uploads/

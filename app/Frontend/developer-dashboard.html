@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BugFlow | Developer Dashboard</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#F5F7FB;
+    color:#273449;
+    font-family:Inter,Segoe UI,Arial,sans-serif
+}
+
+.wrap{
+    display:flex;
+    min-height:100vh
+}
+
+.side{
+    width:225px;
+    background:linear-gradient(180deg,#111e33,#0d1726);
+    border-right:1px solid #1c2d44;
+    padding:22px 14px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-weight:900;
+    font-size:18px;
+    margin:4px 8px 30px;
+    color:#fff;
+}
+
+.logo{
+    width:40px;
+    height:40px;
+    border-radius:11px;
+    background:linear-gradient(135deg,#3f66d8,#2a51c7);
+    color:#fff;
+    display:grid;
+    place-items:center
+}
+
+.label{
+    font-size:9px;
+    letter-spacing:.13em;
+    color:#7d8fa9;
+    font-weight:800;
+    margin:0 9px 11px;
+    text-transform:uppercase
+}
+
+.nav a{
+    display:block;
+    text-decoration:none;
+    color:#9cadc0;
+    padding:12px 10px;
+    border-radius:99px;
+    font-size:12px;
+    font-weight:600;
+    margin:4px 0
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff
+}
+
+.nav a.active{
+    background:#3B66D9;
+    color:#fff
+}
+
+.main{
+    margin-left:225px;
+    width:calc(100% - 225px);
+    padding:28px
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:24px;
+    position:relative;
+}
+
+.eyebrow{
+    color:#3f66d8;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase
+}
+
+h1{
+    margin:5px 0 4px;
+    font-size:29px;
+    color:#182033;
+}
+
+.sub{
+    color:#68738a;
+    font-size:12px
+}
+
+.switcher-container{
+    position:relative;
+}
+
+.switch-btn{
+    padding:9px 16px;
+    border:1px solid #D9E1EC;
+    border-radius:9px;
+    background:#ffffff;
+    color:#273449;
+    cursor:pointer;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:all .15s ease
+}
+
+.switch-btn:hover{
+    background:#F0F4FF;
+    border-color:#3B66D9;
+    color:#3B66D9
+}
+
+.switch-dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:#ffffff;
+    border:1px solid #e3e8f2;
+    border-radius:12px;
+    width:210px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    z-index:1000;
+    padding:6px;
+}
+
+.switch-dropdown.show{
+    display:block;
+}
+
+.switch-dropdown-header{
+    padding:8px 12px;
+    font-size:10px;
+    font-weight:800;
+    color:#68738a;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    border-bottom:1px solid #edf2f7;
+    margin-bottom:4px;
+}
+
+.switch-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    width:100%;
+    border:none;
+    background:transparent;
+    color:#182033;
+    font-size:13px;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.switch-item:hover{
+    background:#f5f7fb;
+    color:#3f66d8;
+}
+
+.role-badge{
+    width:24px;
+    height:24px;
+    border-radius:6px;
+    display:grid;
+    place-items:center;
+    font-size:11px;
+    font-weight:800;
+    background:#eef3ff;
+    color:#3f66d8;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:20px
+}
+
+.card,
+.panel{
+    background:#ffffff;
+    border:1px solid #D9E1EC;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(24,32,51,.04)
+}
+
+.card{
+    padding:18px
+}
+
+.k{
+    color:#68738a;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+}
+
+.v{
+    font-size:32px;
+    font-weight:900;
+    margin-top:8px;
+    color:#182033;
+}
+
+.g{color:#16a765}
+.y{color:#d98b00}
+.r{color:#df5a5a}
+.p{color:#3f66d8}
+
+.grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:16px
+}
+
+.panel h2{
+    font-size:14px;
+    margin:0;
+    padding:16px 18px;
+    border-bottom:1px solid #edf2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#182033;
+}
+
+.body{
+    padding:18px
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid #edf2f7;
+    font-size:13px;
+    color:#182033;
+}
+
+.row:last-child{
+    border-bottom:0
+}
+
+.muted{
+    color:#68738a
+}
+
+.badge{
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800
+}
+
+.pending{
+    background:#fff7e6;
+    color:#d98b00
+}
+
+.resolved{
+    background:#eaf9f1;
+    color:#16a765
+}
+
+.rejected{
+    background:#feeceb;
+    color:#df5a5a
+}
+
+@media(max-width:1000px){
+    .cards{
+        grid-template-columns:repeat(2,1fr)
+    }
+
+    .grid{
+        grid-template-columns:1fr
+    }
+}
+
+@media(max-width:700px){
+    .side{
+        width:70px
+    }
+
+    .brand span,
+    .label,
+    .nav a span{
+        display:none
+    }
+
+    .main{
+        margin-left:70px;
+        width:calc(100% - 70px);
+        padding:18px
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<aside class="side">
+
+    <div class="brand">
+        <div class="logo">B</div>
+        <span>BugFlow</span>
+    </div>
+
+    <div class="label">Developer Workspace</div>
+
+    <nav class="nav">
+
+        <a class="active" href="/developer-ui">
+            ◉ <span>Dashboard</span>
+        </a>
+
+        <a href="/developer-defects-ui">
+            ☷ <span>Defects</span>
+        </a>
+
+        <!-- FIXED: Developer-specific Team Collaboration route -->
+        <a href="/team-collaboration-developer-ui"
+           id="developerTeamCollaborationLink">
+            ◎ <span>Team Collaboration</span>
+        </a>
+
+        <a href="/developer-analytics-ui">
+            ▥ <span>Analytics Reports</span>
+        </a>
+
+        <a href="/developer-sprints-ui">
+            ◫ <span>My Sprints</span>
+        </a>
+
+        <a href="#" id="sideSwitchBtn">
+            ↪ <span>Switch</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+<header class="top">
+
+    <div>
+
+        <div class="eyebrow">
+            BugFlow Control Center
+        </div>
+
+        <h1>Developer Dashboard</h1>
+
+        <div class="sub">
+            Role-specific operational workspace.
+        </div>
+
+    </div>
+
+    <div class="switcher-container">
+
+        <button
+            class="switch-btn"
+            id="switchDropdownBtn"
+            type="button"
+        >
+            <span>Switch Workspace</span> ▾
+        </button>
+
+        <div class="switch-dropdown" id="switchDropdown">
+
+            <div class="switch-dropdown-header">
+                Switch Workspace
+            </div>
+
+            <button class="switch-item" data-role="user">
+                <span class="role-badge">U</span> User
+            </button>
+
+            <button class="switch-item" data-role="tester">
+                <span class="role-badge">T</span> Tester
+            </button>
+
+            <button class="switch-item" data-role="developer">
+                <span class="role-badge">D</span> Developer
+            </button>
+
+            <button class="switch-item" data-role="senior_dev">
+                <span class="role-badge">S</span> Senior Developer
+            </button>
+
+            <button class="switch-item" data-role="admin">
+                <span class="role-badge">A</span> Admin
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="cards">
+
+    <div class="card">
+        <div class="k">Assigned Defects</div>
+        <div class="v p" id="assignedCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Pending Work</div>
+        <div class="v y" id="pendingCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Resolved</div>
+        <div class="v g" id="resolvedCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Rejected</div>
+        <div class="v r" id="rejectedCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Assigned Sprints</div>
+        <div class="v p" id="assignedSprintCount">0</div>
+    </div>
+
+</section>
+
+
+<section class="grid">
+
+    <article class="panel">
+
+        <h2>
+            My Assigned Sprints
+            <span
+                class="muted"
+                style="font-size:12px;font-weight:normal;"
+                id="sprintSubtitle"
+            >
+                Loading...
+            </span>
+        </h2>
+
+        <div class="body" id="assignedSprints">
+            <div class="row">
+                <span>Loading assigned sprints...</span>
+            </div>
+        </div>
+
+    </article>
+
+
+    <article class="panel">
+
+        <h2>Sprint Overview</h2>
+
+        <div class="body">
+
+            <div class="row">
+                <span>Assigned Sprints</span>
+                <b id="overviewSprintCount">0</b>
+            </div>
+
+            <div class="row">
+                <span>Total Sprint Issues</span>
+                <b id="overviewIssueCount">0</b>
+            </div>
+
+            <div class="row">
+                <span>Completed Issues</span>
+                <b id="overviewCompletedCount">0</b>
+            </div>
+
+            <div class="row">
+                <span>Pending Issues</span>
+                <b id="overviewPendingCount">0</b>
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<section class="grid">
+
+    <article class="panel">
+
+        <h2>
+            Developer Work Queue
+            <span
+                class="muted"
+                style="font-size:12px;font-weight:normal;"
+                id="queueSubtitle"
+            >
+                Loading...
+            </span>
+        </h2>
+
+        <div class="body" id="recentQueue">
+
+            <div class="row">
+                <span>Loading developer defects...</span>
+            </div>
+
+        </div>
+
+    </article>
+
+
+    <article class="panel">
+
+        <h2>Role Responsibility</h2>
+
+        <div class="body">
+
+            <div class="row">
+                <span>Assigned Role</span>
+                <b>Sasuke (Developer)</b>
+            </div>
+
+            <div class="row">
+                <span>Workspace</span>
+                <b>Developer</b>
+            </div>
+
+            <div class="row">
+                <span>Data Scope</span>
+                <span class="muted">
+                    Assigned Developer Defects Only
+                </span>
+            </div>
+
+            <div class="row">
+                <span>Data Source</span>
+                <span class="muted">
+                    Shared PostgreSQL records
+                </span>
+            </div>
+
+            <div class="row">
+                <span>Analytics</span>
+                <span class="muted">
+                    Separate Developer analytics
+                </span>
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<script>
+
+const workspaceDestinations = {
+    user: "/user-ui",
+    tester: "/tester-ui",
+    developer: "/developer-ui",
+    senior_dev: "/senior-developer-ui",
+    admin: "/admin-ui"
+};
+
+
+const switchDropdownBtn =
+    document.getElementById("switchDropdownBtn");
+
+const switchDropdown =
+    document.getElementById("switchDropdown");
+
+const sideSwitchBtn =
+    document.getElementById("sideSwitchBtn");
+
+
+function toggleSwitcher(e) {
+
+    if (e) e.stopPropagation();
+
+    switchDropdown.classList.toggle("show");
+}
+
+
+if (switchDropdownBtn) {
+
+    switchDropdownBtn.addEventListener(
+        "click",
+        toggleSwitcher
+    );
+
+}
+
+
+if (sideSwitchBtn) {
+
+    sideSwitchBtn.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        toggleSwitcher(e);
+
+    });
+
+}
+
+
+document.querySelectorAll(".switch-item").forEach(item => {
+    item.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const role = item.getAttribute("data-role");
+        if (workspaceDestinations[role]) {
+            localStorage.setItem("bugflow_workspace_role", role);
+            const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+            if (token) {
+                try {
+                    await fetch("/api/v1/workspace/switch", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + token
+                        },
+                        body: JSON.stringify({ role })
+                    });
+                } catch (err) {
+                    console.error("Workspace switch failed:", err);
+                }
+            }
+            window.location.href = workspaceDestinations[role];
+        }
+    });
+});
+
+
+document.addEventListener("click", () => {
+
+    if (switchDropdown) {
+
+        switchDropdown.classList.remove("show");
+
+    }
+
+});
+
+
+/*
+    Explicit Developer Team Collaboration routing.
+    This prevents any generic/admin navigation handler
+    from overriding the Developer route.
+*/
+
+const developerTeamCollaborationLink =
+    document.getElementById(
+        "developerTeamCollaborationLink"
+    );
+
+if (developerTeamCollaborationLink) {
+
+    developerTeamCollaborationLink.addEventListener(
+        "click",
+        function(e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.location.assign(
+                "/team-collaboration-developer-ui"
+            );
+
+        }
+    );
+
+}
+
+
+async function loadAssignedSprints() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/v1/sprints/assigned/developer"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load assigned sprints"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        const sprints =
+            Array.isArray(data.sprints)
+                ? data.sprints
+                : [];
+
+
+        document.getElementById(
+            "assignedSprintCount"
+        ).textContent = sprints.length;
+
+
+        document.getElementById(
+            "overviewSprintCount"
+        ).textContent = sprints.length;
+
+
+        let totalIssues = 0;
+
+        let completedIssues = 0;
+
+
+        sprints.forEach(sprint => {
+
+            totalIssues +=
+                Number(
+                    sprint.total_issues || 0
+                );
+
+            completedIssues +=
+                Number(
+                    sprint.completed_issues || 0
+                );
+
+        });
+
+
+        document.getElementById(
+            "overviewIssueCount"
+        ).textContent = totalIssues;
+
+
+        document.getElementById(
+            "overviewCompletedCount"
+        ).textContent = completedIssues;
+
+
+        document.getElementById(
+            "overviewPendingCount"
+        ).textContent =
+            Math.max(
+                totalIssues - completedIssues,
+                0
+            );
+
+
+        document.getElementById(
+            "sprintSubtitle"
+        ).textContent =
+            `${sprints.length} assigned sprint(s)`;
+
+
+        const container =
+            document.getElementById(
+                "assignedSprints"
+            );
+
+
+        if (!sprints.length) {
+
+            container.innerHTML = `
+
+                <div class="row">
+
+                    <span class="muted">
+                        No sprints assigned to Developer yet.
+                    </span>
+
+                    <a
+                        href="/developer-sprints-ui"
+                        style="color:#a58eff;text-decoration:none;font-weight:800;"
+                    >
+                        Open My Sprints →
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            sprints.slice(0, 5).map(
+                sprint => {
+
+                    const status =
+                        String(
+                            sprint.status ||
+                            "PLANNING"
+                        ).replaceAll(
+                            "_",
+                            " "
+                        );
+
+
+                    const progress =
+                        Number(
+                            sprint.progress_percentage ||
+                            0
+                        );
+
+
+                    return `
+
+                        <div class="row">
+
+                            <span>
+
+                                <b>
+                                    ${escapeHtml(
+                                        sprint.sprint_name ||
+                                        "Unnamed Sprint"
+                                    )}
+                                </b>
+
+                                <br>
+
+                                <span class="muted">
+
+                                    ${Number(
+                                        sprint.total_issues || 0
+                                    )} issue(s) •
+
+                                    ${progress}% complete
+
+                                </span>
+
+                            </span>
+
+
+                            <span
+                                style="display:flex;align-items:center;gap:8px;"
+                            >
+
+                                <span class="badge pending">
+                                    ${escapeHtml(status)}
+                                </span>
+
+                                <a
+                                    href="/developer-sprints-ui"
+                                    style="color:#a58eff;text-decoration:none;font-weight:800;font-size:11px;"
+                                >
+                                    View
+                                </a>
+
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        document.getElementById(
+            "sprintSubtitle"
+        ).textContent = "Unavailable";
+
+
+        document.getElementById(
+            "assignedSprints"
+        ).innerHTML =
+            `
+                <div class="row">
+                    <span class="muted">
+                        Unable to load assigned sprints.
+                    </span>
+                </div>
+            `;
+
+    }
+
+}
+
+
+async function loadDeveloperData() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/developer/defects"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load developer data"
+            );
+
+        }
+
+
+        const defects =
+            await response.json();
+
+
+        const assigned =
+            defects.length;
+
+
+        const pending =
+            defects.filter(
+                d => d.status === "Pending"
+            ).length;
+
+
+        const resolved =
+            defects.filter(
+                d => d.status === "Resolved"
+            ).length;
+
+
+        const rejected =
+            defects.filter(
+                d => d.status === "Rejected"
+            ).length;
+
+
+        document.getElementById(
+            "assignedCount"
+        ).textContent = assigned;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent = pending;
+
+
+        document.getElementById(
+            "resolvedCount"
+        ).textContent = resolved;
+
+
+        document.getElementById(
+            "rejectedCount"
+        ).textContent = rejected;
+
+
+        document.getElementById(
+            "queueSubtitle"
+        ).textContent =
+            `${defects.length} defect(s)`;
+
+
+        const queueContainer =
+            document.getElementById(
+                "recentQueue"
+            );
+
+
+        if (defects.length === 0) {
+
+            queueContainer.innerHTML =
+                `
+                    <div class="row">
+                        <span class="muted">
+                            No defects assigned to Developer role yet.
+                        </span>
+                    </div>
+                `;
+
+        }
+
+        else {
+
+            queueContainer.innerHTML =
+                defects.slice(0, 5).map(
+                    d => `
+
+                        <div class="row">
+
+                            <span>
+
+                                <b>
+                                    #${d.id} -
+                                    ${escapeHtml(d.title)}
+                                </b>
+
+                                <br>
+
+                                <span class="muted">
+                                    ${escapeHtml(d.category)}
+                                    •
+                                    ${escapeHtml(d.priority)}
+                                    Priority
+                                </span>
+
+                            </span>
+
+
+                            <span
+                                class="badge ${
+                                    d.status
+                                        ? d.status.toLowerCase()
+                                        : "pending"
+                                }"
+                            >
+                                ${escapeHtml(
+                                    d.status ||
+                                    "Pending"
+                                )}
+                            </span>
+
+                        </div>
+
+                    `
+                ).join("");
+
+        }
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        document.getElementById(
+            "recentQueue"
+        ).innerHTML =
+            `
+                <div class="row">
+                    <span class="muted">
+                        Error loading defects.
+                    </span>
+                </div>
+            `;
+
+    }
+
+}
+
+
+function escapeHtml(str) {
+
+    if (!str) return '';
+
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+
+}
+
+
+loadAssignedSprints();
+loadDeveloperData();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BugFlow | Developer Analytics Reports</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{box-sizing:border-box}
+
+.chart-container {
+    position: relative;
+    height: 220px;
+    width: 100%;
+}
+
+body{
+    margin:0;
+    background:#F5F7FB;
+    color:#273449;
+    font-family:Inter,Segoe UI,Arial,sans-serif
+}
+
+.wrap{
+    display:flex;
+    min-height:100vh
+}
+
+.side{
+    width:225px;
+    background:linear-gradient(180deg,#111e33,#0d1726);
+    border-right:1px solid #1c2d44;
+    padding:22px 14px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    z-index:100
+}
+
+.brand{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-weight:900;
+    font-size:18px;
+    margin:4px 8px 30px;
+    color:#fff
+}
+
+.logo{
+    width:40px;
+    height:40px;
+    border-radius:11px;
+    background:linear-gradient(135deg,#3B66D9,#2a51c7);
+    color:#fff;
+    display:grid;
+    place-items:center
+}
+
+.label{
+    font-size:9px;
+    letter-spacing:.13em;
+    color:#7d8fa9;
+    font-weight:800;
+    margin:0 9px 11px;
+    text-transform:uppercase
+}
+
+.nav a{
+    display:block;
+    text-decoration:none;
+    color:#9cadc0;
+    padding:12px 10px;
+    border-radius:99px;
+    font-size:12px;
+    font-weight:600;
+    margin:4px 0
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff
+}
+
+.nav a.active{
+    background:#3B66D9;
+    color:#fff
+}
+
+.main{
+    margin-left:225px;
+    width:calc(100% - 225px);
+    padding:28px
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:24px;
+    position:relative
+}
+
+.eyebrow{
+    color:#3B66D9;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase
+}
+
+h1{
+    margin:5px 0 4px;
+    font-size:29px;
+    color:#172033
+}
+
+.sub{
+    color:#5F6B7A;
+    font-size:12px
+}
+
+.switcher-container{
+    position:relative
+}
+
+.switch-btn{
+    padding:9px 16px;
+    border:1px solid #D9E1EC;
+    border-radius:99px;
+    background:#ffffff;
+    color:#172033;
+    cursor:pointer;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px
+}
+
+.switch-btn:hover{
+    background:#F0F4FF;
+    border-color:#3B66D9
+}
+
+.switch-dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:#ffffff;
+    border:1px solid #D9E1EC;
+    border-radius:12px;
+    width:210px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    z-index:1000;
+    padding:6px
+}
+
+.switch-dropdown.show{
+    display:block
+}
+
+.switch-dropdown-header{
+    padding:8px 12px;
+    font-size:10px;
+    font-weight:800;
+    color:#5F6B7A;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    border-bottom:1px solid #D9E1EC;
+    margin-bottom:4px
+}
+
+.switch-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    width:100%;
+    border:none;
+    background:transparent;
+    color:#273449;
+    font-size:13px;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    text-align:left
+}
+
+.switch-item:hover{
+    background:#F0F4FF;
+    color:#3B66D9
+}
+
+.role-badge{
+    width:24px;
+    height:24px;
+    border-radius:6px;
+    display:grid;
+    place-items:center;
+    font-size:11px;
+    font-weight:800;
+    background:#F0F4FF;
+    color:#3B66D9
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px
+}
+
+.card,
+.panel{
+    background:#ffffff;
+    border:1px solid #D9E1EC;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(24,32,51,.04)
+}
+
+.card{
+    padding:18px
+}
+
+.k{
+    color:#5F6B7A;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em
+}
+
+.v{
+    font-size:30px;
+    font-weight:900;
+    margin-top:6px;
+    color:#172033
+}
+
+.g{color:#16a765}
+.y{color:#d98b00}
+.r{color:#df5a5a}
+.p{color:#3B66D9}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:20px
+}
+
+.panel h2{
+    font-size:13px;
+    margin:0;
+    padding:14px 18px;
+    border-bottom:1px solid #D9E1EC;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#172033
+}
+
+.panel h2 span.tag{
+    font-size:10px;
+    font-weight:700;
+    color:#3B66D9;
+    background:#F0F4FF;
+    padding:3px 8px;
+    border-radius:6px
+}
+
+.body{
+    padding:18px
+}
+
+.progress-row{
+    margin-bottom:14px
+}
+
+.progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-bottom:6px;
+    color:#273449
+}
+
+.progress-bar-bg{
+    height:8px;
+    background:#D9E1EC;
+    border-radius:99px;
+    overflow:hidden
+}
+
+.progress-bar-fill{
+    height:100%;
+    border-radius:99px
+}
+
+.bg-purple{background:#3B66D9}
+.bg-yellow{background:#d98b00}
+.bg-green{background:#16a765}
+.bg-red{background:#df5a5a}
+.bg-blue{background:#3B66D9}
+.bg-teal{background:#0d9488}
+
+.table-mini{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px
+}
+
+.table-mini th{
+    text-align:left;
+    color:#FFFFFF;
+    background:#111E33;
+    font-size:10px;
+    text-transform:uppercase;
+    padding:8px;
+    border-bottom:1px solid #1C2D44
+}
+
+.table-mini td{
+    padding:10px 8px;
+    border-bottom:1px solid #D9E1EC;
+    color:#273449
+}
+
+@media(max-width:1000px){
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .grid-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<aside class="side">
+
+    <div class="brand">
+        <div class="logo">B</div>
+        <span>BugFlow</span>
+    </div>
+
+    <div class="label">Developer Workspace</div>
+
+    <nav class="nav">
+
+        <a href="/developer-ui">
+            ◉ <span>Dashboard</span>
+        </a>
+
+        <a href="/developer-defects-ui">
+            ☷ <span>Defects</span>
+        </a>
+
+        <a class="active" href="/developer-analytics-ui">
+            ▥ <span>Analytics Reports</span>
+        </a>
+
+        <a href="#" id="sideSwitchBtn">
+            ↪ <span>Switch</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+<header class="top">
+
+    <div>
+
+        <div class="eyebrow">
+            Developer Workspace Reports
+        </div>
+
+        <h1>Developer Analytics Reports</h1>
+
+        <div class="sub">
+            Reports based on defects assigned by Admin to Sasuke (Developer).
+        </div>
+
+    </div>
+
+    <div class="switcher-container">
+        <button
+            class="switch-btn"
+            id="switchDropdownBtn"
+            type="button"
+        >
+            <span>Switch Workspace</span> ▾
+        </button>
+
+        <div class="switch-dropdown" id="switchDropdown">
+            <div class="switch-dropdown-header">Switch Workspace</div>
+            <button class="switch-item" data-role="admin">
+                <span class="role-badge">A</span> Naruto (Admin)
+            </button>
+            <button class="switch-item" data-role="tester">
+                <span class="role-badge">T</span> Hinata (Tester)
+            </button>
+            <button class="switch-item" data-role="developer">
+                <span class="role-badge">D</span> Sasuke (Developer)
+            </button>
+            <button class="switch-item" data-role="senior_dev">
+                <span class="role-badge">S</span> Itachi (Senior Developer)
+            </button>
+            <button class="switch-item" data-role="user">
+                <span class="role-badge">U</span> User
+            </button>
+        </div>
+    </div>
+
+</header>
+
+
+<!-- Card Summary for Developer -->
+<section class="cards">
+
+    <div class="card">
+        <div class="k">Total Assigned</div>
+        <div class="v p" id="totalCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Pending</div>
+        <div class="v y" id="pendingCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Resolved</div>
+        <div class="v g" id="resolvedCount">0</div>
+    </div>
+
+    <div class="card">
+        <div class="k">Rejected</div>
+        <div class="v r" id="rejectedCount">0</div>
+    </div>
+
+</section>
+
+
+<!-- 5 Developer Reports -->
+<section class="grid-2">
+
+    <article class="panel">
+        <h2>1. Assigned Defects <span class="tag">Report 1</span></h2>
+        <div class="body" id="assignedReport">
+            <div class="progress-row">Loading report...</div>
+        </div>
+    </article>
+
+    <article class="panel">
+        <h2>2. Status Distribution <span class="tag">Doughnut Chart</span></h2>
+        <div class="body">
+            <div class="chart-container"><canvas id="statusChart"></canvas></div>
+        </div>
+    </article>
+
+</section>
+
+
+<section class="grid-2">
+
+    <article class="panel">
+        <h2>3. Priority Distribution <span class="tag">Bar Chart</span></h2>
+        <div class="body">
+            <div class="chart-container"><canvas id="priorityChart"></canvas></div>
+        </div>
+    </article>
+
+    <article class="panel">
+        <h2>4. Category Breakdown <span class="tag">Bar Chart</span></h2>
+        <div class="body">
+            <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+        </div>
+    </article>
+
+</section>
+
+
+<section class="grid-2" style="grid-template-columns:1fr">
+
+    <article class="panel">
+        <h2>5. Workload & Completion Gauge <span class="tag">Doughnut Gauge</span></h2>
+        <div class="body">
+            <div class="chart-container"><canvas id="workloadChart"></canvas></div>
+        </div>
+    </article>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+const workspaceDestinations = {
+    admin: "/admin-ui",
+    tester: "/tester-ui",
+    developer: "/developer-ui",
+    senior_dev: "/senior-developer-ui",
+    user: "/user-ui"
+};
+
+const switchDropdownBtn = document.getElementById("switchDropdownBtn");
+const switchDropdown = document.getElementById("switchDropdown");
+const sideSwitchBtn = document.getElementById("sideSwitchBtn");
+
+function toggleSwitcher(e) {
+    if (e) e.stopPropagation();
+    switchDropdown.classList.toggle("show");
+}
+
+if (switchDropdownBtn) switchDropdownBtn.addEventListener("click", toggleSwitcher);
+if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+
+document.querySelectorAll(".switch-item").forEach(item => {
+    item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const role = item.getAttribute("data-role");
+        if (workspaceDestinations[role]) {
+            localStorage.setItem("bugflow_workspace_role", role);
+            window.location.href = workspaceDestinations[role];
+        }
+    });
+});
+
+document.addEventListener("click", () => {
+    if (switchDropdown) switchDropdown.classList.remove("show");
+});
+
+const chartInstances = {};
+
+function renderChart(canvasId, config) {
+    if (chartInstances[canvasId]) {
+        chartInstances[canvasId].destroy();
+    }
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    chartInstances[canvasId] = new Chart(canvas.getContext("2d"), config);
+}
+
+async function loadDeveloperAnalytics() {
+    try {
+        const res = await fetch("/developer/defects");
+        if (!res.ok) throw new Error("Failed to load developer defects");
+        const defects = await res.json();
+
+        const total = defects.length;
+        const pending = defects.filter(d => d.status === "Pending").length;
+        const resolved = defects.filter(d => d.status === "Resolved").length;
+        const rejected = defects.filter(d => d.status === "Rejected").length;
+
+        document.getElementById("totalCount").textContent = total;
+        document.getElementById("pendingCount").textContent = pending;
+        document.getElementById("resolvedCount").textContent = resolved;
+        document.getElementById("rejectedCount").textContent = rejected;
+
+        const defaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#94a3b8', font: { family: 'Inter, sans-serif' } } }
+            },
+            scales: {
+                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+        };
+
+        // 1. Assigned Defects Table Summary
+        document.getElementById("assignedReport").innerHTML = `
+            <div style="font-size:12px;margin-bottom:10px;color:#a0aec0">Developer (Sasuke) Assigned Workload: <b>${total}</b> defect(s)</div>
+            <table class="table-mini">
+                <thead><tr><th>ID</th><th>Title</th><th>Priority</th><th>Status</th></tr></thead>
+                <tbody>
+                    ${defects.length === 0 ? "<tr><td colspan='4' style='color:#64748b;padding:12px 0;'>No defects assigned to Developer.</td></tr>" : defects.slice(0, 5).map(d => `
+                        <tr>
+                            <td>#${d.id}</td>
+                            <td>${d.title}</td>
+                            <td>${d.priority}</td>
+                            <td>${d.status || 'Pending'}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        `;
+
+        // 2. Status Distribution (Doughnut Chart)
+        renderChart("statusChart", {
+            type: "doughnut",
+            data: {
+                labels: ["Pending", "Resolved", "Rejected"],
+                datasets: [{
+                    data: [pending, resolved, rejected],
+                    backgroundColor: ["#f5ca43", "#51dc8d", "#ff7777"],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { color: "#94a3b8" } } } }
+        });
+
+        // 3. Priority Distribution (Bar Chart)
+        const priorities = ["Low", "Medium", "High", "Urgent"];
+        const priorityCounts = priorities.map(p => defects.filter(d => d.priority === p).length);
+        renderChart("priorityChart", {
+            type: "bar",
+            data: {
+                labels: priorities,
+                datasets: [{
+                    label: "Priority Breakdown",
+                    data: priorityCounts,
+                    backgroundColor: ["#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444"],
+                    borderRadius: 6
+                }]
+            },
+            options: defaultOptions
+        });
+
+        // 4. Category Breakdown (Bar Chart)
+        const categoryCounts = {};
+        defects.forEach(d => {
+            const cat = d.category || "General";
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        });
+        const catLabels = Object.keys(categoryCounts);
+        const catValues = Object.values(categoryCounts);
+
+        renderChart("categoryChart", {
+            type: "bar",
+            data: {
+                labels: catLabels.length ? catLabels : ["General"],
+                datasets: [{
+                    label: "Defects per Category",
+                    data: catValues.length ? catValues : [0],
+                    backgroundColor: "#06b6d4",
+                    borderRadius: 6
+                }]
+            },
+            options: defaultOptions
+        });
+
+        // 5. Workload & Completion Gauge (Doughnut Gauge)
+        const completionRate = total > 0 ? Math.round((resolved / total) * 100) : 0;
+        renderChart("workloadChart", {
+            type: "doughnut",
+            data: {
+                labels: ["Resolved / Completed", "Remaining Pending"],
+                datasets: [{
+                    data: [resolved, total - resolved],
+                    backgroundColor: ["#51dc8d", "#1e293b"],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: "bottom", labels: { color: "#94a3b8" } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) { return `${context.label}: ${context.raw} (${completionRate}% completed)`; }
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("assignedReport").innerHTML = `<div class="sub">Error loading developer analytics.</div>`;
+    }
+}
+
+loadDeveloperAnalytics();
+</script>
+
+</body>
+</html>

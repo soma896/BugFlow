@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BugFlow Team Collaboration</title>
+<style>
+
+*{box-sizing:border-box}
+:root{
+  --accent:#3B66D9;
+  --accent-soft:#F0F4FF;
+  --accent-border:#D9E1EC;
+  --accent-dark:#3158C5;
+  --bg:#F5F7FB;
+  --sidebar:#111e33;
+  --sidebar-2:#0d1726;
+  --text:#273449;
+  --heading:#172033;
+  --muted:#5F6B7A;
+  --border:#D9E1EC;
+  --panel:#fff;
+  --green:#16a765;
+  --green-soft:#eaf9f1;
+  --amber:#d98b00;
+  --amber-soft:#fff6df;
+  --red:#df5a5a;
+  --shadow:0 3px 12px rgba(18,32,51,.07);
+}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:flex}
+.side{position:fixed;left:0;top:0;bottom:0;width:198px;background:linear-gradient(180deg,var(--sidebar),#102033);color:#dbe5f1;padding:20px 12px;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;margin:0 7px 28px}
+.brand-b{width:29px;height:29px;border-radius:7px;background:#3B66D9;color:#fff;display:grid;place-items:center;font-weight:900}
+.section{font-size:9px;letter-spacing:.12em;color:#8495a9;margin:0 8px 9px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav a{display:flex;align-items:center;gap:9px;padding:10px 9px;border-radius:6px;color:#b7c5d5;font-size:11px}
+.nav a:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav a.active{background:#3B66D9;color:#fff;box-shadow:0 4px 12px rgba(59,102,217,.28)}
+.nav-icon{width:14px;text-align:center;font-size:12px}
+.main{margin-left:198px;width:calc(100% - 198px);min-height:100vh}
+.topbar{height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.top-left{display:flex;align-items:center;gap:13px;font-weight:700;color:#172033}
+.menu{font-size:19px;color:#5F6B7A}
+.top-right{display:flex;align-items:center;gap:18px}
+.bell{font-size:15px;color:#5F6B7A}
+.profile{display:flex;align-items:center;gap:9px}
+.avatar{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:800;font-size:11px}
+.profile-name{font-size:11px;font-weight:800;color:#172033}
+.profile-role{font-size:8px;color:#5F6B7A;margin-top:1px}
+.content{padding:18px 24px 34px;max-width:1180px;margin:auto}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}
+.head h1{margin:0;font-size:22px;letter-spacing:-.02em;color:#172033}
+.head p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.actions{display:flex;gap:7px}
+.btn{border:1px solid #D9E1EC;background:#fff;color:#273449;border-radius:6px;padding:8px 11px;font-size:9px;font-weight:800}
+.btn:hover{background:#F0F4FF;border-color:#3B66D9;color:#3B66D9;box-shadow:0 3px 9px rgba(18,32,51,.08)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
+.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.card{background:#fff;border:1px solid var(--border);border-radius:7px;padding:11px 13px;box-shadow:var(--shadow);display:flex;align-items:center;gap:11px}
+.card-icon{width:27px;height:27px;border-radius:7px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:14px}
+.card.green .card-icon{background:var(--green-soft);color:var(--green)}
+.card.amber .card-icon{background:var(--amber-soft);color:var(--amber)}
+.label{font-size:8px;color:#5F6B7A;text-transform:uppercase;letter-spacing:.05em}
+.num{font-size:19px;font-weight:850;line-height:1.05;margin-top:3px;color:#172033}
+.sub{font-size:8px;color:#5F6B7A;margin-top:2px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:7px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.panel-head{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.title{font-size:11px;font-weight:850;color:#172033}
+.muted{font-size:8px;color:#5F6B7A;margin-top:2px}
+.issue-tools{display:flex;gap:7px}
+.issue-tools select,.issue-tools input{height:27px;border:1px solid #D9E1EC;border-radius:5px;background:#fff;padding:0 8px;font-size:9px;color:#273449}
+.issue-list{padding:6px 8px}
+.issue-row{display:grid;grid-template-columns:72px 1fr 68px 85px;align-items:center;gap:8px;padding:8px 9px;border-radius:5px;border-left:2px solid transparent;cursor:pointer}
+.issue-row:hover{background:#F0F4FF}
+.issue-row.active{background:#F0F4FF;border-left-color:var(--accent)}
+.issue-key{font-size:9px;font-weight:850;color:#3B66D9}
+.issue-name{font-size:9px;color:#273449;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{justify-self:start;padding:3px 6px;border-radius:10px;font-size:7px;font-weight:850}
+.pill.high{background:#ffe6e3;color:#df5a5a}
+.pill.medium{background:#fff0cf;color:#d98b00}
+.pill.low{background:#e8f7e9;color:#16a765}
+.pill.status{background:#F0F4FF;color:#3B66D9}
+.empty{text-align:center;padding:20px;color:#5F6B7A;font-size:9px}
+.workspace{padding:12px}
+.issue-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.issue-heading{display:flex;gap:10px;align-items:center}
+.issue-key-large{font-size:16px;font-weight:900;color:#3B66D9}
+.issue-title{font-size:12px;font-weight:800;color:#172033}
+.issue-description{font-size:9px;color:#273449;line-height:1.45;margin-top:7px;max-width:760px}
+.status-badge{padding:5px 9px;border-radius:12px;background:#F0F4FF;color:#3B66D9;font-size:8px;font-weight:850;white-space:nowrap}
+.status-badge.review{background:#fff0c8;color:#d98b00}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.meta-item{padding-right:12px;border-right:1px solid var(--border)}
+.meta-item:last-child{border-right:0}
+.meta span{display:block;color:#7A8798;font-size:7px;margin-bottom:4px}
+.meta strong{font-size:9px;color:#172033}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:10px 12px}
+.team-card{border:1px solid var(--border);border-radius:6px;padding:9px 7px;text-align:center;min-height:67px;background:#fff}
+.team-card.selected{border-color:#3B66D9;background:#F0F4FF}
+.team-card.current{box-shadow:inset 0 0 0 1px var(--accent)}
+.team-icon{font-size:16px;height:19px}
+.team-name{font-size:8px;font-weight:850;margin-top:3px;color:#172033}
+.team-desc{font-size:7px;color:#5F6B7A;margin-top:2px}
+.team-state{display:inline-block;margin-top:5px;padding:3px 6px;border-radius:9px;font-size:6px;font-weight:900;background:#eef2f6;color:#5F6B7A}
+.team-card.selected .team-state{background:#F0F4FF;color:#3B66D9}
+.team-card.current .team-state{background:var(--accent);color:#fff}
+.role-work{border-top:3px solid var(--accent)}
+.role-work.green{border-top-color:var(--green)}
+.role-work.purple{border-top-color:#3B66D9}
+.work-body{padding:9px 12px}
+.work-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:7px}
+.work-action{border:1px solid var(--border);background:#f8fafc;color:#273449;border-radius:5px;padding:7px;font-size:8px;font-weight:850;text-align:left}
+.work-action.active{background:var(--accent-soft);border-color:#3B66D9;color:var(--accent)}
+.work-action.green-active{background:var(--green-soft);border-color:#a8dfc4;color:#13834e}
+.work-action.purple-active{background:#F0F4FF;border-color:#3B66D9;color:#3B66D9}
+.work-text{width:100%;min-height:58px;resize:vertical;border:1px solid var(--border);border-radius:5px;padding:8px;font-size:9px;outline:none;color:#273449;background:#fff}
+.work-text:focus,textarea:focus,input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(59,102,217,.08);outline:none}
+.section-body{padding:9px 12px}
+.comment{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.comment:last-child{border-bottom:0}
+.comment-avatar{width:25px;height:25px;border-radius:50%;background:#F0F4FF;color:#3B66D9;display:grid;place-items:center;font-size:8px;font-weight:850;flex:none}
+.comment-main{flex:1}
+.comment-top{display:flex;align-items:center;gap:6px}
+.comment-name{font-size:8px;font-weight:850;color:#172033}
+.comment-role{font-size:6px;padding:2px 4px;border-radius:7px;background:#F0F4FF;color:#3B66D9;font-weight:800}
+.comment-time{font-size:7px;color:#7A8798;margin-left:auto}
+.comment-text{font-size:8px;color:#273449;line-height:1.45;margin-top:3px}
+.composer{border-top:1px solid var(--border);padding:8px 12px}
+.composer textarea{width:100%;min-height:55px;resize:vertical;border:1px solid var(--border);border-radius:5px;padding:8px;font-size:9px;color:#273449;background:#fff}
+.composer-foot{display:flex;justify-content:flex-end;margin-top:6px}
+.dropzone{border:1px dashed var(--border);background:#fafcff;border-radius:5px;padding:9px;text-align:center;display:block;cursor:pointer}
+.dropzone strong{display:block;font-size:8px;color:#172033}
+.dropzone span{display:block;font-size:7px;color:#5F6B7A;margin-top:3px}
+.files{margin-top:7px;display:grid;gap:5px}
+.file{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:5px;padding:7px 8px}
+.file-name{font-size:8px;font-weight:800;color:#172033}
+.file-meta{font-size:7px;color:#5F6B7A;margin-top:2px}
+.code-form{display:grid;grid-template-columns:1.5fr .65fr 1.5fr;gap:5px}
+.code-form input{height:28px;border:1px solid var(--border);border-radius:5px;padding:0 7px;font-size:8px;color:#172033;background:#fff}
+.refs{margin-top:7px;display:grid;gap:5px}
+.ref{border:1px solid var(--border);border-radius:5px;padding:7px}
+.ref-path{font:800 8px Consolas,monospace;color:#3B66D9}
+.ref-note{font-size:7px;color:#5F6B7A;margin-top:3px}
+.history{padding:5px 12px 8px}
+.event{display:flex;gap:7px;padding:6px 0;border-bottom:1px solid var(--border)}
+.event:last-child{border-bottom:0}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:4px;flex:none}
+.event-main{font-size:8px;color:#273449}
+.event-main b{color:#172033}
+.event-time{font-size:7px;color:#7A8798;margin-top:2px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:9px 12px}
+.flow-step{border:1px solid var(--border);border-radius:5px;padding:7px;text-align:center}
+.flow-step.active{border-color:#3B66D9;background:#F0F4FF}
+.flow-step.active.current{background:var(--accent-soft);border-color:#3B66D9}
+.flow-step strong{display:block;font-size:8px;color:#172033}
+.flow-step span{display:block;font-size:6px;color:#5F6B7A;margin-top:3px}
+.workflow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;padding:10px 12px}
+.wf-step{text-align:center;position:relative}
+.wf-step:not(:last-child):after{content:"";position:absolute;top:11px;left:50%;width:100%;height:1px;background:var(--border);z-index:0}
+.wf-circle{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin:0 auto 4px;background:#edf1f5;color:#5F6B7A;font-size:7px;font-weight:900;position:relative;z-index:1}
+.wf-step.done .wf-circle{background:#dff6e9;color:#16a765}
+.wf-step.current .wf-circle{background:var(--accent);color:#fff}
+.wf-label{font-size:6px;color:#5F6B7A}
+.footer-note{font-size:7px;color:#7A8798;padding:0 12px 10px}
+.toast{position:fixed;right:20px;bottom:18px;background:#14243a;color:#fff;border-radius:6px;padding:9px 12px;font-size:9px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);transition:.2s;z-index:50}
+.toast.show{opacity:1;transform:none}
+.toast.err{background:#df5a5a}
+@media(max-width:850px){
+ .side{width:64px}.brand span,.section,.nav a span{display:none}.nav a{justify-content:center}
+ .main{margin-left:64px;width:calc(100% - 64px)}.content{padding:15px}
+ .cards{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}
+ .issue-row{grid-template-columns:65px 1fr 62px 75px}.workflow{grid-template-columns:repeat(3,1fr);row-gap:9px}
+ .workflow .wf-step:nth-child(3):after{display:none}
+}
+@media(max-width:560px){
+ .topbar{padding:0 12px}.profile-name,.profile-role{display:none}.head{flex-direction:column}
+ .actions{width:100%}.actions .btn{flex:1}.issue-tools{width:100%}.issue-tools input{flex:1}
+ .issue-row{grid-template-columns:58px 1fr 58px}.issue-row .pill.status{display:none}
+ .team-grid{grid-template-columns:1fr 1fr}.work-actions{grid-template-columns:1fr}
+ .meta{grid-template-columns:1fr 1fr;row-gap:8px}.meta-item:nth-child(2){border-right:0}
+ .code-form{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand"><div class="brand-b">B</div><span>BugFlow</span></div>
+  <div class="section">MY WORKSPACE</div>
+  <nav class="nav">
+    <a href="/senior-dev-ui"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
+    <a href="/all-defects-ui"><span class="nav-icon">▣</span><span>My Issues</span></a>
+    <a class="active" href="/team-collaboration-senior-developer-ui"><span class="nav-icon">◎</span><span>Team Collaboration</span></a>
+    <a href="/milestone2-ui"><span class="nav-icon">◇</span><span>Sprint Management</span></a>
+    <a href="/all-defects-ui"><span class="nav-icon">◆</span><span>All Defects</span></a>
+    <a href="/analytics-ui"><span class="nav-icon">▥</span><span>Analytics Reports</span></a>
+    <a href="/login-ui"><span class="nav-icon">↔</span><span>Logout / Switch</span></a>
+  </nav>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left"><span class="menu">☰</span><span>Senior Developer Dashboard</span></div>
+  <div class="top-right"><span class="bell">♟</span><div class="profile"><div class="avatar">S</div><div><div class="profile-name">BugFlow User</div><div class="profile-role">Senior Developer</div></div></div></div>
+</header>
+
+<div class="content">
+<header class="head">
+  <div>
+    <h1>Team Collaboration</h1>
+    <p>Review and support issues where you are part of the collaboration team.</p>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="loadAll()">↻ Refresh</button>
+    <a class="btn primary" href="/milestone2-ui">View Sprint Management</a>
+  </div>
+</header>
+
+<section class="cards">
+  <div class="card"><div class="card-icon">▣</div><div><div class="label">My Issues</div><div class="num" id="issueCount">0</div><div class="sub">Issues shared with Senior Developer</div></div></div>
+  <div class="card"><div class="card-icon">◷</div><div><div class="label">In Review</div><div class="num" id="progressIssueCount">0</div><div class="sub">Currently moving forward</div></div></div>
+  <div class="card green"><div class="card-icon">✓</div><div><div class="label">Resolved</div><div class="num" id="resolvedIssueCount">0</div><div class="sub">Closed or resolved issues</div></div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div><div class="title">My Collaboration Issues</div><div class="muted">Issues where Senior Developer was selected by Admin.</div></div>
+    <div class="issue-tools">
+      <select id="statusFilter" onchange="renderIssueList()"><option value="ALL">All Status</option><option value="OPEN">Open</option><option value="IN_PROGRESS">In Progress</option><option value="IN_REVIEW">In Review</option><option value="QA_VERIFICATION">Testing</option><option value="RESOLVED">Resolved</option><option value="CLOSED">Closed</option></select>
+      <input id="searchInput" placeholder="⌕ Search issues..." oninput="renderIssueList()">
+    </div>
+  </div>
+  <div class="issue-list" id="visibleIssueList"><div class="empty">Loading collaboration issues...</div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Shared Issue Workspace</div><div class="muted">Shared issue information for the selected collaboration issue.</div></div><span class="status-badge" id="statusBadge">Select issue</span></div>
+  <div class="workspace">
+    <div class="issue-top">
+      <div>
+        <div class="issue-heading"><span class="issue-key-large" id="issueKey">—</span><span class="issue-title" id="issueTitle">Select an issue</span></div>
+        <div class="issue-description" id="issueDesc">Select one of your collaboration issues to view its shared workspace.</div>
+      </div>
+      <span class="pill high" id="priorityPill">Priority</span>
+    </div>
+    <div class="meta">
+      <div class="meta-item"><span>Assigned To</span><strong id="issueAssignee">—</strong></div>
+      <div class="meta-item"><span>Created</span><strong id="issueCreated">—</strong></div>
+      <div class="meta-item"><span>Last Updated</span><strong id="issueUpdated">—</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Collaboration Team</div><div class="muted">Selected by Admin · read-only for Senior Developer.</div></div></div>
+  <div class="team-grid" id="roleTeamGrid"></div>
+</section>
+
+<section class="panel role-work purple">
+  <div class="panel-head"><div><div class="title">Senior Developer Review</div><div class="muted">Review implementation, code references, and technical decisions.</div></div></div>
+  <div class="work-body">
+    <div class="work-actions"><button class="work-action purple-active" data-work-action="review">▣ Review Comment</button>
+<button class="work-action" data-work-action="code">⌘ Code Review</button>
+<button class="work-action" data-work-action="approval">▣ Request Approval</button></div>
+    <textarea class="work-text" id="roleWorkText" placeholder="Add your review comments..."></textarea>
+    <div class="work-actions"><select id="roleWorkStatus"><option value="NOT_STARTED">Not Started</option><option value="IN_REVIEW">In Review</option><option value="CHANGES_REQUESTED">Changes Requested</option><option value="APPROVED">Approved</option><option value="BLOCKED">Blocked</option></select><button class="btn primary" type="button" onclick="saveRoleWork()">Save Review Status</button><span id="roleWorkProgress">0%</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Shared Discussion</div><div class="muted">All collaborating roles see the same issue discussion.</div></div></div>
+  <div class="section-body" id="comments"><div class="empty">Select an issue.</div></div>
+  <div class="composer"><textarea id="commentText" placeholder="Add your review comments..."></textarea><div class="composer-foot"><button class="btn primary" onclick="postComment()">Post Comment</button></div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Attachments / Evidence</div><div class="muted">Shared files stored against the selected issue.</div></div></div>
+  <div class="section-body">
+    <label class="dropzone" for="fileInput"><input id="fileInput" type="file" accept=".png,.jpg,.log" hidden><strong>Drag &amp; drop files here</strong><span>or click to upload · PNG, JPG, LOG · Max 10MB</span></label>
+    <div class="composer-foot"><button class="btn primary" onclick="uploadFile()">＋ Upload File</button></div>
+    <div class="files" id="attachments"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Code References</div><div class="muted">Shared code references connected to this issue.</div></div></div>
+  <div class="section-body">
+    <div class="code-form"><input id="codePath" placeholder="src/components/Header.tsx"><input id="codeLine" placeholder="Line 45"><input id="codeNote" placeholder="Relevant code note"></div>
+    <div class="composer-foot"><button class="btn primary" onclick="addCodeReference()">＋ Add Code Reference</button></div>
+    <div class="refs" id="codeRefs"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Activity History</div><div class="muted">Shared issue and collaboration events.</div></div></div>
+  <div class="history" id="history"><div class="empty">No activity.</div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Team Collaboration Flow</div><div class="muted">Shared path through Admin, Development, Testing, and Review.</div></div></div>
+  <div class="flow" id="flow"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><div class="title">Resolution Workflow</div><div class="muted">Current issue status</div></div><button class="btn" id="advanceStatusButton" onclick="advanceIssueStatus()" disabled>Advance Status</button></div>
+  <div class="workflow" id="workflow"></div>
+  <div class="footer-note">Workflow changes use the existing BugFlow issue status endpoint.</div>
+</section>
+
+</div>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API='/api/v1';
+const ROLE='senior_dev';
+const ROLE_LABEL='Senior Developer';
+let issues=[], selected=null, comments=[], attachments=[], history=[], collaborationRoles=[], issueTeams={}, issueWorkMap={}, users=[], workOverview={workstreams:[],overall_progress:0};
+let assignmentStates={developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'}, canResolve=false;
+const roleNamesMap={admin:'Naruto (Admin)',developer:'Sasuke (Developer)',tester:'Hinata (Tester)',senior_dev:'Itachi (Senior Developer)'};
+
+const roleInfo={
+  admin:['Admin','Full Access','♛'],
+  developer:['Developer','Development','</>'],
+  tester:['Tester','Verification','⚗'],
+  senior_dev:['Senior Developer','Review','◆']
+};
+
+const $=id=>document.getElementById(id);
+function token(){return localStorage.getItem('access_token')||localStorage.getItem('token')||localStorage.getItem('bugflow_token')||''}
+function headers(json=false){const h={};if(json)h['Content-Type']='application/json';const t=token();if(t)h.Authorization='Bearer '+t;h['X-Workspace-Role']=ROLE;return h}
+async function json(r){const t=await r.text();try{return t?JSON.parse(t):{}}catch{return{detail:t}}}
+function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;")}
+function fmt(v){if(!v)return '—';try{return new Date(v).toLocaleString()}catch{return String(v)}}
+function roleName(r){const x=String(r||'').toLowerCase().replaceAll('-','_').replaceAll(' ','_');return roleInfo[x]?.[0]||r||'Team Member'}
+function norm(r){return String(r||'').toLowerCase().replaceAll('-','_').replaceAll(' ','_')}
+function initials(n){return String(n||'U').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function toast(m,ok=true){const t=$('toast');t.textContent=m;t.className='toast show'+(ok?'':' err');clearTimeout(window._toast);window._toast=setTimeout(()=>t.className='toast',3000)}
+function statusValue(i){return String(i?.status?.value||i?.status||'REPORTED').toUpperCase()}
+function priorityValue(i){return String(i?.priority?.value||i?.priority||'LOW').toUpperCase()}
+
+function renderIssueList(){
+  const box=$('visibleIssueList');
+  const q=($('searchInput').value||'').trim().toLowerCase();
+  const sf=$('statusFilter').value;
+  let data=issues.filter(i=>{
+    const s=statusValue(i);
+    const statusOk=sf==='ALL'||(sf==='OPEN'&&!['RESOLVED','CLOSED'].includes(s))||s===sf;
+    const text=((i.issue_key||'')+' '+(i.title||'')).toLowerCase();
+    return statusOk&&(!q||text.includes(q));
+  });
+  if(!data.length){box.innerHTML='<div class="empty">No collaboration issues found for your role.</div>';return}
+  box.innerHTML=data.map(i=>{
+    const p=priorityValue(i).toLowerCase();
+    const active=selected&&+selected.id===+i.id?'active':'';
+    return `<div class="issue-row ${active}" onclick="selectIssue(${Number(i.id)})">
+      <span class="issue-key">${esc(i.issue_key||('BUG-'+i.id))}</span>
+      <span class="issue-name">${esc(i.title||'Untitled issue')}</span>
+      <span class="pill ${p==='high'?'high':p==='medium'?'medium':'low'}">${esc(p[0]+p.slice(1))}</span>
+      <span class="pill status">${esc(statusValue(i).replaceAll('_',' '))}</span>
+    </div>`;
+  }).join('');
+}
+
+function getSeniorDevWorkStatus(i){
+  if(selected && +selected.id===+i.id && workOverview?.workstreams){
+    const ws=workOverview.workstreams.find(w=>norm(w.role)===ROLE);
+    if(ws?.status) return String(ws.status).toUpperCase();
+  }
+  const mapState=issueWorkMap[i.id]?.[ROLE]||issueWorkMap[i.id]?.['senior_dev'];
+  if(mapState?.status) return String(mapState.status).toUpperCase();
+  const directState=i.work_states?.[ROLE]||i.work_states?.['senior_dev'];
+  if(directState?.status) return String(directState.status).toUpperCase();
+  return null;
+}
+
+function renderSummary(){
+  $('issueCount').textContent=issues.length;
+
+  let inReviewCount=0;
+  let resolvedCount=0;
+
+  for(const i of issues){
+    const srStatus=getSeniorDevWorkStatus(i);
+    const dbStatus=statusValue(i);
+
+    if(srStatus){
+      if(['IN_REVIEW','CHANGES_REQUESTED','IN_PROGRESS'].includes(srStatus)){
+        inReviewCount++;
+      }else if(['APPROVED','RESOLVED','CLOSED'].includes(srStatus)){
+        resolvedCount++;
+      }
+    }else{
+      const progressStates=['IN_PROGRESS','IN_DEVELOPMENT','IN_REVIEW','IN_TESTING','QA_VERIFICATION'];
+      if(progressStates.includes(dbStatus)){
+        inReviewCount++;
+      }else if(['RESOLVED','CLOSED'].includes(dbStatus)){
+        resolvedCount++;
+      }
+    }
+  }
+
+  $('progressIssueCount').textContent=inReviewCount;
+  $('resolvedIssueCount').textContent=resolvedCount;
+}
+
+function renderTeam(){
+  const grid=$('roleTeamGrid');
+  grid.innerHTML=Object.entries(roleInfo).map(([r,info])=>{
+    const selectedRole=collaborationRoles.map(norm).includes(r);
+    const current=r===ROLE;
+    const state=(assignmentStates&&assignmentStates[r])||'PENDING';
+    const displayName=roleNamesMap[r]||info[0];
+
+    let stateHtml='';
+    if(selectedRole){
+      if(r==='admin'){
+        stateHtml='<span class="team-state" style="background:#eef3ff;color:#3b66d9;border-color:#d4e2fc">COORDINATOR</span>';
+      }else if(state==='ACCEPTED'){
+        stateHtml='<span class="team-state" style="background:#eaf9f1;color:#16a765;border-color:#b9edd2">ACCEPTED</span>';
+      }else if(state==='REJECTED'){
+        stateHtml='<span class="team-state" style="background:#feeceb;color:#df5a5a;border-color:#f8d0cd">REJECTED</span>';
+      }else{
+        stateHtml='<span class="team-state" style="background:#fff6df;color:#d98b00;border-color:#faecd8">PENDING</span>';
+      }
+    }else{
+      stateHtml='<span class="team-state">NOT SELECTED</span>';
+    }
+
+    let buttonsHtml='';
+    if(selectedRole && current){
+      if(state==='PENDING'){
+        buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
+          <button type="button" class="btn small" style="background:#eaf9f1;color:#16a765;border-color:#b9edd2;font-weight:700;padding:3px 8px;font-size:9px" onclick="respondAssignment('${r}','ACCEPT')">Accept</button>
+          <button type="button" class="btn small" style="background:#feeceb;color:#df5a5a;border-color:#f8d0cd;font-weight:700;padding:3px 8px;font-size:9px" onclick="respondAssignment('${r}','REJECT')">Reject</button>
+        </div>`;
+      }else if(state==='ACCEPTED'){
+        buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
+          <button type="button" class="btn small" style="background:#feeceb;color:#df5a5a;border-color:#f8d0cd;font-weight:700;padding:3px 8px;font-size:9px" onclick="respondAssignment('${r}','REJECT')">Reject</button>
+        </div>`;
+      }else if(state==='REJECTED'){
+        buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
+          <button type="button" class="btn small" style="background:#eaf9f1;color:#16a765;border-color:#b9edd2;font-weight:700;padding:3px 8px;font-size:9px" onclick="respondAssignment('${r}','ACCEPT')">Accept</button>
+        </div>`;
+      }
+    }
+
+    return `<div class="team-card ${selectedRole?'selected':''} ${current?'current':''}">
+      <div class="team-icon">${info[2]}</div>
+      <div class="team-name">${esc(displayName)}</div>
+      <div class="team-desc">${esc(info[1])}</div>
+      ${stateHtml}
+      ${buttonsHtml}
+    </div>`;
+  }).join('');
+}
+
+function renderFlow(){
+  const roles=['admin','developer','tester','senior_dev'];
+  $('flow').innerHTML=roles.map(r=>{
+    const active=collaborationRoles.map(norm).includes(r);
+    const current=r===ROLE;
+    const info=roleInfo[r];
+    const item=(workOverview.workstreams||[]).find(x=>x.role===r);
+    const label=r==='admin'?(active?'Coordinator':'Not selected'):item?`${item.progress}% — ${String(item.status).replaceAll('_',' ')}`:'Not selected';
+    return `<div class="flow-step ${active?'active':''} ${current?'current':''}">
+      <strong>${esc(info[0])}</strong><span>${label}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderWork(){const item=(workOverview.workstreams||[]).find(x=>x.role===ROLE);$('roleWorkStatus').value=item?.status||'NOT_STARTED';$('roleWorkProgress').textContent=`${item?.progress||0}%`}
+
+function renderIssue(){
+  if(!selected){
+    $('issueKey').textContent='—';$('issueTitle').textContent='Select an issue';$('issueDesc').textContent='Select one of your collaboration issues to view its shared workspace.';
+    $('issueAssignee').textContent='—';$('issueCreated').textContent='—';$('issueUpdated').textContent='—';$('statusBadge').textContent='Select issue';$('priorityPill').textContent='Priority';
+    renderTeam();renderFlow();return;
+  }
+  $('issueKey').textContent=selected.issue_key||('BUG-'+selected.id);
+  $('issueTitle').textContent=selected.title||'Untitled issue';
+  $('issueDesc').textContent=selected.description||'No description available.';
+  $('issueCreated').textContent=fmt(selected.created_at);
+  $('issueUpdated').textContent=fmt(selected.updated_at);
+  const assignee=users.find(u=>+u.id===+selected.assignee_id);
+  $('issueAssignee').textContent=assignee?.name||'Unassigned';
+  const s=statusValue(selected);
+  $('statusBadge').textContent=s.replaceAll('_',' ');
+  $('statusBadge').className='status-badge'+(s==='IN_REVIEW'?' review':'');
+  $('priorityPill').textContent=priorityValue(selected);
+  $('priorityPill').className='pill '+(priorityValue(selected)==='HIGH'?'high':priorityValue(selected)==='MEDIUM'?'medium':'low');
+  renderWorkflow(s);
+}
+
+function renderComments(){
+  const b=$('comments');
+  if(!comments.length){b.innerHTML='<div class="empty">No comments yet. Start the issue discussion.</div>';return}
+  b.innerHTML=comments.map(c=>{
+    const u=users.find(x=>+x.id===+c.user_id);
+    return `<div class="comment"><div class="comment-avatar">${initials(c.user_name)}</div><div class="comment-main">
+      <div class="comment-top"><span class="comment-name">${esc(c.user_name)}</span><span class="comment-role">${esc(roleName(u?.role||'Team Member'))}</span><span class="comment-time">${fmt(c.created_at)}</span></div>
+      <div class="comment-text">${esc(c.comment)}</div>
+    </div></div>`;
+  }).join('');
+}
+
+function renderAttachments(){
+  const b=$('attachments');
+  if(!attachments.length){b.innerHTML='<div class="empty">No attachments for this issue.</div>';return}
+  b.innerHTML=attachments.map(a=>`<div class="file"><div><div class="file-name">📄 ${esc(a.filename)}</div><div class="file-meta">Uploaded by ${esc(a.user_name)} · ${fmt(a.uploaded_at)}</div></div><button class="btn" onclick="downloadFile(${a.attachment_id})">Open</button></div>`).join('');
+}
+
+function renderCodeRefs(){
+  const refs=comments.filter(c=>String(c.comment||'').startsWith('[CODE_REFERENCE]')).map(c=>({user:c.user_name,created:c.created_at,text:String(c.comment).replace('[CODE_REFERENCE]','').trim()}));
+  const b=$('codeRefs');
+  if(!refs.length){b.innerHTML='<div class="empty">No code references added yet.</div>';return}
+  b.innerHTML=refs.map(r=>{const m=r.text.match(/^([^|]+)\|([^|]+)\|(.*)$/);return `<div class="ref"><div class="ref-path">${esc(m?m[1]:r.text)}${m&&m[2]?': '+esc(m[2]):''}</div><div class="ref-note">${esc(m?m[3]:'')} · ${esc(r.user)} · ${fmt(r.created)}</div></div>`}).join('');
+}
+
+function renderHistory(){
+  const b=$('history');
+  if(!history.length){b.innerHTML='<div class="empty">No activity recorded for this issue yet.</div>';return}
+  b.innerHTML=history.slice().reverse().map(h=>`<div class="event"><div class="dot"></div><div><div class="event-main"><b>${esc(h.who)}</b> — ${esc(h.action)}${h.old_status&&h.new_status&&h.old_status!==h.new_status?` (${esc(h.old_status)} → ${esc(h.new_status)})`:''}</div><div class="event-time">${fmt(h.when)}</div></div></div>`).join('');
+}
+
+function workflowSteps(status){
+  const s=String(status||'REPORTED').toUpperCase();
+  if(s==='CLOSED')return 5;
+  if(s==='RESOLVED')return 4;
+  if(['QA_VERIFICATION','IN_TESTING'].includes(s))return 3;
+  if(s==='IN_REVIEW')return 2;
+  if(['IN_PROGRESS','IN_DEVELOPMENT'].includes(s))return 1;
+  return 0;
+}
+function renderWorkflow(status){
+  const idx=workflowSteps(status);
+  const names=['Assigned','In Development','Review','In Testing','Resolved','Closed'];
+  $('workflow').innerHTML=names.map((n,i)=>`<div class="wf-step ${i<idx?'done':''} ${i===idx?'current':''}"><div class="wf-circle">${i<idx?'✓':i+1}</div><div class="wf-label">${n}</div></div>`).join('');
+  const next=({REPORTED:'TRIAGED',TRIAGED:'IN_PROGRESS',IN_PROGRESS:'QA_VERIFICATION',QA_VERIFICATION:'RESOLVED',RESOLVED:'CLOSED'})[String(status).toUpperCase()]||'';
+  const btn=$('advanceStatusButton');btn.disabled=!selected||!next;btn.textContent=next?`Advance to ${next}`:'Workflow Complete';
+}
+
+async function loadIssueData(){
+  if(!selected)return;
+  try{
+    const id=selected.id;
+    const [cr,ar,hr,tr,wr]=await Promise.all([
+      fetch(API+`/collaboration/issues/${id}/comments`,{headers:headers()}),
+      fetch(API+`/collaboration/issues/${id}/attachments`,{headers:headers()}),
+      fetch(API+`/issues/${id}/audit-log`,{headers:headers()}),
+      fetch(API+`/collaboration/issues/${id}/team`,{headers:headers()}),
+      fetch(API+`/collaboration/issues/${id}/work`,{headers:headers()})
+    ]);
+    let d=await json(cr);comments=cr.ok?(d.comments||[]):[];
+    d=await json(ar);attachments=ar.ok?(d.attachments||[]):[];
+    d=await json(hr);history=hr.ok?(d.audit_history||[]):[];
+    d=await json(tr);
+    if(tr.ok){
+      collaborationRoles=d.roles||[];
+      assignmentStates=d.assignment_states||{developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'};
+      canResolve=Boolean(d.can_resolve);
+    }else{
+      collaborationRoles=[];
+      assignmentStates={developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'};
+      canResolve=false;
+    }
+    d=await json(wr);workOverview=wr.ok?d:{workstreams:[],overall_progress:0};
+    if(selected && workOverview?.workstreams){
+      if(!issueWorkMap[selected.id]) issueWorkMap[selected.id]={};
+      workOverview.workstreams.forEach(ws=>{
+        issueWorkMap[selected.id][norm(ws.role)]={status:ws.status, progress:ws.progress};
+      });
+      if(!selected.work_states) selected.work_states={};
+      Object.assign(selected.work_states, issueWorkMap[selected.id]);
+      renderSummary();
+    }
+    renderIssue();renderTeam();renderFlow();renderComments();renderAttachments();renderCodeRefs();renderHistory();
+    renderWork();
+  }catch(e){console.error(e);toast(e.message||'Could not load issue data',false)}
+}
+
+async function respondAssignment(role, action){
+  if(!selected)return toast('Select an issue first',false);
+  try{
+    const r=await fetch(API+`/collaboration/issues/${selected.id}/assignment-response`,{
+      method:'POST',
+      headers:headers(true),
+      body:JSON.stringify({role,action})
+    });
+    const d=await json(r);
+    if(!r.ok)throw apiError(r,d,`Failed to ${action.toLowerCase()} assignment`);
+    if(d.assignment_states)assignmentStates=d.assignment_states;
+    canResolve=Boolean(d.can_resolve);
+    toast(d.message||`Assignment ${action.toLowerCase()}ed`);
+    await loadIssueData();
+  }catch(e){
+    toast(e.message||`Failed to ${action.toLowerCase()} assignment`,false);
+  }
+}
+
+async function saveRoleWork(){if(!selected)return toast('Select an issue first',false);const status=$('roleWorkStatus').value;const note=$('roleWorkText').value.trim();try{const r=await fetch(API+`/collaboration/issues/${selected.id}/work`,{method:'PUT',headers:headers(true),body:JSON.stringify({status,note,role:ROLE})});const d=await json(r);if(!r.ok)throw Error(d.detail||'Could not save review status');workOverview=d;if(selected){if(!issueWorkMap[selected.id])issueWorkMap[selected.id]={};issueWorkMap[selected.id][ROLE]={status:d.status,progress:d.progress};if(!selected.work_states)selected.work_states={};selected.work_states[ROLE]={status:d.status,progress:d.progress};}$('roleWorkText').value='';renderWork();renderFlow();renderSummary();toast('Review status saved')}catch(e){toast(e.message||'Could not save review status',false)}}
+
+async function selectIssue(id){
+  selected=issues.find(x=>+x.id===+id)||null;
+  comments=[];attachments=[];history=[];collaborationRoles=[];
+  renderIssueList();renderIssue();await loadIssueData();
+}
+
+async function loadAll(){
+  try{
+    let r=await fetch(API+'/collaboration/issues',{headers:headers()});
+    let d=await json(r);
+    if(!r.ok)throw Error(d.detail||'Failed to load collaboration issues');
+    const all=Array.isArray(d)?d:(d.issues||[]);
+    const teamMap={};
+    await Promise.all(all.map(async issue=>{
+      const tr=await fetch(API+`/collaboration/issues/${issue.id}/team`,{headers:headers()});
+      const td=await json(tr);
+      teamMap[issue.id]=tr.ok?(td.roles||[]):[];
+    }));
+    issues=all.filter(i=>{
+      const roles=(teamMap[i.id]||[]).map(norm);
+      return roles.includes(ROLE);
+    });
+    issueTeams=teamMap;
+    issues.forEach(i=>{
+      if(i.work_states) issueWorkMap[i.id]=i.work_states;
+    });
+    r=await fetch(API+'/collaboration/users',{headers:headers()});
+    d=await json(r);
+    if(r.ok)users=d.users||[];
+    renderSummary();renderIssueList();
+    if(selected)selected=issues.find(i=>+i.id===+selected.id)||null;
+    if(!selected&&issues.length)selected=issues[0];
+    renderIssue();
+    if(selected)await loadIssueData();
+  }catch(e){console.error(e);toast(e.message||'Could not load collaboration data',false)}
+}
+
+async function postComment(){
+  if(!selected)return toast('Select an issue first',false);
+  const text=$('commentText').value.trim();
+  if(!text)return toast('Write a comment first',false);
+  try{
+    const r=await fetch(API+`/collaboration/issues/${selected.id}/comments`,{method:'POST',headers:headers(true),body:JSON.stringify({comment:text})});
+    const d=await json(r);if(!r.ok)throw Error(d.detail||'Could not post comment');
+    $('commentText').value='';$('roleWorkText').value='';toast('Comment posted');await loadIssueData();
+  }catch(e){toast(e.message||'Could not post comment',false)}
+}
+
+async function uploadFile(){
+  if(!selected)return toast('Select an issue first',false);
+  const f=$('fileInput').files[0];if(!f)return toast('Choose a file first',false);
+  if(f.size>10*1024*1024)return toast('Attachments must be 10MB or smaller',false);
+  const fd=new FormData();fd.append('file',f);
+  try{
+    const h={};const t=token();if(t)h.Authorization='Bearer '+t;
+    const r=await fetch(API+`/collaboration/issues/${selected.id}/attachments`,{method:'POST',headers:h,body:fd});
+    const d=await json(r);if(!r.ok)throw Error(d.detail||'Upload failed');
+    $('fileInput').value='';toast('Attachment uploaded');await loadIssueData();
+  }catch(e){toast(e.message||'Upload failed',false)}
+}
+
+async function addCodeReference(){
+  if(!selected)return toast('Select an issue first',false);
+  const path=$('codePath').value.trim(),line=$('codeLine').value.trim(),note=$('codeNote').value.trim();
+  if(!path)return toast('Enter a code path',false);
+  const text=`[CODE_REFERENCE] ${path}|${line||'Line not specified'}|${note||'Code reference added'}`;
+  try{
+    const r=await fetch(API+`/collaboration/issues/${selected.id}/comments`,{method:'POST',headers:headers(true),body:JSON.stringify({comment:text})});
+    const d=await json(r);if(!r.ok)throw Error(d.detail||'Could not add code reference');
+    $('codePath').value='';$('codeLine').value='';$('codeNote').value='';toast('Code reference added');await loadIssueData();
+  }catch(e){toast(e.message||'Could not add code reference',false)}
+}
+
+async function downloadFile(id){
+  try{
+    const r=await fetch(API+`/collaboration/attachments/${id}/download`,{headers:headers()});
+    if(!r.ok)throw Error('Download failed');
+    const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='attachment';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  }catch(e){toast(e.message||'Download failed',false)}
+}
+
+async function advanceIssueStatus(){
+  if(!selected)return;
+  const s=statusValue(selected);
+  const next=({REPORTED:'TRIAGED',TRIAGED:'IN_PROGRESS',IN_PROGRESS:'QA_VERIFICATION',QA_VERIFICATION:'RESOLVED',RESOLVED:'CLOSED'})[s]||'';
+  if(!next)return;
+  try{
+    const r=await fetch(API+`/issues/${selected.id}/status`,{method:'POST',headers:headers(true),body:JSON.stringify({status:next})});
+    const d=await json(r);if(!r.ok)throw Error(d.detail||'Could not update issue status');
+    toast(d.message||`Issue moved to ${next}`);await loadAll();
+  }catch(e){toast(e.message||'Could not update issue status',false)}
+}
+
+function focusWork(){
+  $('roleWorkText').focus();$('roleWorkText').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function postRoleWork(){
+  const value=$('roleWorkText').value.trim();
+  if(!value)return focusWork();
+  $('commentText').value=value;postComment();
+}
+function requestApproval(){
+  if(!selected)return toast('Select an issue first',false);
+  const note=prompt('Approval request note (optional):')||'';
+  fetch(API+`/collaboration/issues/${selected.id}/action`,{method:'POST',headers:headers(true),body:JSON.stringify({action:'REQUEST_APPROVAL',note})})
+    .then(async r=>{const d=await json(r);if(!r.ok)throw Error(d.detail||'Request approval failed');toast(d.message||'Approval request recorded');await loadIssueData()})
+    .catch(e=>toast(e.message||'Request approval failed',false));
+}
+
+function bindRoleActions(){
+  document.querySelectorAll('[data-work-action]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const action=b.dataset.workAction;
+      if(action==='comment'||action==='test'||action==='review')focusWork();
+      else if(action==='code'){$('codePath').focus();$('codePath').scrollIntoView({behavior:'smooth',block:'center'})}
+      else if(action==='evidence')$('fileInput').click();
+      else if(action==='approval')requestApproval();
+    });
+  });
+}
+bindRoleActions();
+(async function syncActiveWorkspace(){
+  const t = token();
+  if (t) {
+    try {
+      await fetch('/api/v1/workspace/switch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + t },
+        body: JSON.stringify({ role: 'senior_dev' })
+      });
+    } catch(e) {}
+  }
+})();
+loadAll();
+</script>
+</body>
+</html>

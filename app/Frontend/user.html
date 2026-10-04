@@ -21,19 +21,21 @@
         }
 
         :root {
-            --bg: #080d18;
-            --sidebar: #0d1422;
-            --panel: #111a2a;
-            --panel-dark: #0d1625;
-            --border: #263650;
-            --border-soft: #1c2940;
-            --text: #f8fafc;
-            --muted: #73839c;
-            --purple: #705cf4;
-            --purple2: #8657ef;
-            --green: #4ade80;
-            --yellow: #fbbf24;
-            --red: #f87171;
+            --bg: #F5F7FB;
+            --sidebar: #111E33;
+            --panel: #FFFFFF;
+            --panel-dark: #FFFFFF;
+            --border: #D9E1EC;
+            --border-soft: #D9E1EC;
+            --text: #273449;
+            --heading: #172033;
+            --muted: #5F6B7A;
+            --subtle: #7A8798;
+            --purple: #3B66D9;
+            --purple2: #3158C5;
+            --green: #16A765;
+            --yellow: #D98B00;
+            --red: #DF5A5A;
         }
 
         html,
@@ -50,13 +52,7 @@
                 "Segoe UI",
                 sans-serif;
 
-            background:
-                radial-gradient(
-                    circle at 80% 0%,
-                    rgba(112, 92, 244, .10),
-                    transparent 28%
-                ),
-                var(--bg);
+            background: var(--bg);
 
             color: var(--text);
         }
@@ -93,12 +89,12 @@
             background:
                 linear-gradient(
                     180deg,
-                    #0d1422,
-                    #0b121e
+                    #111e33,
+                    #0d1726
                 );
 
             border-right:
-                1px solid #1d2a3f;
+                1px solid #1c2d44;
 
             z-index: 50;
         }
@@ -124,8 +120,8 @@
             background:
                 linear-gradient(
                     135deg,
-                    #675cf1,
-                    #8d5bef
+                    #3f66d8,
+                    #5b82ea
                 );
 
             font-size: 20px;
@@ -141,7 +137,7 @@
             padding:
                 0 11px 10px;
 
-            color: #62718a;
+            color: #7d8fa9;
 
             font-size: 10px;
             font-weight: 700;
@@ -168,7 +164,7 @@
             border-radius: 10px;
 
             background: transparent;
-            color: #aebbd0;
+            color: #9cadc0;
 
             cursor: pointer;
 
@@ -178,24 +174,14 @@
         }
 
         .nav-button:hover {
-            background: #151f31;
+            background: rgba(255, 255, 255, 0.06);
             color: white;
         }
 
         .nav-button.active {
             color: white;
-
-            background:
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .12
-                );
-
-            box-shadow:
-                inset 3px 0 0
-                var(--purple);
+            background: #3f66d8;
+            box-shadow: 0 4px 12px rgba(63, 102, 216, 0.28);
         }
 
         .nav-icon {
@@ -213,12 +199,12 @@
             padding: 11px;
 
             border:
-                1px solid var(--border);
+                1px solid #1c2d44;
 
             border-radius: 12px;
 
             background:
-                #101a2a;
+                #152238;
         }
 
         .sidebar-user-row {
@@ -239,8 +225,8 @@
             background:
                 linear-gradient(
                     135deg,
-                    #675cf1,
-                    #8d5bef
+                    #3f66d8,
+                    #5b82ea
                 );
 
             font-size: 11px;
@@ -349,7 +335,9 @@
             border-radius: 10px;
 
             background:
-                #101928;
+                #ffffff;
+
+            color: #172033;
 
             font-size: 11px;
         }
@@ -366,8 +354,8 @@
             background:
                 linear-gradient(
                     135deg,
-                    #675cf1,
-                    #8d5bef
+                    #3f66d8,
+                    #5b82ea
                 );
 
             font-size: 9px;
@@ -416,13 +404,8 @@
 
             border-radius: 14px;
 
-            background:
-                rgba(
-                    17,
-                    26,
-                    42,
-                    .88
-                );
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(24, 32, 51, 0.04);
         }
 
         .stat-label {
@@ -439,7 +422,7 @@
         }
 
         .total {
-            color: #b6aaff;
+            color: #3f66d8;
         }
 
         .pending {
@@ -460,13 +443,8 @@
 
             border-radius: 16px;
 
-            background:
-                rgba(
-                    15,
-                    24,
-                    40,
-                    .91
-                );
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(24, 32, 51, 0.04);
 
             overflow: hidden;
         }
@@ -502,28 +480,85 @@
 
         .secondary-button {
             padding:
-                8px 12px;
+                8px 14px;
 
             border:
-                1px solid #30405a;
+                1px solid #3B66D9;
 
             border-radius: 8px;
 
             background:
-                #162033;
+                #ffffff;
 
-            color: #cbd5e1;
+            color: #3B66D9;
 
             cursor: pointer;
 
             font-size: 10px;
 
             font-weight: 700;
+
+            transition: all 0.15s ease;
         }
 
         .secondary-button:hover {
             background:
-                #1c2a40;
+                #F0F4FF;
+
+            border-color: #3158C5;
+
+            color: #3158C5;
+        }
+
+        .switcher-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .switch-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 48px;
+            background: #ffffff;
+            border: 1px solid #D9E1EC;
+            border-radius: 12px;
+            width: 200px;
+            box-shadow: 0 10px 25px rgba(24, 32, 51, 0.08);
+            z-index: 1000;
+            padding: 6px;
+        }
+
+        .switch-dropdown-header {
+            padding: 8px 12px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #7A8798;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            border-bottom: 1px solid #EDF2F7;
+            margin-bottom: 4px;
+        }
+
+        .switch-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #172033;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .switch-item:hover {
+            background: #F0F4FF;
+            color: #3B66D9;
         }
 
         /* =====================================================
@@ -553,12 +588,13 @@
             padding: 15px;
 
             border:
-                1px solid #202e45;
+                1px solid #e3e8f2;
 
             border-radius: 12px;
 
             background:
-                #0d1625;
+                #ffffff;
+            box-shadow: 0 1px 3px rgba(24, 32, 51, 0.03);
         }
 
         .recent-title {
@@ -581,13 +617,13 @@
         .recent-assignment {
             margin-top: 8px;
 
-            color: #8e83ea;
+            color: #3f66d8;
 
             line-height: 1.5;
         }
 
         .recent-assignment strong {
-            color: #cbd5e1;
+            color: #182033;
         }
 
         .recent-footer {
@@ -620,38 +656,23 @@
 
         .status-Pending {
             background:
-                rgba(
-                    245,
-                    158,
-                    11,
-                    .11
-                );
+                #fff7e6;
 
-            color: #fbbf24;
+            color: #d98b00;
         }
 
         .status-Resolved {
             background:
-                rgba(
-                    34,
-                    197,
-                    94,
-                    .11
-                );
+                #eaf9f1;
 
-            color: #4ade80;
+            color: #16a765;
         }
 
         .status-Rejected {
             background:
-                rgba(
-                    239,
-                    68,
-                    68,
-                    .11
-                );
+                #feeceb;
 
-            color: #f87171;
+            color: #df5a5a;
         }
 
         /* =====================================================
@@ -682,7 +703,7 @@
 
             margin-bottom: 7px;
 
-            color: #d6deea;
+            color: #182033;
 
             font-size: 10px;
 
@@ -690,7 +711,7 @@
         }
 
         .required {
-            color: #a999ff;
+            color: #3f66d8;
         }
 
         input,
@@ -699,12 +720,12 @@
             width: 100%;
 
             background:
-                #0b1422;
+                #ffffff;
 
-            color: white;
+            color: #182033;
 
             border:
-                1px solid #2a3952;
+                1px solid #e3e8f2;
 
             border-radius: 9px;
 
@@ -742,22 +763,22 @@
 
         input::placeholder,
         textarea::placeholder {
-            color: #53627a;
+            color: #8a97a8;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
             border-color:
-                #665bed;
+                #3f66d8;
 
             box-shadow:
                 0 0 0 3px
                 rgba(
+                    63,
                     102,
-                    91,
-                    237,
-                    .10
+                    216,
+                    .12
                 );
         }
 
@@ -775,27 +796,11 @@
                 17px;
 
             border:
-                1px solid
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .28
-                );
+                1px solid #e3e8f2;
 
             border-radius: 13px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(
-                        112,
-                        92,
-                        244,
-                        .07
-                    ),
-                    #0e1726
-                );
+            background: #f8fafc;
         }
 
         .assignment-card::before {
@@ -809,12 +814,7 @@
 
             width: 3px;
 
-            background:
-                linear-gradient(
-                    180deg,
-                    #6c5cf2,
-                    #8c5cf0
-                );
+            background: #3f66d8;
 
             border-radius:
                 13px 0 0 13px;
@@ -851,15 +851,8 @@
 
             border-radius: 9px;
 
-            background:
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .13
-                );
-
-            color: #b0a4ff;
+            background: #eef3ff;
+            color: #3f66d8;
         }
 
         .assignment-heading h3 {
@@ -881,14 +874,14 @@
                 5px 8px;
 
             border:
-                1px solid #2a3850;
+                1px solid #e3e8f2;
 
             border-radius: 999px;
 
             background:
-                #101a2a;
+                #ffffff;
 
-            color: #718199;
+            color: #68738a;
 
             font-size: 9px;
 
@@ -896,23 +889,9 @@
         }
 
         .assignment-badge.active {
-            color: #b5aaff;
-
-            border-color:
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .30
-                );
-
-            background:
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .08
-                );
+            color: #3f66d8;
+            border-color: #3f66d8;
+            background: #eef3ff;
         }
 
         .assignment-label {
@@ -920,7 +899,7 @@
 
             margin-bottom: 7px;
 
-            color: #d4ddea;
+            color: #182033;
 
             font-size: 10px;
 
@@ -938,10 +917,10 @@
             padding-right: 40px;
 
             border:
-                1px solid #34435d;
+                1px solid #e3e8f2;
 
             background:
-                #0b1422;
+                #ffffff;
 
             font-size: 11px;
 
@@ -950,12 +929,12 @@
 
         .assignment-select:hover {
             border-color:
-                #4b5c78;
+                #3f66d8;
         }
 
         .assignment-select:focus {
             border-color:
-                #6c5cf2;
+                #3f66d8;
         }
 
         .assignment-left-icon {
@@ -967,7 +946,7 @@
             transform:
                 translateY(-50%);
 
-            color: #8d80f3;
+            color: #3f66d8;
 
             pointer-events: none;
 
@@ -983,7 +962,7 @@
             transform:
                 translateY(-50%);
 
-            color: #6e7e97;
+            color: #68738a;
 
             pointer-events: none;
 
@@ -993,7 +972,7 @@
         .assignment-help {
             margin-top: 7px;
 
-            color: #60708a;
+            color: #68738a;
 
             font-size: 9px;
         }
@@ -1084,7 +1063,7 @@
         }
 
         .form-note {
-            color: #61718a;
+            color: #68738a;
 
             font-size: 9px;
 
@@ -1101,11 +1080,7 @@
             border-radius: 9px;
 
             background:
-                linear-gradient(
-                    135deg,
-                    #665bed,
-                    #7951eb
-                );
+                #3B66D9;
 
             color: white;
 
@@ -1116,16 +1091,21 @@
             cursor: pointer;
 
             box-shadow:
-                0 10px 25px
+                0 4px 12px
                 rgba(
-                    112,
-                    92,
-                    244,
-                    .18
+                    59,
+                    102,
+                    217,
+                    .25
                 );
+
+            transition: all 0.15s ease;
         }
 
         .submit-button:hover {
+            background:
+                #3158C5;
+
             transform:
                 translateY(-1px);
         }
@@ -1193,9 +1173,11 @@
             padding:
                 10px 18px;
 
-            color: #64748b;
+            color: #5F6B7A;
 
             font-size: 9px;
+
+            font-weight: 600;
         }
 
         .table-wrapper {
@@ -1214,12 +1196,12 @@
                 12px 14px;
 
             background:
-                #0c1524;
+                #111E33;
 
-            color: #65758f;
+            color: #FFFFFF;
 
             border-bottom:
-                1px solid #1c2940;
+                1px solid #1C2D44;
 
             font-size: 8px;
 
@@ -1229,20 +1211,30 @@
                 uppercase;
 
             letter-spacing:
-                .07em;
+                .08em;
 
             white-space:
                 nowrap;
+
+            font-weight: 700;
+        }
+
+        tbody {
+            background: #FFFFFF;
+        }
+
+        tbody tr:hover {
+            background: #F0F4FF;
         }
 
         td {
             padding:
                 12px 14px;
 
-            color: #c5cfdd;
+            color: #273449;
 
             border-bottom:
-                1px solid #18253a;
+                1px solid #D9E1EC;
 
             font-size: 10px;
 
@@ -1250,8 +1242,34 @@
                 middle;
         }
 
+        td:nth-child(1) {
+            color: #5F6B7A;
+            font-weight: 600;
+            font-family: Consolas, monospace;
+        }
+
+        td:nth-child(2) {
+            color: #172033;
+            font-weight: 700;
+        }
+
+        td:nth-child(3) {
+            color: #5F6B7A;
+            font-weight: 500;
+        }
+
+        td:nth-child(4) {
+            color: #5F6B7A;
+            font-weight: 600;
+        }
+
+        td:nth-child(6) {
+            color: #5F6B7A;
+            font-weight: 500;
+        }
+
         .assigned-person {
-            color: #dbe4ef;
+            color: #172033;
 
             font-weight: 600;
         }
@@ -1259,30 +1277,40 @@
         .assigned-role {
             margin-top: 2px;
 
-            color: #737f97;
+            color: #5F6B7A;
 
             font-size: 8px;
         }
 
         .small-button {
             padding:
-                6px 9px;
+                6px 12px;
 
             border:
-                1px solid #30405a;
+                1px solid #3B66D9;
 
             border-radius: 7px;
 
             background:
-                #162033;
+                #ffffff;
 
-            color: #cbd5e1;
+            color: #3B66D9;
 
             cursor: pointer;
 
             font-size: 9px;
 
             font-weight: 700;
+
+            transition: all 0.15s ease;
+        }
+
+        .small-button:hover {
+            background: #F0F4FF;
+
+            border-color: #3158C5;
+
+            color: #3158C5;
         }
 
         /* =====================================================
@@ -1306,10 +1334,10 @@
 
             background:
                 rgba(
-                    3,
-                    8,
-                    18,
-                    .80
+                    24,
+                    32,
+                    51,
+                    .45
                 );
 
             backdrop-filter:
@@ -1334,12 +1362,13 @@
             overflow-y: auto;
 
             background:
-                #101a2b;
+                #ffffff;
 
             border:
-                1px solid #30405a;
+                1px solid #e3e8f2;
 
             border-radius: 16px;
+            box-shadow: 0 12px 36px rgba(24, 32, 51, 0.15);
         }
 
         .modal-header {
@@ -1354,7 +1383,7 @@
                 space-between;
 
             border-bottom:
-                1px solid #1e2b42;
+                1px solid #e3e8f2;
         }
 
         .modal-title {
@@ -1366,7 +1395,7 @@
         .modal-subtitle {
             margin-top: 4px;
 
-            color: #687892;
+            color: #68738a;
 
             font-size: 9px;
         }
@@ -1380,14 +1409,14 @@
             place-items: center;
 
             border:
-                1px solid #30405a;
+                1px solid #e3e8f2;
 
             border-radius: 8px;
 
             background:
-                #162033;
+                #ffffff;
 
-            color: white;
+            color: #68738a;
 
             cursor: pointer;
 
@@ -1412,12 +1441,12 @@
                 13px;
 
             border:
-                1px solid #202e45;
+                1px solid #e3e8f2;
 
             border-radius: 10px;
 
             background:
-                #0d1625;
+                #f8fafc;
         }
 
         .detail-box.full {
@@ -1428,7 +1457,7 @@
         .detail-label {
             margin-bottom: 6px;
 
-            color: #62718a;
+            color: #7d8fa9;
 
             font-size: 8px;
 
@@ -1437,7 +1466,7 @@
         }
 
         .detail-value {
-            color: #dbe4ef;
+            color: #182033;
 
             font-size: 11px;
 
@@ -1460,7 +1489,7 @@
                 flex-end;
 
             border-top:
-                1px solid #1e2b42;
+                1px solid #e3e8f2;
         }
 
         .state {
@@ -1470,9 +1499,533 @@
             text-align:
                 center;
 
-            color: #61718a;
+            color: #68738a;
 
             font-size: 10px;
+        }
+
+        /* =====================================================
+           DASHBOARD ENHANCEMENTS: QUICK ACTIONS
+        ====================================================== */
+
+        .quick-actions-panel {
+            margin-top: 19px;
+        }
+
+        .quick-actions-grid {
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .quick-action-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 3px rgba(24, 32, 51, 0.02);
+            font-family: inherit;
+        }
+
+        .quick-action-card:hover {
+            border-color: #3B66D9;
+            background: #F8FAFD;
+            box-shadow: 0 4px 12px rgba(59, 102, 217, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .qa-icon-wrap {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+        }
+
+        .qa-icon-blue {
+            background: #EEF4FF;
+            color: #3B66D9;
+        }
+
+        .qa-icon-green {
+            background: #F0FBF7;
+            color: #16A765;
+        }
+
+        .qa-icon-amber {
+            background: #FFF7E6;
+            color: #D98B00;
+        }
+
+        .qa-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .qa-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--heading);
+            margin-bottom: 3px;
+        }
+
+        .qa-desc {
+            font-size: 10px;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+
+        .qa-arrow {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--subtle);
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .quick-action-card:hover .qa-arrow {
+            color: #3B66D9;
+            transform: translateX(2px);
+        }
+
+        /* =====================================================
+           DASHBOARD 2-COLUMN GRID (ACTIVITY & OVERVIEW)
+        ====================================================== */
+
+        .dashboard-grid-2col {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 15px;
+            margin-top: 19px;
+            align-items: stretch;
+        }
+
+        .header-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 9px;
+            background: #F0F4FF;
+            color: #3B66D9;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* =====================================================
+           MY DEFECT ACTIVITY LIST
+        ====================================================== */
+
+        .activity-list {
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .activity-empty {
+            padding: 36px 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .activity-item:hover {
+            background: #F8FAFD;
+            border-color: #C7D4E6;
+        }
+
+        .activity-icon {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .act-badge-pending {
+            background: #FFF7E6;
+            color: #D98B00;
+        }
+
+        .act-badge-resolved {
+            background: #EAF9F1;
+            color: #16A765;
+        }
+
+        .act-badge-rejected {
+            background: #FEECEB;
+            color: #DF5A5A;
+        }
+
+        .activity-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .activity-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--heading);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+            color: var(--muted);
+            line-height: 1.4;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            padding: 1px 6px;
+            background: #F1F4F9;
+            color: #475569;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 8.5px;
+        }
+
+        .meta-tag.priority-High,
+        .meta-tag.priority-Critical {
+            background: #FEECEB;
+            color: #DF5A5A;
+        }
+
+        .meta-tag.priority-Medium {
+            background: #FFF7E6;
+            color: #D98B00;
+        }
+
+        .meta-tag.priority-Low {
+            background: #EAF9F1;
+            color: #16A765;
+        }
+
+        .activity-assigned {
+            margin-top: 4px;
+            font-size: 9.5px;
+            color: #3B66D9;
+        }
+
+        .activity-assigned strong {
+            color: var(--heading);
+        }
+
+        .activity-action {
+            margin-left: 6px;
+        }
+
+        /* =====================================================
+           STATUS OVERVIEW & DISTRIBUTION
+        ====================================================== */
+
+        .overview-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .status-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .status-card-mini {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            background: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(24, 32, 51, 0.02);
+        }
+
+        .status-card-mini.card-total {
+            border-left: 3px solid #3B66D9;
+        }
+
+        .status-card-mini.card-pending {
+            border-left: 3px solid #D98B00;
+        }
+
+        .status-card-mini.card-resolved {
+            border-left: 3px solid #16A765;
+        }
+
+        .status-card-mini.card-rejected {
+            border-left: 3px solid #DF5A5A;
+        }
+
+        .sc-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .sc-value {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 4px 0 2px;
+            line-height: 1.1;
+        }
+
+        .card-total .sc-value { color: #3B66D9; }
+        .card-pending .sc-value { color: #D98B00; }
+        .card-resolved .sc-value { color: #16A765; }
+        .card-rejected .sc-value { color: #DF5A5A; }
+
+        .sc-sub {
+            font-size: 8.5px;
+            color: var(--subtle);
+        }
+
+        /* Distribution bar */
+        .distribution-section {
+            padding-top: 14px;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .dist-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .dist-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--heading);
+        }
+
+        .dist-summary {
+            font-size: 9.5px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .dist-bar {
+            height: 9px;
+            border-radius: 999px;
+            background: #EAEFF6;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .dist-bar-seg {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .dist-bar-seg.seg-pending { background: #D98B00; }
+        .dist-bar-seg.seg-resolved { background: #16A765; }
+        .dist-bar-seg.seg-rejected { background: #DF5A5A; }
+        .dist-bar-seg.seg-empty { background: #EAEFF6; }
+
+        .dist-legend {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+            color: var(--text);
+        }
+
+        .legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* =====================================================
+           ASSIGNMENT SUMMARY
+        ====================================================== */
+
+        .assignment-panel {
+            margin-top: 19px;
+        }
+
+        .assignment-summary-body {
+            padding: 18px 20px;
+        }
+
+        .assignment-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .assign-role-card {
+            padding: 13px 15px;
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            background: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(24, 32, 51, 0.02);
+        }
+
+        .arc-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 10px;
+        }
+
+        .arc-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+        }
+
+        .arc-icon-blue { background: #EEF4FF; color: #3B66D9; }
+        .arc-icon-green { background: #F0FBF7; color: #16A765; }
+        .arc-icon-purple { background: #F5F0FF; color: #7C3AED; }
+        .arc-icon-amber { background: #FFF7E6; color: #D98B00; }
+
+        .arc-role {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--heading);
+            line-height: 1.2;
+        }
+
+        .arc-person {
+            font-size: 9px;
+            color: var(--muted);
+            line-height: 1.2;
+        }
+
+        .arc-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            margin-bottom: 6px;
+        }
+
+        .arc-count {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--heading);
+            line-height: 1;
+        }
+
+        .arc-label {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        .arc-status {
+            font-size: 8.5px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.active { background: #16A765; }
+        .status-indicator.inactive { background: #B4BFCD; }
+        .status-indicator.pending { background: #D98B00; }
+
+        .assign-table-wrap {
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            overflow-x: auto;
+            background: #FFFFFF;
+        }
+
+        .compact-assign-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .compact-assign-table th {
+            text-align: left;
+            padding: 9px 12px;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: #F8FAFD;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .compact-assign-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .compact-assign-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .compact-assign-table tr:hover td {
+            background: #FAFBFD;
         }
 
         /* =====================================================
@@ -1484,6 +2037,18 @@
             .recent-grid {
                 grid-template-columns:
                     1fr;
+            }
+
+            .dashboard-grid-2col {
+                grid-template-columns: 1fr;
+            }
+
+            .assignment-cards-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
             }
 
         }
@@ -1552,6 +2117,16 @@
             }
 
             .stats {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .assignment-cards-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .status-cards-grid {
                 grid-template-columns:
                     1fr;
             }
@@ -1779,20 +2354,80 @@
             </div>
 
 
-            <div class="top-user">
+            <div style="display:flex; align-items:center; gap:12px;">
 
 
-                <div
-                    id="topAvatar"
-                    class="top-avatar"
-                >
-                    S
+                <div class="switcher-container">
+
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="switchDropdownBtn"
+                        style="height: 38px; padding: 0 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px;"
+                    >
+                        <span>Switch</span> ▾
+                    </button>
+
+
+                    <div
+                        class="switch-dropdown"
+                        id="switchDropdown"
+                    >
+                        <div class="switch-dropdown-header">
+                            Switch Role
+                        </div>
+                        <button
+                            class="switch-item"
+                            data-role="admin"
+                            type="button"
+                        >
+                            Admin
+                        </button>
+                        <button
+                            class="switch-item"
+                            data-role="tester"
+                            type="button"
+                        >
+                            Tester
+                        </button>
+                        <button
+                            class="switch-item"
+                            data-role="developer"
+                            type="button"
+                        >
+                            Developer
+                        </button>
+                        <button
+                            class="switch-item"
+                            data-role="senior_dev"
+                            type="button"
+                        >
+                            Senior Developer
+                        </button>
+                    </div>
+
+
                 </div>
 
 
-                <span id="topUserName">
-                    Soma Sekhar
-                </span>
+                <div class="top-user">
+
+
+                    <div
+                        id="topAvatar"
+                        class="top-avatar"
+                    >
+                        S
+                    </div>
+
+
+                    <span id="topUserName">
+                        Soma Sekhar
+                    </span>
+
+
+                </div>
 
 
             </div>
@@ -1905,6 +2540,299 @@
             </div>
 
 
+            <!-- =================================================
+                 1. QUICK ACTIONS
+            ================================================== -->
+            <div class="panel quick-actions-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Instant shortcuts to report defects, inspect records, and refresh data.</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions-grid">
+
+                    <button
+                        type="button"
+                        class="quick-action-card"
+                        id="qaReportDefect"
+                        onclick="changeView('report')"
+                    >
+                        <div class="qa-icon-wrap qa-icon-blue">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="qa-content">
+                            <div class="qa-title">Report New Defect</div>
+                            <div class="qa-desc">Log a new bug report in your workspace</div>
+                        </div>
+                        <span class="qa-arrow">→</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="quick-action-card"
+                        id="qaMyDefects"
+                        onclick="changeView('defects')"
+                    >
+                        <div class="qa-icon-wrap qa-icon-green">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div class="qa-content">
+                            <div class="qa-title">My Defects</div>
+                            <div class="qa-desc">Search, filter, and track all submitted issues</div>
+                        </div>
+                        <span class="qa-arrow">→</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="quick-action-card"
+                        id="qaRefreshData"
+                        onclick="loadDefects()"
+                    >
+                        <div class="qa-icon-wrap qa-icon-amber">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                        </div>
+                        <div class="qa-content">
+                            <div class="qa-title">Refresh Data</div>
+                            <div class="qa-desc">Sync the latest defect statuses and assignments</div>
+                        </div>
+                        <span class="qa-arrow">↻</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 2, 3, 5. MY DEFECT ACTIVITY & DEFECT STATUS OVERVIEW / DISTRIBUTION
+            ================================================== -->
+            <div class="dashboard-grid-2col">
+
+                <!-- 3. MY DEFECT ACTIVITY -->
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h2>My Defect Activity</h2>
+                            <p>Recent defect submissions, resolutions, and status updates.</p>
+                        </div>
+                        <span id="activityCountBadge" class="header-pill">0 Updates</span>
+                    </div>
+
+                    <div id="defectActivityList" class="activity-list">
+                        <!-- Populated dynamically via JS from allDefects -->
+                    </div>
+
+                </div>
+
+
+                <!-- 2 & 5. DEFECT STATUS OVERVIEW & DISTRIBUTION -->
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h2>Defect Status Overview</h2>
+                            <p>Real-time lifecycle breakdown across your defects.</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-body">
+
+                        <!-- 2. Status Overview Mini Cards -->
+                        <div class="status-cards-grid">
+
+                            <div class="status-card-mini card-total">
+                                <div class="sc-label">Total Defects</div>
+                                <div class="sc-value" id="overviewTotal">0</div>
+                                <div class="sc-sub">All logged reports</div>
+                            </div>
+
+                            <div class="status-card-mini card-pending">
+                                <div class="sc-label">Pending</div>
+                                <div class="sc-value" id="overviewPending">0</div>
+                                <div class="sc-sub">In progress or review</div>
+                            </div>
+
+                            <div class="status-card-mini card-resolved">
+                                <div class="sc-label">Resolved</div>
+                                <div class="sc-value" id="overviewResolved">0</div>
+                                <div class="sc-sub">Successfully fixed</div>
+                            </div>
+
+                            <div class="status-card-mini card-rejected">
+                                <div class="sc-label">Rejected</div>
+                                <div class="sc-value" id="overviewRejected">0</div>
+                                <div class="sc-sub">Declined or closed</div>
+                            </div>
+
+                        </div>
+
+                        <!-- 5. Visual Status Distribution -->
+                        <div class="distribution-section">
+
+                            <div class="dist-header">
+                                <span class="dist-title">Status Distribution</span>
+                                <span class="dist-summary" id="distSummaryText">0 Total</span>
+                            </div>
+
+                            <div class="dist-bar" id="distBar">
+                                <div class="dist-bar-seg seg-pending" id="segPending" style="width: 0%;" title="Pending"></div>
+                                <div class="dist-bar-seg seg-resolved" id="segResolved" style="width: 0%;" title="Resolved"></div>
+                                <div class="dist-bar-seg seg-rejected" id="segRejected" style="width: 0%;" title="Rejected"></div>
+                                <div class="dist-bar-seg seg-empty" id="segEmpty" style="width: 100%;" title="Empty"></div>
+                            </div>
+
+                            <div class="dist-legend">
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #D98B00;"></span>
+                                    <span class="legend-text">Pending: <strong id="distPendingPct">0%</strong> (<span id="distPendingCnt">0</span>)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #16A765;"></span>
+                                    <span class="legend-text">Resolved: <strong id="distResolvedPct">0%</strong> (<span id="distResolvedCnt">0</span>)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #DF5A5A;"></span>
+                                    <span class="legend-text">Rejected: <strong id="distRejectedPct">0%</strong> (<span id="distRejectedCnt">0</span>)</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 4. ASSIGNMENT SUMMARY
+            ================================================== -->
+            <div class="panel assignment-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Assignment Summary</h2>
+                        <p>Current engineering and QA assignments for your reported defects.</p>
+                    </div>
+                </div>
+
+                <div class="assignment-summary-body">
+
+                    <div class="assignment-cards-grid">
+
+                        <div class="assign-role-card">
+                            <div class="arc-header">
+                                <div class="arc-icon arc-icon-blue">💻</div>
+                                <div>
+                                    <div class="arc-role">Assigned Developer</div>
+                                    <div class="arc-person">Sasuke</div>
+                                </div>
+                            </div>
+                            <div class="arc-stat">
+                                <span class="arc-count" id="assignDevCount">0</span>
+                                <span class="arc-label">defects assigned</span>
+                            </div>
+                            <div class="arc-status" id="assignDevStatus">
+                                <span class="status-indicator inactive"></span> No active assignments
+                            </div>
+                        </div>
+
+                        <div class="assign-role-card">
+                            <div class="arc-header">
+                                <div class="arc-icon arc-icon-green">🧪</div>
+                                <div>
+                                    <div class="arc-role">Assigned Tester</div>
+                                    <div class="arc-person">Hinata</div>
+                                </div>
+                            </div>
+                            <div class="arc-stat">
+                                <span class="arc-count" id="assignTesterCount">0</span>
+                                <span class="arc-label">defects assigned</span>
+                            </div>
+                            <div class="arc-status" id="assignTesterStatus">
+                                <span class="status-indicator inactive"></span> No active assignments
+                            </div>
+                        </div>
+
+                        <div class="assign-role-card">
+                            <div class="arc-header">
+                                <div class="arc-icon arc-icon-purple">⚡</div>
+                                <div>
+                                    <div class="arc-role">Assigned Senior Developer</div>
+                                    <div class="arc-person">Itachi</div>
+                                </div>
+                            </div>
+                            <div class="arc-stat">
+                                <span class="arc-count" id="assignSeniorCount">0</span>
+                                <span class="arc-label">defects assigned</span>
+                            </div>
+                            <div class="arc-status" id="assignSeniorStatus">
+                                <span class="status-indicator inactive"></span> No active assignments
+                            </div>
+                        </div>
+
+                        <div class="assign-role-card">
+                            <div class="arc-header">
+                                <div class="arc-icon arc-icon-amber">📋</div>
+                                <div>
+                                    <div class="arc-role">Not Assigned</div>
+                                    <div class="arc-person">Awaiting Triage</div>
+                                </div>
+                            </div>
+                            <div class="arc-stat">
+                                <span class="arc-count" id="assignNoneCount">0</span>
+                                <span class="arc-label">defects unassigned</span>
+                            </div>
+                            <div class="arc-status" id="assignNoneStatus">
+                                <span class="status-indicator inactive"></span> None
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Defect Assignment Table -->
+                    <div class="assign-table-wrap" id="assignTableWrap">
+                        <table class="compact-assign-table">
+                            <thead>
+                                <tr>
+                                    <th>Defect ID</th>
+                                    <th>Title</th>
+                                    <th>Priority</th>
+                                    <th>Assigned Role</th>
+                                    <th>Current Status</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="assignTableBody">
+                                <!-- Populated dynamically from allDefects -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
         </section>
 
 
@@ -1931,7 +2859,7 @@
                         </h2>
 
                         <p>
-                            Submit an issue and assign it to the responsible person.
+                            Submit an issue for review.
                         </p>
 
                     </div>
@@ -1953,6 +2881,28 @@
 
 
                         <div class="form-grid">
+
+
+                            <!-- DEFECT ID -->
+
+                            <div class="form-group">
+
+
+                                <label for="defectId">
+                                    Defect ID
+                                    <span class="required">*</span>
+                                </label>
+
+
+                                <input
+                                    id="defectId"
+                                    type="text"
+                                    placeholder="Enter defect ID"
+                                    required
+                                >
+
+
+                            </div>
 
 
                             <!-- TITLE -->
@@ -2094,117 +3044,6 @@
                                     maxlength="150"
                                     placeholder="e.g. Windows 11, Chrome"
                                 >
-
-
-                            </div>
-
-
-                            <!-- =================================================
-                                 ASSIGNMENT
-                            ================================================== -->
-
-                            <div class="assignment-card">
-
-
-                                <div class="assignment-header">
-
-
-                                    <div class="assignment-heading">
-
-
-                                        <div class="assignment-icon">
-                                            ◉
-                                        </div>
-
-
-                                        <div>
-
-                                            <h3>
-                                                Assign Defect
-                                            </h3>
-
-                                            <p>
-                                                Choose the person responsible for resolving this issue.
-                                            </p>
-
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div
-                                        id="assignmentBadge"
-                                        class="assignment-badge"
-                                    >
-                                        ● Unassigned
-                                    </div>
-
-
-                                </div>
-
-
-                                <label
-                                    for="assignedRole"
-                                    class="assignment-label"
-                                >
-                                    Assign To
-                                </label>
-
-
-                                <div class="assignment-select-wrap">
-
-
-                                    <span class="assignment-left-icon">
-                                        ◉
-                                    </span>
-
-
-                                    <select
-                                        id="assignedRole"
-                                        class="assignment-select"
-                                    >
-
-                                        <!-- PLACEHOLDER -->
-
-                                        <option value="">
-                                            Unassigned
-                                        </option>
-
-
-                                        <!-- ASSIGNABLE PEOPLE + ROLES -->
-
-                                        <option value="admin">
-                                            System Administrator (Admin)
-                                        </option>
-
-                                        <option value="senior_dev">
-                                            John Doe (Senior Developer)
-                                        </option>
-
-                                        <option value="developer">
-                                            Alex Rivera (Developer)
-                                        </option>
-
-                                        <option value="tester">
-                                            Bruce Wayne (Tester)
-                                        </option>
-
-
-                                    </select>
-
-
-                                    <span class="assignment-right-icon">
-                                        ▼
-                                    </span>
-
-
-                                </div>
-
-
-                                <div class="assignment-help">
-                                    Assignment is optional. Select a responsible person before submitting the defect.
-                                </div>
 
 
                             </div>
@@ -2503,10 +3342,6 @@
 
                                 <th>
                                     Status
-                                </th>
-
-                                <th>
-                                    Assigned To
                                 </th>
 
                                 <th>
@@ -2837,6 +3672,10 @@
 
     let allDefects = [];
 
+    let defectsLoading = false;
+
+    let defectsLoaded = false;
+
 
     try {
 
@@ -2910,16 +3749,22 @@
     const assignmentLabels = {
 
         admin:
-            "System Administrator (Admin)",
+            "Naruto (Admin)",
 
         senior_dev:
-            "John Doe (Senior Developer)",
+            "Itachi (Senior Developer)",
+
+        senior_developer:
+            "Itachi (Senior Developer)",
+
+        "senior developer":
+            "Itachi (Senior Developer)",
 
         developer:
-            "Alex Rivera (Developer)",
+            "Sasuke (Developer)",
 
         tester:
-            "Bruce Wayne (Tester)"
+            "Hinata (Tester)"
 
     };
 
@@ -3002,23 +3847,36 @@
     ) {
 
         if (
-            defect.assigned_display
+            defect.assigned_display &&
+            defect.assigned_display !== "Unassigned"
         ) {
 
-            return defect.assigned_display;
+            let display = String(defect.assigned_display);
+            display = display
+                .replace(/Alex Rivera/g, "Sasuke")
+                .replace(/Bruce Wayne/g, "Hinata")
+                .replace(/John Doe/g, "Itachi")
+                .replace(/System Administrator/g, "Naruto");
+            return display;
 
         }
 
 
+        const role = String(
+            defect.assigned_role || ""
+        )
+            .trim()
+            .toLowerCase();
+
         if (
-            defect.assigned_role &&
+            role &&
             assignmentLabels[
-                defect.assigned_role
+                role
             ]
         ) {
 
             return assignmentLabels[
-                defect.assigned_role
+                role
             ];
 
         }
@@ -3028,16 +3886,22 @@
             defect.assigned_user_name
         ) {
 
+            let name = String(defect.assigned_user_name)
+                .replace(/Alex Rivera/g, "Sasuke")
+                .replace(/Bruce Wayne/g, "Hinata")
+                .replace(/John Doe/g, "Itachi")
+                .replace(/System Administrator/g, "Naruto");
+
             if (
                 defect.assigned_role_name
             ) {
 
-                return `${defect.assigned_user_name} (${defect.assigned_role_name})`;
+                return `${name} (${defect.assigned_role_name})`;
 
             }
 
 
-            return defect.assigned_user_name;
+            return name;
 
         }
 
@@ -3291,6 +4155,8 @@
 
             clearMessage();
 
+            updateNextDefectId(false);
+
         }
 
 
@@ -3331,9 +4197,10 @@
         );
 
 
-    assignedRole.addEventListener(
-        "change",
-        function () {
+    if (assignedRole && assignmentBadge) {
+        assignedRole.addEventListener(
+            "change",
+            function () {
 
             const selected =
                 assignedRole.value;
@@ -3370,8 +4237,9 @@
                 "active"
             );
 
-        }
-    );
+            }
+        );
+    }
 
 
     // =========================================================
@@ -3383,6 +4251,22 @@
         if (!currentUser) {
             return;
         }
+
+        defectsLoading = true;
+
+        defectsLoaded = false;
+
+        document.getElementById(
+            "tableLoading"
+        ).style.display = "block";
+
+        document.getElementById(
+            "tableEmpty"
+        ).style.display = "none";
+
+        document.getElementById(
+            "tableWrapper"
+        ).style.display = "none";
 
 
         try {
@@ -3396,12 +4280,18 @@
             allDefects =
                 await response.json();
 
+            defectsLoaded = true;
+
 
             updateStats();
 
             renderRecent();
 
+            renderDashboardEnhancements();
+
             renderTable();
+
+            updateNextDefectId(false);
 
         } catch (error) {
 
@@ -3409,6 +4299,12 @@
                 "Failed to load defects:",
                 error
             );
+
+        } finally {
+
+            defectsLoading = false;
+
+            renderTable();
 
         }
 
@@ -3453,6 +4349,294 @@
             "resolvedCount"
         ).textContent =
             resolved;
+
+    }
+
+
+    // =========================================================
+    // DASHBOARD ENHANCEMENTS: OVERVIEW, ACTIVITY, ASSIGNMENTS
+    // =========================================================
+
+    function renderDashboardEnhancements() {
+
+        if (!allDefects) {
+            return;
+        }
+
+        const total = allDefects.length;
+
+        const pending = allDefects.filter(
+            d => d.status === "Pending"
+        ).length;
+
+        const resolved = allDefects.filter(
+            d => d.status === "Resolved"
+        ).length;
+
+        const rejected = allDefects.filter(
+            d => d.status === "Rejected"
+        ).length;
+
+
+        // 1. Defect Status Overview Mini Cards
+        const elTotal = document.getElementById("overviewTotal");
+        const elPending = document.getElementById("overviewPending");
+        const elResolved = document.getElementById("overviewResolved");
+        const elRejected = document.getElementById("overviewRejected");
+
+        if (elTotal) elTotal.textContent = total;
+        if (elPending) elPending.textContent = pending;
+        if (elResolved) elResolved.textContent = resolved;
+        if (elRejected) elRejected.textContent = rejected;
+
+
+        // 2. Visual Status Distribution Bar & Legend
+        const distSummaryText = document.getElementById("distSummaryText");
+        const segPending = document.getElementById("segPending");
+        const segResolved = document.getElementById("segResolved");
+        const segRejected = document.getElementById("segRejected");
+        const segEmpty = document.getElementById("segEmpty");
+
+        const distPendingPct = document.getElementById("distPendingPct");
+        const distPendingCnt = document.getElementById("distPendingCnt");
+        const distResolvedPct = document.getElementById("distResolvedPct");
+        const distResolvedCnt = document.getElementById("distResolvedCnt");
+        const distRejectedPct = document.getElementById("distRejectedPct");
+        const distRejectedCnt = document.getElementById("distRejectedCnt");
+
+        if (distSummaryText) {
+            distSummaryText.textContent = `${total} Total Defect${total === 1 ? "" : "s"}`;
+        }
+
+        if (total > 0) {
+            const pPct = Math.round((pending / total) * 100);
+            const rPct = Math.round((resolved / total) * 100);
+            const jPct = Math.max(0, 100 - pPct - rPct);
+
+            if (segPending) segPending.style.width = `${(pending / total) * 100}%`;
+            if (segResolved) segResolved.style.width = `${(resolved / total) * 100}%`;
+            if (segRejected) segRejected.style.width = `${(rejected / total) * 100}%`;
+            if (segEmpty) segEmpty.style.width = "0%";
+
+            if (distPendingPct) distPendingPct.textContent = `${pPct}%`;
+            if (distPendingCnt) distPendingCnt.textContent = pending;
+            if (distResolvedPct) distResolvedPct.textContent = `${rPct}%`;
+            if (distResolvedCnt) distResolvedCnt.textContent = resolved;
+            if (distRejectedPct) distRejectedPct.textContent = `${jPct}%`;
+            if (distRejectedCnt) distRejectedCnt.textContent = rejected;
+        } else {
+            if (segPending) segPending.style.width = "0%";
+            if (segResolved) segResolved.style.width = "0%";
+            if (segRejected) segRejected.style.width = "0%";
+            if (segEmpty) segEmpty.style.width = "100%";
+
+            if (distPendingPct) distPendingPct.textContent = "0%";
+            if (distPendingCnt) distPendingCnt.textContent = "0";
+            if (distResolvedPct) distResolvedPct.textContent = "0%";
+            if (distResolvedCnt) distResolvedCnt.textContent = "0";
+            if (distRejectedPct) distRejectedPct.textContent = "0%";
+            if (distRejectedCnt) distRejectedCnt.textContent = "0";
+        }
+
+
+        // 3. My Defect Activity
+        const activityContainer = document.getElementById("defectActivityList");
+        const activityBadge = document.getElementById("activityCountBadge");
+
+        if (activityContainer) {
+            activityContainer.innerHTML = "";
+
+            const sorted = allDefects.slice().sort(
+                (a, b) => Number(b.id) - Number(a.id)
+            );
+            const recentEvents = sorted.slice(0, 4);
+
+            if (activityBadge) {
+                activityBadge.textContent = `${sorted.length} Update${sorted.length === 1 ? "" : "s"}`;
+            }
+
+            if (!recentEvents.length) {
+                activityContainer.innerHTML = `
+                    <div class="activity-empty">
+                        <p>No defect activity recorded yet.</p>
+                        <span style="font-size: 10px; color: var(--muted); margin-top: 4px; display: block;">Report a defect using Quick Actions above to begin tracking.</span>
+                    </div>
+                `;
+            } else {
+                recentEvents.forEach(defect => {
+                    let badgeClass = "act-badge-pending";
+                    let actionLabel = "Recently Submitted";
+                    let iconChar = "●";
+
+                    if (defect.status === "Resolved") {
+                        badgeClass = "act-badge-resolved";
+                        actionLabel = "Recently Resolved";
+                        iconChar = "✓";
+                    } else if (defect.status === "Rejected") {
+                        badgeClass = "act-badge-rejected";
+                        actionLabel = "Recently Rejected";
+                        iconChar = "✕";
+                    }
+
+                    const rawAssigned = getAssignmentDisplay(defect);
+                    const assignedDisplay = (rawAssigned === "Unassigned" || !rawAssigned)
+                        ? "Not Assigned"
+                        : rawAssigned;
+
+                    const item = document.createElement("div");
+                    item.className = "activity-item";
+                    item.innerHTML = `
+                        <div class="activity-icon ${badgeClass}" title="${actionLabel}">
+                            ${iconChar}
+                        </div>
+                        <div class="activity-body">
+                            <div class="activity-top-row">
+                                <span class="activity-title" title="${escapeHtml(defect.title)}">${escapeHtml(defect.title)}</span>
+                                <span class="status status-${escapeHtml(defect.status)}">${escapeHtml(defect.status)}</span>
+                            </div>
+                            <div class="activity-meta">
+                                <span>#${defect.id}</span>
+                                <span>•</span>
+                                <span class="meta-tag">${escapeHtml(defect.category || "General")}</span>
+                                <span>•</span>
+                                <span class="meta-tag priority-${escapeHtml(defect.priority || "Medium")}">${escapeHtml(defect.priority || "Medium")}</span>
+                                <span>•</span>
+                                <span>${formatDate(defect.created_at)}</span>
+                            </div>
+                            <div class="activity-assigned">
+                                Assigned to: <strong>${escapeHtml(assignedDisplay)}</strong>
+                            </div>
+                        </div>
+                        <div class="activity-action">
+                            <button
+                                type="button"
+                                class="small-button"
+                                onclick="openDetails(${Number(defect.id)})"
+                            >
+                                View
+                            </button>
+                        </div>
+                    `;
+                    activityContainer.appendChild(item);
+                });
+            }
+        }
+
+
+        // 4. Assignment Summary
+        const devDefects = allDefects.filter(
+            d => (d.assigned_role || "").toLowerCase() === "developer"
+        );
+        const testerDefects = allDefects.filter(
+            d => (d.assigned_role || "").toLowerCase() === "tester"
+        );
+        const seniorDefects = allDefects.filter(
+            d => {
+                const r = (d.assigned_role || "").toLowerCase();
+                return r === "senior_dev" || r === "senior_developer" || r === "senior developer";
+            }
+        );
+        const unassignedDefects = allDefects.filter(
+            d => !d.assigned_role
+        );
+
+        const elDevCount = document.getElementById("assignDevCount");
+        const elTesterCount = document.getElementById("assignTesterCount");
+        const elSeniorCount = document.getElementById("assignSeniorCount");
+        const elNoneCount = document.getElementById("assignNoneCount");
+
+        if (elDevCount) elDevCount.textContent = devDefects.length;
+        if (elTesterCount) elTesterCount.textContent = testerDefects.length;
+        if (elSeniorCount) elSeniorCount.textContent = seniorDefects.length;
+        if (elNoneCount) elNoneCount.textContent = unassignedDefects.length;
+
+        const elDevStatus = document.getElementById("assignDevStatus");
+        const elTesterStatus = document.getElementById("assignTesterStatus");
+        const elSeniorStatus = document.getElementById("assignSeniorStatus");
+        const elNoneStatus = document.getElementById("assignNoneStatus");
+
+        if (elDevStatus) {
+            elDevStatus.innerHTML = devDefects.length > 0
+                ? `<span class="status-indicator active"></span> ${devDefects.length} in development`
+                : `<span class="status-indicator inactive"></span> No active assignments`;
+        }
+        if (elTesterStatus) {
+            elTesterStatus.innerHTML = testerDefects.length > 0
+                ? `<span class="status-indicator active"></span> ${testerDefects.length} in QA verification`
+                : `<span class="status-indicator inactive"></span> No active assignments`;
+        }
+        if (elSeniorStatus) {
+            elSeniorStatus.innerHTML = seniorDefects.length > 0
+                ? `<span class="status-indicator active"></span> ${seniorDefects.length} in senior review`
+                : `<span class="status-indicator inactive"></span> No active assignments`;
+        }
+        if (elNoneStatus) {
+            elNoneStatus.innerHTML = unassignedDefects.length > 0
+                ? `<span class="status-indicator pending"></span> ${unassignedDefects.length} awaiting triage`
+                : `<span class="status-indicator inactive"></span> All defects assigned`;
+        }
+
+        // Assignment Table
+        const assignTableBody = document.getElementById("assignTableBody");
+        const assignTableWrap = document.getElementById("assignTableWrap");
+
+        if (assignTableBody) {
+            assignTableBody.innerHTML = "";
+
+            if (!allDefects.length) {
+                if (assignTableWrap) {
+                    assignTableWrap.innerHTML = `
+                        <div class="state" style="padding: 24px 16px; text-align: center; color: var(--muted); font-size: 11px;">
+                            No reported defects available to display assignments.
+                        </div>
+                    `;
+                }
+            } else {
+                const tableItems = allDefects.slice().sort(
+                    (a, b) => Number(b.id) - Number(a.id)
+                ).slice(0, 6);
+
+                tableItems.forEach(defect => {
+                    const rawAssigned = getAssignmentDisplay(defect);
+                    const assignedDisplay = (rawAssigned === "Unassigned" || !rawAssigned)
+                        ? "Not Assigned"
+                        : rawAssigned;
+
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td style="font-weight: 700; color: #3B66D9;">#${defect.id}</td>
+                        <td style="font-weight: 600; color: #172033; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            ${escapeHtml(defect.title)}
+                        </td>
+                        <td>
+                            <span class="meta-tag priority-${escapeHtml(defect.priority || "Medium")}">
+                                ${escapeHtml(defect.priority || "Medium")}
+                            </span>
+                        </td>
+                        <td>
+                            <span style="font-weight: 600; color: ${defect.assigned_role ? "#172033" : "#7A8798"};">
+                                ${escapeHtml(assignedDisplay)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status status-${escapeHtml(defect.status)}">
+                                ${escapeHtml(defect.status)}
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            <button
+                                type="button"
+                                class="small-button"
+                                onclick="openDetails(${Number(defect.id)})"
+                            >
+                                View
+                            </button>
+                        </td>
+                    `;
+                    assignTableBody.appendChild(tr);
+                });
+            }
+        }
 
     }
 
@@ -3614,6 +4798,10 @@
 
     function renderTable() {
 
+        if (defectsLoading || !defectsLoaded) {
+            return;
+        }
+
         const table =
             document.getElementById(
                 "defectsTable"
@@ -3757,17 +4945,6 @@
         filtered.forEach(
             defect => {
 
-                const assigned =
-                    getAssignmentDisplay(
-                        defect
-                    );
-
-
-                const assignedRole =
-                    defect.assigned_role_name ||
-                    "";
-
-
                 const row =
                     document.createElement(
                         "tr"
@@ -3815,34 +4992,6 @@
                                 defect.status
                             )}
                         </span>
-
-                    </td>
-
-
-                    <td>
-
-                        <div
-                            class="assigned-person"
-                        >
-                            ${escapeHtml(
-                                assigned
-                            )}
-                        </div>
-
-
-                        ${
-                            assignedRole
-                                ? `
-                                <div
-                                    class="assigned-role"
-                                >
-                                    ${escapeHtml(
-                                        assignedRole
-                                    )}
-                                </div>
-                                `
-                                : ""
-                        }
 
                     </td>
 
@@ -4039,6 +5188,24 @@
 
 
     // =========================================================
+    // DEFECT ID HELPER
+    // =========================================================
+
+    function updateNextDefectId(force = false) {
+        const input = document.getElementById("defectId");
+        if (!input) return;
+        if (force || !input.value) {
+            let nextId = 1;
+            if (Array.isArray(allDefects) && allDefects.length > 0) {
+                const maxId = Math.max(...allDefects.map(d => Number(d.id) || 0));
+                nextId = maxId + 1;
+            }
+            input.value = nextId;
+        }
+    }
+
+
+    // =========================================================
     // SUBMIT DEFECT
     // =========================================================
 
@@ -4062,16 +5229,22 @@
                     );
 
 
-                const selectedRole =
+                const defectIdInput =
                     document.getElementById(
-                        "assignedRole"
-                    ).value;
+                        "defectId"
+                    );
 
+                const defectIdVal = defectIdInput
+                    ? defectIdInput.value.trim()
+                    : "";
 
                 const payload = {
 
                     user_id:
                         currentUser.user_id,
+
+                    defect_id:
+                        defectIdVal || null,
 
                     title:
                         document.getElementById(
@@ -4119,19 +5292,21 @@
                             "actualResult"
                         ).value.trim()
                         ||
-                        null,
-
-                    assigned_role:
-                        selectedRole ||
-                        null,
-
-                    assigned_user_id:
                         null
 
                 };
 
 
+                if (defectIdVal) {
+                    const parsed = parseInt(defectIdVal.replace(/\D/g, ""), 10);
+                    if (!isNaN(parsed)) {
+                        payload.id = parsed;
+                    }
+                }
+
+
                 if (
+                    !defectIdVal ||
                     !payload.title ||
                     !payload.description ||
                     !payload.category ||
@@ -4187,13 +5362,7 @@
 
 
                     showMessage(
-                        `Defect #${data.id} submitted successfully. Assigned To: ${
-                            data.assigned_display ||
-                            assignmentLabels[
-                                selectedRole
-                            ] ||
-                            "Unassigned"
-                        }.`,
+                        `Defect #${data.id} submitted successfully.`,
                         "success"
                     );
 
@@ -4205,13 +5374,18 @@
                         .reset();
 
 
-                    assignmentBadge.textContent =
-                        "● Unassigned";
+                    updateNextDefectId(true);
 
 
-                    assignmentBadge.classList.remove(
-                        "active"
-                    );
+                    if (assignmentBadge) {
+                        assignmentBadge.textContent =
+                            "● Unassigned";
+
+
+                        assignmentBadge.classList.remove(
+                            "active"
+                        );
+                    }
 
 
                     await loadDefects();
@@ -4414,6 +5588,42 @@
         }
     );
 
+
+    // =========================================================
+    // WORKSPACE SWITCHER
+    // =========================================================
+
+    const workspaceDestinations = {
+        admin: "/admin-ui",
+        tester: "/tester-ui",
+        developer: "/developer-ui",
+        senior_dev: "/senior-developer-ui"
+    };
+
+    const switchDropdownBtn = document.getElementById("switchDropdownBtn");
+    const switchDropdown = document.getElementById("switchDropdown");
+
+    if (switchDropdownBtn && switchDropdown) {
+        switchDropdownBtn.addEventListener("click", event => {
+            event.stopPropagation();
+            switchDropdown.style.display =
+                switchDropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.querySelectorAll(".switch-item").forEach(item => {
+            item.addEventListener("click", event => {
+                event.stopPropagation();
+                const role = item.getAttribute("data-role");
+                if (workspaceDestinations[role]) {
+                    window.location.href = workspaceDestinations[role];
+                }
+            });
+        });
+
+        document.addEventListener("click", () => {
+            switchDropdown.style.display = "none";
+        });
+    }
 
     // =========================================================
     // INITIAL LOAD

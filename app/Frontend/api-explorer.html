@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BugFlow | REST API Explorer</title>
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    background:#F5F7FB;
+    color:#273449;
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:13px;
+}
+.wrap{display:flex;min-height:100vh}
+
+/* Sidebar */
+.side{
+    width:225px;
+    background:linear-gradient(180deg,#111e33,#0d1726);
+    border-right:1px solid #1c2d44;
+    padding:22px 14px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    z-index:100;
+}
+.brand{
+    display:flex;gap:10px;align-items:center;
+    font-weight:900;font-size:18px;margin:4px 8px 30px;color:#fff;
+}
+.logo{
+    width:40px;height:40px;border-radius:11px;
+    background:linear-gradient(135deg,#3f66d8,#2a51c7);
+    color:#fff;display:grid;place-items:center;font-weight:900;
+}
+.label{
+    font-size:9px;letter-spacing:.13em;color:#7d8fa9;
+    font-weight:800;margin:0 9px 11px;text-transform:uppercase;
+}
+.nav a{
+    display:flex;align-items:center;gap:10px;text-decoration:none;
+    color:#9cadc0;padding:11px 12px;border-radius:8px;
+    font-size:12px;font-weight:600;margin:3px 0;transition:all .15s;
+}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.active{background:#3B66D9;color:#fff}
+.nav-icon{font-size:14px;width:18px;text-align:center}
+
+/* Main */
+.main{
+    margin-left:225px;
+    width:calc(100% - 225px);
+    padding:28px 36px 60px;
+}
+.top{
+    display:flex;justify-content:space-between;
+    align-items:flex-start;margin-bottom:24px;
+}
+.eyebrow{
+    color:#3f66d8;font-size:10px;font-weight:800;
+    letter-spacing:.12em;text-transform:uppercase;
+}
+h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
+.sub{color:#68738a;font-size:12px}
+
+/* Workspace Switcher */
+.switcher-container{position:relative}
+.switch-btn{
+    padding:8px 14px;border:1px solid #D9E1EC;border-radius:8px;
+    background:#fff;color:#273449;cursor:pointer;font-weight:600;
+    display:flex;align-items:center;gap:8px;font-size:12px;
+}
+.switch-btn:hover{background:#F0F4FF;border-color:#3B66D9;color:#3B66D9}
+.switch-dropdown{
+    display:none;position:absolute;right:0;top:100%;margin-top:6px;
+    background:#fff;border:1px solid #D9E1EC;border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);min-width:200px;z-index:200;padding:6px;
+}
+.switch-dropdown.show{display:block}
+.switch-item{
+    width:100%;text-align:left;padding:8px 10px;border:none;
+    background:none;border-radius:6px;cursor:pointer;font-size:12px;
+    display:flex;align-items:center;gap:8px;color:#273449;
+}
+.switch-item:hover{background:#F0F4FF;color:#3B66D9}
+.role-badge{
+    width:18px;height:18px;border-radius:4px;
+    background:#3B66D9;color:#fff;font-size:9px;font-weight:800;
+    display:grid;place-items:center;
+}
+
+/* API Explorer 2-Column Layout */
+.explorer-layout{
+    display:grid;grid-template-columns:300px 1fr;
+    gap:20px;align-items:flex-start;
+}
+
+/* Endpoint Catalog */
+.catalog-card{
+    background:#fff;border:1px solid #E2E8F0;border-radius:12px;
+    overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.02);
+}
+.catalog-head{
+    padding:14px 16px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;
+    font-weight:800;font-size:12px;color:#334155;text-transform:uppercase;
+    letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;
+}
+.catalog-search{
+    padding:10px 14px;border-bottom:1px solid #F1F5F9;
+}
+.search-input{
+    width:100%;padding:6px 10px;border:1px solid #CBD5E1;
+    border-radius:6px;font-size:11px;
+}
+.endpoint-group-title{
+    padding:10px 14px 4px;font-size:10px;font-weight:800;
+    color:#94A3B8;text-transform:uppercase;letter-spacing:.05em;
+}
+.endpoint-list{max-height:600px;overflow-y:auto;padding-bottom:10px;}
+.ep-item{
+    display:flex;align-items:center;gap:8px;padding:9px 14px;
+    cursor:pointer;border-left:3px solid transparent;transition:all .12s;
+    font-size:11px;font-family:monospace;
+}
+.ep-item:hover{background:#F8FAFC}
+.ep-item.active{
+    background:#EFF6FF;border-left-color:#3B66D9;color:#1D4ED8;font-weight:700;
+}
+.method-badge{
+    font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;
+    font-family:sans-serif;letter-spacing:.05em;text-transform:uppercase;
+    min-width:38px;text-align:center;
+}
+.method-get{background:#DCFCE7;color:#15803D}
+.method-post{background:#DBEAFE;color:#1D4ED8}
+.method-put{background:#FEF3C7;color:#B45309}
+.method-delete{background:#FEE2E2;color:#DC2626}
+
+/* Console Work area */
+.console-card{
+    background:#fff;border:1px solid #E2E8F0;border-radius:12px;
+    padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.02);
+}
+.url-bar{
+    display:flex;gap:8px;margin-bottom:16px;
+}
+.url-method{
+    padding:8px 14px;font-weight:800;font-size:12px;border-radius:6px;
+    display:grid;place-items:center;
+}
+.url-input{
+    flex-grow:1;padding:8px 12px;border:1px solid #CBD5E1;
+    border-radius:6px;font-family:monospace;font-size:13px;background:#F8FAFC;
+}
+.btn-send{
+    padding:8px 20px;background:#3B66D9;color:#fff;border:none;
+    border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;transition:background .15s;
+}
+.btn-send:hover{background:#2A51C7}
+
+/* Tabs */
+.tabs{
+    display:flex;gap:4px;border-bottom:1px solid #E2E8F0;margin-bottom:14px;
+}
+.tab-btn{
+    padding:7px 14px;background:none;border:none;border-bottom:2px solid transparent;
+    font-size:12px;font-weight:700;color:#64748B;cursor:pointer;
+}
+.tab-btn.active{
+    color:#3B66D9;border-bottom-color:#3B66D9;
+}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* Textarea / Editors */
+.code-editor{
+    width:100%;height:180px;background:#0F172A;color:#E2E8F0;
+    font-family:Consolas,Monaco,monospace;font-size:12px;padding:12px;
+    border-radius:8px;border:1px solid #1E293B;resize:vertical;line-height:1.4;
+}
+
+/* Response Section */
+.response-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin:18px 0 8px;font-size:12px;font-weight:700;color:#334155;
+}
+.resp-badge{
+    padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;
+}
+.resp-200{background:#DCFCE7;color:#15803D}
+.resp-400{background:#FEE2E2;color:#DC2626}
+.copy-btn{
+    background:#F1F5F9;border:1px solid #CBD5E1;border-radius:4px;
+    padding:3px 8px;font-size:10px;cursor:pointer;font-weight:600;
+}
+.copy-btn:hover{background:#E2E8F0}
+.response-box{
+    background:#0F172A;color:#A5B4FC;font-family:Consolas,Monaco,monospace;
+    font-size:12px;padding:14px;border-radius:8px;max-height:340px;overflow:auto;
+    line-height:1.4;border:1px solid #1E293B;white-space:pre-wrap;
+}
+
+/* Curl Preview */
+.curl-box{
+    background:#1E293B;color:#CBD5E1;font-family:Consolas,Monaco,monospace;
+    font-size:11px;padding:10px 12px;border-radius:6px;overflow-x:auto;
+    margin-top:12px;border:1px solid #334155;white-space:pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- SIDEBAR -->
+<aside class="side">
+    <div class="brand">
+        <div class="logo">B</div>
+        <span>BugFlow</span>
+    </div>
+    <div class="label">Administration</div>
+    <nav class="nav">
+        <a href="/admin-ui">
+            <span class="nav-icon">▣</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/all-defects-ui">
+            <span class="nav-icon">☷</span>
+            <span>All Defects</span>
+        </a>
+        <a href="/analytics-ui">
+            <span class="nav-icon">▥</span>
+            <span>Analytics Reports</span>
+        </a>
+        <a href="/milestone2-ui">
+            <span class="nav-icon">◈</span>
+            <span>Sprint Management</span>
+        </a>
+        <a href="/team-collaboration-ui">
+            <span class="nav-icon">◉</span>
+            <span>Team Collaboration</span>
+        </a>
+        <a href="/integrations-ui">
+            <span class="nav-icon">⚡</span>
+            <span>Integrations & CI/CD</span>
+        </a>
+        <a class="active" href="/api-explorer-ui">
+            <span class="nav-icon">⚙</span>
+            <span>API Explorer</span>
+        </a>
+        <a href="#" id="sideSwitchBtn">
+            <span class="nav-icon">↪</span>
+            <span>Switch Workspace</span>
+        </a>
+        <a href="/login-ui" id="logoutLink">
+            <span class="nav-icon">⏻</span>
+            <span>Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<header class="top">
+    <div>
+        <div class="eyebrow">Module 3 — REST API Layer</div>
+        <h1>Interactive API Explorer</h1>
+        <div class="sub">Test and inspect BugFlow Issue Management, Assignment, Sprints, Analytics, GitHub, and CI/CD REST endpoints live.</div>
+    </div>
+
+    <div class="switcher-container">
+        <button class="switch-btn" id="switchDropdownBtn" type="button">
+            <span>Switch Workspace</span> ▾
+        </button>
+        <div class="switch-dropdown" id="switchDropdown">
+            <div style="font-size:10px;font-weight:800;color:#94a3b8;padding:4px 8px;text-transform:uppercase;">Switch Workspace</div>
+            <button class="switch-item" data-role="admin"><span class="role-badge">A</span> Naruto (Admin)</button>
+            <button class="switch-item" data-role="tester"><span class="role-badge">T</span> Hinata (Tester)</button>
+            <button class="switch-item" data-role="developer"><span class="role-badge">D</span> Sasuke (Developer)</button>
+            <button class="switch-item" data-role="senior_dev"><span class="role-badge">S</span> Itachi (Senior Developer)</button>
+        </div>
+    </div>
+</header>
+
+<div class="explorer-layout">
+
+    <!-- ENDPOINTS CATALOG -->
+    <div class="catalog-card">
+        <div class="catalog-head">
+            <span>Endpoints</span>
+            <span style="font-size:10px;background:#E2E8F0;padding:2px 6px;border-radius:4px;" id="epCount">24</span>
+        </div>
+        <div class="catalog-search">
+            <input type="text" class="search-input" id="epSearch" placeholder="Filter APIs..." oninput="filterEndpoints()">
+        </div>
+        <div class="endpoint-list" id="epList">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- CONSOLE WORK AREA -->
+    <div class="console-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div id="epTitle" style="font-size:15px;font-weight:800;color:#0F172A;">List Issues & Defects</div>
+            <div id="epDesc" style="font-size:11px;color:#64748B;">Query filtered defects with pagination and summary</div>
+        </div>
+
+        <div class="url-bar">
+            <div class="url-method method-get" id="epMethodBadge">GET</div>
+            <input type="text" class="url-input" id="epUrlInput" value="/api/v1/issues?limit=10">
+            <button class="btn-send" id="epSendBtn" onclick="executeApiCall()">
+                <span>▶</span> Send
+            </button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('body')">Body (JSON)</button>
+            <button class="tab-btn" onclick="switchTab('headers')">Headers</button>
+            <button class="tab-btn" onclick="switchTab('curl')">cURL</button>
+        </div>
+
+        <!-- TAB PANES -->
+        <div class="tab-pane active" id="tabBody">
+            <textarea class="code-editor" id="epBodyInput" placeholder="Request body (optional for GET)"></textarea>
+        </div>
+
+        <div class="tab-pane" id="tabHeaders">
+            <div style="font-size:11px;color:#64748B;margin-bottom:6px;">Standard Authentication & Content Type headers:</div>
+            <textarea class="code-editor" id="epHeadersInput" style="height:100px;">{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer (Auto-injected from session)"
+}</textarea>
+        </div>
+
+        <div class="tab-pane" id="tabCurl">
+            <div class="curl-box" id="curlPreview">curl -X GET "http://localhost:8080/api/v1/issues?limit=10"</div>
+        </div>
+
+        <!-- RESPONSE -->
+        <div class="response-head">
+            <div>Response: <span class="resp-badge resp-200" id="respStatus">Ready</span> <span id="respLatency" style="font-size:11px;color:#94A3B8;margin-left:6px;"></span></div>
+            <button class="copy-btn" onclick="copyResponse()">Copy JSON</button>
+        </div>
+        <div class="response-box" id="respBox">// Click "Send" to execute API request...</div>
+    </div>
+
+</div>
+
+</main>
+</div>
+
+<script>
+// Workspace switcher
+const workspaceDestinations = { admin: "/admin-ui", tester: "/tester-ui", developer: "/developer-ui", senior_dev: "/senior-developer-ui" };
+const switchBtn = document.getElementById("switchDropdownBtn");
+const switchDrop = document.getElementById("switchDropdown");
+const sideSwitch = document.getElementById("sideSwitchBtn");
+function toggleSwitcher(e) { if (e) e.stopPropagation(); switchDrop.classList.toggle("show"); }
+if (switchBtn) switchBtn.addEventListener("click", toggleSwitcher);
+if (sideSwitch) sideSwitch.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+document.querySelectorAll(".switch-item").forEach(item => {
+    item.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const role = item.getAttribute("data-role");
+        const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+        if (token) {
+            try {
+                await fetch("/api/v1/workspace/switch", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                    body: JSON.stringify({ role })
+                });
+            } catch (err) {}
+        }
+        if (workspaceDestinations[role]) window.location.href = workspaceDestinations[role];
+    });
+});
+document.addEventListener("click", () => { if (switchDrop) switchDrop.classList.remove("show"); });
+
+// Endpoints Catalog Definition
+const ENDPOINTS = [
+    // 1. Issue Management
+    { group: "1. Issue Management", method: "GET", path: "/api/v1/issues?limit=10", title: "List Issues & Defects", desc: "Retrieve filtered list of issues with pagination", body: "" },
+    { group: "1. Issue Management", method: "POST", path: "/api/v1/issues", title: "Create Defect / Issue", desc: "Create a structured defect record", body: JSON.stringify({ title: "Unexpected NullPointerException on payment checkout", description: "Clicking Checkout without selecting payment gateway causes 500 error", priority: "High", severity: "MAJOR", category: "Backend", environment: "Production", reproduction_steps: "1. Add item to cart\n2. Navigate to checkout\n3. Click Pay without selecting radio option" }, null, 2) },
+    { group: "1. Issue Management", method: "GET", path: "/api/v1/issues/14", title: "Get Issue Details", desc: "Fetch issue with comments, audit log, and commit links", body: "" },
+    { group: "1. Issue Management", method: "PUT", path: "/api/v1/issues/14", title: "Update Issue", desc: "Update issue fields (title, priority, description)", body: JSON.stringify({ priority: "Urgent", description: "Updated priority due to customer impact" }, null, 2) },
+
+    // 2. Assignment & Status Workflow
+    { group: "2. Assignment & Workflow", method: "POST", path: "/api/v1/issues/14/assign", title: "Assign to Role", desc: "Admin assigns defect to Developer, Tester, or Senior Dev", body: JSON.stringify({ role: "developer", note: "Please investigate checkout validation" }, null, 2) },
+    { group: "2. Assignment & Workflow", method: "POST", path: "/api/v1/issues/14/assignment-response", title: "Accept or Reject Assignment", desc: "Role accepts or rejects assignment (does not resolve!)", body: JSON.stringify({ action: "ACCEPT", role: "developer", note: "Working on it" }, null, 2) },
+    { group: "2. Assignment & Workflow", method: "POST", path: "/api/v1/issues/14/resolve", title: "Resolve Defect", desc: "Marks defect as RESOLVED after acceptance", body: "" },
+
+    // 3. Sprints
+    { group: "3. Sprint Planning", method: "GET", path: "/api/v1/sprints/", title: "List All Sprints", desc: "List sprints with progress and velocity", body: "" },
+    { group: "3. Sprint Planning", method: "GET", path: "/api/v1/sprints/1", title: "Get Sprint Details", desc: "Retrieve sprint issues and completion percentage", body: "" },
+    { group: "3. Sprint Planning", method: "GET", path: "/api/v1/sprints/backlog", title: "Get Sprint Backlog", desc: "List unassigned issues available for sprints", body: "" },
+    { group: "3. Sprint Planning", method: "GET", path: "/api/v1/sprints/metrics/analytics", title: "Sprint Analytics", desc: "Sprint velocity and completion rate metrics", body: "" },
+
+    // 4. Analytics Retrieval
+    { group: "4. Analytics Engine", method: "GET", path: "/api/v1/analytics/summary", title: "Summary KPIs", desc: "Total defects, resolved, rejected, DSI, MTTR", body: "" },
+    { group: "4. Analytics Engine", method: "GET", path: "/api/v1/analytics/trends?days=14", title: "Defect Trends", desc: "Daily arrival vs resolution rate and aging", body: "" },
+    { group: "4. Analytics Engine", method: "GET", path: "/api/v1/analytics/quality", title: "Software Quality Metrics", desc: "Defect Severity Index (DSI), defect density, category share", body: "" },
+    { group: "4. Analytics Engine", method: "GET", path: "/api/v1/analytics/team", title: "Team Persona Metrics", desc: "Workload and acceptance rates for Naruto, Sasuke, Hinata, Itachi", body: "" },
+    { group: "4. Analytics Engine", method: "GET", path: "/api/v1/analytics/dashboard", title: "Complete Dashboard Payload", desc: "Unified analytics payload for full UI charts", body: "" },
+
+    // 5. Reports & Export
+    { group: "5. Reports & Export", method: "GET", path: "/api/v1/analytics/export/csv", title: "Export Defects CSV", desc: "Download full defects dataset in CSV format", body: "" },
+    { group: "5. Reports & Export", method: "GET", path: "/api/v1/analytics/export/json", title: "Export Analytics JSON", desc: "Download full analytics report in JSON format", body: "" },
+    { group: "5. Reports & Export", method: "GET", path: "/api/v1/analytics/export/summary", title: "Printable Summary HTML", desc: "Executive printable report", body: "" },
+
+    // 6. GitHub Integration
+    { group: "6. GitHub Integration", method: "GET", path: "/api/v1/integrations/github/status", title: "GitHub Status", desc: "Connection status, webhook URL, linked commits count", body: "" },
+    { group: "6. GitHub Integration", method: "GET", path: "/api/v1/integrations/github/events", title: "GitHub Events Log", desc: "List received commits and webhook events", body: "" },
+    { group: "6. GitHub Integration", method: "POST", path: "/api/v1/integrations/github/sync", title: "Simulate GitHub Sync", desc: "Simulate commit reference linking to defect", body: JSON.stringify({ commit_message: "Resolved database constraint bug (refs #14)", author: "Sasuke Uchiha", branch: "main" }, null, 2) },
+
+    // 7. CI/CD Synchronization
+    { group: "7. CI/CD Synchronization", method: "GET", path: "/api/v1/integrations/cicd/status", title: "CI/CD Pipeline Status", desc: "Pipeline pass rate, health, total builds", body: "" },
+    { group: "7. CI/CD Synchronization", method: "GET", path: "/api/v1/integrations/cicd/runs", title: "CI/CD Pipeline Runs", desc: "History of automated test runs", body: "" },
+    { group: "7. CI/CD Synchronization", method: "POST", path: "/api/v1/integrations/cicd/trigger", title: "Trigger CI/CD Run", desc: "Simulate test run (SUCCESS or FAILURE with auto-defect)", body: JSON.stringify({ simulated_outcome: "SUCCESS" }, null, 2) },
+
+    // 8. Notifications
+    { group: "8. Notifications", method: "GET", path: "/api/v1/notifications", title: "List Notifications", desc: "Retrieve in-app workflow and integration notifications", body: "" }
+];
+
+let currentEpIndex = 0;
+
+function renderEndpoints(filtered = null) {
+    const list = document.getElementById("epList");
+    const items = filtered || ENDPOINTS;
+    let html = "";
+    let currentGroup = "";
+
+    items.forEach((ep, idx) => {
+        const origIdx = ENDPOINTS.indexOf(ep);
+        if (ep.group !== currentGroup) {
+            currentGroup = ep.group;
+            html += `<div class="endpoint-group-title">${currentGroup}</div>`;
+        }
+        const activeClass = origIdx === currentEpIndex ? "active" : "";
+        const mClass = `method-${ep.method.toLowerCase()}`;
+        html += `
+            <div class="ep-item ${activeClass}" onclick="selectEndpoint(${origIdx})">
+                <span class="method-badge ${mClass}">${ep.method}</span>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ep.path.split('?')[0]}</span>
+            </div>
+        `;
+    });
+    list.innerHTML = html;
+}
+
+function selectEndpoint(idx) {
+    currentEpIndex = idx;
+    const ep = ENDPOINTS[idx];
+    document.getElementById("epTitle").textContent = ep.title;
+    document.getElementById("epDesc").textContent = ep.desc;
+
+    const badge = document.getElementById("epMethodBadge");
+    badge.textContent = ep.method;
+    badge.className = `url-method method-${ep.method.toLowerCase()}`;
+
+    document.getElementById("epUrlInput").value = ep.path;
+    document.getElementById("epBodyInput").value = ep.body || "";
+
+    updateCurl(ep.method, ep.path, ep.body);
+    renderEndpoints();
+}
+
+function updateCurl(method, path, body) {
+    let curl = `curl -X ${method} "${window.location.origin}${path}"`;
+    const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+    if (token) curl += ` \\\n  -H "Authorization: Bearer ${token}"`;
+    if (body && (method === "POST" || method === "PUT")) {
+        curl += ` \\\n  -H "Content-Type: application/json" \\\n  -d '${body.replace(/\n/g, "")}'`;
+    }
+    document.getElementById("curlPreview").textContent = curl;
+}
+
+function filterEndpoints() {
+    const q = document.getElementById("epSearch").value.toLowerCase();
+    const filtered = ENDPOINTS.filter(e => e.title.toLowerCase().includes(q) || e.path.toLowerCase().includes(q) || e.group.toLowerCase().includes(q));
+    renderEndpoints(filtered);
+}
+
+function switchTab(tabId) {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+    if (tabId === 'body') { document.querySelectorAll(".tab-btn")[0].classList.add("active"); document.getElementById("tabBody").classList.add("active"); }
+    else if (tabId === 'headers') { document.querySelectorAll(".tab-btn")[1].classList.add("active"); document.getElementById("tabHeaders").classList.add("active"); }
+    else if (tabId === 'curl') { document.querySelectorAll(".tab-btn")[2].classList.add("active"); document.getElementById("tabCurl").classList.add("active"); }
+}
+
+async function executeApiCall() {
+    const ep = ENDPOINTS[currentEpIndex];
+    const path = document.getElementById("epUrlInput").value;
+    const bodyStr = document.getElementById("epBodyInput").value.trim();
+    const btn = document.getElementById("epSendBtn");
+    const respStatus = document.getElementById("respStatus");
+    const respLatency = document.getElementById("respLatency");
+    const respBox = document.getElementById("respBox");
+
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> Running...`;
+    respStatus.className = "resp-badge";
+    respStatus.textContent = "Loading...";
+
+    const startTime = performance.now();
+    const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = "Bearer " + token;
+
+    const options = { method: ep.method, headers: headers };
+    if (bodyStr && (ep.method === "POST" || ep.method === "PUT")) {
+        try {
+            JSON.parse(bodyStr); // validate
+            options.body = bodyStr;
+        } catch (e) {
+            alert("Invalid JSON body: " + e.message);
+            btn.disabled = false;
+            btn.innerHTML = `<span>▶</span> Send`;
+            return;
+        }
+    }
+
+    try {
+        const res = await fetch(path, options);
+        const duration = Math.round(performance.now() - startTime);
+        respLatency.textContent = `(${duration}ms)`;
+
+        respStatus.textContent = `${res.status} ${res.statusText}`;
+        respStatus.className = res.ok ? "resp-badge resp-200" : "resp-badge resp-400";
+
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+            const data = await res.json();
+            respBox.textContent = JSON.stringify(data, null, 2);
+        } else {
+            const text = await res.text();
+            respBox.textContent = text;
+        }
+    } catch (err) {
+        respStatus.textContent = "Error";
+        respStatus.className = "resp-badge resp-400";
+        respBox.textContent = `Fetch Failed: ${err.message}`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>▶</span> Send`;
+    }
+}
+
+function copyResponse() {
+    navigator.clipboard.writeText(document.getElementById("respBox").textContent);
+    alert("Response copied to clipboard!");
+}
+
+renderEndpoints();
+selectEndpoint(0);
+</script>
+
+</body>
+</html>

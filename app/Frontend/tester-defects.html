@@ -1,0 +1,1732 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>BugFlow | Tester Defects</title>
+
+<style>
+*{
+    box-sizing:border-box
+}
+
+body{
+    margin:0;
+    background:#F5F7FB;
+    color:#273449;
+    font-family:Inter,Segoe UI,Arial,sans-serif
+}
+
+.wrap{
+    display:flex;
+    min-height:100vh
+}
+
+.side{
+    width:225px;
+    background:linear-gradient(180deg,#111e33,#0d1726);
+    border-right:1px solid #1c2d44;
+    padding:22px 14px;
+    position:fixed;
+    top:0;
+    bottom:0
+}
+
+.brand{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-weight:900;
+    font-size:18px;
+    margin:4px 8px 30px;
+    color:#fff
+}
+
+.logo{
+    width:40px;
+    height:40px;
+    border-radius:11px;
+    background:linear-gradient(135deg,#3f66d8,#2a51c7);
+    display:grid;
+    place-items:center;
+    color:#fff
+}
+
+.label{
+    font-size:9px;
+    letter-spacing:.13em;
+    color:#7d8fa9;
+    font-weight:800;
+    margin:0 9px 11px;
+    text-transform:uppercase
+}
+
+.nav a{
+    display:block;
+    text-decoration:none;
+    color:#9cadc0;
+    padding:12px 10px;
+    border-radius:9px;
+    font-size:10px;
+    margin:4px 0
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff
+}
+
+.nav a.active{
+    background:#3f66d8;
+    color:#fff
+}
+
+.main{
+    margin-left:225px;
+    width:calc(100% - 225px);
+    padding:28px
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:22px
+}
+
+.eyebrow{
+    color:#3f66d8;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase
+}
+
+h1{
+    margin:5px 0 4px;
+    font-size:29px;
+    color:#182033
+}
+
+.sub{
+    color:#68738a;
+    font-size:10px
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+    align-items:center
+}
+
+.button{
+    padding:10px 14px;
+    border:1px solid #D9E1EC;
+    border-radius:9px;
+    background:#ffffff;
+    color:#273449;
+    cursor:pointer;
+    font-size:10px;
+    font-weight:700;
+    transition:all .15s ease
+}
+
+.button:hover{
+    background:#F0F4FF;
+    border-color:#3B66D9;
+    color:#3B66D9
+}
+
+.panel{
+    background:#ffffff;
+    border:1px solid #e3e8f2;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(24,32,51,.04);
+    overflow:hidden
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 18px;
+    border-bottom:1px solid #edf2f7
+}
+
+.panel-title{
+    font-size:13px;
+    font-weight:800;
+    color:#182033
+}
+
+.panel-sub{
+    color:#68738a;
+    font-size:9px;
+    margin-top:4px
+}
+
+.count{
+    padding:6px 10px;
+    border:1px solid #d0defb;
+    border-radius:999px;
+    color:#3f66d8;
+    background:#eef3ff;
+    font-size:8px;
+    font-weight:800
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    padding:14px 18px;
+    border-bottom:1px solid #edf2f7;
+    flex-wrap:wrap
+}
+
+.search{
+    flex:1;
+    min-width:220px;
+    padding:10px 12px;
+    border:1px solid #d6dee8;
+    border-radius:8px;
+    background:#ffffff;
+    color:#182033;
+    outline:none;
+    font-size:10px
+}
+
+.search:focus{
+    border-color:#3f66d8;
+    box-shadow:0 0 0 3px rgba(63,102,216,.14)
+}
+
+.select{
+    padding:10px 12px;
+    border:1px solid #d6dee8;
+    border-radius:8px;
+    background:#ffffff;
+    color:#182033;
+    outline:none;
+    font-size:10px
+}
+
+.select:focus{
+    border-color:#3f66d8;
+    box-shadow:0 0 0 3px rgba(63,102,216,.14)
+}
+
+.table-wrap{
+    overflow-x:auto
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px
+}
+
+thead{
+    background:#111E33
+}
+
+th{
+    text-align:left;
+    padding:12px 14px;
+    color:#FFFFFF;
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:700;
+    border-bottom:1px solid #1C2D44
+}
+
+td{
+    padding:13px 14px;
+    border-bottom:1px solid #D9E1EC;
+    font-size:9px;
+    color:#273449
+}
+
+tbody tr:hover{
+    background:#F0F4FF
+}
+
+.title{
+    font-weight:700;
+    color:#182033
+}
+
+.meta{
+    color:#68738a;
+    font-size:8px;
+    margin-top:3px
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:999px;
+    font-size:7px;
+    font-weight:900
+}
+
+.pending{
+    background:#fff7e6;
+    color:#d98b00
+}
+
+.assigned{
+    background:#eff6ff;
+    color:#2563eb
+}
+
+.accepted{
+    background:#e0f2fe;
+    color:#0284c7
+}
+
+.resolved{
+    background:#eaf9f1;
+    color:#16a765
+}
+
+.rejected{
+    background:#feeceb;
+    color:#df5a5a
+}
+
+.low{
+    background:#eef3ff;
+    color:#3f66d8
+}
+
+.medium{
+    background:#eaf2ff;
+    color:#2563eb
+}
+
+.high{
+    background:#fff7e6;
+    color:#d98b00
+}
+
+.urgent{
+    background:#feeceb;
+    color:#df5a5a
+}
+
+.view-btn{
+    padding:7px 10px;
+    border:1px solid #d6dee8;
+    border-radius:7px;
+    background:#ffffff;
+    color:#3f66d8;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer
+}
+
+.view-btn:hover{
+    background:#eef3ff;
+    border-color:#3f66d8
+}
+
+.accept-btn{
+    padding:7px 10px;
+    border:1px solid #bae6fd;
+    border-radius:7px;
+    background:#f0f9ff;
+    color:#0284c7;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer
+}
+
+.accept-btn:hover{
+    background:#e0f2fe
+}
+
+.resolve-btn{
+    padding:7px 10px;
+    border:1px solid #b9edd2;
+    border-radius:7px;
+    background:#eaf9f1;
+    color:#16a765;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer
+}
+
+.resolve-btn:hover{
+    background:#d4f4e2
+}
+
+.reject-btn{
+    padding:7px 10px;
+    border:1px solid #fac4c1;
+    border-radius:7px;
+    background:#feeceb;
+    color:#df5a5a;
+    font-size:8px;
+    font-weight:800;
+    cursor:pointer
+}
+
+.reject-btn:hover{
+    background:#fcd7d5
+}
+
+.toast{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    padding:12px 18px;
+    border-radius:99px;
+    font-size:11px;
+    font-weight:700;
+    z-index:9999;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+    transition:opacity .3s ease,transform .3s ease;
+    opacity:0;
+    transform:translateY(20px);
+    pointer-events:none
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0)
+}
+
+.toast.success{
+    background:#eaf9f1;
+    border:1px solid #b9edd2;
+    color:#16a765
+}
+
+.toast.error{
+    background:#feeceb;
+    border:1px solid #fac4c1;
+    color:#df5a5a
+}
+
+.empty{
+    padding:55px 20px;
+    text-align:center;
+    color:#68738a;
+    font-size:10px
+}
+
+.loading{
+    padding:40px;
+    text-align:center;
+    color:#68738a;
+    font-size:10px
+}
+
+/* DETAILS MODAL */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:1000
+}
+
+.modal-overlay.show{
+    display:flex
+}
+
+.modal{
+    width:min(760px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#ffffff;
+    border:1px solid #e3e8f2;
+    border-radius:14px;
+    box-shadow:0 25px 70px rgba(0,0,0,.15);
+    color:#182033
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:18px;
+    border-bottom:1px solid #edf2f7
+}
+
+.modal-title{
+    font-size:15px;
+    font-weight:900;
+    color:#182033
+}
+
+.modal-subtitle{
+    color:#68738a;
+    font-size:9px;
+    margin-top:4px
+}
+
+.close{
+    width:30px;
+    height:30px;
+    border:1px solid #d6dee8;
+    border-radius:8px;
+    background:#ffffff;
+    color:#68738a;
+    font-size:17px;
+    cursor:pointer
+}
+
+.close:hover{
+    color:#182033;
+    background:#f5f7fb
+}
+
+.modal-body{
+    padding:18px
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px
+}
+
+.detail{
+    background:#f8faff;
+    border:1px solid #e3e8f2;
+    border-radius:9px;
+    padding:12px
+}
+
+.detail.full{
+    grid-column:1/-1
+}
+
+.detail-label{
+    color:#68738a;
+    font-size:7px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:800;
+    margin-bottom:6px
+}
+
+.detail-value{
+    color:#182033;
+    font-size:10px;
+    line-height:1.5;
+    white-space:pre-wrap;
+    word-break:break-word
+}
+
+@media(max-width:800px){
+
+    .side{
+        width:70px
+    }
+
+    .brand span,
+    .label,
+    .nav a span{
+        display:none
+    }
+
+    .main{
+        margin-left:70px;
+        width:calc(100% - 70px);
+        padding:18px
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr
+    }
+
+    .detail.full{
+        grid-column:auto
+    }
+
+    .top{
+        flex-direction:column;
+        gap:12px
+    }
+
+    .top-actions{
+        align-self:flex-end
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<aside class="side">
+
+    <div class="brand">
+        <div class="logo">B</div>
+        <span>BugFlow</span>
+    </div>
+
+    <div class="label">
+        Tester Workspace
+    </div>
+
+    <nav class="nav">
+
+        <a href="/tester-ui">
+            ◉ <span>Dashboard</span>
+        </a>
+
+        <a class="active" href="/tester-defects-ui">
+            ☷ <span>Defects</span>
+        </a>
+
+        <a href="/tester-analytics-ui">
+            ▥ <span>Analytics Reports</span>
+        </a>
+
+        <a href="#" id="sideSwitchBtn">
+            ↪ <span>Switch</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+<header class="top">
+
+    <div>
+
+        <div class="eyebrow">
+            BugFlow Control Center
+        </div>
+
+        <h1>Tester Defects</h1>
+
+        <div class="sub">
+            Defects assigned by Admin to Hinata (Tester).
+        </div>
+
+    </div>
+
+    <div class="top-actions">
+
+        <button
+            class="button"
+            id="refreshButton"
+            type="button"
+        >
+            ↻ Refresh
+        </button>
+
+        <button
+            class="button"
+            type="button"
+            onclick="window.location.href='/tester-ui'"
+        >
+            Dashboard
+        </button>
+
+        <div class="switcher-container" style="position:relative; display:inline-block;">
+            <button
+                class="button"
+                id="switchDropdownBtn"
+                type="button"
+            >
+                Switch ▾
+            </button>
+
+            <div class="switch-dropdown" id="switchDropdown" style="display:none; position:absolute; right:0; top:40px; background:#0f1c2e; border:1px solid #283a54; border-radius:12px; width:200px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000; padding:6px;">
+                <div style="padding:8px 12px; font-size:10px; font-weight:800; color:#6a7c96; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #1a2a40; margin-bottom:4px;">Switch Workspace</div>
+                <button class="switch-item" data-role="user" style="display:flex; align-items:center; gap:10px; padding:10px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">User</button>
+                <button class="switch-item" data-role="tester" style="display:flex; align-items:center; gap:10px; padding:10px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Tester</button>
+                <button class="switch-item" data-role="developer" style="display:flex; align-items:center; gap:10px; padding:10px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Developer</button>
+                <button class="switch-item" data-role="senior_dev" style="display:flex; align-items:center; gap:10px; padding:10px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Senior Developer</button>
+                <button class="switch-item" data-role="admin" style="display:flex; align-items:center; gap:10px; padding:10px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Admin</button>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <div class="panel-title">
+                Assigned Tester Defects
+            </div>
+
+            <div class="panel-sub">
+                Only defects assigned to the Tester role by Admin are shown.
+            </div>
+
+        </div>
+
+        <div
+            class="count"
+            id="defectCount"
+        >
+            0 Defects
+        </div>
+
+    </div>
+
+
+    <div class="filters">
+
+        <input
+            id="searchInput"
+            class="search"
+            type="text"
+            placeholder="Search defect title or description..."
+        >
+
+        <select
+            id="statusFilter"
+            class="select"
+        >
+            <option value="">All Status</option>
+            <option value="ASSIGNED">ASSIGNED</option>
+            <option value="ACCEPTED">ACCEPTED</option>
+            <option value="RESOLVED">RESOLVED</option>
+            <option value="REJECTED">REJECTED</option>
+        </select>
+
+        <select
+            id="priorityFilter"
+            class="select"
+        >
+            <option value="">All Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+        </select>
+
+    </div>
+
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading assigned defects...
+    </div>
+
+
+    <div
+        id="empty"
+        class="empty"
+        style="display:none"
+    >
+        No defects have been assigned to Tester.
+    </div>
+
+
+    <div
+        id="tableWrap"
+        class="table-wrap"
+        style="display:none"
+    >
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Reporter</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="defectsTable">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- DETAILS MODAL -->
+
+<div
+    id="detailsModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <div
+                    class="modal-title"
+                    id="modalTitle"
+                >
+                    Defect Details
+                </div>
+
+                <div
+                    class="modal-subtitle"
+                    id="modalSubtitle"
+                >
+                    Tester assigned defect
+                </div>
+
+            </div>
+
+            <button
+                class="close"
+                type="button"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-body"
+            id="modalBody"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let allDefects = [];
+
+
+/* ---------------------------------------------------------
+   HELPERS
+--------------------------------------------------------- */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+        return "—";
+    }
+
+    return date.toLocaleString(
+        undefined,
+        {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:false
+        }
+    );
+}
+
+
+function statusClass(status){
+
+    const value =
+        String(status || "")
+        .trim()
+        .toLowerCase();
+
+    if(value === "resolved"){
+        return "resolved";
+    }
+
+    if(value === "rejected"){
+        return "rejected";
+    }
+
+    if(value === "accepted"){
+        return "accepted";
+    }
+
+    if(value === "assigned"){
+        return "assigned";
+    }
+
+    return "pending";
+}
+
+
+function priorityClass(priority){
+
+    const value =
+        String(priority || "")
+        .toLowerCase();
+
+    if(value === "urgent"){
+        return "urgent";
+    }
+
+    if(value === "high"){
+        return "high";
+    }
+
+    if(value === "medium"){
+        return "medium";
+    }
+
+    return "low";
+}
+
+
+function assignmentDisplay(defect){
+
+    if(
+        defect.assigned_display &&
+        defect.assigned_display !== "Unassigned"
+    ){
+        return defect.assigned_display;
+    }
+
+    const role =
+        String(
+            defect.assigned_role || ""
+        )
+        .trim()
+        .toLowerCase();
+
+    const roles = {
+
+        tester:
+            "Hinata (Tester)",
+
+        developer:
+            "Sasuke (Developer)",
+
+        senior_dev:
+            "Itachi (Senior Developer)",
+
+        admin:
+            "Naruto (Admin)"
+
+    };
+
+    return roles[role] || "Unassigned";
+}
+
+
+/* ---------------------------------------------------------
+   API
+--------------------------------------------------------- */
+
+async function loadDefects(){
+
+    const loading =
+        document.getElementById("loading");
+
+    const empty =
+        document.getElementById("empty");
+
+    const tableWrap =
+        document.getElementById("tableWrap");
+
+    try{
+
+        loading.style.display = "block";
+        empty.style.display = "none";
+        tableWrap.style.display = "none";
+
+        /*
+         * Fetch defects directly from backend role endpoint
+         * for Tester (assigned_role = "tester").
+         */
+        const response =
+            await fetch(
+                "/tester/defects"
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                `Failed to load defects (${response.status})`
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        allDefects =
+            Array.isArray(data) ? data : [];
+
+
+        loading.style.display = "none";
+
+        renderTable();
+
+    }
+    catch(error){
+
+        console.error(
+            "Failed to load Tester defects:",
+            error
+        );
+
+        loading.style.display = "none";
+
+        empty.style.display = "block";
+
+        empty.textContent =
+            error.message ||
+            "Failed to load assigned defects.";
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   RENDER TABLE
+--------------------------------------------------------- */
+
+function renderTable(){
+
+    const table =
+        document.getElementById(
+            "defectsTable"
+        );
+
+    const empty =
+        document.getElementById(
+            "empty"
+        );
+
+    const tableWrap =
+        document.getElementById(
+            "tableWrap"
+        );
+
+    const count =
+        document.getElementById(
+            "defectCount"
+        );
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        )
+        .value;
+
+    const priority =
+        document.getElementById(
+            "priorityFilter"
+        )
+        .value;
+
+
+    const filtered =
+        allDefects.filter(
+            defect => {
+
+                const title =
+                    String(
+                        defect.title || ""
+                    )
+                    .toLowerCase();
+
+                const description =
+                    String(
+                        defect.description || ""
+                    )
+                    .toLowerCase();
+
+                const searchMatch =
+                    !search ||
+                    title.includes(search) ||
+                    description.includes(search);
+
+                const statusMatch =
+                    !status ||
+                    String(defect.status || "").trim().toLowerCase() === status.trim().toLowerCase();
+
+                const priorityMatch =
+                    !priority ||
+                    defect.priority === priority;
+
+                return (
+                    searchMatch &&
+                    statusMatch &&
+                    priorityMatch
+                );
+
+            }
+        );
+
+
+    count.textContent =
+        `${filtered.length} ${
+            filtered.length === 1
+                ? "Defect"
+                : "Defects"
+        }`;
+
+
+    table.innerHTML = "";
+
+
+    if(!filtered.length){
+
+        tableWrap.style.display = "none";
+        empty.style.display = "block";
+
+        empty.textContent =
+            allDefects.length
+                ? "No defects match the selected filters."
+                : "No defects have been assigned to Tester.";
+
+        return;
+
+    }
+
+
+    empty.style.display = "none";
+    tableWrap.style.display = "block";
+
+
+    filtered.forEach(
+        defect => {
+
+            const row =
+                document.createElement("tr");
+
+            const st = String(defect.status || "").trim().toUpperCase();
+            const isAssigned = (st === "ASSIGNED" || st === "PENDING" || !st);
+            const isAccepted = (st === "ACCEPTED");
+
+            row.innerHTML = `
+
+                <td>
+                    #${Number(defect.id)}
+                </td>
+
+                <td>
+
+                    <div class="title">
+                        ${escapeHtml(
+                            defect.title
+                        )}
+                    </div>
+
+                    <div class="meta">
+                        ${
+                            escapeHtml(
+                                String(
+                                    defect.description || ""
+                                )
+                                .slice(0,70)
+                            )
+                        }${
+                            String(
+                                defect.description || ""
+                            ).length > 70
+                                ? "..."
+                                : ""
+                        }
+                    </div>
+
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        defect.reporter_name ||
+                        defect.user_name ||
+                        defect.user_id ||
+                        "User"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        defect.category || "—"
+                    )}
+                </td>
+
+                <td>
+
+                    <span
+                        class="badge ${priorityClass(
+                            defect.priority
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.priority || "Low"
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span
+                        class="badge ${statusClass(
+                            defect.status
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.status || "Pending"
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        assignmentDisplay(defect)
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        formatDate(
+                            defect.created_at
+                        )
+                    )}
+                </td>
+
+                <td>
+                    <div style="display:flex; gap:6px; align-items:center;">
+                        <button
+                            class="view-btn"
+                            type="button"
+                            onclick="openDetails(
+                                ${Number(defect.id)}
+                            )"
+                        >
+                            View
+                        </button>
+                        ${isAssigned ? `
+                            <button
+                                class="accept-btn"
+                                type="button"
+                                onclick="updateDefectStatus(
+                                    ${Number(defect.id)}, 'ACCEPTED'
+                                )"
+                            >
+                                Accept
+                            </button>
+                            <button
+                                class="reject-btn"
+                                type="button"
+                                onclick="updateDefectStatus(
+                                    ${Number(defect.id)}, 'REJECTED'
+                                )"
+                            >
+                                Reject
+                            </button>
+                        ` : isAccepted ? `
+                            <button
+                                class="resolve-btn"
+                                type="button"
+                                onclick="updateDefectStatus(
+                                    ${Number(defect.id)}, 'RESOLVED'
+                                )"
+                            >
+                                Resolve
+                            </button>
+                        ` : ''}
+                    </div>
+                </td>
+
+            `;
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   DETAILS
+--------------------------------------------------------- */
+
+function openDetails(id){
+
+    const defect =
+        allDefects.find(
+            item =>
+                Number(item.id) === Number(id)
+        );
+
+    if(!defect){
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        `Defect #${defect.id} — ${
+            defect.title || "Untitled"
+        }`;
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        "Tester assigned defect";
+
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML = `
+
+        <div class="detail-grid">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    ID
+                </div>
+
+                <div class="detail-value">
+                    #${Number(defect.id)}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Status
+                </div>
+
+                <div class="detail-value">
+
+                    <span
+                        class="badge ${statusClass(
+                            defect.status
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.status || "Pending"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Category
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.category || "—"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Priority
+                </div>
+
+                <div class="detail-value">
+
+                    <span
+                        class="badge ${priorityClass(
+                            defect.priority
+                        )}"
+                    >
+                        ${escapeHtml(
+                            defect.priority || "Low"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Reporter
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.reporter_name ||
+                        defect.user_name ||
+                        defect.user_id ||
+                        "User"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Assigned To
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        assignmentDisplay(defect)
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Environment
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.environment || "—"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Created At
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        formatDate(
+                            defect.created_at
+                        )
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail full">
+
+                <div class="detail-label">
+                    Description
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.description || "—"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail full">
+
+                <div class="detail-label">
+                    Steps to Reproduce
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.reproduction_steps || "—"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail full">
+
+                <div class="detail-label">
+                    Expected Result
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.expected_result || "—"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail full">
+
+                <div class="detail-label">
+                    Actual Result
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        defect.actual_result || "—"
+                    )}
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById(
+            "detailsModal"
+        )
+        .classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+    document
+        .getElementById(
+            "detailsModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+/* ---------------------------------------------------------
+   EVENTS
+--------------------------------------------------------- */
+
+document
+    .getElementById(
+        "refreshButton"
+    )
+    .addEventListener(
+        "click",
+        loadDefects
+    );
+
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderTable
+    );
+
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        renderTable
+    );
+
+
+document
+    .getElementById(
+        "priorityFilter"
+    )
+    .addEventListener(
+        "change",
+        renderTable
+    );
+
+
+document
+    .getElementById(
+        "closeModal"
+    )
+    .addEventListener(
+        "click",
+        closeDetails
+    );
+
+
+document
+    .getElementById(
+        "detailsModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target.id ===
+                "detailsModal"
+            ){
+                closeDetails();
+            }
+
+        }
+    );
+
+
+const workspaceDestinations = {
+    user: "/user-ui",
+    tester: "/tester-ui",
+    developer: "/developer-ui",
+    senior_dev: "/senior-developer-ui",
+    admin: "/admin-ui"
+};
+
+const switchDropdownBtn = document.getElementById("switchDropdownBtn");
+const switchDropdown = document.getElementById("switchDropdown");
+const sideSwitchBtn = document.getElementById("sideSwitchBtn");
+
+function toggleSwitcher(e) {
+    if (e) e.stopPropagation();
+    if (switchDropdown) switchDropdown.style.display = switchDropdown.style.display === "block" ? "none" : "block";
+}
+
+if (switchDropdownBtn) switchDropdownBtn.addEventListener("click", toggleSwitcher);
+if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+
+document.querySelectorAll(".switch-item").forEach(item => {
+    item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const role = item.getAttribute("data-role");
+        if (workspaceDestinations[role]) {
+            localStorage.setItem("bugflow_workspace_role", role);
+            window.location.href = workspaceDestinations[role];
+        }
+    });
+});
+
+document.addEventListener("click", () => {
+    if (switchDropdown) switchDropdown.style.display = "none";
+});
+
+function showToast(message, isError = false) {
+    let toast = document.getElementById("toastNotification");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toastNotification";
+        document.body.appendChild(toast);
+    }
+    toast.className = `toast ${isError ? "error" : "success"} show`;
+    toast.textContent = message;
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3500);
+}
+
+async function updateDefectStatus(id, action) {
+    const targetDefect = allDefects.find(d => Number(d.id) === Number(id));
+    const previousStatus = targetDefect ? targetDefect.status : null;
+
+    if (targetDefect) {
+        targetDefect.status = action;
+        renderTable();
+    }
+
+    try {
+        const response = await fetch("/role/actions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                defect_id: Number(id),
+                role: "tester",
+                action: action
+            })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.detail || `Failed to set status to ${action}`);
+        }
+
+        showToast(data.message || `Defect #${id} marked as ${action}`);
+        await loadDefects();
+    } catch (err) {
+        console.error(err);
+        if (targetDefect && previousStatus !== null) {
+            targetDefect.status = previousStatus;
+            renderTable();
+        }
+        showToast(err.message || "Failed to update defect status", true);
+        await loadDefects();
+    }
+}
+
+loadDefects();
+
+</script>
+
+</body>
+</html>

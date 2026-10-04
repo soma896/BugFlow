@@ -9,29 +9,27 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg: #050b15;
-            --sidebar: #081221;
-            --panel: #0b1626;
-            --panel-2: #0a1423;
-            --border: #1d304a;
-            --text: #f8fafc;
-            --muted: #8291a7;
-            --muted2: #62738a;
-            --purple: #8057e9;
-            --green: #24c96b;
-            --yellow: #f5b80a;
-            --red: #ef3e3e;
-            --blue: #198ff5;
+            --bg: #F5F7FB;
+            --sidebar: #111E33;
+            --panel: #FFFFFF;
+            --panel-2: #FFFFFF;
+            --border: #D9E1EC;
+            --text: #273449;
+            --heading: #172033;
+            --muted: #5F6B7A;
+            --muted2: #7A8798;
+            --purple: #3B66D9;
+            --green: #16A765;
+            --yellow: #D98B00;
+            --red: #DF5A5A;
+            --blue: #3B66D9;
         }
 
         html, body { min-height: 100%; }
 
         body {
             min-height: 100vh;
-            background:
-                radial-gradient(circle at 75% -5%, rgba(128,87,233,.12), transparent 28%),
-                radial-gradient(circle at 100% 50%, rgba(25,143,245,.05), transparent 26%),
-                var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
@@ -44,8 +42,8 @@
             inset: 0 auto 0 0;
             width: 214px;
             padding: 17px 12px;
-            background: linear-gradient(180deg,#081221,#06101d);
-            border-right: 1px solid #16263b;
+            background: linear-gradient(180deg,#111e33,#0d1726);
+            border-right: 1px solid #1c2d44;
             z-index: 20;
         }
 
@@ -59,15 +57,16 @@
         .brand-logo {
             width:40px;height:40px;display:grid;place-items:center;
             border-radius:10px;
-            background:linear-gradient(135deg,#7957ed,#9357dc);
-            box-shadow:0 9px 26px rgba(128,87,233,.22);
+            background:linear-gradient(135deg,#3f66d8,#2a51c7);
+            box-shadow:0 4px 14px rgba(63,102,216,.28);
             font-size:19px;font-weight:900;
+            color: #fff;
         }
 
-        .brand-name { font-size:18px;font-weight:800;letter-spacing:-.03em; }
+        .brand-name { font-size:18px;font-weight:800;letter-spacing:-.03em; color: #fff; }
 
         .side-label {
-            color:#71819a;font-size:9px;font-weight:800;
+            color:#7d8fa9;font-size:9px;font-weight:800;
             letter-spacing:.12em;text-transform:uppercase;
             padding:0 9px 10px;
         }
@@ -77,24 +76,24 @@
         .nav-link {
             display:flex;align-items:center;gap:12px;
             padding:12px 11px;border-radius:9px;
-            color:#a6b3c6;font-size:11px;
+            color:#9cadc0;font-size:11px;
         }
 
-        .nav-link:hover { background:rgba(255,255,255,.03);color:#fff; }
+        .nav-link:hover { background:rgba(255,255,255,.06);color:#fff; }
 
         .nav-link.active {
             color:#fff;
-            background:linear-gradient(90deg,rgba(128,87,233,.19),rgba(128,87,233,.07));
-            box-shadow:inset 3px 0 0 #845cf1;
+            background:#3f66d8;
+            box-shadow:0 4px 12px rgba(63,102,216,.28);
         }
 
-        .nav-icon { width:17px;text-align:center;color:#9eaec1; }
-        .nav-link.active .nav-icon { color:#c0b3ff; }
+        .nav-icon { width:17px;text-align:center;color:#8da0b6; }
+        .nav-link.active .nav-icon { color:#fff; }
 
         .admin-card {
             position:absolute;left:12px;right:12px;bottom:15px;
-            padding:10px;border:1px solid #23364f;border-radius:11px;
-            background:#0b1727;
+            padding:10px;border:1px solid #1e304b;border-radius:11px;
+            background:#0f1c2d;
         }
 
         .admin-row { display:flex;align-items:center;gap:9px; }
@@ -102,14 +101,15 @@
         .admin-avatar {
             width:34px;height:34px;display:grid;place-items:center;
             border-radius:50%;
-            background:linear-gradient(135deg,#7658ed,#8b56df);
+            background:linear-gradient(135deg,#3f66d8,#2a51c7);
             font-size:10px;font-weight:800;
+            color:#fff;
         }
 
-        .admin-name { font-size:10px;font-weight:800; }
-        .admin-role { margin-top:2px;color:#63738a;font-size:8px; }
-        .online-mini { margin-top:7px;display:flex;align-items:center;gap:5px;color:#91a0b4;font-size:8px; }
-        .dot { width:6px;height:6px;border-radius:50%;background:#28cc6f; }
+        .admin-name { font-size:10px;font-weight:800; color:#fff; }
+        .admin-role { margin-top:2px;color:#8a9bb2;font-size:8px; }
+        .online-mini { margin-top:7px;display:flex;align-items:center;gap:5px;color:#8a9bb2;font-size:8px; }
+        .dot { width:6px;height:6px;border-radius:50%;background:#16a765; }
 
         .main {
             margin-left:214px;
@@ -127,12 +127,12 @@
         }
 
         .eyebrow {
-            color:#967df3;font-size:9px;font-weight:900;
+            color:#3f66d8;font-size:9px;font-weight:900;
             letter-spacing:.12em;text-transform:uppercase;
             margin-bottom:4px;
         }
 
-        h1 { font-size:27px;letter-spacing:-.04em;line-height:1.05; }
+        h1 { font-size:27px;letter-spacing:-.04em;line-height:1.05; color:#182033; }
         .subtitle { margin-top:5px;color:var(--muted);font-size:10px; }
 
         .top-actions { display:flex;align-items:center;gap:8px; }
@@ -140,36 +140,36 @@
         .online-pill {
             display:inline-flex;align-items:center;gap:7px;
             padding:8px 11px;border-radius:999px;
-            background:rgba(36,201,107,.08);
-            color:#8ee6ad;font-size:9px;font-weight:700;
+            background:#eaf9f1;border:1px solid #b9edd2;
+            color:#16a765;font-size:9px;font-weight:700;
         }
 
         .admin-pill {
             display:flex;align-items:center;gap:7px;
-            padding:8px 10px;border:1px solid #253750;border-radius:9px;
-            background:#0a1423;color:#d5deea;font-size:10px;
+            padding:8px 10px;border:1px solid var(--border);border-radius:9px;
+            background:#ffffff;color:#182033;font-size:10px;
         }
 
         .header-btn {
             height:34px;padding:0 12px;
-            border:1px solid #2c3c55;border-radius:8px;
-            background:#0d1a2d;color:#d8e0eb;
+            border:1px solid var(--border);border-radius:8px;
+            background:#ffffff;color:#273449;
             cursor:pointer;font-size:9px;font-weight:700;
+            transition:all .15s ease;
         }
 
-        .header-btn:hover { background:#16263c; }
+        .header-btn:hover { background:#f0f4ff; border-color:#3b66d9; color:#3b66d9; }
 
         .welcome {
             margin-bottom:16px;
             padding:14px 16px;
-            border:1px solid rgba(128,87,233,.18);
+            border:1px solid #d0defb;
             border-radius:12px;
-            background:
-                linear-gradient(100deg,rgba(128,87,233,.11),rgba(11,22,38,.72));
+            background:linear-gradient(100deg,#eef3ff,#f8faff);
         }
 
-        .welcome-title { font-size:13px;font-weight:800; }
-        .welcome-text { margin-top:3px;color:#71819a;font-size:9px; }
+        .welcome-title { font-size:13px;font-weight:800; color:#182033; }
+        .welcome-text { margin-top:3px;color:#68738a;font-size:9px; }
 
         .kpis {
             display:grid;
@@ -183,16 +183,17 @@
             padding:15px;
             border:1px solid var(--border);
             border-radius:12px;
-            background:linear-gradient(145deg,rgba(10,21,37,.97),rgba(8,18,31,.95));
+            background:#ffffff;
+            box-shadow:0 2px 8px rgba(24,32,51,.04);
         }
 
-        .kpi-label { color:#6c7c94;font-size:8px;text-transform:uppercase;letter-spacing:.07em; }
+        .kpi-label { color:#68738a;font-size:8px;text-transform:uppercase;letter-spacing:.07em; }
         .kpi-value { margin-top:9px;font-size:29px;font-weight:850; }
-        .purple { color:#b7a9ff; }
-        .green { color:#51df8d; }
-        .yellow { color:#f6ca43; }
-        .red { color:#ff7676; }
-        .blue { color:#70bbff; }
+        .purple { color:#3f66d8; }
+        .green { color:#16a765; }
+        .yellow { color:#d98b00; }
+        .red { color:#df5a5a; }
+        .blue { color:#3f66d8; }
 
         .grid-2 {
             display:grid;
@@ -210,33 +211,36 @@
         .panel {
             border:1px solid var(--border);
             border-radius:12px;
-            background:rgba(9,20,35,.96);
+            background:#ffffff;
+            box-shadow:0 2px 8px rgba(24,32,51,.04);
             overflow:hidden;
         }
 
         .panel-header {
             padding:13px 14px;
-            border-bottom:1px solid #1b2b40;
+            border-bottom:1px solid #edf2f7;
             display:flex;
             align-items:center;
             justify-content:space-between;
             gap:12px;
         }
 
-        .panel-title { font-size:12px;font-weight:850; }
-        .panel-sub { margin-top:3px;color:#65758c;font-size:8px; }
+        .panel-title { font-size:12px;font-weight:850; color:#182033; }
+        .panel-sub { margin-top:3px;color:#68738a;font-size:8px; }
 
         .view-link, .small-btn {
             padding:7px 10px;
-            border:1px solid #2d405a;
+            border:1px solid #3b66d9;
             border-radius:7px;
-            background:#101e31;
-            color:#d3deeb;
+            background:#ffffff;
+            color:#3b66d9;
             font-size:8px;
+            font-weight:700;
             cursor:pointer;
+            transition:all .15s ease;
         }
 
-        .view-link:hover, .small-btn:hover { background:#18283e; }
+        .view-link:hover, .small-btn:hover { background:#f0f4ff; border-color:#3158c5; color:#3158c5; }
 
         .activity-list { padding:4px 13px 12px; }
 
@@ -246,7 +250,7 @@
             gap:9px;
             align-items:center;
             padding:10px 4px;
-            border-bottom:1px solid #16253a;
+            border-bottom:1px solid #edf2f7;
         }
 
         .activity:last-child { border-bottom:0; }
@@ -255,18 +259,18 @@
             width:26px;height:26px;
             display:grid;place-items:center;
             border-radius:50%;
-            background:rgba(128,87,233,.12);
-            color:#bcaeff;
+            background:#eef3ff;
+            color:#3f66d8;
             font-size:9px;font-weight:800;
         }
 
-        .activity-icon.green-bg { background:rgba(36,201,107,.12);color:#60e899; }
-        .activity-icon.red-bg { background:rgba(239,62,62,.12);color:#ff7777; }
-        .activity-icon.blue-bg { background:rgba(25,143,245,.12);color:#69b8ff; }
+        .activity-icon.green-bg { background:#eaf9f1;color:#16a765; }
+        .activity-icon.red-bg { background:#feeceb;color:#df5a5a; }
+        .activity-icon.blue-bg { background:#eef3ff;color:#3f66d8; }
 
-        .activity-title { color:#e1e8f1;font-size:9px;font-weight:750; }
-        .activity-detail { margin-top:2px;color:#697a91;font-size:8px; }
-        .activity-time { color:#65758c;font-size:7px;white-space:nowrap; }
+        .activity-title { color:#182033;font-size:9px;font-weight:750; }
+        .activity-detail { margin-top:2px;color:#68738a;font-size:8px; }
+        .activity-time { color:#8a97a8;font-size:7px;white-space:nowrap; }
 
         .quick-grid {
             display:grid;
@@ -282,31 +286,31 @@
             justify-content:center;
             align-items:center;
             text-align:center;
-            border:1px solid #1f3148;
+            border:1px solid var(--border);
             border-radius:10px;
-            background:#0b1727;
+            background:#ffffff;
             cursor:pointer;
             transition:.18s;
         }
 
         .quick:hover {
             transform:translateY(-1px);
-            border-color:#3a4d6b;
-            background:#0e1b2e;
+            border-color:#3f66d8;
+            background:#f8faff;
         }
 
         .quick-icon {
             width:34px;height:34px;
             display:grid;place-items:center;
             border-radius:50%;
-            background:rgba(128,87,233,.13);
-            color:#b7a9ff;
+            background:#eef3ff;
+            color:#3f66d8;
             font-size:12px;
             margin-bottom:7px;
         }
 
-        .quick-title { font-size:9px;font-weight:800;color:#e1e9f3; }
-        .quick-text { margin-top:3px;color:#65758c;font-size:7px; }
+        .quick-title { font-size:9px;font-weight:800;color:#182033; }
+        .quick-text { margin-top:3px;color:#68738a;font-size:7px; }
 
         .health-list { padding:8px 13px 13px; }
 
@@ -315,59 +319,61 @@
             align-items:center;
             justify-content:space-between;
             padding:9px 4px;
-            border-bottom:1px solid #16253a;
+            border-bottom:1px solid #edf2f7;
             font-size:8px;
         }
 
         .health-item:last-child { border-bottom:0; }
 
-        .health-name { color:#c5d0de; }
-        .health-status { color:#55dd8b;font-weight:750;display:flex;align-items:center;gap:5px; }
+        .health-name { color:#182033; }
+        .health-status { color:#16a765;font-weight:750;display:flex;align-items:center;gap:5px; }
 
         .notice-list { padding:9px 12px 13px; }
 
         .notice {
             padding:10px;
-            border:1px solid #1e3047;
+            border:1px solid var(--border);
             border-radius:9px;
-            background:#0b1727;
+            background:#f8faff;
             margin-bottom:8px;
         }
 
         .notice:last-child { margin-bottom:0; }
 
-        .notice-title { color:#e0e8f2;font-size:8px;font-weight:800; }
-        .notice-text { margin-top:3px;color:#697a91;font-size:7px;line-height:1.45; }
+        .notice-title { color:#182033;font-size:8px;font-weight:800; }
+        .notice-text { margin-top:3px;color:#68738a;font-size:7px;line-height:1.45; }
 
         .support-body { padding:12px; }
 
         .support-box {
             padding:13px;
-            border:1px solid #1e3047;
+            border:1px solid var(--border);
             border-radius:10px;
-            background:#0b1727;
+            background:#f8faff;
             margin-bottom:9px;
         }
 
-        .support-title { font-size:9px;font-weight:800;color:#e0e8f2; }
-        .support-text { margin-top:4px;color:#697a91;font-size:8px;line-height:1.45; }
+        .support-title { font-size:9px;font-weight:800;color:#182033; }
+        .support-text { margin-top:4px;color:#68738a;font-size:8px;line-height:1.45; }
 
         .support-button {
             margin-top:9px;
             padding:7px 9px;
-            border:1px solid rgba(128,87,233,.35);
+            border:1px solid #3f66d8;
             border-radius:7px;
-            background:rgba(128,87,233,.09);
-            color:#c6baff;
+            background:#eef3ff;
+            color:#3f66d8;
             cursor:pointer;
             font-size:8px;
             font-weight:700;
         }
 
+        .support-button:hover { background:#3f66d8; color:#ffffff; }
+
         .empty {
             padding:30px;
             text-align:center;
-            color:#63738a;
+            color:#68738a;
             font-size:9px;
         }
 
@@ -424,8 +430,18 @@
             <span class="nav-text">Analytics Reports</span>
         </a>
 
-        <a href="/login-ui" class="nav-link" id="logoutLink">
+        <a href="/milestone2-ui" class="nav-link">
+            <span class="nav-icon">◈</span>
+            <span class="nav-text">Sprint Management</span>
+        </a>
+
+        <a href="#" class="nav-link" id="sideSwitchBtn">
             <span class="nav-icon">↪</span>
+            <span class="nav-text">Switch Workspace</span>
+        </a>
+
+        <a href="/login-ui" class="nav-link" id="logoutLink">
+            <span class="nav-icon">⏻</span>
             <span class="nav-text">Logout</span>
         </a>
 
@@ -490,12 +506,20 @@
                 System Online
             </div>
 
-            <div class="admin-pill">
+            <div class="admin-pill" id="adminPill" style="position:relative; cursor:pointer; user-select:none;">
                 ♙
                 <span id="topAdminName">
                     Admin
                 </span>
                 ⌄
+                <div class="switch-dropdown" id="switchDropdown" style="display:none; position:absolute; right:0; top:36px; background:#0f1c2e; border:1px solid #283a54; border-radius:12px; width:200px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000; padding:6px;">
+                    <div style="padding:8px 12px; font-size:10px; font-weight:800; color:#6a7c96; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #1a2a40; margin-bottom:4px;">Switch Workspace</div>
+                    <button class="switch-item" data-role="admin" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Admin</button>
+                    <button class="switch-item" data-role="developer" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Developer</button>
+                    <button class="switch-item" data-role="tester" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Tester</button>
+                    <button class="switch-item" data-role="senior_dev" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Senior Developer</button>
+                    <button class="switch-item" data-role="user" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">User</button>
+                </div>
             </div>
 
             <button
@@ -1250,7 +1274,13 @@
             "Unassigned"
         ) {
 
-            return defect.assigned_display;
+            let display = String(defect.assigned_display);
+            display = display
+                .replace(/Alex Rivera/g, "Sasuke")
+                .replace(/Bruce Wayne/g, "Hinata")
+                .replace(/John Doe/g, "Itachi")
+                .replace(/System Administrator/g, "Naruto");
+            return display;
 
         }
 
@@ -1259,19 +1289,25 @@
             defect.assigned_user_name
         ) {
 
+            let name = String(defect.assigned_user_name)
+                .replace(/Alex Rivera/g, "Sasuke")
+                .replace(/Bruce Wayne/g, "Hinata")
+                .replace(/John Doe/g, "Itachi")
+                .replace(/System Administrator/g, "Naruto");
+
             if (
                 defect.assigned_user_role
             ) {
 
                 return (
-                    `${defect.assigned_user_name} ` +
+                    `${name} ` +
                     `(${defect.assigned_user_role})`
                 );
 
             }
 
 
-            return defect.assigned_user_name;
+            return name;
 
         }
 
@@ -1279,16 +1315,22 @@
         const roleMap = {
 
             admin:
-                "System Administrator (Admin)",
+                "Naruto (Admin)",
 
             senior_dev:
-                "John Doe (Senior Developer)",
+                "Itachi (Senior Developer)",
+
+            senior_developer:
+                "Itachi (Senior Developer)",
+
+            "senior developer":
+                "Itachi (Senior Developer)",
 
             developer:
-                "Alex Rivera (Developer)",
+                "Sasuke (Developer)",
 
             tester:
-                "Bruce Wayne (Tester)"
+                "Hinata (Tester)"
 
         };
 
@@ -1298,6 +1340,7 @@
                 defect.assigned_role ||
                 ""
             )
+            .trim()
             .toLowerCase();
 
 
@@ -1864,6 +1907,57 @@
         }
     );
 
+
+    const adminPill = document.getElementById("adminPill");
+    const switchDropdown = document.getElementById("switchDropdown");
+    const sideSwitchBtn = document.getElementById("sideSwitchBtn");
+
+    function toggleSwitcher(e) {
+        if (e) e.stopPropagation();
+        if (switchDropdown) {
+            switchDropdown.style.display = switchDropdown.style.display === "block" ? "none" : "block";
+        }
+    }
+    if (adminPill) adminPill.addEventListener("click", toggleSwitcher);
+    if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+
+    const destinations = {
+        admin: "/admin-ui",
+        developer: "/developer-ui",
+        tester: "/tester-ui",
+        senior_dev: "/senior-developer-ui",
+        user: "/user-ui"
+    };
+
+    document.querySelectorAll(".switch-item").forEach(item => {
+        item.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const role = item.getAttribute("data-role");
+            if (destinations[role]) {
+                localStorage.setItem("bugflow_workspace_role", role);
+                const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+                if (token) {
+                    try {
+                        await fetch("/api/v1/workspace/switch", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer " + token
+                            },
+                            body: JSON.stringify({ role: role })
+                        });
+                    } catch (err) {
+                        console.error("Workspace switch failed:", err);
+                    }
+                }
+                window.location.href = destinations[role];
+            }
+        });
+    });
+
+    document.addEventListener("click", () => {
+        if (switchDropdown) switchDropdown.style.display = "none";
+    });
 
     loadDashboard();
 

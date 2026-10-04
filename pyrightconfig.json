@@ -1,0 +1,9 @@
+{
+    "venvPath": "C:\\Users\\somas\\Desktop\\BUG Tracking",
+    "venv": ".venv",
+    "extraPaths": [
+        "C:\\Users\\somas\\Desktop\\BUG Tracking\\.venv\\Lib\\site-packages",
+        "C:\\Users\\somas\\Desktop\\BUG Tracking\\BugFlow_Python_Step1_IssueDatabase",
+        "C:\\Users\\somas\\Desktop\\BUG Tracking\\BugFlow_Python_Step1_IssueDatabase\\app"
+    ]
+}
