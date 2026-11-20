@@ -819,22 +819,33 @@
 
 
         @media (max-width: 500px) {
+            body {
+                padding: 12px 8px;
+            }
+
+            .page {
+                border-radius: 16px;
+                min-height: auto;
+                box-shadow: 0 10px 30px rgba(24, 32, 51, 0.08);
+            }
 
             .access-options {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
-
 
             .right-panel {
-
-                padding:
-                    25px 16px;
-
+                min-height: auto;
+                padding: 24px 16px;
             }
 
+            .heading h2 {
+                font-size: 20px;
+            }
+
+            .submit-btn {
+                height: 44px;
+            }
         }
 
     </style>

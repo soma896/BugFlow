@@ -587,6 +587,15 @@ def get_design_system_css():
     raise HTTPException(status_code=404, detail="design-system.css not found")
 
 
+@app.get("/responsive-shell.js")
+@app.get("/Frontend/responsive-shell.js")
+def get_responsive_shell_js():
+    js_file = FRONTEND_DIR / "responsive-shell.js"
+    if js_file.exists():
+        return FileResponse(js_file, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="responsive-shell.js not found")
+
+
 
 @app.get("/tester-ui")
 def tester_ui():
