@@ -6,8 +6,15 @@
 (function () {
   function initBugFlowResponsiveShell() {
     // 1. Identify primary sidebar & header elements
-    const sidebar = document.querySelector('aside.sidebar, aside.bf-sidebar, .sidebar, aside[class*="w-60"], aside[class*="w-64"], aside');
-    const header = document.querySelector('header, .topbar, .bf-topbar, .page-header-card');
+    // Prioritize fixed/sticky navigation bar; never select content cards
+    const sidebar = document.querySelector(
+      'aside.sidebar, aside.bf-sidebar, .sidebar, aside[class*="w-60"], aside[class*="w-64"], aside[class*="fixed"], aside'
+    );
+    const header = document.querySelector(
+      'header.topbar, header.bf-topbar, .topbar, .bf-topbar, ' +
+      'header[class*="fixed"], header[class*="sticky"], ' +
+      'header:not(.page-header-card)'
+    );
 
     if (!sidebar || !header) return;
 

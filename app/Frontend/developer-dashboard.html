@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -347,29 +347,29 @@ h1{
     <nav class="nav">
 
         <a class="active" href="/developer-ui">
-            ◉ <span>Dashboard</span>
+            â—‰ <span>Dashboard</span>
         </a>
 
         <a href="/developer-defects-ui">
-            ☷ <span>Defects</span>
+            â˜· <span>Defects</span>
         </a>
 
         <!-- FIXED: Developer-specific Team Collaboration route -->
         <a href="/team-collaboration-developer-ui"
            id="developerTeamCollaborationLink">
-            ◎ <span>Team Collaboration</span>
+            â—Ž <span>Team Collaboration</span>
         </a>
 
         <a href="/developer-analytics-ui">
-            ▥ <span>Analytics Reports</span>
+            â–¥ <span>Analytics Reports</span>
         </a>
 
         <a href="/developer-sprints-ui">
-            ◫ <span>My Sprints</span>
+            â—« <span>My Sprints</span>
         </a>
 
         <a href="#" id="sideSwitchBtn">
-            ↪ <span>Switch</span>
+            â†ª <span>Switch</span>
         </a>
 
     </nav>
@@ -402,7 +402,7 @@ h1{
             id="switchDropdownBtn"
             type="button"
         >
-            <span>Switch Workspace</span> ▾
+            <span>Switch Workspace</span> â–¾
         </button>
 
         <div class="switch-dropdown" id="switchDropdown">
@@ -821,7 +821,7 @@ async function loadAssignedSprints() {
                         href="/developer-sprints-ui"
                         style="color:#a58eff;text-decoration:none;font-weight:800;"
                     >
-                        Open My Sprints →
+                        Open My Sprints â†’
                     </a>
 
                 </div>
@@ -873,7 +873,7 @@ async function loadAssignedSprints() {
 
                                     ${Number(
                                         sprint.total_issues || 0
-                                    )} issue(s) •
+                                    )} issue(s) â€¢
 
                                     ${progress}% complete
 
@@ -1042,7 +1042,7 @@ async function loadDeveloperData() {
 
                                 <span class="muted">
                                     ${escapeHtml(d.category)}
-                                    •
+                                    â€¢
                                     ${escapeHtml(d.priority)}
                                     Priority
                                 </span>
@@ -1110,5 +1110,6 @@ loadDeveloperData();
 
 </script>
 
+<script src="/responsive-shell.js"></script>
 </body>
 </html>

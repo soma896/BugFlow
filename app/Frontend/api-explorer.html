@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -224,39 +224,39 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
     <div class="label">Administration</div>
     <nav class="nav">
         <a href="/admin-ui">
-            <span class="nav-icon">▣</span>
+            <span class="nav-icon">â–£</span>
             <span>Dashboard</span>
         </a>
         <a href="/all-defects-ui">
-            <span class="nav-icon">☷</span>
+            <span class="nav-icon">â˜·</span>
             <span>All Defects</span>
         </a>
         <a href="/analytics-ui">
-            <span class="nav-icon">▥</span>
+            <span class="nav-icon">â–¥</span>
             <span>Analytics Reports</span>
         </a>
         <a href="/milestone2-ui">
-            <span class="nav-icon">◈</span>
+            <span class="nav-icon">â—ˆ</span>
             <span>Sprint Management</span>
         </a>
         <a href="/team-collaboration-ui">
-            <span class="nav-icon">◉</span>
+            <span class="nav-icon">â—‰</span>
             <span>Team Collaboration</span>
         </a>
         <a href="/integrations-ui">
-            <span class="nav-icon">⚡</span>
+            <span class="nav-icon">âš¡</span>
             <span>Integrations & CI/CD</span>
         </a>
         <a class="active" href="/api-explorer-ui">
-            <span class="nav-icon">⚙</span>
+            <span class="nav-icon">âš™</span>
             <span>API Explorer</span>
         </a>
         <a href="#" id="sideSwitchBtn">
-            <span class="nav-icon">↪</span>
+            <span class="nav-icon">â†ª</span>
             <span>Switch Workspace</span>
         </a>
         <a href="/login-ui" id="logoutLink">
-            <span class="nav-icon">⏻</span>
+            <span class="nav-icon">â»</span>
             <span>Logout</span>
         </a>
     </nav>
@@ -267,14 +267,14 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
 
 <header class="top">
     <div>
-        <div class="eyebrow">Module 3 — REST API Layer</div>
+        <div class="eyebrow">Module 3 â€” REST API Layer</div>
         <h1>Interactive API Explorer</h1>
         <div class="sub">Test and inspect BugFlow Issue Management, Assignment, Sprints, Analytics, GitHub, and CI/CD REST endpoints live.</div>
     </div>
 
     <div class="switcher-container">
         <button class="switch-btn" id="switchDropdownBtn" type="button">
-            <span>Switch Workspace</span> ▾
+            <span>Switch Workspace</span> â–¾
         </button>
         <div class="switch-dropdown" id="switchDropdown">
             <div style="font-size:10px;font-weight:800;color:#94a3b8;padding:4px 8px;text-transform:uppercase;">Switch Workspace</div>
@@ -313,7 +313,7 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
             <div class="url-method method-get" id="epMethodBadge">GET</div>
             <input type="text" class="url-input" id="epUrlInput" value="/api/v1/issues?limit=10">
             <button class="btn-send" id="epSendBtn" onclick="executeApiCall()">
-                <span>▶</span> Send
+                <span>â–¶</span> Send
             </button>
         </div>
 
@@ -504,7 +504,7 @@ async function executeApiCall() {
     const respBox = document.getElementById("respBox");
 
     btn.disabled = true;
-    btn.innerHTML = `<span>⏳</span> Running...`;
+    btn.innerHTML = `<span>â³</span> Running...`;
     respStatus.className = "resp-badge";
     respStatus.textContent = "Loading...";
 
@@ -522,7 +522,7 @@ async function executeApiCall() {
         } catch (e) {
             alert("Invalid JSON body: " + e.message);
             btn.disabled = false;
-            btn.innerHTML = `<span>▶</span> Send`;
+            btn.innerHTML = `<span>â–¶</span> Send`;
             return;
         }
     }
@@ -549,7 +549,7 @@ async function executeApiCall() {
         respBox.textContent = `Fetch Failed: ${err.message}`;
     } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>▶</span> Send`;
+        btn.innerHTML = `<span>â–¶</span> Send`;
     }
 }
 
@@ -562,5 +562,6 @@ renderEndpoints();
 selectEndpoint(0);
 </script>
 
+<script src="/responsive-shell.js"></script>
 </body>
 </html>

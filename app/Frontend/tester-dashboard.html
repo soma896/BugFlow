@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -344,27 +344,27 @@ h1{
     <nav class="nav">
 
         <a class="active" href="/tester-ui">
-            ◉ <span>Dashboard</span>
+            â—‰ <span>Dashboard</span>
         </a>
 
         <a href="/tester-defects-ui">
-            ☷ <span>Defects</span>
+            â˜· <span>Defects</span>
         </a>
 
         <a href="/team-collaboration-tester-ui">
-            ◎ <span>Team Collaboration</span>
+            â—Ž <span>Team Collaboration</span>
         </a>
 
         <a href="/tester-analytics-ui">
-            ▥ <span>Analytics Reports</span>
+            â–¥ <span>Analytics Reports</span>
         </a>
 
         <a href="/tester-sprints-ui">
-            ◫ <span>My Sprints</span>
+            â—« <span>My Sprints</span>
         </a>
 
         <a href="#" id="sideSwitchBtn">
-            ↪ <span>Switch</span>
+            â†ª <span>Switch</span>
         </a>
 
     </nav>
@@ -396,7 +396,7 @@ h1{
             id="switchDropdownBtn"
             type="button"
         >
-            <span>Switch Workspace</span> ▾
+            <span>Switch Workspace</span> â–¾
         </button>
 
         <div class="switch-dropdown" id="switchDropdown">
@@ -624,7 +624,7 @@ async function loadAssignedSprints() {
                     <span class="muted">No sprints assigned to Tester yet.</span>
                     <a href="/tester-sprints-ui"
                        style="color:#a58eff;text-decoration:none;font-weight:800;">
-                        Open My Sprints →
+                        Open My Sprints â†’
                     </a>
                 </div>`;
             return;
@@ -640,7 +640,7 @@ async function loadAssignedSprints() {
                         <b>${escapeHtml(sprint.sprint_name || "Unnamed Sprint")}</b>
                         <br>
                         <span class="muted">
-                            ${Number(sprint.total_issues || 0)} issue(s) •
+                            ${Number(sprint.total_issues || 0)} issue(s) â€¢
                             ${progress}% complete
                         </span>
                     </span>
@@ -688,7 +688,7 @@ async function loadTesterData() {
                     <span>
                         <b>#${d.id} - ${escapeHtml(d.title)}</b>
                         <br>
-                        <span class="muted">${escapeHtml(d.category)} • ${escapeHtml(d.priority)} Priority</span>
+                        <span class="muted">${escapeHtml(d.category)} â€¢ ${escapeHtml(d.priority)} Priority</span>
                     </span>
                     <span class="badge ${d.status ? d.status.toLowerCase() : 'pending'}">${escapeHtml(d.status || 'Pending')}</span>
                 </div>
@@ -710,5 +710,6 @@ loadAssignedSprints();
 loadTesterData();
 </script>
 
+<script src="/responsive-shell.js"></script>
 </body>
 </html>

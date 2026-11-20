@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -583,19 +583,19 @@ tbody tr:hover{
     <nav class="nav">
 
         <a href="/senior-developer-ui">
-            ◉ <span>Dashboard</span>
+            â—‰ <span>Dashboard</span>
         </a>
 
         <a class="active" href="/senior-developer-defects-ui">
-            ☷ <span>Defects</span>
+            â˜· <span>Defects</span>
         </a>
 
         <a href="/senior-analytics-ui">
-            ▥ <span>Analytics Reports</span>
+            â–¥ <span>Analytics Reports</span>
         </a>
 
         <a href="#" id="sideSwitchBtn">
-            ↪ <span>Switch</span>
+            â†ª <span>Switch</span>
         </a>
 
     </nav>
@@ -628,7 +628,7 @@ tbody tr:hover{
             id="refreshButton"
             type="button"
         >
-            ↻ Refresh
+            â†» Refresh
         </button>
 
         <button
@@ -645,7 +645,7 @@ tbody tr:hover{
                 id="switchDropdownBtn"
                 type="button"
             >
-                Switch ▾
+                Switch â–¾
             </button>
 
             <div class="switch-dropdown" id="switchDropdown" style="display:none; position:absolute; right:0; top:40px; background:#0f1c2e; border:1px solid #283a54; border-radius:12px; width:200px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000; padding:6px;">
@@ -808,7 +808,7 @@ tbody tr:hover{
                 type="button"
                 id="closeModal"
             >
-                ×
+                Ã—
             </button>
 
         </div>
@@ -843,13 +843,13 @@ function escapeHtml(value){
 function formatDate(value){
 
     if(!value){
-        return "—";
+        return "â€”";
     }
 
     const date = new Date(value);
 
     if(Number.isNaN(date.getTime())){
-        return "—";
+        return "â€”";
     }
 
     return date.toLocaleString(
@@ -1154,7 +1154,7 @@ function renderTable(){
 
                 <td>
                     ${escapeHtml(
-                        defect.category || "—"
+                        defect.category || "â€”"
                     )}
                 </td>
 
@@ -1261,7 +1261,7 @@ function openDetails(id){
 
     document.getElementById("modalTitle")
         .textContent =
-        `Defect #${defect.id} — ${
+        `Defect #${defect.id} â€” ${
             defect.title || "Untitled"
         }`;
 
@@ -1306,7 +1306,7 @@ function openDetails(id){
                 <div class="detail-label">Category</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.category || "—"
+                        defect.category || "â€”"
                     )}
                 </div>
             </div>
@@ -1357,7 +1357,7 @@ function openDetails(id){
                 <div class="detail-label">Environment</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.environment || "—"
+                        defect.environment || "â€”"
                     )}
                 </div>
             </div>
@@ -1379,7 +1379,7 @@ function openDetails(id){
                 <div class="detail-label">Description</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.description || "—"
+                        defect.description || "â€”"
                     )}
                 </div>
             </div>
@@ -1389,7 +1389,7 @@ function openDetails(id){
                 <div class="detail-label">Steps to Reproduce</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.reproduction_steps || "—"
+                        defect.reproduction_steps || "â€”"
                     )}
                 </div>
             </div>
@@ -1399,7 +1399,7 @@ function openDetails(id){
                 <div class="detail-label">Expected Result</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.expected_result || "—"
+                        defect.expected_result || "â€”"
                     )}
                 </div>
             </div>
@@ -1409,7 +1409,7 @@ function openDetails(id){
                 <div class="detail-label">Actual Result</div>
                 <div class="detail-value">
                     ${escapeHtml(
-                        defect.actual_result || "—"
+                        defect.actual_result || "â€”"
                     )}
                 </div>
             </div>
@@ -1584,5 +1584,6 @@ loadDefects();
 
 </script>
 
+<script src="/responsive-shell.js"></script>
 </body>
 </html>

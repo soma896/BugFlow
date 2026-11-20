@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -195,20 +195,20 @@ a{text-decoration:none;color:inherit}
   <div class="brand"><div class="brand-b">B</div><span>BugFlow</span></div>
   <div class="section">MY WORKSPACE</div>
   <nav class="nav">
-    <a href="/senior-dev-ui"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
-    <a href="/all-defects-ui"><span class="nav-icon">▣</span><span>My Issues</span></a>
-    <a class="active" href="/team-collaboration-senior-developer-ui"><span class="nav-icon">◎</span><span>Team Collaboration</span></a>
-    <a href="/milestone2-ui"><span class="nav-icon">◇</span><span>Sprint Management</span></a>
-    <a href="/all-defects-ui"><span class="nav-icon">◆</span><span>All Defects</span></a>
-    <a href="/analytics-ui"><span class="nav-icon">▥</span><span>Analytics Reports</span></a>
-    <a href="/login-ui"><span class="nav-icon">↔</span><span>Logout / Switch</span></a>
+    <a href="/senior-dev-ui"><span class="nav-icon">âŒ‚</span><span>Dashboard</span></a>
+    <a href="/all-defects-ui"><span class="nav-icon">â–£</span><span>My Issues</span></a>
+    <a class="active" href="/team-collaboration-senior-developer-ui"><span class="nav-icon">â—Ž</span><span>Team Collaboration</span></a>
+    <a href="/milestone2-ui"><span class="nav-icon">â—‡</span><span>Sprint Management</span></a>
+    <a href="/all-defects-ui"><span class="nav-icon">â—†</span><span>All Defects</span></a>
+    <a href="/analytics-ui"><span class="nav-icon">â–¥</span><span>Analytics Reports</span></a>
+    <a href="/login-ui"><span class="nav-icon">â†”</span><span>Logout / Switch</span></a>
   </nav>
 </aside>
 
 <main class="main">
 <header class="topbar">
-  <div class="top-left"><span class="menu">☰</span><span>Senior Developer Dashboard</span></div>
-  <div class="top-right"><span class="bell">♟</span><div class="profile"><div class="avatar">S</div><div><div class="profile-name">BugFlow User</div><div class="profile-role">Senior Developer</div></div></div></div>
+  <div class="top-left"><span class="menu">â˜°</span><span>Senior Developer Dashboard</span></div>
+  <div class="top-right"><span class="bell">â™Ÿ</span><div class="profile"><div class="avatar">S</div><div><div class="profile-name">BugFlow User</div><div class="profile-role">Senior Developer</div></div></div></div>
 </header>
 
 <div class="content">
@@ -218,15 +218,15 @@ a{text-decoration:none;color:inherit}
     <p>Review and support issues where you are part of the collaboration team.</p>
   </div>
   <div class="actions">
-    <button class="btn" onclick="loadAll()">↻ Refresh</button>
+    <button class="btn" onclick="loadAll()">â†» Refresh</button>
     <a class="btn primary" href="/milestone2-ui">View Sprint Management</a>
   </div>
 </header>
 
 <section class="cards">
-  <div class="card"><div class="card-icon">▣</div><div><div class="label">My Issues</div><div class="num" id="issueCount">0</div><div class="sub">Issues shared with Senior Developer</div></div></div>
-  <div class="card"><div class="card-icon">◷</div><div><div class="label">In Review</div><div class="num" id="progressIssueCount">0</div><div class="sub">Currently moving forward</div></div></div>
-  <div class="card green"><div class="card-icon">✓</div><div><div class="label">Resolved</div><div class="num" id="resolvedIssueCount">0</div><div class="sub">Closed or resolved issues</div></div></div>
+  <div class="card"><div class="card-icon">â–£</div><div><div class="label">My Issues</div><div class="num" id="issueCount">0</div><div class="sub">Issues shared with Senior Developer</div></div></div>
+  <div class="card"><div class="card-icon">â—·</div><div><div class="label">In Review</div><div class="num" id="progressIssueCount">0</div><div class="sub">Currently moving forward</div></div></div>
+  <div class="card green"><div class="card-icon">âœ“</div><div><div class="label">Resolved</div><div class="num" id="resolvedIssueCount">0</div><div class="sub">Closed or resolved issues</div></div></div>
 </section>
 
 <section class="panel">
@@ -234,7 +234,7 @@ a{text-decoration:none;color:inherit}
     <div><div class="title">My Collaboration Issues</div><div class="muted">Issues where Senior Developer was selected by Admin.</div></div>
     <div class="issue-tools">
       <select id="statusFilter" onchange="renderIssueList()"><option value="ALL">All Status</option><option value="OPEN">Open</option><option value="IN_PROGRESS">In Progress</option><option value="IN_REVIEW">In Review</option><option value="QA_VERIFICATION">Testing</option><option value="RESOLVED">Resolved</option><option value="CLOSED">Closed</option></select>
-      <input id="searchInput" placeholder="⌕ Search issues..." oninput="renderIssueList()">
+      <input id="searchInput" placeholder="âŒ• Search issues..." oninput="renderIssueList()">
     </div>
   </div>
   <div class="issue-list" id="visibleIssueList"><div class="empty">Loading collaboration issues...</div></div>
@@ -245,30 +245,30 @@ a{text-decoration:none;color:inherit}
   <div class="workspace">
     <div class="issue-top">
       <div>
-        <div class="issue-heading"><span class="issue-key-large" id="issueKey">—</span><span class="issue-title" id="issueTitle">Select an issue</span></div>
+        <div class="issue-heading"><span class="issue-key-large" id="issueKey">â€”</span><span class="issue-title" id="issueTitle">Select an issue</span></div>
         <div class="issue-description" id="issueDesc">Select one of your collaboration issues to view its shared workspace.</div>
       </div>
       <span class="pill high" id="priorityPill">Priority</span>
     </div>
     <div class="meta">
-      <div class="meta-item"><span>Assigned To</span><strong id="issueAssignee">—</strong></div>
-      <div class="meta-item"><span>Created</span><strong id="issueCreated">—</strong></div>
-      <div class="meta-item"><span>Last Updated</span><strong id="issueUpdated">—</strong></div>
+      <div class="meta-item"><span>Assigned To</span><strong id="issueAssignee">â€”</strong></div>
+      <div class="meta-item"><span>Created</span><strong id="issueCreated">â€”</strong></div>
+      <div class="meta-item"><span>Last Updated</span><strong id="issueUpdated">â€”</strong></div>
     </div>
   </div>
 </section>
 
 <section class="panel">
-  <div class="panel-head"><div><div class="title">Collaboration Team</div><div class="muted">Selected by Admin · read-only for Senior Developer.</div></div></div>
+  <div class="panel-head"><div><div class="title">Collaboration Team</div><div class="muted">Selected by Admin Â· read-only for Senior Developer.</div></div></div>
   <div class="team-grid" id="roleTeamGrid"></div>
 </section>
 
 <section class="panel role-work purple">
   <div class="panel-head"><div><div class="title">Senior Developer Review</div><div class="muted">Review implementation, code references, and technical decisions.</div></div></div>
   <div class="work-body">
-    <div class="work-actions"><button class="work-action purple-active" data-work-action="review">▣ Review Comment</button>
-<button class="work-action" data-work-action="code">⌘ Code Review</button>
-<button class="work-action" data-work-action="approval">▣ Request Approval</button></div>
+    <div class="work-actions"><button class="work-action purple-active" data-work-action="review">â–£ Review Comment</button>
+<button class="work-action" data-work-action="code">âŒ˜ Code Review</button>
+<button class="work-action" data-work-action="approval">â–£ Request Approval</button></div>
     <textarea class="work-text" id="roleWorkText" placeholder="Add your review comments..."></textarea>
     <div class="work-actions"><select id="roleWorkStatus"><option value="NOT_STARTED">Not Started</option><option value="IN_REVIEW">In Review</option><option value="CHANGES_REQUESTED">Changes Requested</option><option value="APPROVED">Approved</option><option value="BLOCKED">Blocked</option></select><button class="btn primary" type="button" onclick="saveRoleWork()">Save Review Status</button><span id="roleWorkProgress">0%</span></div>
   </div>
@@ -283,8 +283,8 @@ a{text-decoration:none;color:inherit}
 <section class="panel">
   <div class="panel-head"><div><div class="title">Attachments / Evidence</div><div class="muted">Shared files stored against the selected issue.</div></div></div>
   <div class="section-body">
-    <label class="dropzone" for="fileInput"><input id="fileInput" type="file" accept=".png,.jpg,.log" hidden><strong>Drag &amp; drop files here</strong><span>or click to upload · PNG, JPG, LOG · Max 10MB</span></label>
-    <div class="composer-foot"><button class="btn primary" onclick="uploadFile()">＋ Upload File</button></div>
+    <label class="dropzone" for="fileInput"><input id="fileInput" type="file" accept=".png,.jpg,.log" hidden><strong>Drag &amp; drop files here</strong><span>or click to upload Â· PNG, JPG, LOG Â· Max 10MB</span></label>
+    <div class="composer-foot"><button class="btn primary" onclick="uploadFile()">ï¼‹ Upload File</button></div>
     <div class="files" id="attachments"></div>
   </div>
 </section>
@@ -293,7 +293,7 @@ a{text-decoration:none;color:inherit}
   <div class="panel-head"><div><div class="title">Code References</div><div class="muted">Shared code references connected to this issue.</div></div></div>
   <div class="section-body">
     <div class="code-form"><input id="codePath" placeholder="src/components/Header.tsx"><input id="codeLine" placeholder="Line 45"><input id="codeNote" placeholder="Relevant code note"></div>
-    <div class="composer-foot"><button class="btn primary" onclick="addCodeReference()">＋ Add Code Reference</button></div>
+    <div class="composer-foot"><button class="btn primary" onclick="addCodeReference()">ï¼‹ Add Code Reference</button></div>
     <div class="refs" id="codeRefs"></div>
   </div>
 </section>
@@ -328,10 +328,10 @@ let assignmentStates={developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'}
 const roleNamesMap={admin:'Naruto (Admin)',developer:'Sasuke (Developer)',tester:'Hinata (Tester)',senior_dev:'Itachi (Senior Developer)'};
 
 const roleInfo={
-  admin:['Admin','Full Access','♛'],
+  admin:['Admin','Full Access','â™›'],
   developer:['Developer','Development','</>'],
-  tester:['Tester','Verification','⚗'],
-  senior_dev:['Senior Developer','Review','◆']
+  tester:['Tester','Verification','âš—'],
+  senior_dev:['Senior Developer','Review','â—†']
 };
 
 const $=id=>document.getElementById(id);
@@ -339,7 +339,7 @@ function token(){return localStorage.getItem('access_token')||localStorage.getIt
 function headers(json=false){const h={};if(json)h['Content-Type']='application/json';const t=token();if(t)h.Authorization='Bearer '+t;h['X-Workspace-Role']=ROLE;return h}
 async function json(r){const t=await r.text();try{return t?JSON.parse(t):{}}catch{return{detail:t}}}
 function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;")}
-function fmt(v){if(!v)return '—';try{return new Date(v).toLocaleString()}catch{return String(v)}}
+function fmt(v){if(!v)return 'â€”';try{return new Date(v).toLocaleString()}catch{return String(v)}}
 function roleName(r){const x=String(r||'').toLowerCase().replaceAll('-','_').replaceAll(' ','_');return roleInfo[x]?.[0]||r||'Team Member'}
 function norm(r){return String(r||'').toLowerCase().replaceAll('-','_').replaceAll(' ','_')}
 function initials(n){return String(n||'U').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
@@ -470,7 +470,7 @@ function renderFlow(){
     const current=r===ROLE;
     const info=roleInfo[r];
     const item=(workOverview.workstreams||[]).find(x=>x.role===r);
-    const label=r==='admin'?(active?'Coordinator':'Not selected'):item?`${item.progress}% — ${String(item.status).replaceAll('_',' ')}`:'Not selected';
+    const label=r==='admin'?(active?'Coordinator':'Not selected'):item?`${item.progress}% â€” ${String(item.status).replaceAll('_',' ')}`:'Not selected';
     return `<div class="flow-step ${active?'active':''} ${current?'current':''}">
       <strong>${esc(info[0])}</strong><span>${label}</span>
     </div>`;
@@ -481,8 +481,8 @@ function renderWork(){const item=(workOverview.workstreams||[]).find(x=>x.role==
 
 function renderIssue(){
   if(!selected){
-    $('issueKey').textContent='—';$('issueTitle').textContent='Select an issue';$('issueDesc').textContent='Select one of your collaboration issues to view its shared workspace.';
-    $('issueAssignee').textContent='—';$('issueCreated').textContent='—';$('issueUpdated').textContent='—';$('statusBadge').textContent='Select issue';$('priorityPill').textContent='Priority';
+    $('issueKey').textContent='â€”';$('issueTitle').textContent='Select an issue';$('issueDesc').textContent='Select one of your collaboration issues to view its shared workspace.';
+    $('issueAssignee').textContent='â€”';$('issueCreated').textContent='â€”';$('issueUpdated').textContent='â€”';$('statusBadge').textContent='Select issue';$('priorityPill').textContent='Priority';
     renderTeam();renderFlow();return;
   }
   $('issueKey').textContent=selected.issue_key||('BUG-'+selected.id);
@@ -515,20 +515,20 @@ function renderComments(){
 function renderAttachments(){
   const b=$('attachments');
   if(!attachments.length){b.innerHTML='<div class="empty">No attachments for this issue.</div>';return}
-  b.innerHTML=attachments.map(a=>`<div class="file"><div><div class="file-name">📄 ${esc(a.filename)}</div><div class="file-meta">Uploaded by ${esc(a.user_name)} · ${fmt(a.uploaded_at)}</div></div><button class="btn" onclick="downloadFile(${a.attachment_id})">Open</button></div>`).join('');
+  b.innerHTML=attachments.map(a=>`<div class="file"><div><div class="file-name">ðŸ“„ ${esc(a.filename)}</div><div class="file-meta">Uploaded by ${esc(a.user_name)} Â· ${fmt(a.uploaded_at)}</div></div><button class="btn" onclick="downloadFile(${a.attachment_id})">Open</button></div>`).join('');
 }
 
 function renderCodeRefs(){
   const refs=comments.filter(c=>String(c.comment||'').startsWith('[CODE_REFERENCE]')).map(c=>({user:c.user_name,created:c.created_at,text:String(c.comment).replace('[CODE_REFERENCE]','').trim()}));
   const b=$('codeRefs');
   if(!refs.length){b.innerHTML='<div class="empty">No code references added yet.</div>';return}
-  b.innerHTML=refs.map(r=>{const m=r.text.match(/^([^|]+)\|([^|]+)\|(.*)$/);return `<div class="ref"><div class="ref-path">${esc(m?m[1]:r.text)}${m&&m[2]?': '+esc(m[2]):''}</div><div class="ref-note">${esc(m?m[3]:'')} · ${esc(r.user)} · ${fmt(r.created)}</div></div>`}).join('');
+  b.innerHTML=refs.map(r=>{const m=r.text.match(/^([^|]+)\|([^|]+)\|(.*)$/);return `<div class="ref"><div class="ref-path">${esc(m?m[1]:r.text)}${m&&m[2]?': '+esc(m[2]):''}</div><div class="ref-note">${esc(m?m[3]:'')} Â· ${esc(r.user)} Â· ${fmt(r.created)}</div></div>`}).join('');
 }
 
 function renderHistory(){
   const b=$('history');
   if(!history.length){b.innerHTML='<div class="empty">No activity recorded for this issue yet.</div>';return}
-  b.innerHTML=history.slice().reverse().map(h=>`<div class="event"><div class="dot"></div><div><div class="event-main"><b>${esc(h.who)}</b> — ${esc(h.action)}${h.old_status&&h.new_status&&h.old_status!==h.new_status?` (${esc(h.old_status)} → ${esc(h.new_status)})`:''}</div><div class="event-time">${fmt(h.when)}</div></div></div>`).join('');
+  b.innerHTML=history.slice().reverse().map(h=>`<div class="event"><div class="dot"></div><div><div class="event-main"><b>${esc(h.who)}</b> â€” ${esc(h.action)}${h.old_status&&h.new_status&&h.old_status!==h.new_status?` (${esc(h.old_status)} â†’ ${esc(h.new_status)})`:''}</div><div class="event-time">${fmt(h.when)}</div></div></div>`).join('');
 }
 
 function workflowSteps(status){
@@ -543,7 +543,7 @@ function workflowSteps(status){
 function renderWorkflow(status){
   const idx=workflowSteps(status);
   const names=['Assigned','In Development','Review','In Testing','Resolved','Closed'];
-  $('workflow').innerHTML=names.map((n,i)=>`<div class="wf-step ${i<idx?'done':''} ${i===idx?'current':''}"><div class="wf-circle">${i<idx?'✓':i+1}</div><div class="wf-label">${n}</div></div>`).join('');
+  $('workflow').innerHTML=names.map((n,i)=>`<div class="wf-step ${i<idx?'done':''} ${i===idx?'current':''}"><div class="wf-circle">${i<idx?'âœ“':i+1}</div><div class="wf-label">${n}</div></div>`).join('');
   const next=({REPORTED:'TRIAGED',TRIAGED:'IN_PROGRESS',IN_PROGRESS:'QA_VERIFICATION',QA_VERIFICATION:'RESOLVED',RESOLVED:'CLOSED'})[String(status).toUpperCase()]||'';
   const btn=$('advanceStatusButton');btn.disabled=!selected||!next;btn.textContent=next?`Advance to ${next}`:'Workflow Complete';
 }
@@ -744,5 +744,6 @@ bindRoleActions();
 })();
 loadAll();
 </script>
+<script src="/responsive-shell.js"></script>
 </body>
 </html>
