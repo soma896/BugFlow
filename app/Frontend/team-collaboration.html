@@ -655,16 +655,16 @@
             <div class="flex items-center gap-3">
               <div class="flex items-center gap-1 text-[12px]">
                 <span>Per page:</span>
-                <select class="h-7 px-1.5 rounded bg-surface-container-lowest text-on-surface text-body-sm focus:outline-none cursor-pointer border border-outline-variant/30" id="perPageSelect" onchange="changePerPage(this.value)">
+                <select class="h-7 px-2 rounded bg-surface-container-lowest text-on-surface text-body-sm focus:outline-none cursor-pointer border border-outline-variant/30 font-medium" style="background-image: none !important; -webkit-appearance: none; appearance: none; width: 46px; text-align: center;" id="perPageSelect" onchange="changePerPage(this.value)">
                   <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option selected value="20">20</option>
+                  <option selected value="10">10</option>
+                  <option value="20">20</option>
                 </select>
               </div>
               <div class="flex items-center gap-1" id="paginationButtons">
-                <button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface disabled:opacity-40 text-body-sm font-medium border border-outline-variant/30" disabled id="prevPageBtn" onclick="prevPage()">&lt; Prev</button>
-                <button class="w-7 h-7 rounded bg-secondary text-on-secondary font-semibold text-body-sm">1</button>
-                <button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container text-body-sm font-medium border border-outline-variant/30" disabled id="nextPageBtn" onclick="nextPage()">Next &gt;</button>
+                <button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface disabled:opacity-40 text-body-sm font-medium border border-outline-variant/30" disabled id="prevPageBtn" onclick="prevPage()">Prev</button>
+                <button class="min-w-[28px] h-7 px-2 rounded bg-secondary text-on-secondary font-semibold text-body-sm" id="pageNumberDisplay">1</button>
+                <button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container text-body-sm font-medium border border-outline-variant/30" disabled id="nextPageBtn" onclick="nextPage()">Next</button>
               </div>
             </div>
           </div>
@@ -1307,12 +1307,24 @@ function renderLedgerTable() {
 
   if (filteredIssues.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-on-surface-variant">No collaboration threads found matching current filters.</td></tr>`;
+    if ($('paginationSummary')) $('paginationSummary').innerHTML = `Showing <strong class="text-on-surface font-semibold">0 to 0</strong> of <strong class="text-on-surface font-semibold">${issues.length}</strong> active threads`;
+    if ($('prevPageBtn')) $('prevPageBtn').disabled = true;
+    if ($('nextPageBtn')) $('nextPageBtn').disabled = true;
     return;
   }
 
+  const total = filteredIssues.length;
+  const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = Math.min(startIdx + itemsPerPage, total);
+  const pagedIssues = filteredIssues.slice(startIdx, endIdx);
+
   const py = tableDensity === 'compact' ? 'py-2' : 'py-3';
 
-  tbody.innerHTML = filteredIssues.map((issue, idx) => {
+  tbody.innerHTML = pagedIssues.map((issue, idx) => {
     const isSelected = selected && +selected.id === +issue.id;
     const issueKey = issue.issue_key || ('BUG-' + issue.id);
     const title = issue.title || 'Untitled defect';
@@ -1397,8 +1409,32 @@ function renderLedgerTable() {
     `;
   }).join('');
 
-  $('selectedRowsCount').textContent = `0 selected of ${filteredIssues.length}`;
-  $('paginationSummary').innerHTML = `Showing <strong class="text-on-surface font-semibold">1 to ${filteredIssues.length}</strong> of <strong class="text-on-surface font-semibold">${issues.length}</strong> active threads`;
+  if ($('selectedRowsCount')) $('selectedRowsCount').textContent = `0 selected of ${total}`;
+  if ($('paginationSummary')) $('paginationSummary').innerHTML = `Showing <strong class="text-on-surface font-semibold">${total ? startIdx + 1 : 0} to ${endIdx}</strong> of <strong class="text-on-surface font-semibold">${issues.length}</strong> active threads`;
+  if ($('pageNumberDisplay')) $('pageNumberDisplay').textContent = currentPage;
+  if ($('prevPageBtn')) $('prevPageBtn').disabled = currentPage <= 1;
+  if ($('nextPageBtn')) $('nextPageBtn').disabled = currentPage >= totalPages;
+}
+
+function changePerPage(val) {
+  itemsPerPage = parseInt(val, 10) || 10;
+  currentPage = 1;
+  renderLedgerTable();
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderLedgerTable();
+  }
+}
+
+function nextPage() {
+  const totalPages = Math.ceil(filteredIssues.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderLedgerTable();
+  }
 }
 
 // Issue Selection

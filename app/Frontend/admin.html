@@ -1608,19 +1608,17 @@
                         <!-- Donut Chart & Legend Box -->
                         <div class="chart-legend-box">
                             <div class="donut-container">
-                                <svg class="donut-svg" viewBox="0 0 100 100" role="img" aria-label="Defect distribution donut chart">
-                                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"></circle>
-                                    <!-- Resolved (Primary Blue) -->
-                                    <circle id="donutResolvedCircle" cx="50" cy="50" fill="transparent" stroke="#2563eb" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="100"></circle>
-                                    <!-- Rejected (Slate Gray) -->
-                                    <circle id="donutRejectedCircle" cx="50" cy="50" fill="transparent" stroke="#64748b" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="200" transform="rotate(0 50 50)"></circle>
-                                    <!-- Pending (Amber/Accent) -->
-                                    <circle id="donutPendingCircle" cx="50" cy="50" fill="transparent" stroke="#f59e0b" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="240" transform="rotate(0 50 50)"></circle>
-                                </svg>
-                                <div class="donut-center-text">
-                                    <span class="donut-number tabular-nums" id="donutTotal">0</span>
-                                    <span class="donut-label">TOTAL</span>
+                                <div id="donutChartRing" class="donut-chart-ring" style="width: 110px; height: 110px; border-radius: 50%; background: conic-gradient(#2563eb 0% 32.7%, #64748b 32.7% 50%, #f59e0b 50% 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: background 0.3s ease;">
+                                    <div style="width: 76px; height: 76px; border-radius: 50%; background: var(--bf-surface, #ffffff); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);">
+                                        <span class="donut-number tabular-nums" id="donutTotal">0</span>
+                                        <span class="donut-label">TOTAL</span>
+                                    </div>
                                 </div>
+                                <svg class="donut-svg" style="display:none;" viewBox="0 0 100 100" aria-hidden="true">
+                                    <circle id="donutResolvedCircle"></circle>
+                                    <circle id="donutRejectedCircle"></circle>
+                                    <circle id="donutPendingCircle"></circle>
+                                </svg>
                             </div>
 
                             <div class="legend-list">
@@ -2270,39 +2268,24 @@
     }
 
     function updateDonutChart(total, resolved, rejected, pending) {
-        const circumference = 251.2; // 2 * pi * 40
-        const resolvedCircle = document.getElementById("donutResolvedCircle");
-        const rejectedCircle = document.getElementById("donutRejectedCircle");
-        const pendingCircle = document.getElementById("donutPendingCircle");
+        const ring = document.getElementById("donutChartRing");
+        if (!ring) return;
 
         if (!total || total <= 0) {
-            if (resolvedCircle) resolvedCircle.setAttribute("stroke-dashoffset", circumference);
-            if (rejectedCircle) rejectedCircle.setAttribute("stroke-dashoffset", circumference);
-            if (pendingCircle) pendingCircle.setAttribute("stroke-dashoffset", circumference);
+            ring.style.background = "#e2e8f0";
             return;
         }
 
-        const resolvedLen = (resolved / total) * circumference;
-        const rejectedLen = (rejected / total) * circumference;
-        const pendingLen = (pending / total) * circumference;
+        const resPct = (resolved / total) * 100;
+        const rejPct = (rejected / total) * 100;
+        const p1 = resPct.toFixed(1);
+        const p2 = (resPct + rejPct).toFixed(1);
 
-        // Resolved starts at 0 offset (top after rotate -90)
-        if (resolvedCircle) {
-            resolvedCircle.setAttribute("stroke-dasharray", `${resolvedLen} ${circumference}`);
-            resolvedCircle.setAttribute("stroke-dashoffset", 0);
-        }
-
-        // Rejected starts after resolved
-        if (rejectedCircle) {
-            rejectedCircle.setAttribute("stroke-dasharray", `${rejectedLen} ${circumference}`);
-            rejectedCircle.setAttribute("stroke-dashoffset", -resolvedLen);
-        }
-
-        // Pending starts after resolved + rejected
-        if (pendingCircle) {
-            pendingCircle.setAttribute("stroke-dasharray", `${pendingLen} ${circumference}`);
-            pendingCircle.setAttribute("stroke-dashoffset", -(resolvedLen + rejectedLen));
-        }
+        // Vibrant colored conic-gradient ring matching legend exactly:
+        // Blue (#2563eb) for Resolved & Verified
+        // Slate (#64748b) for Rejected / Duplicate
+        // Amber (#f59e0b) for Pending Triage
+        ring.style.background = `conic-gradient(#2563eb 0% ${p1}%, #64748b ${p1}% ${p2}%, #f59e0b ${p2}% 100%)`;
     }
 
     function updateSeverityDistribution() {

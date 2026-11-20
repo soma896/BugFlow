@@ -2439,7 +2439,7 @@
     if (!container) return;
 
     let html = `
-      <button onclick="goToPage(${currentPage - 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage <= 1 ? 'opacity-40 pointer-events-none' : ''}" type="button">&lt; Prev</button>
+      <button onclick="goToPage(${currentPage - 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage <= 1 ? 'opacity-40 pointer-events-none' : ''}" type="button">Prev</button>
     `;
 
     for (let p = 1; p <= totalPages; p++) {
@@ -2454,7 +2454,7 @@
     }
 
     html += `
-      <button onclick="goToPage(${currentPage + 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage >= totalPages ? 'opacity-40 pointer-events-none' : ''}" type="button">Next &gt;</button>
+      <button onclick="goToPage(${currentPage + 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage >= totalPages ? 'opacity-40 pointer-events-none' : ''}" type="button">Next</button>
     `;
 
     container.innerHTML = html;
