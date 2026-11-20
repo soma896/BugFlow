@@ -1,0 +1,5380 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@example.com",
+      "password_hash": "scrypt:32768:8:1$0b9w6FLm6J1X2aWx$008ba7f032f39c812d790d83ae425c8d23cc499389bc71d189fb1e0ab6e0bda0947bc95fb0b478e71998a35566a0fed4e0a7b6333141adc496143e743a11eb02",
+      "role": "admin",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 3,
+      "name": "Soma Sekhar",
+      "email": "sekharsoma4691@gmail.com",
+      "password_hash": "scrypt:32768:8:1$0oLQyyyaUMk0UuSj$d46169051175fd17cbe708244f2c74aaa52b412ab7386a057b3eef19df35b33920c04523bb49df7c07e4c8f78619ce945efc09ff0553adadea0af09fd27c68c2",
+      "role": "user",
+      "created_at": "2026-08-26T07:34:17.102942"
+    },
+    {
+      "id": 2,
+      "name": "Manoj",
+      "email": "manoj@example.com",
+      "password_hash": "scrypt:32768:8:1$pZcjWPOsj4aOQGE9$0f722b954ab4be309feb58e164af81541f6c411fd4c04715db7d6f65b78b657deac6d44b98986c0bbf8601310f8e181f68022500e66add8e07e1ca2dc307790a",
+      "role": "user",
+      "created_at": "2026-08-26T07:01:41.166295"
+    }
+  ],
+  "sprints": [
+    {
+      "id": 1,
+      "sprint_name": "Sprint 2",
+      "goal": "Resolve priority bugs",
+      "start_date": "2026-09-09",
+      "end_date": "2026-09-16",
+      "status": "PLANNING",
+      "assigned_role": "developer",
+      "created_at": "2026-09-09T14:10:52.321014"
+    },
+    {
+      "id": 4,
+      "sprint_name": "running",
+      "goal": "reslove",
+      "start_date": "2026-02-12",
+      "end_date": "2027-01-01",
+      "status": "ACTIVE",
+      "assigned_role": "tester",
+      "created_at": "2026-09-10T16:35:04.149959"
+    },
+    {
+      "id": 6,
+      "sprint_name": "issuers",
+      "goal": "reslove perticular issue",
+      "start_date": "2026-02-10",
+      "end_date": "2027-05-03",
+      "status": "ACTIVE",
+      "assigned_role": "developer",
+      "created_at": "2026-09-11T12:25:10.518006"
+    },
+    {
+      "id": 5,
+      "sprint_name": "sprint5",
+      "goal": "issue",
+      "start_date": "2025-02-01",
+      "end_date": "2027-03-02",
+      "status": "PLANNING",
+      "assigned_role": "tester",
+      "created_at": "2026-09-10T17:14:12.195430"
+    },
+    {
+      "id": 3,
+      "sprint_name": "sprint4",
+      "goal": "reslove",
+      "start_date": "2026-02-12",
+      "end_date": "2027-01-01",
+      "status": "ACTIVE",
+      "assigned_role": "tester",
+      "created_at": "2026-09-10T16:34:44.056559"
+    },
+    {
+      "id": 2,
+      "sprint_name": "sprint3",
+      "goal": "reslove priority bugs",
+      "start_date": "2026-02-01",
+      "end_date": "2026-12-12",
+      "status": "ACTIVE",
+      "assigned_role": "tester",
+      "created_at": "2026-09-09T17:12:01.292519"
+    }
+  ],
+  "issues": [
+    {
+      "id": 5,
+      "issue_key": "bug-106",
+      "issue_type": "ENHANCEMENT",
+      "title": "fix login validation issue",
+      "description": "check the al  persons code",
+      "reproduction_steps": "click",
+      "severity": "CRITICAL",
+      "priority": "HIGH",
+      "status": "CLOSED",
+      "affected_module": "dashboard",
+      "environment": "sprinting",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": 1,
+      "created_at": "2026-09-11T00:43:26.639298",
+      "updated_at": "2026-09-14T15:06:07.221460"
+    },
+    {
+      "id": 2,
+      "issue_key": "BUG-002",
+      "issue_type": "BUG",
+      "title": "Login button not working",
+      "description": "The login button does not respond when clicked.",
+      "reproduction_steps": "Open the login page and click the Login button.",
+      "severity": "MAJOR",
+      "priority": "HIGH",
+      "status": "CLOSED",
+      "affected_module": "Authentication",
+      "environment": "Windows 11",
+      "screenshot_url": null,
+      "project_key": "BUG",
+      "reporter_id": 1,
+      "assignee_id": 1,
+      "created_at": "2026-08-26T02:00:24.836486",
+      "updated_at": "2026-09-15T11:24:48.318905"
+    },
+    {
+      "id": 6,
+      "issue_key": "bug5",
+      "issue_type": "BUG",
+      "title": "fix",
+      "description": "issue",
+      "reproduction_steps": "close",
+      "severity": "MAJOR",
+      "priority": "MEDIUM",
+      "status": "RESOLVED",
+      "affected_module": null,
+      "environment": "development",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": 1,
+      "created_at": "2026-09-11T12:25:47.505305",
+      "updated_at": "2026-10-02T15:02:51.767959"
+    },
+    {
+      "id": 4,
+      "issue_key": "bug 301",
+      "issue_type": "BUG",
+      "title": "fix login page",
+      "description": "issuesing",
+      "reproduction_steps": "open",
+      "severity": "CRITICAL",
+      "priority": "HIGH",
+      "status": "CLOSED",
+      "affected_module": "api",
+      "environment": "production",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-09-10T18:06:58.428312",
+      "updated_at": "2026-09-11T12:53:29.761146"
+    },
+    {
+      "id": 8,
+      "issue_key": "BUG-TEST-999",
+      "issue_type": "BUG",
+      "title": "Assignment Workflow Verification Issue",
+      "description": "Testing accept/reject/resolve workflow",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "MEDIUM",
+      "status": "RESOLVED",
+      "affected_module": "Workflow",
+      "environment": "Test",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-02T15:04:46.329446",
+      "updated_at": "2026-10-02T15:04:46.536608"
+    },
+    {
+      "id": 9,
+      "issue_key": "BUG-TEST-1790954862",
+      "issue_type": "BUG",
+      "title": "Assignment Workflow Verification Issue",
+      "description": "Testing accept/reject/resolve workflow",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "MEDIUM",
+      "status": "RESOLVED",
+      "affected_module": "Workflow",
+      "environment": "Test",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-02T15:27:42.828332",
+      "updated_at": "2026-10-02T15:27:43.082950"
+    },
+    {
+      "id": 3,
+      "issue_key": "BUG-003",
+      "issue_type": "BUG",
+      "title": "Login button not working",
+      "description": "The login button does not respond when clicked.",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "HIGH",
+      "status": "CLOSED",
+      "affected_module": null,
+      "environment": null,
+      "screenshot_url": null,
+      "project_key": "BUG",
+      "reporter_id": 1,
+      "assignee_id": 1,
+      "created_at": "2026-08-26T02:02:40.719035",
+      "updated_at": "2026-09-14T13:54:15.040804"
+    },
+    {
+      "id": 1,
+      "issue_key": "BUG-001",
+      "issue_type": "BUG",
+      "title": "PostgreSQL Connection Test",
+      "description": "Test issue inserted from the BUG Tracking project.",
+      "reproduction_steps": null,
+      "severity": "MINOR",
+      "priority": "LOW",
+      "status": "CLOSED",
+      "affected_module": null,
+      "environment": null,
+      "screenshot_url": null,
+      "project_key": "BUG",
+      "reporter_id": 1,
+      "assignee_id": 1,
+      "created_at": "2026-08-25T15:14:21.381791",
+      "updated_at": "2026-09-14T14:04:22.617621"
+    },
+    {
+      "id": 10,
+      "issue_key": "BUG-122",
+      "issue_type": "BUG",
+      "title": "Test workflow validation defect for Module 3",
+      "description": "Validating assignment, accept, reject, resolve rules",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "HIGH",
+      "status": "REPORTED",
+      "affected_module": "Core System",
+      "environment": "Production",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-03T14:09:32.463087",
+      "updated_at": "2026-10-03T14:09:32.464087"
+    },
+    {
+      "id": 11,
+      "issue_key": "BUG-123",
+      "issue_type": "BUG",
+      "title": "Test workflow validation defect for Module 3",
+      "description": "Validating assignment, accept, reject, resolve rules",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "HIGH",
+      "status": "REPORTED",
+      "affected_module": "Core System",
+      "environment": "Production",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-03T14:11:53.067671",
+      "updated_at": "2026-10-03T14:11:53.068673"
+    },
+    {
+      "id": 12,
+      "issue_key": "BUG-124",
+      "issue_type": "BUG",
+      "title": "Test reject workflow defect for Module 3",
+      "description": "Validating rejection transition",
+      "reproduction_steps": null,
+      "severity": "MINOR",
+      "priority": "MEDIUM",
+      "status": "REPORTED",
+      "affected_module": "Core System",
+      "environment": "Production",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-03T14:12:26.475177",
+      "updated_at": "2026-10-03T14:12:26.475177"
+    },
+    {
+      "id": 13,
+      "issue_key": "BUG-125",
+      "issue_type": "BUG",
+      "title": "Module 3 Automated Test Defect",
+      "description": "Validation defect for REST API and quality tracking",
+      "reproduction_steps": null,
+      "severity": "MAJOR",
+      "priority": "HIGH",
+      "status": "REPORTED",
+      "affected_module": "Core System",
+      "environment": "Test Environment",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-03T14:16:53.404658",
+      "updated_at": "2026-10-03T14:16:53.405695"
+    },
+    {
+      "id": 14,
+      "issue_key": "BUG-126",
+      "issue_type": "BUG",
+      "title": "Rejection workflow test defect",
+      "description": "Checking reject state prevents resolve",
+      "reproduction_steps": null,
+      "severity": "MINOR",
+      "priority": "MEDIUM",
+      "status": "REPORTED",
+      "affected_module": "Core System",
+      "environment": "Production",
+      "screenshot_url": null,
+      "project_key": "BUGFLOW",
+      "reporter_id": 1,
+      "assignee_id": null,
+      "created_at": "2026-10-03T14:16:53.501739",
+      "updated_at": "2026-10-03T14:16:53.501739"
+    }
+  ],
+  "defects": [
+    {
+      "id": 14,
+      "user_id": 3,
+      "title": "report",
+      "description": "wrong",
+      "category": "UI",
+      "priority": "Low",
+      "status": "Rejected",
+      "created_at": "2026-08-29T02:52:13.256428",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 13,
+      "user_id": 3,
+      "title": "bug issue",
+      "description": "wrong",
+      "category": "Performance",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-08-29T02:51:37.630682",
+      "environment": "windows",
+      "reproduction_steps": "open the application",
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "title": "Login page not loading",
+      "description": "The login page does not load after clicking the login link.",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-08-26T03:47:49.817807",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 17,
+      "user_id": 2,
+      "title": "bug",
+      "description": "check",
+      "category": "Database",
+      "priority": "Urgent",
+      "status": "Resolved",
+      "created_at": "2026-09-01T15:00:30.539497",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 11,
+      "user_id": 3,
+      "title": "bug",
+      "description": "problem",
+      "category": "Authentication",
+      "priority": "Urgent",
+      "status": "ASSIGNED",
+      "created_at": "2026-08-28T15:50:41.015320",
+      "environment": "windows",
+      "reproduction_steps": "open application",
+      "expected_result": "corrct result",
+      "actual_result": "total result",
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "title": "Login page not loading",
+      "description": "The login page does not load after clicking the login link.",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-08-26T03:55:49.194505",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 8,
+      "user_id": 3,
+      "title": "Profile page not loading",
+      "description": "The profile page does not load after clicking the profile menu.",
+      "category": "UI",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-08-26T09:23:38.524951",
+      "environment": "Windows 11, Chrome",
+      "reproduction_steps": "Steps to Reproduce:\n1. Open the application\n2. Login as user\n3. Open the profile menu\n4. Click Profile",
+      "expected_result": "The profile page should open successfully",
+      "actual_result": "The profile page remains blank.",
+      "assigned_role": null,
+      "assigned_user_id": null
+    },
+    {
+      "id": 20,
+      "user_id": 2,
+      "title": "user issue",
+      "description": "ff",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-09-04T14:17:54.732691",
+      "environment": "chrome",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 6,
+      "user_id": 3,
+      "title": "Longin page",
+      "description": "Verify the loin page update it",
+      "category": "Authentication",
+      "priority": "Medium",
+      "status": "Rejected",
+      "created_at": "2026-08-26T07:43:00.006386",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": null,
+      "assigned_user_id": null
+    },
+    {
+      "id": 9,
+      "user_id": 3,
+      "title": "Search button not workin",
+      "description": "The search button does not respond when clicked.",
+      "category": "UI",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-08-26T09:29:40.800043",
+      "environment": "Windows 11, Chrome",
+      "reproduction_steps": "Steps to Reproduce:\n1. Open the application\n2. Go to the search page\n3. Enter a search term\n4. Click the search button",
+      "expected_result": "The search results should be displayed.",
+      "actual_result": "Nothing happens when the search button is clicked.",
+      "assigned_role": null,
+      "assigned_user_id": null
+    },
+    {
+      "id": 5,
+      "user_id": 2,
+      "title": "Login button not working",
+      "description": "The login button does not respond when the user enters valid credentials",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "RESOLVED",
+      "created_at": "2026-08-26T07:06:55.509286",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 7,
+      "user_id": 3,
+      "title": "Log in button not working",
+      "description": "The login button does not respond after enter valid credenatils.",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-08-26T08:10:56.579677",
+      "environment": "windows 11, Chrome",
+      "reproduction_steps": "Steps to Reproduce:\n1. Open the application\n2. Open the login page\n3. Enter valid credentials\n4. Click Login",
+      "expected_result": "User should be logged in and redirected to the dashboard.",
+      "actual_result": "The login button does not respond.",
+      "assigned_role": null,
+      "assigned_user_id": null
+    },
+    {
+      "id": 12,
+      "user_id": 3,
+      "title": "serch button is not working",
+      "description": "give final coreet",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-08-29T01:11:54.425548",
+      "environment": "windows",
+      "reproduction_steps": "open the application",
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 24,
+      "user_id": 1,
+      "title": "less issues",
+      "description": "hloo",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-09-04T15:51:38.886037",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 19,
+      "user_id": 1,
+      "title": "data entry error",
+      "description": "check",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-09-04T13:53:49.883810",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 22,
+      "user_id": 1,
+      "title": "more issues",
+      "description": "hi",
+      "category": "Performance",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-09-04T15:49:32.958495",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 18,
+      "user_id": 1,
+      "title": "Test Defect via HTTP POST",
+      "description": "Submitted from verification test",
+      "category": "UI/UX",
+      "priority": "HIGH",
+      "status": "Resolved",
+      "created_at": "2026-09-04T13:47:14.306142",
+      "environment": "Chrome / Windows",
+      "reproduction_steps": "1. Test step",
+      "expected_result": "Expected behavior",
+      "actual_result": "Actual behavior",
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 15,
+      "user_id": 3,
+      "title": "buffering",
+      "description": "check this",
+      "category": "Testing",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-09-01T13:04:15.631142",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 21,
+      "user_id": 1,
+      "title": "basic",
+      "description": "hi",
+      "category": "Authentication",
+      "priority": "Medium",
+      "status": "Resolved",
+      "created_at": "2026-09-04T14:55:35.071077",
+      "environment": "chrome",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 23,
+      "user_id": 1,
+      "title": "most issues",
+      "description": "hlo",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-09-04T15:51:10.637419",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 1,
+      "user_id": 1,
+      "title": "Login page not loading",
+      "description": "The login page does not load after clicking the login link.",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-08-26T03:47:38.037595",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "title": "Login page not loading",
+      "description": "The login page does not load after clicking the login link.",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-08-26T03:55:46.893834",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 25,
+      "user_id": 1,
+      "title": "Task 3 Test Defect without Assignment",
+      "description": "Testing defect submission after removing assignment block",
+      "category": "UI",
+      "priority": "Medium",
+      "status": "Resolved",
+      "created_at": "2026-09-04T16:22:24.298569",
+      "environment": "Windows 11, Chrome",
+      "reproduction_steps": "1. Fill form 2. Submit",
+      "expected_result": "Defect submitted as Pending",
+      "actual_result": "Defect submitted successfully",
+      "assigned_role": "developer",
+      "assigned_user_id": null
+    },
+    {
+      "id": 26,
+      "user_id": 3,
+      "title": "bug issuessss",
+      "description": "processor",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Resolved",
+      "created_at": "2026-09-04T17:32:30.930458",
+      "environment": "intel",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 16,
+      "user_id": 3,
+      "title": "button is not working",
+      "description": "check once",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "Rejected",
+      "created_at": "2026-09-01T14:06:51.458252",
+      "environment": "windows",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": null,
+      "assigned_user_id": null
+    },
+    {
+      "id": 10,
+      "user_id": 3,
+      "title": "search button is",
+      "description": "check onece and retify it",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "RESOLVED",
+      "created_at": "2026-08-26T13:26:31.160565",
+      "environment": "windows",
+      "reproduction_steps": "open application",
+      "expected_result": "final clear output",
+      "actual_result": "give fianl result",
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 123,
+      "user_id": 1,
+      "title": "Test workflow validation defect for Module 3",
+      "description": "Validating assignment, accept, reject, resolve rules",
+      "category": "Quality Assurance",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:11:53.061673",
+      "environment": "Production",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 110,
+      "user_id": 1,
+      "title": "Test Defect 2 for developer (Reject Flow)",
+      "description": "Testing rejection for developer",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.556102",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 108,
+      "user_id": 3,
+      "title": "djedvdfv",
+      "description": "sdvfdv",
+      "category": "Authentication",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T14:09:53.826293",
+      "environment": "windows",
+      "reproduction_steps": "wfjdfvdf",
+      "expected_result": "wejevfj",
+      "actual_result": "wejferj",
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 116,
+      "user_id": 1,
+      "title": "Test Defect 2 for developer (Reject Flow)",
+      "description": "Testing rejection for developer",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.344876",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 109,
+      "user_id": 1,
+      "title": "Test Defect for developer",
+      "description": "Verifying workflow for developer",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.403106",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 111,
+      "user_id": 1,
+      "title": "Test Defect for tester",
+      "description": "Verifying workflow for tester",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.616928",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 114,
+      "user_id": 1,
+      "title": "Test Defect 2 for senior_dev (Reject Flow)",
+      "description": "Testing rejection for senior_dev",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.880781",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 112,
+      "user_id": 1,
+      "title": "Test Defect 2 for tester (Reject Flow)",
+      "description": "Testing rejection for tester",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.718251",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 113,
+      "user_id": 1,
+      "title": "Test Defect for senior_dev",
+      "description": "Verifying workflow for senior_dev",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:26:41.767566",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 115,
+      "user_id": 1,
+      "title": "Test Defect for developer",
+      "description": "Verifying workflow for developer",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.223852",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 119,
+      "user_id": 1,
+      "title": "Test Defect for senior_dev",
+      "description": "Verifying workflow for senior_dev",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.592121",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 118,
+      "user_id": 1,
+      "title": "Test Defect 2 for tester (Reject Flow)",
+      "description": "Testing rejection for tester",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.543574",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 117,
+      "user_id": 1,
+      "title": "Test Defect for tester",
+      "description": "Verifying workflow for tester",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.446542",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 28,
+      "user_id": 1,
+      "title": "wejferf",
+      "description": "wefjrwefjer",
+      "category": "Authentication",
+      "priority": "Medium",
+      "status": "RESOLVED",
+      "created_at": "2026-10-02T15:07:33.333823",
+      "environment": "wejf",
+      "reproduction_steps": "eif",
+      "expected_result": "efif",
+      "actual_result": "jrf",
+      "assigned_role": "tester",
+      "assigned_user_id": null
+    },
+    {
+      "id": 120,
+      "user_id": 1,
+      "title": "Test Defect 2 for senior_dev (Reject Flow)",
+      "description": "Testing rejection for senior_dev",
+      "category": "Workflow",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-02T15:28:07.690171",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 122,
+      "user_id": 1,
+      "title": "Test workflow validation defect for Module 3",
+      "description": "Validating assignment, accept, reject, resolve rules",
+      "category": "Quality Assurance",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:09:32.455855",
+      "environment": "Production",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 136,
+      "user_id": 1,
+      "title": "Module 1 Integration Test Defect",
+      "description": "Validation of Module 1 reporting flow",
+      "category": "UI",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T15:15:00.884795",
+      "environment": "Production",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 133,
+      "user_id": 1,
+      "title": "[CI/CD Test Failure] BugFlow-Verification-Pipeline #951 on feature/analytics",
+      "description": "Automated CI/CD test failure triggered.\nPipeline: BugFlow-Verification-Pipeline\nBuild Number: #951\nBranch: feature/analytics\nCommit: HEAD\nTests: 48/50 passed, 2 failed.\nFailure Log:\nFAILED: test_analytics_dsi_accuracy",
+      "category": "CI/CD & Testing",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:49:59.377278",
+      "environment": "CI Pipeline (feature/analytics)",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 130,
+      "user_id": 1,
+      "title": "Module 1/2 Test Defect for senior_dev",
+      "description": "Verifying legacy endpoint workflow for senior_dev",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:17:33.238390",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 129,
+      "user_id": 1,
+      "title": "Module 1/2 Test Defect for tester",
+      "description": "Verifying legacy endpoint workflow for tester",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:17:33.219479",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 128,
+      "user_id": 1,
+      "title": "Module 1/2 Test Defect for developer",
+      "description": "Verifying legacy endpoint workflow for developer",
+      "category": "Workflow",
+      "priority": "High",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:17:33.187059",
+      "environment": null,
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 127,
+      "user_id": 1,
+      "title": "[CI/CD Test Failure] BugFlow Main Build #202 on feature/analytics",
+      "description": "Automated CI/CD test failure triggered.\nPipeline: BugFlow Main Build\nBuild Number: #202\nBranch: feature/analytics\nCommit: HEAD\nTests: 36/40 passed, 4 failed.\nFailure Log:\nFAILED: test_analytics_metrics_precision",
+      "category": "CI/CD & Testing",
+      "priority": "Urgent",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:16:53.738035",
+      "environment": "CI Pipeline (feature/analytics)",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 126,
+      "user_id": 1,
+      "title": "Rejection workflow test defect",
+      "description": "Checking reject state prevents resolve",
+      "category": "Testing",
+      "priority": "Low",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:16:53.499702",
+      "environment": "Production",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 125,
+      "user_id": 1,
+      "title": "Module 3 Automated Test Defect",
+      "description": "Updated description for Module 3 testing",
+      "category": "Integration",
+      "priority": "Urgent",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:16:53.401127",
+      "environment": "Test Environment",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 124,
+      "user_id": 1,
+      "title": "Test reject workflow defect for Module 3",
+      "description": "Validating rejection transition",
+      "category": "Verification",
+      "priority": "Medium",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:12:26.469201",
+      "environment": "Production",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    },
+    {
+      "id": 121,
+      "user_id": 1,
+      "title": "[CI/CD Test Failure] BugFlow Automated CI Pipeline #102 on feature/payment",
+      "description": "Automated CI/CD test failure triggered.\nPipeline: BugFlow Automated CI Pipeline\nBuild Number: #102\nBranch: feature/payment\nCommit: HEAD\nTests: 29/32 passed, 3 failed.\nFailure Log:\nAssertionError: test_payment_timeout failed",
+      "category": "CI/CD & Testing",
+      "priority": "Urgent",
+      "status": "ASSIGNED",
+      "created_at": "2026-10-03T14:09:01.950833",
+      "environment": "CI Pipeline (feature/payment)",
+      "reproduction_steps": null,
+      "expected_result": null,
+      "actual_result": null,
+      "assigned_role": "senior_dev",
+      "assigned_user_id": null
+    }
+  ],
+  "sprint_issues": [
+    {
+      "id": 1,
+      "sprint_id": 1,
+      "issue_id": 2,
+      "added_at": "2026-09-09T14:13:35.218151"
+    },
+    {
+      "id": 8,
+      "sprint_id": 2,
+      "issue_id": 1,
+      "added_at": "2026-09-10T17:14:33.132022"
+    },
+    {
+      "id": 9,
+      "sprint_id": 2,
+      "issue_id": 3,
+      "added_at": "2026-09-10T17:14:37.570172"
+    },
+    {
+      "id": 10,
+      "sprint_id": 5,
+      "issue_id": 4,
+      "added_at": "2026-09-10T18:06:58.436516"
+    },
+    {
+      "id": 11,
+      "sprint_id": 2,
+      "issue_id": 5,
+      "added_at": "2026-09-11T00:43:26.644350"
+    },
+    {
+      "id": 12,
+      "sprint_id": 1,
+      "issue_id": 6,
+      "added_at": "2026-09-11T12:25:47.510989"
+    },
+    {
+      "id": 17,
+      "sprint_id": 1,
+      "issue_id": 8,
+      "added_at": "2026-10-02T15:04:46.333447"
+    },
+    {
+      "id": 18,
+      "sprint_id": 1,
+      "issue_id": 9,
+      "added_at": "2026-10-02T15:27:42.831333"
+    },
+    {
+      "id": 20,
+      "sprint_id": 2,
+      "issue_id": 2,
+      "added_at": "2026-10-21T17:01:22.452332"
+    },
+    {
+      "id": 21,
+      "sprint_id": 2,
+      "issue_id": 8,
+      "added_at": "2026-10-21T17:01:28.585552"
+    }
+  ],
+  "admin_actions": [
+    {
+      "id": 1,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T04:07:39.738422"
+    },
+    {
+      "id": 2,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T04:07:43.481629"
+    },
+    {
+      "id": 3,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T04:15:14.722467"
+    },
+    {
+      "id": 4,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:29.456234"
+    },
+    {
+      "id": 5,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:31.176384"
+    },
+    {
+      "id": 6,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:33.527098"
+    },
+    {
+      "id": 7,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:34.674779"
+    },
+    {
+      "id": 8,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:35.504890"
+    },
+    {
+      "id": 9,
+      "admin_id": 1,
+      "defect_id": 3,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:37.673412"
+    },
+    {
+      "id": 10,
+      "admin_id": 1,
+      "defect_id": 4,
+      "action": "Resolved",
+      "created_at": "2026-08-26T06:56:39.301616"
+    },
+    {
+      "id": 11,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Rejected",
+      "created_at": "2026-08-26T06:57:17.087675"
+    },
+    {
+      "id": 12,
+      "admin_id": 1,
+      "defect_id": 3,
+      "action": "Rejected",
+      "created_at": "2026-08-26T06:57:18.431060"
+    },
+    {
+      "id": 13,
+      "admin_id": 1,
+      "defect_id": 5,
+      "action": "Resolved",
+      "created_at": "2026-08-26T07:10:36.873747"
+    },
+    {
+      "id": 14,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T07:18:05.459518"
+    },
+    {
+      "id": 15,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Resolved",
+      "created_at": "2026-08-26T07:18:07.329704"
+    },
+    {
+      "id": 16,
+      "admin_id": 1,
+      "defect_id": 3,
+      "action": "Resolved",
+      "created_at": "2026-08-26T07:18:09.327428"
+    },
+    {
+      "id": 17,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Rejected",
+      "created_at": "2026-08-26T07:25:58.349512"
+    },
+    {
+      "id": 18,
+      "admin_id": 1,
+      "defect_id": 7,
+      "action": "Resolved",
+      "created_at": "2026-08-26T08:16:22.730205"
+    },
+    {
+      "id": 19,
+      "admin_id": 1,
+      "defect_id": 6,
+      "action": "Resolved",
+      "created_at": "2026-08-26T08:16:31.195648"
+    },
+    {
+      "id": 20,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-26T08:50:05.594308"
+    },
+    {
+      "id": 21,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Rejected",
+      "created_at": "2026-08-26T08:54:43.569290"
+    },
+    {
+      "id": 22,
+      "admin_id": 1,
+      "defect_id": 8,
+      "action": "Resolved",
+      "created_at": "2026-08-26T09:24:32.328372"
+    },
+    {
+      "id": 23,
+      "admin_id": 1,
+      "defect_id": 2,
+      "action": "Resolved",
+      "created_at": "2026-08-26T09:24:57.110572"
+    },
+    {
+      "id": 24,
+      "admin_id": 1,
+      "defect_id": 7,
+      "action": "Rejected",
+      "created_at": "2026-08-26T09:25:57.419345"
+    },
+    {
+      "id": 25,
+      "admin_id": 1,
+      "defect_id": 6,
+      "action": "Rejected",
+      "created_at": "2026-08-26T09:26:01.268256"
+    },
+    {
+      "id": 26,
+      "admin_id": 1,
+      "defect_id": 9,
+      "action": "Resolved",
+      "created_at": "2026-08-26T09:32:45.351840"
+    },
+    {
+      "id": 27,
+      "admin_id": 1,
+      "defect_id": 10,
+      "action": "Resolved",
+      "created_at": "2026-08-26T13:27:04.837295"
+    },
+    {
+      "id": 28,
+      "admin_id": 1,
+      "defect_id": 11,
+      "action": "Resolved",
+      "created_at": "2026-08-28T15:51:19.112606"
+    },
+    {
+      "id": 29,
+      "admin_id": 1,
+      "defect_id": 7,
+      "action": "Resolved",
+      "created_at": "2026-08-28T15:51:32.625707"
+    },
+    {
+      "id": 30,
+      "admin_id": 1,
+      "defect_id": 12,
+      "action": "Resolved",
+      "created_at": "2026-08-29T01:13:14.223328"
+    },
+    {
+      "id": 31,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "Resolved",
+      "created_at": "2026-08-29T03:03:56.537631"
+    },
+    {
+      "id": 32,
+      "admin_id": 1,
+      "defect_id": 14,
+      "action": "Rejected",
+      "created_at": "2026-08-29T03:04:04.885717"
+    },
+    {
+      "id": 33,
+      "admin_id": 1,
+      "defect_id": 13,
+      "action": "Rejected",
+      "created_at": "2026-08-29T03:04:11.703293"
+    },
+    {
+      "id": 34,
+      "admin_id": 1,
+      "defect_id": 17,
+      "action": "Resolved",
+      "created_at": "2026-09-01T15:06:02.742405"
+    },
+    {
+      "id": 35,
+      "admin_id": 1,
+      "defect_id": 16,
+      "action": "Rejected",
+      "created_at": "2026-09-09T16:21:42.627351"
+    },
+    {
+      "id": 36,
+      "admin_id": 1,
+      "defect_id": 108,
+      "action": "Resolved",
+      "created_at": "2026-10-02T14:10:52.671327"
+    },
+    {
+      "id": 37,
+      "admin_id": 1,
+      "defect_id": 28,
+      "action": "Accepted",
+      "created_at": "2026-10-02T15:08:11.581948"
+    },
+    {
+      "id": 38,
+      "admin_id": 1,
+      "defect_id": 14,
+      "action": "GITHUB:a1b2c3d:Fix auth token expiry validation (refs #",
+      "created_at": "2026-10-03T14:08:28.426236"
+    },
+    {
+      "id": 39,
+      "admin_id": 1,
+      "defect_id": 14,
+      "action": "GITHUB:a1b2c3d:Fix auth token expiry validation (refs #",
+      "created_at": "2026-10-03T14:09:01.910717"
+    },
+    {
+      "id": 40,
+      "admin_id": 1,
+      "defect_id": 123,
+      "action": "ASSIGNED_TO_ROLE:developer",
+      "created_at": "2026-10-03T14:11:53.083676"
+    },
+    {
+      "id": 41,
+      "admin_id": 1,
+      "defect_id": 123,
+      "action": "ASSIGNMENT_RESPONSE:ACCEPTED",
+      "created_at": "2026-10-03T14:11:53.098015"
+    },
+    {
+      "id": 42,
+      "admin_id": 1,
+      "defect_id": 123,
+      "action": "STATUS_CHANGE:RESOLVED",
+      "created_at": "2026-10-03T14:11:53.109015"
+    },
+    {
+      "id": 43,
+      "admin_id": 1,
+      "defect_id": 124,
+      "action": "ASSIGNED_TO_ROLE:tester",
+      "created_at": "2026-10-03T14:12:26.492494"
+    },
+    {
+      "id": 44,
+      "admin_id": 1,
+      "defect_id": 124,
+      "action": "ASSIGNMENT_RESPONSE:REJECTED",
+      "created_at": "2026-10-03T14:12:26.506977"
+    },
+    {
+      "id": 45,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "ISSUE_UPDATED",
+      "created_at": "2026-10-03T14:16:53.460061"
+    },
+    {
+      "id": 46,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "ASSIGNED_TO_ROLE:developer",
+      "created_at": "2026-10-03T14:16:53.472371"
+    },
+    {
+      "id": 47,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "ASSIGNMENT_RESPONSE:ACCEPTED",
+      "created_at": "2026-10-03T14:16:53.483822"
+    },
+    {
+      "id": 48,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "STATUS_CHANGE:RESOLVED",
+      "created_at": "2026-10-03T14:16:53.494703"
+    },
+    {
+      "id": 49,
+      "admin_id": 1,
+      "defect_id": 126,
+      "action": "ASSIGNED_TO_ROLE:tester",
+      "created_at": "2026-10-03T14:16:53.510700"
+    },
+    {
+      "id": 50,
+      "admin_id": 1,
+      "defect_id": 126,
+      "action": "ASSIGNMENT_RESPONSE:REJECTED",
+      "created_at": "2026-10-03T14:16:53.518707"
+    },
+    {
+      "id": 51,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "GITHUB:e9f8a7b:Resolve calculation issue in analytics (",
+      "created_at": "2026-10-03T14:16:53.687111"
+    },
+    {
+      "id": 52,
+      "admin_id": 1,
+      "defect_id": 125,
+      "action": "GITHUB:git7097:Review and verify changes for defect #12",
+      "created_at": "2026-10-03T14:16:53.710707"
+    },
+    {
+      "id": 53,
+      "admin_id": 1,
+      "defect_id": 130,
+      "action": "GITHUB:abc1234:Fix validation logic in defect tracking ",
+      "created_at": "2026-10-03T14:48:31.027093"
+    },
+    {
+      "id": 54,
+      "admin_id": 1,
+      "defect_id": 130,
+      "action": "GITHUB:git0372:Code review and security patch for defec",
+      "created_at": "2026-10-03T14:48:31.039283"
+    },
+    {
+      "id": 59,
+      "admin_id": 1,
+      "defect_id": 130,
+      "action": "GITHUB:commit_:Fix validation logic in defect tracking ",
+      "created_at": "2026-10-03T14:49:59.294658"
+    },
+    {
+      "id": 60,
+      "admin_id": 1,
+      "defect_id": 130,
+      "action": "GITHUB:git3297:Code review and security patch for defec",
+      "created_at": "2026-10-03T14:49:59.335768"
+    },
+    {
+      "id": 61,
+      "admin_id": 1,
+      "defect_id": 133,
+      "action": "GITHUB:commit_:Fix validation logic in defect tracking ",
+      "created_at": "2026-10-03T14:50:11.730714"
+    },
+    {
+      "id": 62,
+      "admin_id": 1,
+      "defect_id": 133,
+      "action": "GITHUB:git7417:Code review and security patch for defec",
+      "created_at": "2026-10-03T14:50:11.742713"
+    },
+    {
+      "id": 72,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:gh_full:Fix defect #1 tracking",
+      "created_at": "2026-10-03T15:18:12.394191"
+    },
+    {
+      "id": 73,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:git4174:Review code for defect #1",
+      "created_at": "2026-10-03T15:18:12.419461"
+    },
+    {
+      "id": 79,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:gh_full:Fix defect #1 tracking",
+      "created_at": "2026-10-03T15:18:56.320642"
+    },
+    {
+      "id": 80,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:git3295:Review code for defect #1",
+      "created_at": "2026-10-03T15:18:56.331599"
+    },
+    {
+      "id": 86,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:gh_full:Fix defect #1 tracking",
+      "created_at": "2026-10-04T11:51:34.501576"
+    },
+    {
+      "id": 87,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:git5134:Review code for defect #1",
+      "created_at": "2026-10-04T11:51:34.516169"
+    },
+    {
+      "id": 93,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:gh_full:Fix defect #1 tracking",
+      "created_at": "2026-10-04T12:14:25.615211"
+    },
+    {
+      "id": 94,
+      "admin_id": 1,
+      "defect_id": 1,
+      "action": "GITHUB:git6269:Review code for defect #1",
+      "created_at": "2026-10-04T12:14:25.629541"
+    },
+    {
+      "id": 102,
+      "admin_id": 1,
+      "defect_id": 14,
+      "action": "GITHUB:git7432:Fix login authentication defect #14",
+      "created_at": "2026-10-04T13:01:33.764762"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": 1,
+      "issue_id": 2,
+      "user_id": 3,
+      "action": "STATUS_CHANGED",
+      "old_status": "REPORTED",
+      "new_status": "TRIAGED",
+      "created_at": "2026-09-09T15:05:50.624517"
+    },
+    {
+      "id": 2,
+      "issue_id": 2,
+      "user_id": 3,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-09T15:08:44.047556"
+    },
+    {
+      "id": 3,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "REPORTED",
+      "new_status": "TRIAGED",
+      "created_at": "2026-09-11T12:49:27.791589"
+    },
+    {
+      "id": 4,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-11T12:49:31.295032"
+    },
+    {
+      "id": 5,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "REPORTED",
+      "new_status": "TRIAGED",
+      "created_at": "2026-09-11T12:49:34.514368"
+    },
+    {
+      "id": 6,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-11T12:49:35.934335"
+    },
+    {
+      "id": 7,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:49:36.883180"
+    },
+    {
+      "id": 8,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-09-11T12:49:38.294594"
+    },
+    {
+      "id": 9,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "RESOLVED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-11T12:49:40.513901"
+    },
+    {
+      "id": 10,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-11T12:49:44.246843"
+    },
+    {
+      "id": 11,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:49:44.978478"
+    },
+    {
+      "id": 12,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-09-11T12:49:45.811953"
+    },
+    {
+      "id": 13,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "RESOLVED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-11T12:49:46.942942"
+    },
+    {
+      "id": 14,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:49:49.479777"
+    },
+    {
+      "id": 15,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-09-11T12:49:49.725874"
+    },
+    {
+      "id": 16,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "RESOLVED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-11T12:49:49.933240"
+    },
+    {
+      "id": 17,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:50:19.595005"
+    },
+    {
+      "id": 18,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-09-11T12:50:20.491996"
+    },
+    {
+      "id": 19,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "RESOLVED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-11T12:50:21.528931"
+    },
+    {
+      "id": 20,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "REPORTED",
+      "new_status": "TRIAGED",
+      "created_at": "2026-09-11T12:50:23.348594"
+    },
+    {
+      "id": 21,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-11T12:50:23.573501"
+    },
+    {
+      "id": 22,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:50:24.637834"
+    },
+    {
+      "id": 23,
+      "issue_id": 4,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "TRIAGED",
+      "new_status": "IN_PROGRESS",
+      "created_at": "2026-09-11T12:53:11.044246"
+    },
+    {
+      "id": 24,
+      "issue_id": 4,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "IN_PROGRESS",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-11T12:53:11.766510"
+    },
+    {
+      "id": 25,
+      "issue_id": 4,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-09-11T12:53:14.017703"
+    },
+    {
+      "id": 26,
+      "issue_id": 4,
+      "user_id": 1,
+      "action": "STATUS_CHANGED",
+      "old_status": "RESOLVED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-11T12:53:29.762145"
+    },
+    {
+      "id": 52,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "ISSUE_ASSIGNED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:54:15.044836"
+    },
+    {
+      "id": 53,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:54:28.580634"
+    },
+    {
+      "id": 54,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:54:53.162242"
+    },
+    {
+      "id": 55,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "ESCALATE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:55:19.679415"
+    },
+    {
+      "id": 56,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "ESCALATE: Technical review required",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:55:27.529760"
+    },
+    {
+      "id": 57,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "ESCALATE: Technical review required",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:55:34.180293"
+    },
+    {
+      "id": 58,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: v",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:55:44.953059"
+    },
+    {
+      "id": 59,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: Please review this issue",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:55:59.316183"
+    },
+    {
+      "id": 60,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:56:06.780551"
+    },
+    {
+      "id": 61,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "ATTACHMENT_ADDED: Screenshot 2025-12-23 120622.png",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:56:35.172228"
+    },
+    {
+      "id": 62,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T13:59:57.499648"
+    },
+    {
+      "id": 63,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:03:58.356561"
+    },
+    {
+      "id": 64,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "ATTACHMENT_ADDED: Screenshot 2026-02-01 072403.png",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:04:06.858051"
+    },
+    {
+      "id": 65,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:04:14.282486"
+    },
+    {
+      "id": 66,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "ISSUE_ASSIGNED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:04:22.622941"
+    },
+    {
+      "id": 67,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:04:51.418739"
+    },
+    {
+      "id": 83,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T14:16:35.708524"
+    },
+    {
+      "id": 109,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "ISSUE_ASSIGNED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-14T15:06:07.223477"
+    },
+    {
+      "id": 110,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_STARTED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:23:11.296539"
+    },
+    {
+      "id": 111,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:23:46.115005"
+    },
+    {
+      "id": 112,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "ATTACHMENT_ADDED: Screenshot 2025-12-23 120622.png",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:23:55.228356"
+    },
+    {
+      "id": 113,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:24:21.388788"
+    },
+    {
+      "id": 114,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_TEAM_UPDATED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:24:40.917907"
+    },
+    {
+      "id": 115,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "ISSUE_ASSIGNED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:24:48.321906"
+    },
+    {
+      "id": 116,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:24:49.949955"
+    },
+    {
+      "id": 118,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_TEAM_UPDATED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:25:19.253201"
+    },
+    {
+      "id": 117,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: enetr",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:24:57.024005"
+    },
+    {
+      "id": 119,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_ROLE_REMOVED:admin",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:26:02.408993"
+    },
+    {
+      "id": 120,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_ROLE_REMOVED:senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:26:02.408993"
+    },
+    {
+      "id": 121,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "COLLABORATION_TEAM_UPDATED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:26:02.408993"
+    },
+    {
+      "id": 122,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:49:47.839191"
+    },
+    {
+      "id": 123,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "COLLABORATION_STARTED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:49:59.714372"
+    },
+    {
+      "id": 124,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "COLLABORATION_ROLE_ADDED:tester",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:59:01.514002"
+    },
+    {
+      "id": 125,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "COLLABORATION_TEAM_UPDATED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T11:59:01.514002"
+    },
+    {
+      "id": 126,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ISSUE_ASSIGNED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T11:59:46.327571"
+    },
+    {
+      "id": 127,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T11:59:49.249126"
+    },
+    {
+      "id": 128,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:00:07.191952"
+    },
+    {
+      "id": 129,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ATTACHMENT_ADDED: Screenshot 2026-02-01 072403.png",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:00:19.729134"
+    },
+    {
+      "id": 130,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "COMMENT_ADDED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:00:34.374658"
+    },
+    {
+      "id": 131,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "COLLABORATION_STARTED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:00:47.769444"
+    },
+    {
+      "id": 132,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:00:55.001338"
+    },
+    {
+      "id": 133,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ESCALATE: remove",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-09-15T12:01:06.046967"
+    },
+    {
+      "id": 134,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "COLLABORATION_TEAM_UPDATED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T14:16:44.614298"
+    },
+    {
+      "id": 135,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T14:17:03.370749"
+    },
+    {
+      "id": 136,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T14:17:08.556441"
+    },
+    {
+      "id": 137,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-15T14:28:35.382847"
+    },
+    {
+      "id": 138,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-18T07:28:46.254246"
+    },
+    {
+      "id": 139,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-18T07:28:54.329767"
+    },
+    {
+      "id": 140,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "APPROVE",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-18T07:28:55.842242"
+    },
+    {
+      "id": 141,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: approved",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T10:22:17.418082"
+    },
+    {
+      "id": 142,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T10:22:23.397470"
+    },
+    {
+      "id": 143,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:12:58.928745"
+    },
+    {
+      "id": 144,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:developer:Fixing login button event listener",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:12:58.928745"
+    },
+    {
+      "id": 145,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:20:09.243219"
+    },
+    {
+      "id": 146,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:developer:Working on bug fix implementation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:20:09.243219"
+    },
+    {
+      "id": 147,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:21:34.967193"
+    },
+    {
+      "id": 148,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:developer:Working on bug fix implementation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:21:34.967193"
+    },
+    {
+      "id": 149,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:22:21.328807"
+    },
+    {
+      "id": 150,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:developer:Working on bug fix implementation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:22:21.328807"
+    },
+    {
+      "id": 151,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:23:04.709312"
+    },
+    {
+      "id": 152,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:developer:Working on bug fix implementation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:23:04.709312"
+    },
+    {
+      "id": 155,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:24:19.413365"
+    },
+    {
+      "id": 156,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:tester:Tester verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:24:19.413365"
+    },
+    {
+      "id": 157,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:24:19.442206"
+    },
+    {
+      "id": 158,
+      "issue_id": 3,
+      "user_id": 2,
+      "action": "WORK_NOTE:senior_dev:Senior Dev verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T14:24:19.442206"
+    },
+    {
+      "id": 159,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.350562"
+    },
+    {
+      "id": 160,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Development underway on auth module",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.350562"
+    },
+    {
+      "id": 161,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:COMPLETED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.393063"
+    },
+    {
+      "id": 162,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Bug fix implemented and committed",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.393063"
+    },
+    {
+      "id": 163,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.428777"
+    },
+    {
+      "id": 164,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Executing regression test suite",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.428777"
+    },
+    {
+      "id": 165,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.466068"
+    },
+    {
+      "id": 166,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Reviewing PR and architectural alignment",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.466068"
+    },
+    {
+      "id": 167,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.530210"
+    },
+    {
+      "id": 168,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: Ready for final verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:45:51.549197"
+    },
+    {
+      "id": 169,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:59:09.883957"
+    },
+    {
+      "id": 170,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:PASSED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T15:59:57.714566"
+    },
+    {
+      "id": 171,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:00:16.206436"
+    },
+    {
+      "id": 172,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:00:18.051437"
+    },
+    {
+      "id": 173,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:00:18.262194"
+    },
+    {
+      "id": 174,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:00:18.485419"
+    },
+    {
+      "id": 175,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:NOT_STARTED:0",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:00:59.456746"
+    },
+    {
+      "id": 176,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:PASSED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:01:19.950124"
+    },
+    {
+      "id": 177,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:14:00.363102"
+    },
+    {
+      "id": 178,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Need fixes",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:14:00.363102"
+    },
+    {
+      "id": 179,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:20:28.608478"
+    },
+    {
+      "id": 180,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Changes needed for auth validation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:20:28.608478"
+    },
+    {
+      "id": 181,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.318209"
+    },
+    {
+      "id": 182,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Changes needed for auth validation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.318209"
+    },
+    {
+      "id": 183,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.358525"
+    },
+    {
+      "id": 184,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Alt format test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.358525"
+    },
+    {
+      "id": 185,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.386364"
+    },
+    {
+      "id": 186,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Under review by Senior Dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.386364"
+    },
+    {
+      "id": 187,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:APPROVED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.416561"
+    },
+    {
+      "id": 188,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:LGTM! Senior review completed",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.416561"
+    },
+    {
+      "id": 189,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.485249"
+    },
+    {
+      "id": 190,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Running test suite",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.485249"
+    },
+    {
+      "id": 191,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:PASSED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.513317"
+    },
+    {
+      "id": 192,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:All test assertions passed",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.513317"
+    },
+    {
+      "id": 193,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.571789"
+    },
+    {
+      "id": 194,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Implementing fix",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.571789"
+    },
+    {
+      "id": 195,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:COMPLETED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.600340"
+    },
+    {
+      "id": 196,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Fix implemented and tested locally",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:21:30.600340"
+    },
+    {
+      "id": 197,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:42:16.290684"
+    },
+    {
+      "id": 198,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:50:16.480421"
+    },
+    {
+      "id": 199,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL: request",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:50:30.264665"
+    },
+    {
+      "id": 200,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:51:11.887970"
+    },
+    {
+      "id": 201,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:52:32.168441"
+    },
+    {
+      "id": 202,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:52:38.834784"
+    },
+    {
+      "id": 203,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:NOT_STARTED:0",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:52:43.866999"
+    },
+    {
+      "id": 204,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:CHANGES_REQUESTED:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:52:48.035389"
+    },
+    {
+      "id": 205,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:21.347114"
+    },
+    {
+      "id": 206,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:24.260656"
+    },
+    {
+      "id": 207,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:41.173288"
+    },
+    {
+      "id": 208,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:42.406874"
+    },
+    {
+      "id": 209,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:42.623032"
+    },
+    {
+      "id": 210,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:48.503849"
+    },
+    {
+      "id": 211,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:48.705672"
+    },
+    {
+      "id": 212,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:48.922499"
+    },
+    {
+      "id": 213,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:53:49.139184"
+    },
+    {
+      "id": 214,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:09.132718"
+    },
+    {
+      "id": 215,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:10.018109"
+    },
+    {
+      "id": 216,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:10.253537"
+    },
+    {
+      "id": 217,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:10.449240"
+    },
+    {
+      "id": 218,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:10.682001"
+    },
+    {
+      "id": 219,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T16:54:10.903410"
+    },
+    {
+      "id": 220,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:03:28.046834"
+    },
+    {
+      "id": 221,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:APPROVED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:03:28.057820"
+    },
+    {
+      "id": 222,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:APPROVED:100",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:12:00.449715"
+    },
+    {
+      "id": 223,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:15:21.252954"
+    },
+    {
+      "id": 224,
+      "issue_id": 3,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:19:51.550640"
+    },
+    {
+      "id": 225,
+      "issue_id": 5,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-29T17:20:00.915168"
+    },
+    {
+      "id": 226,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:28:54.219539"
+    },
+    {
+      "id": 227,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:29:05.452204"
+    },
+    {
+      "id": 228,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:29:06.894651"
+    },
+    {
+      "id": 229,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:29:09.326112"
+    },
+    {
+      "id": 230,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:29:10.405790"
+    },
+    {
+      "id": 231,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "REQUEST_APPROVAL",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-09-30T14:29:13.050077"
+    },
+    {
+      "id": 232,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-02T14:48:20.239621"
+    },
+    {
+      "id": 233,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-10-02T15:02:51.565857"
+    },
+    {
+      "id": 234,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-10-02T15:02:51.628850"
+    },
+    {
+      "id": 235,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-10-02T15:02:51.674403"
+    },
+    {
+      "id": 236,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "QA_VERIFICATION",
+      "created_at": "2026-10-02T15:02:51.713877"
+    },
+    {
+      "id": 237,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "RESOLVED",
+      "old_status": "QA_VERIFICATION",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:02:51.771970"
+    },
+    {
+      "id": 238,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:02:51.837162"
+    },
+    {
+      "id": 239,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:02:51.865718"
+    },
+    {
+      "id": 240,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:REJECTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:02:51.891712"
+    },
+    {
+      "id": 241,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:02:51.918716"
+    },
+    {
+      "id": 242,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:04:46.372233"
+    },
+    {
+      "id": 243,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:04:46.413480"
+    },
+    {
+      "id": 244,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:04:46.455238"
+    },
+    {
+      "id": 245,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:04:46.494788"
+    },
+    {
+      "id": 246,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "RESOLVED",
+      "old_status": "REPORTED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:04:46.538612"
+    },
+    {
+      "id": 247,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:04:46.584406"
+    },
+    {
+      "id": 248,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:04:46.611434"
+    },
+    {
+      "id": 249,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:REJECTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:04:46.636821"
+    },
+    {
+      "id": 250,
+      "issue_id": 8,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:04:46.660869"
+    },
+    {
+      "id": 251,
+      "issue_id": 6,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:26:54.588151"
+    },
+    {
+      "id": 252,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:27:42.885341"
+    },
+    {
+      "id": 253,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:27:42.952825"
+    },
+    {
+      "id": 254,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:27:42.992886"
+    },
+    {
+      "id": 255,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-02T15:27:43.034019"
+    },
+    {
+      "id": 256,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "RESOLVED",
+      "old_status": "REPORTED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:27:43.084949"
+    },
+    {
+      "id": 257,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: admin,developer,tester,senior_dev",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:27:43.145049"
+    },
+    {
+      "id": 258,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:27:43.170089"
+    },
+    {
+      "id": 259,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:REJECTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:27:43.197795"
+    },
+    {
+      "id": 260,
+      "issue_id": 9,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "RESOLVED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-02T15:27:43.223170"
+    },
+    {
+      "id": 262,
+      "issue_id": 11,
+      "user_id": 1,
+      "action": "ASSIGNED_TO_ROLE:developer",
+      "old_status": "Pending",
+      "new_status": "ASSIGNED",
+      "created_at": "2026-10-03T14:11:53.085677"
+    },
+    {
+      "id": 263,
+      "issue_id": 11,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:ACCEPTED",
+      "old_status": "ASSIGNED",
+      "new_status": "ACCEPTED",
+      "created_at": "2026-10-03T14:11:53.099031"
+    },
+    {
+      "id": 264,
+      "issue_id": 11,
+      "user_id": 1,
+      "action": "STATUS_CHANGE:RESOLVED",
+      "old_status": "ACCEPTED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-03T14:11:53.110015"
+    },
+    {
+      "id": 265,
+      "issue_id": 12,
+      "user_id": 1,
+      "action": "ASSIGNED_TO_ROLE:tester",
+      "old_status": "Pending",
+      "new_status": "ASSIGNED",
+      "created_at": "2026-10-03T14:12:26.493493"
+    },
+    {
+      "id": 266,
+      "issue_id": 12,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:REJECTED",
+      "old_status": "ASSIGNED",
+      "new_status": "REJECTED",
+      "created_at": "2026-10-03T14:12:26.508001"
+    },
+    {
+      "id": 267,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ISSUE_UPDATED",
+      "old_status": "Pending",
+      "new_status": "Pending",
+      "created_at": "2026-10-03T14:16:53.461059"
+    },
+    {
+      "id": 268,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNED_TO_ROLE:developer",
+      "old_status": "Pending",
+      "new_status": "ASSIGNED",
+      "created_at": "2026-10-03T14:16:53.473398"
+    },
+    {
+      "id": 269,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:ACCEPTED",
+      "old_status": "ASSIGNED",
+      "new_status": "ACCEPTED",
+      "created_at": "2026-10-03T14:16:53.484844"
+    },
+    {
+      "id": 270,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "STATUS_CHANGE:RESOLVED",
+      "old_status": "ACCEPTED",
+      "new_status": "RESOLVED",
+      "created_at": "2026-10-03T14:16:53.494703"
+    },
+    {
+      "id": 271,
+      "issue_id": 14,
+      "user_id": 1,
+      "action": "ASSIGNED_TO_ROLE:tester",
+      "old_status": "Pending",
+      "new_status": "ASSIGNED",
+      "created_at": "2026-10-03T14:16:53.510700"
+    },
+    {
+      "id": 272,
+      "issue_id": 14,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:REJECTED",
+      "old_status": "ASSIGNED",
+      "new_status": "REJECTED",
+      "created_at": "2026-10-03T14:16:53.519719"
+    },
+    {
+      "id": 273,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "GITHUB:e9f8a7b Resolve calculation issue in analytics (",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-03T14:16:53.702710"
+    },
+    {
+      "id": 274,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "GITHUB:git7097 Review and verify changes for defect #12",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-03T14:16:53.712707"
+    },
+    {
+      "id": 283,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.056052"
+    },
+    {
+      "id": 284,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.088037"
+    },
+    {
+      "id": 285,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Investigating analytics calculation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.088037"
+    },
+    {
+      "id": 286,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.099050"
+    },
+    {
+      "id": 287,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Ready for verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.099050"
+    },
+    {
+      "id": 288,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.107032"
+    },
+    {
+      "id": 289,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Code design approved",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.107032"
+    },
+    {
+      "id": 290,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:gh_full Fix defect #1 tracking",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.410464"
+    },
+    {
+      "id": 291,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:git4174 Review code for defect #1",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:12.421479"
+    },
+    {
+      "id": 292,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:55.958768"
+    },
+    {
+      "id": 293,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:55.987422"
+    },
+    {
+      "id": 294,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Investigating analytics calculation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:55.987422"
+    },
+    {
+      "id": 295,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:55.996464"
+    },
+    {
+      "id": 296,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Ready for verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:55.996464"
+    },
+    {
+      "id": 297,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:56.003432"
+    },
+    {
+      "id": 298,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Code design approved",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:56.003432"
+    },
+    {
+      "id": 299,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:gh_full Fix defect #1 tracking",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:56.324597"
+    },
+    {
+      "id": 300,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:git3295 Review code for defect #1",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-03T15:18:56.332596"
+    },
+    {
+      "id": 301,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:33.981531"
+    },
+    {
+      "id": 302,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.013084"
+    },
+    {
+      "id": 303,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Investigating analytics calculation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.013084"
+    },
+    {
+      "id": 304,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.029288"
+    },
+    {
+      "id": 305,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Ready for verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.029288"
+    },
+    {
+      "id": 306,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.039933"
+    },
+    {
+      "id": 307,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Code design approved",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.039933"
+    },
+    {
+      "id": 308,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:gh_full Fix defect #1 tracking",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.503576"
+    },
+    {
+      "id": 309,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:git5134 Review code for defect #1",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T11:51:34.518321"
+    },
+    {
+      "id": 310,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.187944"
+    },
+    {
+      "id": 311,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.237811"
+    },
+    {
+      "id": 312,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Investigating analytics calculation",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.237811"
+    },
+    {
+      "id": 313,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.252455"
+    },
+    {
+      "id": 314,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Ready for verification",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.252455"
+    },
+    {
+      "id": 315,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.268346"
+    },
+    {
+      "id": 316,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Code design approved",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.268346"
+    },
+    {
+      "id": 317,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:gh_full Fix defect #1 tracking",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.617280"
+    },
+    {
+      "id": 318,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "GITHUB:git6269 Review code for defect #1",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:14:25.631892"
+    },
+    {
+      "id": 319,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:16:53.171808"
+    },
+    {
+      "id": 320,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:16:53.171808"
+    },
+    {
+      "id": 321,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:16:53.199413"
+    },
+    {
+      "id": 322,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:16:53.199413"
+    },
+    {
+      "id": 323,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.756804"
+    },
+    {
+      "id": 324,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.756804"
+    },
+    {
+      "id": 325,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.812065"
+    },
+    {
+      "id": 326,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.812065"
+    },
+    {
+      "id": 327,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.847865"
+    },
+    {
+      "id": 328,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:17:55.847865"
+    },
+    {
+      "id": 329,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.390403"
+    },
+    {
+      "id": 330,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.390403"
+    },
+    {
+      "id": 331,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.428575"
+    },
+    {
+      "id": 332,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.428575"
+    },
+    {
+      "id": 333,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.472325"
+    },
+    {
+      "id": 334,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-04T12:19:48.472325"
+    },
+    {
+      "id": 335,
+      "issue_id": 14,
+      "user_id": 1,
+      "action": "GITHUB:git7432 Fix login authentication defect #14",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-04T13:01:33.779308"
+    },
+    {
+      "id": 336,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.776935"
+    },
+    {
+      "id": 337,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.776935"
+    },
+    {
+      "id": 338,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.857770"
+    },
+    {
+      "id": 339,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.857770"
+    },
+    {
+      "id": 340,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.935534"
+    },
+    {
+      "id": 341,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-14T14:05:09.935534"
+    },
+    {
+      "id": 342,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.260593"
+    },
+    {
+      "id": 343,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.260593"
+    },
+    {
+      "id": 344,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.294730"
+    },
+    {
+      "id": 345,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.294730"
+    },
+    {
+      "id": 346,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.340965"
+    },
+    {
+      "id": 347,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:48:40.340965"
+    },
+    {
+      "id": 348,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.918841"
+    },
+    {
+      "id": 349,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.918841"
+    },
+    {
+      "id": 350,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.955560"
+    },
+    {
+      "id": 351,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.955560"
+    },
+    {
+      "id": 352,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.991002"
+    },
+    {
+      "id": 353,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T13:52:37.991002"
+    },
+    {
+      "id": 354,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.759266"
+    },
+    {
+      "id": 355,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.759266"
+    },
+    {
+      "id": 356,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.782357"
+    },
+    {
+      "id": 357,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.782357"
+    },
+    {
+      "id": 358,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.803819"
+    },
+    {
+      "id": 359,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-15T14:31:55.803819"
+    },
+    {
+      "id": 360,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.342296"
+    },
+    {
+      "id": 361,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.342296"
+    },
+    {
+      "id": 362,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.393553"
+    },
+    {
+      "id": 363,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.393553"
+    },
+    {
+      "id": 364,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.427374"
+    },
+    {
+      "id": 365,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:12:57.427374"
+    },
+    {
+      "id": 366,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.786992"
+    },
+    {
+      "id": 367,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.786992"
+    },
+    {
+      "id": 368,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.862310"
+    },
+    {
+      "id": 369,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.862310"
+    },
+    {
+      "id": 370,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.937691"
+    },
+    {
+      "id": 371,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:30:07.937691"
+    },
+    {
+      "id": 372,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:14.923254"
+    },
+    {
+      "id": 373,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:14.923254"
+    },
+    {
+      "id": 374,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:15.019085"
+    },
+    {
+      "id": 375,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:15.019085"
+    },
+    {
+      "id": 376,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:15.100465"
+    },
+    {
+      "id": 377,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-17T13:58:15.100465"
+    },
+    {
+      "id": 378,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.790136"
+    },
+    {
+      "id": 379,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.790136"
+    },
+    {
+      "id": 380,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.884696"
+    },
+    {
+      "id": 381,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.884696"
+    },
+    {
+      "id": 382,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.963451"
+    },
+    {
+      "id": 383,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:03:36.963451"
+    },
+    {
+      "id": 384,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:17.947314"
+    },
+    {
+      "id": 385,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:17.947314"
+    },
+    {
+      "id": 386,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:18.028938"
+    },
+    {
+      "id": 387,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:18.028938"
+    },
+    {
+      "id": 388,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:18.109662"
+    },
+    {
+      "id": 389,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:15:18.109662"
+    },
+    {
+      "id": 390,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.590156"
+    },
+    {
+      "id": 391,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.590156"
+    },
+    {
+      "id": 392,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.661602"
+    },
+    {
+      "id": 393,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.661602"
+    },
+    {
+      "id": 394,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.727703"
+    },
+    {
+      "id": 395,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T16:51:23.727703"
+    },
+    {
+      "id": 398,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.785608"
+    },
+    {
+      "id": 399,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.785608"
+    },
+    {
+      "id": 400,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.857642"
+    },
+    {
+      "id": 401,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.857642"
+    },
+    {
+      "id": 402,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.926103"
+    },
+    {
+      "id": 403,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:09:32.926103"
+    },
+    {
+      "id": 404,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.129986"
+    },
+    {
+      "id": 405,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.129986"
+    },
+    {
+      "id": 406,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.207130"
+    },
+    {
+      "id": 407,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.207130"
+    },
+    {
+      "id": 408,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.282180"
+    },
+    {
+      "id": 409,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:12:24.282180"
+    },
+    {
+      "id": 410,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.318676"
+    },
+    {
+      "id": 411,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.318676"
+    },
+    {
+      "id": 412,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.402277"
+    },
+    {
+      "id": 413,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.402277"
+    },
+    {
+      "id": 414,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.473153"
+    },
+    {
+      "id": 415,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:20:20.473153"
+    },
+    {
+      "id": 416,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:40:19.090683"
+    },
+    {
+      "id": 417,
+      "issue_id": 10,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:41:37.531108"
+    },
+    {
+      "id": 418,
+      "issue_id": 10,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:41:40.406961"
+    },
+    {
+      "id": 419,
+      "issue_id": 10,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:41:42.210701"
+    },
+    {
+      "id": 420,
+      "issue_id": 10,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:senior_dev:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:41:43.993293"
+    },
+    {
+      "id": 421,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-21T17:42:29.454272"
+    },
+    {
+      "id": 422,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:17.849049"
+    },
+    {
+      "id": 423,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:17.858966"
+    },
+    {
+      "id": 424,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:20.009075"
+    },
+    {
+      "id": 425,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:developer:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:23.387743"
+    },
+    {
+      "id": 426,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester,senior_dev",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:38.988513"
+    },
+    {
+      "id": 427,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:43:44.354783"
+    },
+    {
+      "id": 428,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:REJECTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:44:29.642831"
+    },
+    {
+      "id": 429,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "ASSIGNMENT_RESPONSE:tester:ACCEPTED",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:44:31.660119"
+    },
+    {
+      "id": 430,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:NOT_STARTED:0",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:44:36.775974"
+    },
+    {
+      "id": 431,
+      "issue_id": 13,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:PASSED:100",
+      "old_status": "REPORTED",
+      "new_status": "REPORTED",
+      "created_at": "2026-10-21T17:44:45.610145"
+    },
+    {
+      "id": 432,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:49.911791"
+    },
+    {
+      "id": 433,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:49.911791"
+    },
+    {
+      "id": 434,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:50.008304"
+    },
+    {
+      "id": 435,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:50.008304"
+    },
+    {
+      "id": 436,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:50.081541"
+    },
+    {
+      "id": 437,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T13:52:50.081541"
+    },
+    {
+      "id": 438,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.105500"
+    },
+    {
+      "id": 439,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.105500"
+    },
+    {
+      "id": 440,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.176695"
+    },
+    {
+      "id": 441,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.176695"
+    },
+    {
+      "id": 442,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.249383"
+    },
+    {
+      "id": 443,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-22T14:22:40.249383"
+    },
+    {
+      "id": 444,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:42.944016"
+    },
+    {
+      "id": 445,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:42.944016"
+    },
+    {
+      "id": 446,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:42.999518"
+    },
+    {
+      "id": 447,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:42.999518"
+    },
+    {
+      "id": 448,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:43.032577"
+    },
+    {
+      "id": 449,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:45:43.032577"
+    },
+    {
+      "id": 450,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.400174"
+    },
+    {
+      "id": 451,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.400174"
+    },
+    {
+      "id": 452,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.436782"
+    },
+    {
+      "id": 453,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.436782"
+    },
+    {
+      "id": 454,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.472854"
+    },
+    {
+      "id": 455,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T01:58:05.472854"
+    },
+    {
+      "id": 456,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.766148"
+    },
+    {
+      "id": 457,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.766148"
+    },
+    {
+      "id": 458,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.843782"
+    },
+    {
+      "id": 459,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.843782"
+    },
+    {
+      "id": 460,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.920973"
+    },
+    {
+      "id": 461,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:34:06.920973"
+    },
+    {
+      "id": 462,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:17.982477"
+    },
+    {
+      "id": 463,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:17.982477"
+    },
+    {
+      "id": 464,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:18.061866"
+    },
+    {
+      "id": 465,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:18.061866"
+    },
+    {
+      "id": 466,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:18.141578"
+    },
+    {
+      "id": 467,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-23T15:55:18.141578"
+    },
+    {
+      "id": 468,
+      "issue_id": 2,
+      "user_id": 1,
+      "action": "TEAM_UPDATED: developer,tester",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:12:40.486984"
+    },
+    {
+      "id": 469,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:55.999923"
+    },
+    {
+      "id": 470,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:55.999923"
+    },
+    {
+      "id": 471,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:56.052232"
+    },
+    {
+      "id": 472,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:56.052232"
+    },
+    {
+      "id": 473,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:56.084243"
+    },
+    {
+      "id": 474,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:28:56.084243"
+    },
+    {
+      "id": 475,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.235388"
+    },
+    {
+      "id": 476,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.235388"
+    },
+    {
+      "id": 477,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.267887"
+    },
+    {
+      "id": 478,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.267887"
+    },
+    {
+      "id": 479,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.300432"
+    },
+    {
+      "id": 480,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T13:41:43.300432"
+    },
+    {
+      "id": 481,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:developer:IN_PROGRESS:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.109159"
+    },
+    {
+      "id": 482,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:developer:Sasuke UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.109159"
+    },
+    {
+      "id": 483,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:tester:IN_TESTING:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.148065"
+    },
+    {
+      "id": 484,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:tester:Hinata UAT test",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.148065"
+    },
+    {
+      "id": 485,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_UPDATED:senior_dev:IN_REVIEW:50",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.183861"
+    },
+    {
+      "id": 486,
+      "issue_id": 1,
+      "user_id": 1,
+      "action": "WORK_NOTE:senior_dev:Itachi UAT review",
+      "old_status": "CLOSED",
+      "new_status": "CLOSED",
+      "created_at": "2026-10-25T14:00:16.183861"
+    }
+  ]
+}

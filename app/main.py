@@ -3,7 +3,7 @@ from datetime import date, datetime, timedelta
 import secrets
 
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 from sqlalchemy import or_, text
@@ -480,9 +480,13 @@ def triage_recommendation(
 # =========================================================
 
 @app.get("/")
-def root():
+def root(request: Request):
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        return RedirectResponse(url="/login-ui")
     return {
         "message": "BugFlow API is running",
+        "login_ui": "/login-ui",
     }
 
 
