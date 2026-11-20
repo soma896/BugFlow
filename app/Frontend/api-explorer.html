@@ -209,11 +209,35 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
     font-size:11px;padding:10px 12px;border-radius:6px;overflow-x:auto;
     margin-top:12px;border:1px solid #334155;white-space:pre-wrap;
 }
-</style>
+
+/* =============================================
+   MOBILE RESPONSIVE — integrations / api-explorer
+   ============================================= */
+@media (max-width: 1024px) {
+  .bf-mobile-topbar { display:flex !important; }
+  body { padding-top: 52px; }
+  .main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 16px 14px 48px !important;
+  }
+  .top {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  h1 { font-size: 20px !important; }
+}</style>
+<link rel="stylesheet" href="/design-system.css">
 </head>
 <body>
 
 <div class="wrap">
+
+<!-- MOBILE TOP BAR (hamburger injected here by responsive-shell.js) -->
+<header class="bf-mobile-topbar" style="display:none;position:fixed;top:0;left:0;right:0;height:52px;background:#111e33;z-index:200;align-items:center;padding:0 14px;gap:12px;">
+    <div class="logo" style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#3f66d8,#2a51c7);color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px;flex-shrink:0;">B</div>
+    <span style="color:#fff;font-weight:700;font-size:15px;">BugFlow</span>
+</header>
 
 <!-- SIDEBAR -->
 <aside class="side">
@@ -224,39 +248,38 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
     <div class="label">Administration</div>
     <nav class="nav">
         <a href="/admin-ui">
-            <span class="nav-icon">â–£</span>
+            <span class="nav-icon">&#127968;</span>
             <span>Dashboard</span>
         </a>
         <a href="/all-defects-ui">
-            <span class="nav-icon">â˜·</span>
+            <span class="nav-icon">&#128027;</span>
             <span>All Defects</span>
         </a>
         <a href="/analytics-ui">
-            <span class="nav-icon">â–¥</span>
+            <span class="nav-icon">&#128202;</span>
             <span>Analytics Reports</span>
         </a>
         <a href="/milestone2-ui">
-            <span class="nav-icon">â—ˆ</span>
+            <span class="nav-icon">&#127939;</span>
             <span>Sprint Management</span>
         </a>
         <a href="/team-collaboration-ui">
-            <span class="nav-icon">â—‰</span>
+            <span class="nav-icon">&#128101;</span>
             <span>Team Collaboration</span>
-        </a>
-        <a href="/integrations-ui">
-            <span class="nav-icon">âš¡</span>
-            <span>Integrations & CI/CD</span>
+        </a>        <a href="/integrations-ui">
+            <span class="nav-icon">&#9889;</span>
+            <span>Integrations &amp; CI/CD</span>
         </a>
         <a class="active" href="/api-explorer-ui">
-            <span class="nav-icon">âš™</span>
+            <span class="nav-icon">&#9881;&#65039;</span>
             <span>API Explorer</span>
         </a>
         <a href="#" id="sideSwitchBtn">
-            <span class="nav-icon">â†ª</span>
+            <span class="nav-icon">&#8617;</span>
             <span>Switch Workspace</span>
         </a>
         <a href="/login-ui" id="logoutLink">
-            <span class="nav-icon">â»</span>
+            <span class="nav-icon">&#128682;</span>
             <span>Logout</span>
         </a>
     </nav>
