@@ -290,14 +290,14 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
 
 <header class="top">
     <div>
-        <div class="eyebrow">Module 3 â€” REST API Layer</div>
+        <div class="eyebrow">Module 3 &mdash; External Workflows & Automation</div>
         <h1>Interactive API Explorer</h1>
         <div class="sub">Test and inspect BugFlow Issue Management, Assignment, Sprints, Analytics, GitHub, and CI/CD REST endpoints live.</div>
     </div>
 
     <div class="switcher-container">
         <button class="switch-btn" id="switchDropdownBtn" type="button">
-            <span>Switch Workspace</span> â–¾
+            <span>Switch Workspace</span> &#9662;
         </button>
         <div class="switch-dropdown" id="switchDropdown">
             <div style="font-size:10px;font-weight:800;color:#94a3b8;padding:4px 8px;text-transform:uppercase;">Switch Workspace</div>
@@ -336,7 +336,7 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
             <div class="url-method method-get" id="epMethodBadge">GET</div>
             <input type="text" class="url-input" id="epUrlInput" value="/api/v1/issues?limit=10">
             <button class="btn-send" id="epSendBtn" onclick="executeApiCall()">
-                <span>â–¶</span> Send
+                <span>&#9654;</span> Send
             </button>
         </div>
 
@@ -527,7 +527,7 @@ async function executeApiCall() {
     const respBox = document.getElementById("respBox");
 
     btn.disabled = true;
-    btn.innerHTML = `<span>â³</span> Running...`;
+    btn.innerHTML = `<span>&#9203;</span> Running...`;
     respStatus.className = "resp-badge";
     respStatus.textContent = "Loading...";
 
@@ -545,7 +545,7 @@ async function executeApiCall() {
         } catch (e) {
             alert("Invalid JSON body: " + e.message);
             btn.disabled = false;
-            btn.innerHTML = `<span>â–¶</span> Send`;
+            btn.innerHTML = `<span>&#9654;</span> Send`;
             return;
         }
     }
@@ -572,7 +572,7 @@ async function executeApiCall() {
         respBox.textContent = `Fetch Failed: ${err.message}`;
     } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>â–¶</span> Send`;
+        btn.innerHTML = `<span>&#9654;</span> Send`;
     }
 }
 

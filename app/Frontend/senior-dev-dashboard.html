@@ -343,29 +343,29 @@ h1{
     <nav class="nav">
 
         <a class="active" href="/senior-developer-ui">
-            â—‰ <span>Dashboard</span>
+            &#127968; <span>Dashboard</span>
         </a>
 
         <a href="/senior-developer-defects-ui">
-            â˜· <span>Defects</span>
+            &#128027; <span>Defects</span>
         </a>
 
         <!-- FIXED: Senior Developer-specific Team Collaboration route -->
         <a href="/team-collaboration-senior-developer-ui"
            id="seniorDeveloperTeamCollaborationLink">
-            â—Ž <span>Team Collaboration</span>
+            &#128101; <span>Team Collaboration</span>
         </a>
 
         <a href="/senior-analytics-ui">
-            â–¥ <span>Analytics Reports</span>
+            &#128202; <span>Analytics Reports</span>
         </a>
 
         <a href="/senior-developer-sprints-ui">
-            â—« <span>My Sprints</span>
+            &#127939; <span>My Sprints</span>
         </a>
 
         <a href="#" id="sideSwitchBtn">
-            â†ª <span>Switch</span>
+            &#8617; <span>Switch Workspace</span>
         </a>
 
     </nav>
@@ -398,7 +398,7 @@ h1{
             id="switchDropdownBtn"
             type="button"
         >
-            <span>Switch Workspace</span> â–¾
+            <span>Switch Workspace</span> &#9662;
         </button>
 
         <div class="switch-dropdown" id="switchDropdown">
@@ -824,7 +824,7 @@ async function loadAssignedSprints() {
                         href="/senior-developer-sprints-ui"
                         style="color:#a58eff;text-decoration:none;font-weight:800;"
                     >
-                        Open My Sprints â†’
+                        Open My Sprints &rarr;
                     </a>
 
                 </div>
@@ -876,7 +876,7 @@ async function loadAssignedSprints() {
 
                                     ${Number(
                                         sprint.total_issues || 0
-                                    )} issue(s) â€¢
+                                    )} issue(s) &bull;
 
                                     ${progress}% complete
 
@@ -1045,7 +1045,7 @@ async function loadSeniorDevData() {
 
                                 <span class="muted">
                                     ${escapeHtml(d.category)}
-                                    â€¢
+                                    &bull;
                                     ${escapeHtml(d.priority)}
                                     Priority
                                 </span>

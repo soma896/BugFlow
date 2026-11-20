@@ -345,27 +345,27 @@ h1{
     <nav class="nav">
 
         <a class="active" href="/tester-ui">
-            â—‰ <span>Dashboard</span>
+            &#127968; <span>Dashboard</span>
         </a>
 
         <a href="/tester-defects-ui">
-            â˜· <span>Defects</span>
+            &#128027; <span>Defects</span>
         </a>
 
         <a href="/team-collaboration-tester-ui">
-            â—Ž <span>Team Collaboration</span>
+            &#128101; <span>Team Collaboration</span>
         </a>
 
         <a href="/tester-analytics-ui">
-            â–¥ <span>Analytics Reports</span>
+            &#128202; <span>Analytics Reports</span>
         </a>
 
         <a href="/tester-sprints-ui">
-            â—« <span>My Sprints</span>
+            &#127939; <span>My Sprints</span>
         </a>
 
         <a href="#" id="sideSwitchBtn">
-            â†ª <span>Switch</span>
+            &#8617; <span>Switch Workspace</span>
         </a>
 
     </nav>
@@ -397,7 +397,7 @@ h1{
             id="switchDropdownBtn"
             type="button"
         >
-            <span>Switch Workspace</span> â–¾
+            <span>Switch Workspace</span> &#9662;
         </button>
 
         <div class="switch-dropdown" id="switchDropdown">
@@ -625,7 +625,7 @@ async function loadAssignedSprints() {
                     <span class="muted">No sprints assigned to Tester yet.</span>
                     <a href="/tester-sprints-ui"
                        style="color:#a58eff;text-decoration:none;font-weight:800;">
-                        Open My Sprints â†’
+                        Open My Sprints &rarr;
                     </a>
                 </div>`;
             return;
@@ -641,7 +641,7 @@ async function loadAssignedSprints() {
                         <b>${escapeHtml(sprint.sprint_name || "Unnamed Sprint")}</b>
                         <br>
                         <span class="muted">
-                            ${Number(sprint.total_issues || 0)} issue(s) â€¢
+                            ${Number(sprint.total_issues || 0)} issue(s) &bull;
                             ${progress}% complete
                         </span>
                     </span>
@@ -689,7 +689,7 @@ async function loadTesterData() {
                     <span>
                         <b>#${d.id} - ${escapeHtml(d.title)}</b>
                         <br>
-                        <span class="muted">${escapeHtml(d.category)} â€¢ ${escapeHtml(d.priority)} Priority</span>
+                        <span class="muted">${escapeHtml(d.category)} &bull; ${escapeHtml(d.priority)} Priority</span>
                     </span>
                     <span class="badge ${d.status ? d.status.toLowerCase() : 'pending'}">${escapeHtml(d.status || 'Pending')}</span>
                 </div>

@@ -285,14 +285,14 @@ tr:hover td{background:#F8FAFC}
 
 <header class="top">
     <div>
-        <div class="eyebrow">Module 3 â€” External Workflows & Automation</div>
+        <div class="eyebrow">Module 3 &mdash; External Workflows & Automation</div>
         <h1>GitHub Integration & CI/CD Synchronization</h1>
         <div class="sub">Automated defect synchronization, commit referencing, CI/CD pipeline webhooks, and event notifications.</div>
     </div>
 
     <div class="switcher-container">
         <button class="switch-btn" id="switchDropdownBtn" type="button">
-            <span>Switch Workspace</span> â–¾
+            <span>Switch Workspace</span> &#9662;
         </button>
         <div class="switch-dropdown" id="switchDropdown">
             <div style="font-size:10px;font-weight:800;color:#94a3b8;padding:4px 8px;text-transform:uppercase;">Switch Workspace</div>
@@ -350,7 +350,7 @@ tr:hover td{background:#F8FAFC}
     <article class="panel">
         <div class="panel-head">
             <div class="panel-title">
-                <span class="panel-icon">ðŸ™</span>
+                <span class="panel-icon">&#128025;</span>
                 <span>GitHub Repository Integration</span>
             </div>
             <span class="status-pill status-connected">
@@ -384,7 +384,7 @@ tr:hover td{background:#F8FAFC}
                 </div>
             </div>
             <button type="submit" class="action-btn" id="ghSubmitBtn">
-                <span>âš¡</span> Sync Commit to BugFlow
+                <span>&#9889;</span> Sync Commit to BugFlow
             </button>
         </form>
 
@@ -405,7 +405,7 @@ tr:hover td{background:#F8FAFC}
     <article class="panel">
         <div class="panel-head">
             <div class="panel-title">
-                <span class="panel-icon">ðŸš€</span>
+                <span class="panel-icon">&#128640;</span>
                 <span>CI/CD Pipeline Synchronization</span>
             </div>
             <span class="status-pill status-operational">
@@ -425,10 +425,10 @@ tr:hover td{background:#F8FAFC}
         <div style="font-weight:700;font-size:12px;margin-bottom:8px;color:#1e293b;">Trigger Automated Test Pipeline</div>
         <div style="display:flex;gap:10px;margin-bottom:12px;">
             <button class="action-btn" style="background:#16a765;" onclick="triggerCicd('SUCCESS')">
-                <span>âœ”</span> Run Build (Pass Simulation)
+                <span>&#10004;</span> Run Build (Pass Simulation)
             </button>
             <button class="action-btn danger" onclick="triggerCicd('FAILURE')">
-                <span>âœ–</span> Run Build (Failure & Auto-Defect)
+                <span>&#10006;</span> Run Build (Failure & Auto-Defect)
             </button>
         </div>
 
@@ -453,7 +453,7 @@ tr:hover td{background:#F8FAFC}
 <section class="panel">
     <div class="panel-head">
         <div class="panel-title">
-            <span class="panel-icon">ðŸ””</span>
+            <span class="panel-icon">&#128276;</span>
             <span>Real-Time Integration & Workflow Notifications</span>
         </div>
         <div style="display:flex;gap:8px;">
@@ -527,7 +527,7 @@ async function loadIntegrationData() {
                         <td><code>${(e.commit_id || '').substring(0,7)}</code></td>
                         <td>${e.sender}</td>
                         <td>${e.commit_message}</td>
-                        <td>${e.linked_defect_id ? `<span style="font-weight:700;color:#3B66D9;">#${e.linked_defect_id}</span>` : '<span style="color:#94a3b8;">â€”</span>'}</td>
+                        <td>${e.linked_defect_id ? `<span style="font-weight:700;color:#3B66D9;">#${e.linked_defect_id}</span>` : '<span style="color:#94a3b8;">&mdash;</span>'}</td>
                         <td>${new Date(e.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</td>
                     </tr>
                 `).join('');
@@ -569,10 +569,10 @@ async function loadIntegrationData() {
             const list = document.getElementById("notifList");
             if (notifs.items.length > 0) {
                 list.innerHTML = notifs.items.map(n => {
-                    let icon = 'ðŸ””';
+                    let icon = '&#128276;';
                     let iconClass = 'icon-wf';
-                    if (n.category === 'GITHUB') { icon = 'ðŸ™'; iconClass = 'icon-gh'; }
-                    else if (n.category === 'CICD') { icon = 'ðŸš€'; iconClass = 'icon-cicd'; }
+                    if (n.category === 'GITHUB') { icon = '&#128025;'; iconClass = 'icon-gh'; }
+                    else if (n.category === 'CICD') { icon = '&#128640;'; iconClass = 'icon-cicd'; }
                     return `
                         <div class="notif-item" style="${n.is_read ? 'opacity:0.7;' : 'border-left:3px solid #3B66D9;'}">
                             <div class="notif-icon ${iconClass}">${icon}</div>
@@ -616,7 +616,7 @@ document.getElementById("ghSimForm").addEventListener("submit", async (e) => {
         alert("Failed to sync commit: " + err);
     } finally {
         btn.disabled = false;
-        btn.innerHTML = "<span>âš¡</span> Sync Commit to BugFlow";
+        btn.innerHTML = "<span>&#9889;</span> Sync Commit to BugFlow";
     }
 });
 

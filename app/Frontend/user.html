@@ -2215,7 +2215,7 @@
             >
 
                 <span class="nav-icon">
-                    â–¦
+                    &#127968;
                 </span>
 
                 <span class="nav-text">
@@ -2232,7 +2232,7 @@
             >
 
                 <span class="nav-icon">
-                    â—‰
+                    &#128027;
                 </span>
 
                 <span class="nav-text">
@@ -2249,7 +2249,7 @@
             >
 
                 <span class="nav-icon">
-                    â‰¡
+                    &#128221;
                 </span>
 
                 <span class="nav-text">
@@ -2266,7 +2266,7 @@
             >
 
                 <span class="nav-icon">
-                    â‡¥
+                    &#128682;
                 </span>
 
                 <span class="nav-text">
@@ -2335,7 +2335,7 @@
                     id="headingIcon"
                     class="heading-icon"
                 >
-                    â–¦
+                    &#127968;
                 </div>
 
 
@@ -2367,7 +2367,7 @@
                         id="switchDropdownBtn"
                         style="height: 38px; padding: 0 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px;"
                     >
-                        <span>Switch</span> â–¾
+                        <span>Switch</span> &#9662;
                     </button>
 
 
@@ -2525,7 +2525,7 @@
                         class="secondary-button"
                         id="refreshDashboard"
                     >
-                        â†» Refresh
+                        &#8635; Refresh
                     </button>
 
 
@@ -2572,7 +2572,7 @@
                             <div class="qa-title">Report New Defect</div>
                             <div class="qa-desc">Log a new bug report in your workspace</div>
                         </div>
-                        <span class="qa-arrow">â†’</span>
+                        <span class="qa-arrow">&rarr;</span>
                     </button>
 
                     <button
@@ -2593,7 +2593,7 @@
                             <div class="qa-title">My Defects</div>
                             <div class="qa-desc">Search, filter, and track all submitted issues</div>
                         </div>
-                        <span class="qa-arrow">â†’</span>
+                        <span class="qa-arrow">&rarr;</span>
                     </button>
 
                     <button
@@ -2613,7 +2613,7 @@
                             <div class="qa-title">Refresh Data</div>
                             <div class="qa-desc">Sync the latest defect statuses and assignments</div>
                         </div>
-                        <span class="qa-arrow">â†»</span>
+                        <span class="qa-arrow">&#8635;</span>
                     </button>
 
                 </div>
@@ -2742,7 +2742,7 @@
 
                         <div class="assign-role-card">
                             <div class="arc-header">
-                                <div class="arc-icon arc-icon-blue">ðŸ’»</div>
+                                <div class="arc-icon arc-icon-blue">&#128187;</div>
                                 <div>
                                     <div class="arc-role">Assigned Developer</div>
                                     <div class="arc-person">Sasuke</div>
@@ -2759,7 +2759,7 @@
 
                         <div class="assign-role-card">
                             <div class="arc-header">
-                                <div class="arc-icon arc-icon-green">ðŸ§ª</div>
+                                <div class="arc-icon arc-icon-green">&#129514;</div>
                                 <div>
                                     <div class="arc-role">Assigned Tester</div>
                                     <div class="arc-person">Hinata</div>
@@ -2776,7 +2776,7 @@
 
                         <div class="assign-role-card">
                             <div class="arc-header">
-                                <div class="arc-icon arc-icon-purple">âš¡</div>
+                                <div class="arc-icon arc-icon-purple">&#9889;</div>
                                 <div>
                                     <div class="arc-role">Assigned Senior Developer</div>
                                     <div class="arc-person">Itachi</div>
@@ -2793,7 +2793,7 @@
 
                         <div class="assign-role-card">
                             <div class="arc-header">
-                                <div class="arc-icon arc-icon-amber">ðŸ“‹</div>
+                                <div class="arc-icon arc-icon-amber">&#128203;</div>
                                 <div>
                                     <div class="arc-role">Not Assigned</div>
                                     <div class="arc-person">Awaiting Triage</div>
@@ -3204,7 +3204,7 @@
                         class="secondary-button"
                         id="refreshDefects"
                     >
-                        â†» Refresh
+                        &#8635; Refresh
                     </button>
 
 
@@ -3424,7 +3424,7 @@
                 id="closeModal"
                 class="close-button"
             >
-                Ã—
+                &times;
             </button>
 
 
@@ -4133,7 +4133,7 @@
                 "Track your reported defects.";
 
             icon.textContent =
-                "â–¦";
+                "&#127968;";
 
             loadDefects();
 
@@ -4152,7 +4152,7 @@
                 "Submit a detailed defect report.";
 
             icon.textContent =
-                "â—‰";
+                "&#128027;";
 
             clearMessage();
 
@@ -4173,7 +4173,7 @@
                 "View your submitted defects and assignments.";
 
             icon.textContent =
-                "â‰¡";
+                "&#128221;";
 
             renderTable();
 
@@ -4210,7 +4210,7 @@
             if (!selected) {
 
                 assignmentBadge.textContent =
-                    "â— Unassigned";
+                    "• Unassigned";
 
 
                 assignmentBadge.classList.remove(
@@ -4231,7 +4231,7 @@
 
 
             assignmentBadge.textContent =
-                `â— ${label}`;
+                `• ${label}`;
 
 
             assignmentBadge.classList.add(
@@ -4467,16 +4467,16 @@
                 recentEvents.forEach(defect => {
                     let badgeClass = "act-badge-pending";
                     let actionLabel = "Recently Submitted";
-                    let iconChar = "â—";
+                    let iconChar = "•";
 
                     if (defect.status === "Resolved") {
                         badgeClass = "act-badge-resolved";
                         actionLabel = "Recently Resolved";
-                        iconChar = "âœ“";
+                        iconChar = "✓";
                     } else if (defect.status === "Rejected") {
                         badgeClass = "act-badge-rejected";
                         actionLabel = "Recently Rejected";
-                        iconChar = "âœ•";
+                        iconChar = "✕";
                     }
 
                     const rawAssigned = getAssignmentDisplay(defect);
@@ -4497,11 +4497,11 @@
                             </div>
                             <div class="activity-meta">
                                 <span>#${defect.id}</span>
-                                <span>â€¢</span>
+                                <span>&bull;</span>
                                 <span class="meta-tag">${escapeHtml(defect.category || "General")}</span>
-                                <span>â€¢</span>
+                                <span>&bull;</span>
                                 <span class="meta-tag priority-${escapeHtml(defect.priority || "Medium")}">${escapeHtml(defect.priority || "Medium")}</span>
-                                <span>â€¢</span>
+                                <span>&bull;</span>
                                 <span>${formatDate(defect.created_at)}</span>
                             </div>
                             <div class="activity-assigned">
@@ -4719,13 +4719,13 @@
 
                         #${defect.id}
 
-                        Â·
+                        &middot;
 
                         ${escapeHtml(
                             defect.category
                         )}
 
-                        Â·
+                        &middot;
 
                         ${escapeHtml(
                             defect.priority
@@ -5380,7 +5380,7 @@
 
                     if (assignmentBadge) {
                         assignmentBadge.textContent =
-                            "â— Unassigned";
+                            "• Unassigned";
 
 
                         assignmentBadge.classList.remove(
