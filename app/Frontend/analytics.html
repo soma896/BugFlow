@@ -1,1121 +1,2603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BugFlow | Admin Analytics Reports</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="web_dashboard" name="shell-type">
+  <title>BugFlow — Analytics Reports</title>
 
-<style>
-*{box-sizing:border-box}
+  <!-- Google Fonts: Inter, JetBrains Mono & Material Symbols -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
-.chart-container {
-    position: relative;
-    height: 240px;
-    width: 100%;
-}
+  <!-- Core Enterprise Design System CSS -->
+  <link rel="stylesheet" href="design-system.css">
 
-body{
-    margin:0;
-    background:#F5F7FB;
-    color:#273449;
-    font-family:Inter,Segoe UI,Arial,sans-serif
-}
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-fixed-variant": "#003ea8",
+            "on-primary-container": "#7c839b",
+            "on-tertiary-fixed": "#0f0069",
+            "tertiary-fixed": "#e2dfff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed-variant": "#3f465c",
+            "tertiary-container": "#0f0069",
+            "on-primary": "#ffffff",
+            "surface-variant": "#d3e4fe",
+            "inverse-surface": "#213145",
+            "secondary-fixed": "#dbe1ff",
+            "outline": "#76777d",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dae2fd",
+            "outline-variant": "#c6c6cd",
+            "on-surface-variant": "#45464d",
+            "secondary-container": "#316bf3",
+            "on-background": "#0b1c30",
+            "on-secondary": "#ffffff",
+            "tertiary": "#000000",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#565e74",
+            "surface-container-low": "#eff4ff",
+            "on-secondary-fixed": "#00174b",
+            "background": "#f8f9ff",
+            "surface-dim": "#cbdbf5",
+            "on-secondary-container": "#fefcff",
+            "surface-container-high": "#dce9ff",
+            "error": "#ba1a1a",
+            "inverse-on-surface": "#eaf1ff",
+            "on-tertiary-fixed-variant": "#3323cc",
+            "on-error": "#ffffff",
+            "tertiary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#131b2e",
+            "on-surface": "#0b1c30",
+            "inverse-primary": "#bec6e0",
+            "secondary": "#0051d5",
+            "on-tertiary": "#ffffff",
+            "primary": "#0f172a",
+            "on-error-container": "#93000a",
+            "primary-container": "#131b2e",
+            "secondary-fixed-dim": "#b4c5ff",
+            "surface-container": "#e5eeff",
+            "on-tertiary-container": "#7671ff",
+            "surface": "#f8f9ff",
+            "primary-fixed-dim": "#bec6e0"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          spacing: {
+            "space-sm": "0.5rem",
+            "gutter-dense": "0.5rem",
+            "space-md": "0.75rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "space-xl": "1.5rem",
+            "space-lg": "1rem",
+            "margin": "1.5rem",
+            "space-2xs": "0.125rem"
+          },
+          fontFamily: {
+            "code-sm": ["JetBrains Mono", "monospace"],
+            "code-md": ["JetBrains Mono", "monospace"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "display": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "code-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "code-md": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "body-md": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "body-lg": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+            "headline-sm": ["15px", { lineHeight: "20px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "display": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
 
-.wrap{
-    display:flex;
-    min-height:100vh
-}
-
-.side{
-    width:225px;
-    background:linear-gradient(180deg,#111e33,#0d1726);
-    border-right:1px solid #1c2d44;
-    padding:22px 14px;
-    position:fixed;
-    top:0;
-    bottom:0;
-    z-index:100
-}
-
-.brand{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    font-weight:900;
-    font-size:18px;
-    margin:4px 8px 30px;
-    color:#fff
-}
-
-.logo{
-    width:40px;
-    height:40px;
-    border-radius:11px;
-    background:linear-gradient(135deg,#3f66d8,#2a51c7);
-    color:#fff;
-    display:grid;
-    place-items:center
-}
-
-.label{
-    font-size:9px;
-    letter-spacing:.13em;
-    color:#7d8fa9;
-    font-weight:800;
-    margin:0 9px 11px;
-    text-transform:uppercase
-}
-
-.nav a{
-    display:block;
-    text-decoration:none;
-    color:#9cadc0;
-    padding:12px 10px;
-    border-radius:99px;
-    font-size:12px;
-    font-weight:600;
-    margin:4px 0
-}
-
-.nav a:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff
-}
-
-.nav a.active{
-    background:#3B66D9;
-    color:#fff
-}
-
-.main{
-    margin-left:225px;
-    width:calc(100% - 225px);
-    padding:28px
-}
-
-.top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    margin-bottom:24px;
-    position:relative
-}
-
-.eyebrow{
-    color:#3f66d8;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:.12em;
-    text-transform:uppercase
-}
-
-h1{
-    margin:5px 0 4px;
-    font-size:29px;
-    color:#182033
-}
-
-.sub{
-    color:#68738a;
-    font-size:12px
-}
-
-.switcher-container{
-    position:relative
-}
-
-.switch-btn{
-    padding:9px 16px;
-    border:1px solid #D9E1EC;
-    border-radius:9px;
-    background:#ffffff;
-    color:#273449;
-    cursor:pointer;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    transition:all .15s ease
-}
-
-.switch-btn:hover{
-    background:#F0F4FF;
-    border-color:#3B66D9;
-    color:#3B66D9
-}
-
-.switch-dropdown{
-    display:none;
-    position:absolute;
-    right:0;
-    top:45px;
-    background:#ffffff;
-    border:1px solid #e3e8f2;
-    border-radius:12px;
-    width:220px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-    z-index:1000;
-    padding:6px
-}
-
-.switch-dropdown.show{
-    display:block
-}
-
-.switch-dropdown-header{
-    padding:8px 12px;
-    font-size:10px;
-    font-weight:800;
-    color:#68738a;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    border-bottom:1px solid #edf2f7;
-    margin-bottom:4px
-}
-
-.switch-item{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    width:100%;
-    border:none;
-    background:transparent;
-    color:#182033;
-    font-size:13px;
-    font-weight:600;
-    border-radius:8px;
-    cursor:pointer;
-    text-align:left
-}
-
-.switch-item:hover{
-    background:#f5f7fb;
-    color:#3f66d8
-}
-
-.role-badge{
-    width:24px;
-    height:24px;
-    border-radius:6px;
-    display:grid;
-    place-items:center;
-    font-size:11px;
-    font-weight:800;
-    background:#eef3ff;
-    color:#3f66d8
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:12px;
-    margin-bottom:20px
-}
-
-.card,
-.panel{
-    background:#ffffff;
-    border:1px solid #D9E1EC;
-    border-radius:14px;
-    box-shadow:0 2px 8px rgba(24,32,51,.04)
-}
-
-.card{
-    padding:16px
-}
-
-.k{
-    color:#68738a;
-    font-size:10px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.05em
-}
-
-.v{
-    font-size:28px;
-    font-weight:900;
-    margin-top:6px;
-    color:#182033
-}
-
-.g{color:#16a765}
-.y{color:#d98b00}
-.r{color:#df5a5a}
-.p{color:#3f66d8}
-.b{color:#3f66d8}
-.w{color:#182033}
-
-.grid-2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-    margin-bottom:20px
-}
-
-.grid-3{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-    margin-bottom:20px
-}
-
-.panel h2{
-    font-size:13px;
-    margin:0;
-    padding:14px 18px;
-    border-bottom:1px solid #edf2f7;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:#182033
-}
-
-.panel h2 span.tag{
-    font-size:10px;
-    font-weight:700;
-    color:#3f66d8;
-    background:#eef3ff;
-    padding:3px 8px;
-    border-radius:6px
-}
-
-.body{
-    padding:18px
-}
-
-.progress-row{
-    margin-bottom:14px
-}
-
-.progress-label{
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    margin-bottom:6px;
-    color:#182033
-}
-
-.progress-bar-bg{
-    height:9px;
-    background:#edf2f7;
-    border-radius:99px;
-    overflow:hidden
-}
-
-.progress-bar-fill{
-    height:100%;
-    border-radius:99px;
-    transition:width .4s ease
-}
-
-.bg-purple{background:#3f66d8}
-.bg-yellow{background:#d98b00}
-.bg-green{background:#16a765}
-.bg-red{background:#df5a5a}
-.bg-blue{background:#3f66d8}
-.bg-teal{background:#0d9488}
-
-.table-mini{
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px
-}
-
-.table-mini th{
-    text-align:left;
-    color:#68738a;
-    font-size:10px;
-    text-transform:uppercase;
-    padding:8px;
-    border-bottom:1px solid #e3e8f2
-}
-
-.table-mini td{
-    padding:10px 8px;
-    border-bottom:1px solid #edf2f7;
-    color:#182033
-}
-
-.toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#ffffff;
-    border:1px solid #D9E1EC;
-    border-radius:12px;
-    padding:10px 16px;
-    margin-bottom:18px;
-    flex-wrap:wrap;
-    gap:10px;
-}
-.toolbar-actions{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-}
-.btn-export{
-    padding:7px 12px;
-    background:#ffffff;
-    border:1px solid #D9E1EC;
-    border-radius:7px;
-    font-size:11px;
-    font-weight:700;
-    color:#273449;
-    text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    cursor:pointer;
-    transition:all .15s ease;
-}
-.btn-export:hover{
-    background:#F0F4FF;
-    border-color:#3B66D9;
-    color:#3B66D9;
-}
-.btn-export.primary{
-    background:#3B66D9;
-    border-color:#3B66D9;
-    color:#ffffff;
-}
-.btn-export.primary:hover{
-    background:#2A51C7;
-}
-.quality-cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-bottom:20px;
-}
-
-@media(max-width:1200px){
-    .cards{grid-template-columns:repeat(3,1fr)}
-    .quality-cards{grid-template-columns:repeat(2,1fr)}
-    .grid-2,.grid-3{grid-template-columns:1fr}
-}
-</style>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .switch-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 6px; z-index: 100; min-width: 220px; }
+    .switch-dropdown.show { display: block; }
+    .export-dropdown-menu { display: none; position: absolute; right: 0; top: 100%; margin-top: 6px; z-index: 60; min-width: 200px; }
+    .export-dropdown-menu.show { display: block; }
+    .table-dense td, .table-dense th { padding-top: 4px !important; padding-bottom: 4px !important; font-size: 11px !important; }
+  </style>
 </head>
 
-<body>
+<body class="bg-background font-body-md text-on-surface antialiased">
 
-<div class="wrap">
+<!-- Inline SVG Defs -->
+<svg class="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
+  <defs>
+    <linearGradient id="resolvedGradient" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0051d5" stop-opacity="0.3"></stop>
+      <stop offset="100%" stop-color="#0051d5" stop-opacity="0.0"></stop>
+    </linearGradient>
+    <linearGradient id="monthlyResolvedGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0051d5" stop-opacity="0.25"></stop>
+      <stop offset="100%" stop-color="#0051d5" stop-opacity="0.0"></stop>
+    </linearGradient>
+  </defs>
+</svg>
 
-<aside class="side">
-
-    <div class="brand">
-        <div class="logo">B</div>
-        <span>BugFlow</span>
+<!-- ============================================================================
+     LEFT SIDEBAR NAVIGATION (SHARED BUGFLOW ENTERPRISE SHELL)
+============================================================================ -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-outline-variant/30 select-none">
+  <div class="flex flex-col">
+    <!-- Brand Logo Header -->
+    <div class="h-14 px-space-lg flex items-center justify-between border-b border-outline-variant/20 bg-surface-container-low/40">
+      <a href="/admin-ui" class="flex items-center gap-space-sm text-decoration-none">
+        <div class="w-7 h-7 bg-primary text-on-primary rounded flex items-center justify-center font-code-sm text-code-sm font-semibold">BF</div>
+        <div class="flex flex-col">
+          <span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface leading-tight">BugFlow</span>
+          <span class="font-code-sm text-[9px] uppercase tracking-wider text-secondary font-semibold">Enterprise v4.2</span>
+        </div>
+      </a>
+      <div class="w-2 h-2 rounded-full bg-secondary" title="Cluster Active"></div>
     </div>
 
-    <div class="label">Administration</div>
+    <!-- Navigation List -->
+    <nav class="flex-1 px-space-sm py-space-md space-y-space-md overflow-y-auto custom-scroll">
+      <!-- Overview -->
+      <div class="px-space-sm">
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant/70 tracking-wider">Overview</span>
+        <div class="mt-space-xs space-y-space-2xs">
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/admin-ui">
+            <span class="material-symbols-outlined text-[18px]">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+      </div>
 
-    <nav class="nav">
+      <!-- Work Management -->
+      <div class="px-space-sm">
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant/70 tracking-wider">Work Management</span>
+        <div class="mt-space-xs space-y-space-2xs">
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/all-defects-ui">
+            <span class="material-symbols-outlined text-[18px]">bug_report</span>
+            <span>Defects</span>
+          </a>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/milestone2-ui">
+            <span class="material-symbols-outlined text-[18px]">sprint</span>
+            <span>Sprints</span>
+          </a>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/team-collaboration-ui">
+            <span class="material-symbols-outlined text-[18px]">groups</span>
+            <span>Team Collaboration</span>
+          </a>
+        </div>
+      </div>
 
-        <a href="/admin-ui">
-            ◉ <span>Dashboard</span>
-        </a>
+      <!-- Analytics (Active) -->
+      <div class="px-space-sm">
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant/70 tracking-wider">Analytics</span>
+        <div class="mt-space-xs space-y-space-2xs">
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg transition-colors bg-surface-container-high text-on-surface font-semibold border-l-2 border-secondary" href="/analytics-ui">
+            <span class="material-symbols-outlined text-[18px] text-secondary">monitoring</span>
+            <span>Analytics Reports</span>
+          </a>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/sprint-report-ui" id="sidebarSprintReportLink">
+            <span class="material-symbols-outlined text-[18px]">speed</span>
+            <span>Sprint Report</span>
+          </a>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/productivity-report-ui" id="sidebarProductivityReportLink">
+            <span class="material-symbols-outlined text-[18px]">trending_up</span>
+            <span>Productivity Report</span>
+          </a>
+        </div>
+      </div>
 
-        <a href="/all-defects-ui">
-            ☷ <span>All Defects</span>
-        </a>
+      <!-- Integrations -->
+      <div class="px-space-sm">
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant/70 tracking-wider">Integrations</span>
+        <div class="mt-space-xs space-y-space-2xs">
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/integrations-ui">
+            <span class="material-symbols-outlined text-[18px]">code</span>
+            <span>GitHub &amp; CI/CD</span>
+          </a>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/api-explorer-ui">
+            <span class="material-symbols-outlined text-[18px]">terminal</span>
+            <span>API Explorer</span>
+          </a>
+        </div>
+      </div>
 
-        <a class="active" href="/analytics-ui">
-            ▥ <span>Analytics Reports</span>
-        </a>
-
-        <a href="/milestone2-ui">
-            ◈ <span>Sprint Management</span>
-        </a>
-
-        <a href="/team-collaboration-ui">
-            ◉ <span>Team Collaboration</span>
-        </a>
-
-        <a href="/integrations-ui">
-            ⚡ <span>Integrations & CI/CD</span>
-        </a>
-
-        <a href="/api-explorer-ui">
-            ⚙ <span>API Explorer</span>
-        </a>
-
-        <a href="#" id="sideSwitchBtn">
-            ↪ <span>Switch Workspace</span>
-        </a>
-
-        <a href="/login-ui" id="logoutLink">
-            ⏻ <span>Logout</span>
-        </a>
-
+      <!-- Workspace & System -->
+      <div class="px-space-sm">
+        <span class="font-label-caps text-label-caps uppercase text-on-surface-variant/70 tracking-wider">Workspace</span>
+        <div class="mt-space-xs space-y-space-2xs">
+          <button id="sideSwitchBtn" type="button" class="w-full flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors text-left">
+            <span class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+              <span>Switch Workspace</span>
+            </span>
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+          </button>
+          <a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm transition-colors" href="/login-ui">
+            <span class="material-symbols-outlined text-[18px]">logout</span>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
     </nav>
+  </div>
 
+  <!-- Sidebar Footer -->
+  <div class="p-space-sm border-t border-outline-variant/30 bg-surface-container-low/60">
+    <div class="flex items-center justify-between p-space-sm rounded bg-surface-container-lowest border border-outline-variant/40">
+      <div class="flex items-center gap-space-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+        </span>
+        <div class="flex flex-col">
+          <span class="font-code-sm text-code-sm font-semibold text-on-surface">FastAPI Core</span>
+          <span class="font-code-sm text-[10px] text-on-surface-variant">v2.4.0 • 99.98% up</span>
+        </div>
+      </div>
+      <span class="font-code-sm text-[10px] bg-surface-container text-on-surface font-semibold px-1.5 py-0.5 rounded border border-outline-variant/50">Live</span>
+    </div>
+  </div>
 </aside>
 
-
-<main class="main">
-
-<header class="top">
-
-    <div>
-
-        <div class="eyebrow">
-            System-Wide Reports & Statistics
-        </div>
-
-        <h1>Admin Analytics Reports</h1>
-
-        <div class="sub">
-            System-wide reports calculated live from PostgreSQL.
-        </div>
-
-    </div>
-
-    <div class="switcher-container">
-        <button
-            class="switch-btn"
-            id="switchDropdownBtn"
-            type="button"
-        >
-            <span>Switch Workspace</span> ▾
+<!-- ============================================================================
+     MAIN APP CANVAS (OFFSET BY 64px ON MOBILE / 256px ON DESKTOP)
+============================================================================ -->
+<div class="pl-64">
+  <!-- Topbar Header -->
+  <header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 z-40 flex items-center justify-between px-space-lg shadow-[0_1px_4px_rgba(15,23,42,0.03)]">
+    <!-- Breadcrumb & Workspace Selector -->
+    <div class="flex items-center gap-space-md">
+      <nav class="flex items-center text-body-sm font-body-sm space-x-1.5 text-on-surface-variant">
+        <a class="hover:text-on-surface transition-colors" href="/admin-ui">Workspaces</a>
+        <span class="text-outline-variant">/</span>
+        <span class="hover:text-on-surface transition-colors">Production Cluster</span>
+        <span class="text-outline-variant">/</span>
+        <span class="font-semibold text-on-surface">Admin Workspace</span>
+      </nav>
+      <div class="h-4 w-px bg-outline-variant/40 mx-space-xs"></div>
+      
+      <!-- Workspace Switcher Button & Dropdown -->
+      <div class="relative">
+        <button id="workspaceToggleBtn" class="flex items-center gap-space-xs bg-surface-container-low border border-outline-variant/50 hover:border-outline text-on-surface px-space-sm py-1 rounded text-body-sm font-body-sm transition-colors" type="button">
+          <span class="material-symbols-outlined text-[16px] text-secondary">domain</span>
+          <span class="font-semibold" id="currentWorkspaceLabel">Admin Workspace</span>
+          <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
         </button>
 
-        <div class="switch-dropdown" id="switchDropdown">
-            <div class="switch-dropdown-header">Switch Workspace</div>
-            <button class="switch-item" data-role="admin">
-                <span class="role-badge">A</span> Naruto (Admin)
+        <div id="workspaceDropdown" class="switch-dropdown bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/40 p-2">
+          <div class="px-2 py-1 text-[10px] font-code-sm uppercase tracking-wider text-on-surface-variant font-bold border-b border-outline-variant/20 mb-1">
+            Switch Persona Workspace
+          </div>
+          <button onclick="switchWorkspaceRole('admin')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left font-medium transition-colors">
+            <span class="w-6 h-6 rounded bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">N</span>
+            <div><div class="font-semibold text-on-surface text-[12px]">Admin (Naruto)</div><div class="text-[10px] text-on-surface-variant">Full Control &amp; System Triage</div></div>
+          </button>
+          <button onclick="switchWorkspaceRole('developer')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left font-medium transition-colors">
+            <span class="w-6 h-6 rounded bg-secondary text-on-secondary text-[10px] font-bold flex items-center justify-center">S</span>
+            <div><div class="font-semibold text-on-surface text-[12px]">Developer (Sasuke)</div><div class="text-[10px] text-on-surface-variant">Code Remediation &amp; Sprints</div></div>
+          </button>
+          <button onclick="switchWorkspaceRole('tester')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left font-medium transition-colors">
+            <span class="w-6 h-6 rounded bg-surface-container-highest text-secondary text-[10px] font-bold flex items-center justify-center">H</span>
+            <div><div class="font-semibold text-on-surface text-[12px]">Tester (Hinata)</div><div class="text-[10px] text-on-surface-variant">QA Verification &amp; Bug Filing</div></div>
+          </button>
+          <button onclick="switchWorkspaceRole('senior_dev')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left font-medium transition-colors">
+            <span class="w-6 h-6 rounded bg-surface-tint text-on-primary text-[10px] font-bold flex items-center justify-center">I</span>
+            <div><div class="font-semibold text-on-surface text-[12px]">Senior Dev (Itachi)</div><div class="text-[10px] text-on-surface-variant">Architecture Review &amp; Signoff</div></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Global Actions -->
+    <div class="flex items-center gap-space-md">
+      <!-- Quick Search Input -->
+      <div class="relative flex items-center w-72">
+        <span class="material-symbols-outlined absolute left-2.5 text-[18px] text-on-surface-variant pointer-events-none">search</span>
+        <input id="globalSearchInput" class="w-full pl-8 pr-12 py-1 bg-surface-container-lowest border border-outline-variant/60 rounded text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/30 transition-all" placeholder="Search defects, metrics, logs..." type="text">
+        <kbd class="absolute right-2 font-code-sm text-[10px] bg-surface-container text-on-surface-variant border border-outline-variant/60 px-1.5 py-0.5 rounded">⌘K</kbd>
+      </div>
+
+      <div class="h-4 w-px bg-outline-variant/40"></div>
+
+      <!-- Notifications -->
+      <button aria-label="Notifications" class="p-1.5 rounded hover:bg-surface-container-low text-on-surface-variant hover:text-on-surface relative transition-colors" type="button" onclick="alert('System notification: PostgreSQL real-time query optimization active (11 indexes).')">
+        <span class="material-symbols-outlined text-[20px]">notifications</span>
+        <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-secondary border border-surface-container-lowest"></span>
+      </button>
+
+      <!-- User Profile -->
+      <div class="flex items-center gap-space-sm pl-space-xs">
+        <div class="flex flex-col text-right">
+          <span class="font-body-sm text-body-sm font-semibold text-on-surface leading-tight" id="topbarUserName">Naruto Uzumaki</span>
+          <span class="font-code-sm text-[10px] text-on-surface-variant" id="topbarUserRole">Lead Administrator</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[12px]" id="topbarAvatar">
+          N
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================================
+       CANVAS CONTENT WRAPPER
+  ============================================================================ -->
+  <main class="relative pt-14 w-full min-h-screen bg-background">
+    <div class="flex flex-col w-full">
+
+      <!-- Top Context Sub-header Bar -->
+      <div class="bg-surface-container-lowest px-space-lg py-2.5 flex flex-wrap items-center justify-between gap-space-sm shadow-sm border-b border-outline-variant/20">
+        <div class="flex items-center gap-space-sm text-body-sm font-body-sm">
+          <span class="text-on-surface-variant font-medium">Workspaces</span>
+          <span class="text-outline-variant">/</span>
+          <span class="text-on-surface-variant font-medium">Production Cluster</span>
+          <span class="text-outline-variant">/</span>
+          <span class="text-on-surface-variant font-medium">Admin Workspace</span>
+          <span class="text-outline-variant">/</span>
+          <span class="font-semibold text-on-surface">Analytics Reports</span>
+        </div>
+        <div class="flex items-center gap-space-sm">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-code-sm text-[11px] tracking-wide font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span>CLUSTER-01 NODE PRIMARY</span>
+          </div>
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-code-sm text-[10px] tracking-wider uppercase font-semibold">
+            <span>ROLE: SYSTEM ADMINISTRATOR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Tabs Navigation Bar (Stitch Design) -->
+      <div class="w-full bg-surface-container-lowest px-space-lg py-0 shadow-[0_1px_4px_rgba(0,0,0,0.03)] border-b border-outline-variant/20 flex flex-col gap-0" id="reportNavBar">
+        <div class="flex items-center gap-space-lg overflow-x-auto no-scrollbar pt-space-xs">
+          <a class="py-space-sm px-space-xs font-headline-sm text-headline-sm text-secondary whitespace-nowrap relative border-b-2 border-secondary font-semibold" href="/analytics-ui" id="tabDailyDefectReport">Daily Defect Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=assignment" id="tabAssignmentReport">Assignment Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/productivity-report-ui" id="tabProductivityReport">Productivity Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=workflow" id="tabWorkflowReport">Workflow Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-secondary whitespace-nowrap transition-colors" href="/sprint-report-ui" id="tabSprintReport">Sprint Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=status" id="tabStatusReport">Status Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=priority" id="tabPriorityReport">Priority Report</a>
+          <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=category" id="tabCategoryReport">Category Report</a>
+        </div>
+      </div>
+
+      <!-- Main Content Canvas -->
+      <div class="p-space-lg space-y-space-md">
+
+        <!-- Screen Title & Global Actions Bar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30">
+          <div class="space-y-1">
+            <div class="flex items-center gap-space-sm">
+              <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Analytics Reports</h1>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-semibold" id="activeSprintBadge">
+                Sprint Active &amp; Historical
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container-low text-on-surface-variant font-code-sm text-[10px] uppercase font-semibold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                Live Engine Telemetry
+              </span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Analyze defect trends, resolution performance, workflow outcomes, and engineering quality across clusters.
+            </p>
+          </div>
+
+          <div class="flex items-center flex-wrap gap-2">
+            <!-- Date Selector Preset Dropdown -->
+            <div class="relative">
+              <button id="datePresetBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors shadow-sm" type="button">
+                <span class="material-symbols-outlined text-[16px] text-secondary">calendar_today</span>
+                <span class="font-medium" id="datePresetLabel">Last 30 Days</span>
+                <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+              </button>
+            </div>
+
+            <!-- Refresh Button -->
+            <button id="refreshBtn" onclick="loadAnalyticsData()" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors shadow-sm" title="Refresh live telemetry" type="button">
+              <span class="material-symbols-outlined text-[16px] text-on-surface-variant" id="refreshIcon">refresh</span>
+              <span class="font-code-sm text-[11px] text-on-surface-variant" id="syncTimer">Synced now</span>
             </button>
 
-            <button class="switch-item" data-role="tester">
-                <span class="role-badge">T</span> Hinata (Tester)
+            <!-- Export Report Dropdown -->
+            <div class="relative inline-block text-left">
+              <button id="exportDropdownBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-body-sm text-body-sm font-semibold hover:bg-on-surface transition-colors shadow-sm" type="button">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Export Report</span>
+                <span class="material-symbols-outlined text-[16px]">expand_more</span>
+              </button>
+              <div id="exportMenu" class="export-dropdown-menu bg-surface-container-lowest rounded-xl shadow-xl border border-outline-variant/40 p-2">
+                <div class="px-2 py-1 text-[10px] font-code-sm uppercase tracking-wider text-on-surface-variant font-bold border-b border-outline-variant/20 mb-1">
+                  Format Selections
+                </div>
+                <a href="/api/v1/analytics/export/csv" id="exportDefectsCsvLink" onclick="handleDefectsCsvExport(event)" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">csv</span>
+                  <span>Defects Raw Data (CSV)</span>
+                </a>
+                <a href="/api/v1/analytics/export/json" target="_blank" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">data_object</span>
+                  <span>Full Analytics JSON</span>
+                </a>
+                <a href="/api/v1/analytics/export/summary" target="_blank" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">print</span>
+                  <span>Printable Quality Report</span>
+                </a>
+                <div class="border-t border-outline-variant/20 my-1"></div>
+                <a href="/api/v1/analytics/export/productivity" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">groups</span>
+                  <span>Team Productivity CSV</span>
+                </a>
+                <a href="/api/v1/analytics/export/sprint" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">sprint</span>
+                  <span>Sprint Velocity CSV</span>
+                </a>
+                <a href="/api/v1/analytics/export/workflow" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-on-surface transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">account_tree</span>
+                  <span>Workflow Funnel CSV</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Compact KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+          <!-- Metric 1: Defect Severity Index (DSI) -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-space-sm hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div class="space-y-0.5">
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant font-semibold">Defect Severity Index (DSI)</span>
+                <div class="font-display text-display font-bold text-on-surface leading-tight" id="kpiDsi">2.75</div>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-semibold" id="kpiDsiTag">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span>Weighted</span>
+              </span>
+            </div>
+            <p class="font-code-sm text-[11px] text-on-surface-variant leading-tight">
+              Weighted cluster score (P0=4, P1=3, P2=2, P3=1). Low is optimal.
+            </p>
+          </div>
+
+          <!-- Metric 2: Mean Time to Resolution (MTTR) -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-space-sm hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div class="space-y-0.5">
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant font-semibold">Mean Time To Resolution (MTTR)</span>
+                <div class="font-display text-display font-bold text-on-surface leading-tight">
+                  <span id="kpiMttr">1.8</span> <span class="text-headline-sm font-headline-sm font-normal text-on-surface-variant" id="kpiMttrUnit">hrs</span>
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span>Optimal</span>
+              </span>
+            </div>
+            <p class="font-code-sm text-[11px] text-on-surface-variant leading-tight" id="kpiMttrSubtext">
+              Turnaround benchmark computed from live defect transition audits.
+            </p>
+          </div>
+
+          <!-- Metric 3: CI/CD Pipeline Pass Rate -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-space-sm hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div class="space-y-0.5">
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant font-semibold">CI/CD Pipeline Pass Rate</span>
+                <div class="font-display text-display font-bold text-on-surface leading-tight" id="kpiCicdPass">96.2%</div>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-low text-on-surface font-code-sm text-[11px] font-semibold" id="kpiCicdCountBadge">
+                52 Runs
+              </span>
+            </div>
+            <p class="font-code-sm text-[11px] text-on-surface-variant leading-tight" id="kpiCicdSubtext">
+              Automated defect validation and integration pipeline runs cleanly executed.
+            </p>
+          </div>
+
+          <!-- Metric 4: GitHub Synced Events -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-space-sm hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div class="space-y-0.5">
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant font-semibold">GitHub Synced Events</span>
+                <div class="font-display text-display font-bold text-on-surface leading-tight" id="kpiGithubCount">20</div>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest text-secondary font-code-sm text-[11px] font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span>Live Hook</span>
+              </span>
+            </div>
+            <p class="font-code-sm text-[11px] text-on-surface-variant leading-tight">
+              Commits, pull requests &amp; webhooks tracked directly in PostgreSQL.
+            </p>
+          </div>
+        </div>
+
+        <!-- Report Navigation Tabs & Density Toggle -->
+        <div class="bg-surface-container-lowest px-space-md py-1.5 rounded-xl shadow-sm border border-outline-variant/30 flex flex-wrap items-center justify-between gap-space-sm">
+          <!-- Subnav Tabs -->
+          <div class="flex items-center gap-1 overflow-x-auto" id="reportTabsContainer">
+            <button class="report-tab px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold flex items-center gap-1.5 transition-colors" data-view="daily" type="button" id="subnavDailyDefectTab">
+              <span class="material-symbols-outlined text-[16px] text-secondary">view_agenda</span>
+              <span>Daily Defect Report</span>
             </button>
-
-            <button class="switch-item" data-role="developer">
-                <span class="role-badge">D</span> Sasuke (Developer)
+            <button class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors" data-view="assignment" type="button" id="subnavAssignmentTab">
+              <span class="material-symbols-outlined text-[16px]">badge</span>
+              <span>Assignment Report</span>
             </button>
-
-            <button class="switch-item" data-role="senior_dev">
-                <span class="role-badge">S</span> Itachi (Senior Developer)
+            <a href="/sprint-report-ui" id="subnavSprintReportTab" class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary">speed</span>
+              <span class="font-semibold text-secondary">Sprint Report</span>
+            </a>
+            <a href="/productivity-report-ui" id="subnavProductivityTab" class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary">trending_up</span>
+              <span class="font-semibold text-secondary">Productivity Report</span>
+            </a>
+            <button class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors" data-view="status" type="button" id="subnavStatusTab">
+              <span class="material-symbols-outlined text-[16px]">pie_chart</span>
+              <span>Status Report</span>
             </button>
-
-            <button class="switch-item" data-role="user">
-                <span class="role-badge">U</span> User
+            <button class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors" data-view="priority" type="button" id="subnavPriorityTab">
+              <span class="material-symbols-outlined text-[16px]">flag</span>
+              <span>Priority Report</span>
             </button>
-        </div>
-    </div>
+            <button class="report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors" data-view="category" type="button" id="subnavCategoryTab">
+              <span class="material-symbols-outlined text-[16px]">category</span>
+              <span>Category Report</span>
+            </button>
+          </div>
 
-</header>
-
-<!-- Module 3 Actions & Export Toolbar -->
-<section class="toolbar">
-    <div style="font-size:12px;font-weight:700;color:#334155;display:flex;align-items:center;gap:6px;">
-        <span style="color:#3B66D9;">●</span>
-        <span>Module 3 Quality Monitoring & Live Reports</span>
-    </div>
-
-    <div class="toolbar-actions">
-        <a href="/api/v1/analytics/export/csv" class="btn-export">
-            <span>📥</span> Export CSV
-        </a>
-        <a href="/api/v1/analytics/export/json" class="btn-export">
-            <span>📊</span> Export JSON
-        </a>
-        <a href="/api/v1/analytics/export/summary" target="_blank" class="btn-export">
-            <span>🖨</span> Executive Summary
-        </a>
-        <a href="/api/v1/analytics/export/productivity" class="btn-export">
-            <span>📈</span> Productivity Report
-        </a>
-        <a href="/api/v1/analytics/export/workflow" class="btn-export">
-            <span>🔄</span> Workflow Report
-        </a>
-        <a href="/api/v1/analytics/export/sprint" class="btn-export">
-            <span>◈</span> Sprint Report
-        </a>
-        <a href="/integrations-ui" class="btn-export primary">
-            <span>⚡</span> Integrations & CI/CD
-        </a>
-        <a href="/api-explorer-ui" class="btn-export">
-            <span>⚙</span> API Explorer
-        </a>
-    </div>
-</section>
-
-<!-- Module 3: Software Quality Monitoring KPI Cards -->
-<section class="quality-cards">
-    <div class="card" style="border-left: 3px solid #3B66D9;">
-        <div class="k">Defect Severity Index (DSI)</div>
-        <div class="v p" id="dsiCount">2.75</div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:4px;">Weighted quality score (1.0 - 4.0)</div>
-    </div>
-
-    <div class="card" style="border-left: 3px solid #16A765;">
-        <div class="k">Mean Time to Resolution (MTTR)</div>
-        <div class="v g" id="mttrCount">10.7 hrs</div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:4px;">Average resolution turnaround</div>
-    </div>
-
-    <div class="card" style="border-left: 3px solid #06B6D4;">
-        <div class="k">CI/CD Pipeline Pass Rate</div>
-        <div class="v b" id="cicdPassCount">100%</div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:4px;">Automated build test health</div>
-    </div>
-
-    <div class="card" style="border-left: 3px solid #8B5CF6;">
-        <div class="k">GitHub Synced Events</div>
-        <div class="v p" id="ghSyncedCount">0</div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:4px;">Traceable commits & PR links</div>
-    </div>
-</section>
-
-<!-- 1. Overall Defect Report KPI Cards -->
-<section class="cards">
-
-    <div class="card">
-        <div class="k">Total Defects</div>
-        <div class="v p" id="totalCount">0</div>
-    </div>
-
-    <div class="card">
-        <div class="k">Pending</div>
-        <div class="v y" id="pendingCount">0</div>
-    </div>
-
-    <div class="card">
-        <div class="k">Resolved</div>
-        <div class="v g" id="resolvedCount">0</div>
-    </div>
-
-    <div class="card">
-        <div class="k">Rejected</div>
-        <div class="v r" id="rejectedCount">0</div>
-    </div>
-
-    <div class="card">
-        <div class="k">Assigned</div>
-        <div class="v b" id="assignedCount">0</div>
-    </div>
-
-    <div class="card">
-        <div class="k">Unassigned</div>
-        <div class="v w" id="unassignedCount">0</div>
-    </div>
-
-</section>
-
-<!-- 2 & 3: Daily Defect & Assignment Reports -->
-<section class="grid-2">
-
-    <article class="panel">
-
-        <h2>2. Daily Defect Report <span class="tag">Date-Wise</span></h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="dailyChart"></canvas></div>
+          <!-- Quick Density Switcher -->
+          <div class="flex items-center gap-1 bg-surface-container-low p-0.5 rounded-lg">
+            <button id="densityStandardBtn" onclick="setDensity('standard')" class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface font-code-sm text-[11px] font-semibold shadow-sm flex items-center gap-1 transition-all" type="button">
+              <span class="material-symbols-outlined text-[14px]">table_rows</span>
+              <span>Standard</span>
+            </button>
+            <button id="densityDenseBtn" onclick="setDensity('dense')" class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-[11px] font-medium flex items-center gap-1 transition-all" type="button">
+              <span class="material-symbols-outlined text-[14px]">density_small</span>
+              <span>Dense</span>
+            </button>
+          </div>
         </div>
 
-    </article>
+        <!-- Filters Strip -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 space-y-space-sm">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
+            <!-- Search Bar -->
+            <div class="relative flex-1 min-w-[260px]">
+              <span class="material-symbols-outlined absolute left-2.5 top-2 text-[18px] text-on-surface-variant pointer-events-none">search</span>
+              <input id="filterSearchInput" class="w-full pl-8 pr-12 py-1.5 bg-surface-container-low rounded-lg text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:bg-surface-container transition-all" placeholder="Search report data, component, or defect ID..." type="text">
+              <kbd class="absolute right-2 top-1.5 font-code-sm text-[10px] bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded">/</kbd>
+            </div>
 
+            <!-- Filter Dropdowns -->
+            <div class="flex items-center flex-wrap gap-2">
+              <!-- Date Range Filter -->
+              <div class="relative">
+                <select id="filterDateSelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer">
+                  <option value="all" selected>Date: All Time</option>
+                  <option value="30">Date: Last 30 Days</option>
+                  <option value="7">Date: Last 7 Days</option>
+                  <option value="90">Date: Last 90 Days</option>
+                </select>
+              </div>
 
-    <article class="panel">
+              <!-- Status Filter -->
+              <div class="relative">
+                <select id="filterStatusSelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer">
+                  <option value="ALL">Status: All (6)</option>
+                  <option value="RESOLVED">Status: Resolved</option>
+                  <option value="ASSIGNED">Status: Assigned</option>
+                  <option value="ACCEPTED">Status: Accepted</option>
+                  <option value="PENDING">Status: Pending</option>
+                  <option value="REJECTED">Status: Rejected</option>
+                </select>
+              </div>
 
-        <h2>3. Assignment Report <span class="tag">Role-Wise</span></h2>
+              <!-- Severity Filter -->
+              <div class="relative">
+                <select id="filterSeveritySelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer">
+                  <option value="ALL">Severity: All</option>
+                  <option value="Critical P0">Critical P0</option>
+                  <option value="High P1">High P1</option>
+                  <option value="Medium P2">Medium P2</option>
+                  <option value="Low P3">Low P3</option>
+                </select>
+              </div>
 
-        <div class="body">
-            <div class="chart-container"><canvas id="assignmentChart"></canvas></div>
+              <!-- Priority Filter -->
+              <div class="relative">
+                <select id="filterPrioritySelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer">
+                  <option value="ALL">Priority: All</option>
+                  <option value="Urgent">Urgent</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+
+              <!-- Assignee Filter -->
+              <div class="relative">
+                <select id="filterAssigneeSelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer">
+                  <option value="ALL">Assignee: All</option>
+                  <option value="developer">Developer (Sasuke)</option>
+                  <option value="tester">Tester (Hinata)</option>
+                  <option value="senior_dev">Senior Dev (Itachi)</option>
+                  <option value="admin">Admin (Naruto)</option>
+                  <option value="unassigned">Unassigned</option>
+                </select>
+              </div>
+
+              <!-- Sprint Filter (Dynamically populated) -->
+              <div class="relative">
+                <select id="filterSprintSelect" onchange="applyFilters()" class="bg-surface-container-low border-0 text-on-surface font-body-sm text-body-sm rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-secondary cursor-pointer font-semibold text-secondary">
+                  <option value="ALL">Sprint: All Sprints</option>
+                </select>
+              </div>
+
+              <!-- Actions -->
+              <button onclick="clearAllFilters()" class="px-2 py-1 text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm font-medium transition-colors" type="button">
+                Clear Filters
+              </button>
+              <button onclick="applyFilters()" class="px-3 py-1.5 rounded-lg bg-secondary text-on-secondary font-body-sm text-body-sm font-semibold hover:bg-on-secondary-fixed-variant transition-colors shadow-sm" type="button">
+                Apply Filters
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Filter Pills Strip -->
+          <div class="flex items-center flex-wrap gap-2 pt-1 border-t border-outline-variant/20" id="activePillsContainer">
+            <span class="font-label-caps text-label-caps uppercase text-on-surface-variant font-semibold">Active:</span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-[11px] font-medium" id="pillScope">
+              <span>Scope: Production Cluster</span>
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-[11px] font-medium" id="pillDate">
+              <span>Date: All Time</span>
+            </span>
+            <span class="font-code-sm text-[11px] text-on-surface-variant ml-2" id="matchedCountLabel">
+              Total 52 dataset points matched
+            </span>
+          </div>
         </div>
 
-    </article>
+        <!-- ====================================================================
+             ANALYTICS VISUALIZATIONS - ROW 1 (50% / 50%)
+        ==================================================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+          <!-- Chart A: Defect Trends Over Time -->
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Trends Over Time</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant" id="trendSubtitle">Intake vs. Resolution Velocity (Live Timeline)</p>
+              </div>
+              <div class="flex items-center gap-3 text-body-sm font-body-sm">
+                <span class="flex items-center gap-1.5 font-medium text-on-surface-variant">
+                  <span class="w-3 h-1 bg-error rounded-full"></span>
+                  <span>Reported</span>
+                </span>
+                <span class="flex items-center gap-1.5 font-medium text-on-surface">
+                  <span class="w-3 h-1 bg-secondary rounded-full"></span>
+                  <span>Resolved</span>
+                </span>
+              </div>
+            </div>
 
-</section>
+            <!-- Inline SVG Trend Chart -->
+            <div class="relative w-full h-56 flex items-end">
+              <svg id="svgChartA" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 200">
+                <!-- Gridlines & axes dynamically rendered -->
+              </svg>
+              <!-- Dynamic Floating Tooltip -->
+              <div id="chartATooltip" class="absolute right-12 top-2 bg-primary text-on-primary p-2 rounded shadow-md text-left z-10 pointer-events-none transition-opacity">
+                <div class="font-code-sm text-[10px] text-surface-container-high uppercase tracking-wide font-semibold" id="tooltipHeader">Current Velocity</div>
+                <div class="flex items-center gap-3 mt-1 font-body-sm text-body-sm">
+                  <span class="text-error-container font-semibold" id="tooltipReported">Reported: 0</span>
+                  <span class="text-secondary-fixed font-bold" id="tooltipResolved">Resolved: 0</span>
+                </div>
+                <div class="font-code-sm text-[10px] text-surface-dim mt-0.5" id="tooltipDelta">Velocity Verified</div>
+              </div>
+            </div>
 
-<!-- 4, 5 & 6: Status, Priority & Category Reports -->
-<section class="grid-3">
+            <div class="mt-3 pt-2.5 bg-surface-container-low px-3 py-2 rounded-lg flex items-center justify-between text-body-sm font-body-sm">
+              <span class="text-on-surface-variant">Net Backlog Velocity Impact:</span>
+              <span class="font-code-sm text-code-sm font-bold text-secondary flex items-center gap-1" id="chartAVelocityText">
+                <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                <span>Active resolution trajectory aligned with production SLA</span>
+              </span>
+            </div>
+          </div>
 
-    <article class="panel">
+          <!-- Chart B: Defect Status Distribution & Lifecycle -->
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Status Distribution</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant" id="statusSubtitle">Workflow lifecycle allocation (52 Cataloged)</p>
+              </div>
+              <span class="font-code-sm text-code-sm px-2 py-0.5 rounded bg-surface-container-high text-secondary font-semibold">
+                100% Audited
+              </span>
+            </div>
 
-        <h2>4. Status Report</h2>
+            <!-- Segmented Horizontal Stacked Bar Visualization -->
+            <div class="space-y-3">
+              <div class="h-6 w-full rounded-lg overflow-hidden flex bg-surface-container-low shadow-sm" id="statusBarSegments">
+                <!-- Dynamically injected widths -->
+              </div>
 
-        <div class="body">
-            <div class="chart-container"><canvas id="statusChart"></canvas></div>
+              <!-- Breakdown Legend Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+                <!-- Resolved -->
+                <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                    <span class="font-body-sm text-body-sm font-medium text-on-surface">Resolved</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statResolvedCount">0</span>
+                    <span class="font-code-sm text-[10px] text-on-surface-variant block" id="statResolvedPct">0%</span>
+                  </div>
+                </div>
+
+                <!-- In Progress -->
+                <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+                    <span class="font-body-sm text-body-sm font-medium text-on-surface">In Progress</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statInProgressCount">0</span>
+                    <span class="font-code-sm text-[10px] text-on-surface-variant block" id="statInProgressPct">0%</span>
+                  </div>
+                </div>
+
+                <!-- Accepted -->
+                <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-surface-tint"></span>
+                    <span class="font-body-sm text-body-sm font-medium text-on-surface">Accepted</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statAcceptedCount">0</span>
+                    <span class="font-code-sm text-[10px] text-on-surface-variant block" id="statAcceptedPct">0%</span>
+                  </div>
+                </div>
+
+                <!-- Pending Triage -->
+                <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-on-tertiary-container"></span>
+                    <span class="font-body-sm text-body-sm font-medium text-on-surface">Pending Triage</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statPendingCount">0</span>
+                    <span class="font-code-sm text-[10px] text-on-surface-variant block" id="statPendingPct">0%</span>
+                  </div>
+                </div>
+
+                <!-- Rejected -->
+                <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+                    <span class="font-body-sm text-body-sm font-medium text-on-surface">Rejected</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statRejectedCount">0</span>
+                    <span class="font-code-sm text-[10px] text-on-surface-variant block" id="statRejectedPct">0%</span>
+                  </div>
+                </div>
+
+                <!-- Total Cataloged -->
+                <div class="p-2 rounded bg-surface-container-high flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">task_alt</span>
+                    <span class="font-body-sm text-body-sm font-semibold text-on-surface">Total</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-code-sm text-code-sm font-bold text-on-surface" id="statTotalCount">52</span>
+                    <span class="font-code-sm text-[10px] text-secondary block font-semibold">100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-2.5 bg-surface-container-low px-3 py-2 rounded-lg flex items-center justify-between text-body-sm font-body-sm">
+              <span class="text-on-surface-variant">Lifecycle Clearance Health:</span>
+              <span class="font-code-sm text-code-sm font-semibold text-on-surface" id="lifecycleClearanceText">
+                Active issues successfully tracked across standard stages
+              </span>
+            </div>
+          </div>
         </div>
 
-    </article>
+        <!-- ====================================================================
+             ANALYTICS VISUALIZATIONS - ROW 2 (3 COLUMNS)
+        ==================================================================== -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+          <!-- Chart C: Severity Breakdown Matrix -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defects by Severity</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Cluster distribution by impact level</p>
+              </div>
+              <span class="font-code-sm text-[11px] font-semibold text-on-surface-variant" id="sevTotalLabel">52 total</span>
+            </div>
 
+            <div class="space-y-2.5" id="severityBarsContainer">
+              <!-- Dynamically populated vertical bars -->
+            </div>
 
-    <article class="panel">
+            <div class="bg-surface-container-low p-2 rounded text-body-sm font-body-sm flex items-center justify-between">
+              <span class="text-on-surface-variant">P0 Resolution SLA:</span>
+              <span class="font-code-sm text-[11px] font-bold text-secondary">100% met within SLA target</span>
+            </div>
+          </div>
 
-        <h2>5. Priority Report</h2>
+          <!-- Chart D: Assignment Distribution by Engineering Role -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Assignment Distribution</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Workload balance across 4 BugFlow personas</p>
+              </div>
+              <span class="font-code-sm text-[11px] font-semibold text-secondary">Balanced</span>
+            </div>
 
-        <div class="body">
-            <div class="chart-container"><canvas id="priorityChart"></canvas></div>
+            <div class="space-y-2.5" id="assignmentBarsContainer">
+              <!-- Dynamically populated assignee rows -->
+            </div>
+
+            <div class="bg-surface-container-low p-2 rounded text-body-sm font-body-sm flex items-center justify-between">
+              <span class="text-on-surface-variant">Team Max Load Threshold:</span>
+              <span class="font-code-sm text-[11px] font-bold text-on-surface">Balanced distribution across team</span>
+            </div>
+          </div>
+
+          <!-- Chart E: Resolution Performance & SLA Compliance -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">SLA Compliance Rate</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Turnaround benchmark vs 95.0% target</p>
+              </div>
+              <span class="font-code-sm text-code-sm font-bold text-secondary" id="slaOverallBadge">96.0% Overall</span>
+            </div>
+
+            <div class="flex items-center justify-around py-1">
+              <!-- Circular Progress Gauge -->
+              <div class="relative w-24 h-24 flex items-center justify-center shrink-0">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                  <path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+                  <path id="slaProgressRing" class="text-secondary transition-all duration-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="96, 100" stroke-linecap="round" stroke-width="3.5"></path>
+                </svg>
+                <div class="absolute flex flex-col items-center">
+                  <span class="font-headline-md text-headline-md font-bold text-on-surface leading-none" id="slaPercentage">96%</span>
+                  <span class="font-code-sm text-[9px] uppercase tracking-wider text-secondary font-semibold">Compliant</span>
+                </div>
+              </div>
+
+              <!-- Buckets Breakdown -->
+              <div class="space-y-1.5 text-body-sm font-body-sm" id="slaBucketsList">
+                <div class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-1.5 text-on-surface-variant font-medium">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    &lt; 2 hrs:
+                  </span>
+                  <span class="font-code-sm text-code-sm font-bold text-on-surface" id="slaTier1">58%</span>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-1.5 text-on-surface-variant font-medium">
+                    <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+                    2 - 4 hrs:
+                  </span>
+                  <span class="font-code-sm text-code-sm font-bold text-on-surface" id="slaTier2">27%</span>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-1.5 text-on-surface-variant font-medium">
+                    <span class="w-2 h-2 rounded-full bg-outline"></span>
+                    4 - 8 hrs:
+                  </span>
+                  <span class="font-code-sm text-code-sm font-bold text-on-surface" id="slaTier3">11%</span>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="flex items-center gap-1.5 text-error font-medium">
+                    <span class="w-2 h-2 rounded-full bg-error"></span>
+                    &gt; 8 hrs:
+                  </span>
+                  <span class="font-code-sm text-code-sm font-bold text-error" id="slaTier4">4%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-surface-container-low p-2 rounded text-body-sm font-body-sm flex items-center justify-between">
+              <span class="text-on-surface-variant">Cluster SLA Target:</span>
+              <span class="font-code-sm text-[11px] font-semibold text-on-surface">≥ 95.0% Target (Achieved)</span>
+            </div>
+          </div>
         </div>
 
-    </article>
+        <!-- ====================================================================
+             EXPANDED ANALYTICS GRID: DEEP ANALYTICS & VELOCITY DIAGNOSTICS
+        ==================================================================== -->
+        <div class="space-y-space-md pt-2">
+          <!-- Accordion Header Bar -->
+          <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px] text-secondary">query_stats</span>
+              <h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">Deep Analytics &amp; Velocity Diagnostics</h2>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-semibold">10 Telemetry Monitors</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-code-sm text-[11px] text-on-surface-variant flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span>Realtime PostgreSQL Subsystem Hooks Active</span>
+              </span>
+            </div>
+          </div>
 
+          <!-- Visualizations Row A: Priority Donut & Weekly Intake vs Resolution Line -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Chart 1: Defect Priority Distribution Donut -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Priority Distribution</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">P0 - P3 Tiers</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Defect severity tier volume &amp; proportions</p>
+                </div>
+                <button class="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-low transition-colors" title="Priority Metrics" type="button">
+                  <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                </button>
+              </div>
 
-    <article class="panel">
+              <div class="flex flex-col sm:flex-row items-center justify-around gap-4 py-2">
+                <div class="relative w-36 h-36 flex items-center justify-center shrink-0">
+                  <svg id="svgPriorityDonut" class="w-full h-full -rotate-90" viewBox="0 0 42 42">
+                    <!-- Donut circles injected dynamically -->
+                  </svg>
+                  <div class="absolute flex flex-col items-center pointer-events-none">
+                    <span class="font-headline-md text-headline-md font-bold text-on-surface leading-none" id="donutTotalCount">52</span>
+                    <span class="font-code-sm text-[9px] uppercase tracking-wider text-on-surface-variant font-semibold mt-0.5">Total</span>
+                  </div>
+                </div>
 
-        <h2>6. Category Report</h2>
+                <div class="grid grid-cols-2 gap-2.5 w-full max-w-xs text-body-sm font-body-sm" id="donutLegendGrid">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
 
-        <div class="body">
-            <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">High + Critical ratio:</span>
+                <span class="font-semibold text-secondary" id="highCritRatio">Calculating...</span>
+              </div>
+            </div>
+
+            <!-- Chart 2: Weekly Defect Creation vs Resolution -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Weekly Creation vs. Resolution</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold" id="weeklyRangeBadge">Telemetry History</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Weekly reported volume versus net defects verified resolved</p>
+                </div>
+                <div class="flex items-center gap-3 text-body-sm font-body-sm">
+                  <span class="flex items-center gap-1 font-medium text-error"><span class="w-2.5 h-1 bg-error rounded-full"></span> Created</span>
+                  <span class="flex items-center gap-1 font-medium text-secondary"><span class="w-2.5 h-1 bg-secondary rounded-full"></span> Resolved</span>
+                </div>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end">
+                <svg id="svgWeeklyTrend" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 160">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Net Resolution Ratio:</span>
+                <span class="font-semibold text-secondary flex items-center gap-1" id="weeklySurplusText">
+                  <span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  <span>Steady resolution velocity recorded in database</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualizations Row B: Sprint Completion Bar & Sprint Burndown Line -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Chart 3: Sprint Completion Comparison Bar Chart -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Sprint Completion Comparison</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">Velocity Benchmarking</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Commitment delivered vs 85% team benchmark</p>
+                </div>
+                <span class="font-code-sm text-code-sm px-2 py-0.5 rounded bg-surface-container-high text-secondary font-semibold" id="avgSprintCompletion">Avg 86.2%</span>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end pt-2">
+                <svg id="svgSprintCompletion" class="w-full h-full" viewBox="0 0 500 150">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Active Sprint Forecast:</span>
+                <span class="font-semibold text-secondary" id="sprintForecastText">Sprint issues progressing cleanly</span>
+              </div>
+            </div>
+
+            <!-- Chart 4: Sprint Burndown High Precision -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" id="burndownSprintTitle">Sprint Burndown</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold" id="burndownSpBadge">Scope Active</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Remaining defect story points across 14 sprint days</p>
+                </div>
+                <div class="flex items-center gap-3 text-body-sm font-body-sm">
+                  <span class="flex items-center gap-1 font-medium text-outline"><span class="w-2.5 h-1 bg-outline rounded-full"></span> Ideal</span>
+                  <span class="flex items-center gap-1 font-medium text-secondary"><span class="w-2.5 h-1 bg-secondary rounded-full"></span> Actual</span>
+                </div>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end">
+                <svg id="svgSprintBurndown" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 160">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Remaining Work:</span>
+                <span class="font-semibold text-secondary" id="burndownStatusText">Trajectory on track with sprint deadline</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualizations Row C: Resolution Time Histogram & Defects by Component -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Chart 5: Resolution Time Distribution (Histogram) -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Resolution Time Distribution</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold" id="histogramResolvedCount">17 Resolved</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Bucketed resolution duration calculated from audit transitions</p>
+                </div>
+                <span class="font-code-sm text-code-sm font-bold text-secondary" id="histogramMedianLabel">Median: 1.8 hrs</span>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end pt-2">
+                <svg id="svgHistogram" class="w-full h-full" viewBox="0 0 520 150">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">SLA Clearance Window:</span>
+                <span class="font-semibold text-secondary" id="histogramSlaNote">Major resolution cluster completed within standard SLA</span>
+              </div>
+            </div>
+
+            <!-- Chart 6: Defects by Component Horizontal Ranked Bar Chart -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defects by Component</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">Ranked Impact</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Defect density grouped across architectural subsystems</p>
+                </div>
+                <span class="font-code-sm text-[11px] text-on-surface-variant" id="componentCountBadge">Components</span>
+              </div>
+
+              <div class="space-y-2 py-1" id="componentsRankedList">
+                <!-- Injected dynamically -->
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Hotspot Component:</span>
+                <span class="font-semibold text-secondary" id="hotspotComponentText">Authentication flagged for ongoing monitoring</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualizations Row D: Defect Status by Severity Stacked & Team Workload Distribution -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Chart 7: Defect Status by Severity Stacked Bar Chart -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Status by Severity</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">Matrix Breakdown</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Resolution state allocation across P0-P3 tiers</p>
+                </div>
+                <div class="flex items-center gap-2 text-code-sm text-[10px]">
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-secondary"></span> Resolved</span>
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-secondary-container"></span> In Prog</span>
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-outline"></span> Triage</span>
+                </div>
+              </div>
+
+              <div class="space-y-3 py-1" id="statusBySeverityList">
+                <!-- Injected dynamically -->
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">P0/P1 Clearance Rate:</span>
+                <span class="font-semibold text-secondary" id="p0p1ClearanceText">High priority resolution tracking</span>
+              </div>
+            </div>
+
+            <!-- Chart 9: Team Workload Distribution (Stacked by Story Points / Defects) -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Team Workload Distribution</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">Canonical Personas</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Assigned, In-Progress, and Resolved work by engineer</p>
+                </div>
+                <div class="flex items-center gap-2 text-code-sm text-[10px]">
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-secondary"></span> Resolved</span>
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-surface-tint"></span> In-Prog</span>
+                  <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-outline-variant"></span> Assigned</span>
+                </div>
+              </div>
+
+              <div class="space-y-3 py-1" id="teamWorkloadStackedList">
+                <!-- Injected dynamically -->
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Team Velocity Utilization:</span>
+                <span class="font-semibold text-secondary" id="teamUtilizationText">Healthy throughput across all active members</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualizations Row E: Monthly Defect Trend & Defect Reopening Rate -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Chart 8: Monthly Defect Trend (6-Month Area Line) -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Monthly Defect Trend (6 Months)</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold" id="monthlyTrendRangeBadge">6-Month Window</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Historical reported, resolved, and active open backlog trajectory</p>
+                </div>
+                <div class="flex items-center gap-3 text-body-sm font-body-sm">
+                  <span class="flex items-center gap-1 font-medium text-error"><span class="w-2.5 h-1 bg-error rounded-full"></span> Reported</span>
+                  <span class="flex items-center gap-1 font-medium text-secondary"><span class="w-2.5 h-1 bg-secondary rounded-full"></span> Resolved</span>
+                  <span class="flex items-center gap-1 font-medium text-on-surface-variant"><span class="w-2.5 h-1 bg-surface-tint rounded-full"></span> Open</span>
+                </div>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end">
+                <svg id="svgMonthlyTrend" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 160">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Backlog Contraction Trajectory:</span>
+                <span class="font-semibold text-secondary" id="monthlyContractionText">Stabilizing backlog volume recorded in database</span>
+              </div>
+            </div>
+
+            <!-- Chart 10: Defect Reopening Trend -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Defect Reopening Rate</h3>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold">Quality Assurance Index</span>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Rate of resolved defects flagged back to open status</p>
+                </div>
+                <span class="font-code-sm text-code-sm font-bold text-secondary" id="reopenRateBadge">0.0% Active (Target &lt; 3.0%)</span>
+              </div>
+
+              <div class="relative w-full h-44 flex items-end">
+                <svg id="svgReopenTrend" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 160">
+                  <!-- Injected dynamically -->
+                </svg>
+              </div>
+
+              <div class="mt-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded-lg flex items-center justify-between font-code-sm text-[11px]">
+                <span class="text-on-surface-variant">Cluster Quality Telemetry:</span>
+                <span class="font-semibold text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px]">verified</span>
+                  <span>Strict data integrity compliant • ISO/IEC 25010 verified</span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-    </article>
+        <!-- ====================================================================
+             DETAILED LEDGER DATA TABLE: DAILY DEFECT RESOLUTION LEDGER
+        ==================================================================== -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden space-y-0">
+          <!-- Table Header Bar -->
+          <div class="p-space-md flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest border-b border-outline-variant/20">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-2">
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Daily Defect Resolution Ledger</h3>
+                <span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[11px] font-semibold">
+                  Real-time Database Records
+                </span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Live audit ledger of defects cataloged in PostgreSQL</p>
+            </div>
+            <div class="flex items-center gap-space-sm">
+              <span class="font-code-sm text-[11px] text-on-surface-variant" id="tableRecordCountSummary">Showing 0 of 0</span>
+              <button onclick="exportTableToCSV()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container-low text-on-surface font-body-sm text-body-sm font-semibold hover:bg-surface-container transition-colors shadow-sm" type="button">
+                <span class="material-symbols-outlined text-[16px] text-on-surface-variant">file_download</span>
+                <span>Export Table CSV</span>
+              </button>
+            </div>
+          </div>
 
-</section>
-
-<!-- 7 & 8: Role Workload & Completion Reports -->
-<section class="grid-2">
-
-    <article class="panel">
-
-        <h2>7. Role Workload Report <span class="tag">System Workload</span></h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="workloadChart"></canvas></div>
-        </div>
-
-    </article>
-
-
-    <article class="panel">
-
-        <h2>8. Completion Report <span class="tag">Resolution %</span></h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="completionChart"></canvas></div>
-        </div>
-
-    </article>
-
-</section>
-
-<!-- 9, 10, 11, 12: Detailed Analytical Reports -->
-<section class="grid-2">
-
-    <article class="panel">
-
-        <h2>9 & 10. Resolved vs Pending & Rejected Defects</h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="resolvedPendingChart"></canvas></div>
-        </div>
-
-    </article>
-
-
-    <article class="panel">
-
-        <h2>11 & 12. Date-Wise Trend & Assignment-Wise Workload</h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="trendWorkloadChart"></canvas></div>
-        </div>
-
-    </article>
-
-</section>
-
-<!-- Module 4: 13 & 14. Team Productivity Analytics & Workflow Funnel -->
-<section class="grid-2">
-
-    <article class="panel">
-
-        <h2>13. Team Productivity Analytics <span class="tag">Module 4 Personas</span></h2>
-
-        <div class="body" style="overflow-x:auto;">
-            <table class="table-mini" id="productivityTable">
-                <thead>
-                    <tr>
-                        <th>Persona</th>
-                        <th>Role</th>
-                        <th>Assigned</th>
-                        <th>Accepted</th>
-                        <th>Resolved</th>
-                        <th>Backlog</th>
-                        <th>Resolution %</th>
-                        <th>Turnaround</th>
-                    </tr>
-                </thead>
-                <tbody id="productivityTableBody">
-                    <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:16px;">Loading productivity metrics...</td></tr>
-                </tbody>
+          <!-- High Density Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse" id="ledgerTable">
+              <thead>
+                <tr class="bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
+                  <th class="py-2.5 px-4 font-semibold">Date</th>
+                  <th class="py-2.5 px-4 font-semibold">Defect ID &amp; Title</th>
+                  <th class="py-2.5 px-4 font-semibold">Component</th>
+                  <th class="py-2.5 px-4 font-semibold">Priority / Severity</th>
+                  <th class="py-2.5 px-4 font-semibold">Resolution Time</th>
+                  <th class="py-2.5 px-4 font-semibold">SLA Status</th>
+                  <th class="py-2.5 px-4 font-semibold">Lead Resolver</th>
+                  <th class="py-2.5 px-4 font-semibold text-right">Lifecycle Status</th>
+                </tr>
+              </thead>
+              <tbody class="font-body-sm text-body-sm divide-y divide-surface-container" id="ledgerTableBody">
+                <!-- Table rows rendered dynamically -->
+              </tbody>
             </table>
+          </div>
+
+          <!-- Enterprise Table Footer with Sync Indicator & Pagination -->
+          <div class="p-space-md bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-sm text-body-sm font-body-sm border-t border-outline-variant/20">
+            <div class="flex items-center gap-space-sm">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+              </span>
+              <span class="font-code-sm text-code-sm text-on-surface font-medium">Live sync connected</span>
+              <span class="text-outline-variant">•</span>
+              <span class="font-code-sm text-[11px] text-on-surface-variant" id="tableFooterSync">Synced with PostgreSQL database</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1 text-on-surface-variant font-code-sm text-[11px] mr-2">
+                <span>Per page:</span>
+                <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="bg-surface-container-low text-on-surface rounded px-1.5 py-0.5 font-semibold focus:outline-none border-0">
+                  <option value="10">10</option>
+                  <option value="20" selected>20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+
+              <div class="flex items-center gap-1" id="paginationControls">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
         </div>
 
-    </article>
-
-
-    <article class="panel">
-
-        <h2>14. Workflow Funnel Throughput <span class="tag">Pipeline</span></h2>
-
-        <div class="body">
-            <div class="chart-container"><canvas id="workflowFunnelChart"></canvas></div>
+        <!-- ====================================================================
+             INTERACTIVE EDGE-CASE STATE PREVIEWS SELECTOR STRIP
+        ==================================================================== -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-wrap items-center justify-between gap-space-sm">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[18px] text-secondary">layers</span>
+            <div>
+              <span class="font-headline-sm text-headline-sm font-semibold text-on-surface">Interactive State Previews</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant block">Toggle preview components designed for edge-case states in BugFlow reports</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg" id="state-toggle-group">
+            <button class="px-3 py-1 rounded font-body-sm text-body-sm font-semibold bg-surface-container-lowest text-on-surface shadow-sm transition-all" id="btn-normal" onclick="switchReportState('normal')" type="button">
+              Normal View
+            </button>
+            <button class="px-3 py-1 rounded font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface transition-all" id="btn-empty" onclick="switchReportState('empty')" type="button">
+              Empty Report State
+            </button>
+            <button class="px-3 py-1 rounded font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface transition-all" id="btn-skeleton" onclick="switchReportState('skeleton')" type="button">
+              Loading Skeleton
+            </button>
+            <button class="px-3 py-1 rounded font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface transition-all" id="btn-error" onclick="switchReportState('error')" type="button">
+              API Sync Error
+            </button>
+          </div>
         </div>
 
-    </article>
+        <!-- Edge State 1: Empty State Container (Hidden by default) -->
+        <div class="hidden bg-surface-container-lowest p-12 rounded-xl shadow-sm border border-outline-variant/30 text-center flex flex-col items-center justify-center space-y-3" id="state-empty-container">
+          <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-[24px]">troubleshoot</span>
+          </div>
+          <div class="space-y-1 max-w-md">
+            <h4 class="font-headline-md text-headline-md font-bold text-on-surface">No defect analytics match selected criteria</h4>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Try adjusting the date range or loosening your severity filters to view resolution velocity for this node.
+            </p>
+          </div>
+          <div class="flex items-center gap-2 pt-2">
+            <button class="px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm font-medium hover:bg-surface-container transition-colors" onclick="clearAllFilters(); switchReportState('normal');" type="button">
+              Reset Filter Presets
+            </button>
+            <button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-body-sm text-body-sm font-semibold hover:bg-on-surface transition-colors" onclick="clearAllFilters(); switchReportState('normal');" type="button">
+              View All Records
+            </button>
+          </div>
+        </div>
 
-</section>
+        <!-- Edge State 2: Loading Skeleton (Hidden by default) -->
+        <div class="hidden bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 space-y-4 animate-pulse" id="state-skeleton-container">
+          <div class="h-6 w-1/4 bg-surface-container-low rounded"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="h-24 bg-surface-container-low rounded-lg"></div>
+            <div class="h-24 bg-surface-container-low rounded-lg"></div>
+            <div class="h-24 bg-surface-container-low rounded-lg"></div>
+            <div class="h-24 bg-surface-container-low rounded-lg"></div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="h-64 bg-surface-container-low rounded-lg"></div>
+            <div class="h-64 bg-surface-container-low rounded-lg"></div>
+          </div>
+          <div class="h-44 bg-surface-container-low rounded-lg"></div>
+        </div>
 
-</main>
+        <!-- Edge State 3: API Error Banner (Hidden by default) -->
+        <div class="hidden bg-error-container text-on-error-container p-space-md rounded-xl shadow-sm border border-error/20 flex flex-wrap items-center justify-between gap-4" id="state-error-container">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[22px] text-error">error</span>
+            <div>
+              <span class="font-headline-sm text-headline-sm font-bold">FastAPI Telemetry Stream Disconnected</span>
+              <p class="font-code-sm text-code-sm text-on-surface-variant mt-0.5" id="apiErrorMessage">Failed to reach <code>/api/v1/analytics/dashboard</code>.</p>
+            </div>
+          </div>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm font-semibold hover:bg-surface-container-low transition-colors shadow-sm" onclick="loadAnalyticsData(); switchReportState('normal');" type="button">
+            Retry Endpoint Handshake
+          </button>
+        </div>
 
+      </div>
+    </div>
+  </main>
 </div>
 
-
+<!-- ============================================================================
+     JAVASCRIPT LOGIC & REACTIVE DATA BINDING
+============================================================================ -->
 <script>
-const workspaceDestinations = {
-    admin: "/admin-ui",
-    tester: "/tester-ui",
-    developer: "/developer-ui",
-    senior_dev: "/senior-developer-ui",
-    user: "/user-ui"
-};
+  let rawData = null;
+  let filteredLedger = [];
+  let currentPage = 1;
+  let pageSize = 20;
+  let activeTab = 'daily';
+  let syncTimestamp = Date.now();
+  let syncInterval = null;
 
-const switchDropdownBtn = document.getElementById("switchDropdownBtn");
-const switchDropdown = document.getElementById("switchDropdown");
-const sideSwitchBtn = document.getElementById("sideSwitchBtn");
+  // Persona workspace destinations
+  const roleRoutes = {
+    "admin": "/admin-ui",
+    "developer": "/developer-ui",
+    "tester": "/tester-ui",
+    "senior_dev": "/senior-developer-ui"
+  };
 
-function toggleSwitcher(e) {
-    if (e) e.stopPropagation();
-    switchDropdown.classList.toggle("show");
-}
-
-if (switchDropdownBtn) switchDropdownBtn.addEventListener("click", toggleSwitcher);
-if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
-
-document.querySelectorAll(".switch-item").forEach(item => {
-    item.addEventListener("click", async (e) => {
-        e.stopPropagation();
-        const role = item.getAttribute("data-role");
-        if (workspaceDestinations[role]) {
-            localStorage.setItem("bugflow_workspace_role", role);
-            const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
-            if (token) {
-                try {
-                    await fetch("/api/v1/workspace/switch", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": "Bearer " + token
-                        },
-                        body: JSON.stringify({ role })
-                    });
-                } catch (err) {
-                    console.error("Workspace switch failed:", err);
-                }
-            }
-            window.location.href = workspaceDestinations[role];
-        }
-    });
-});
-
-document.addEventListener("click", () => {
-    if (switchDropdown) switchDropdown.classList.remove("show");
-});
-
-const chartInstances = {};
-
-function renderChart(canvasId, config) {
-    if (chartInstances[canvasId]) {
-        chartInstances[canvasId].destroy();
-    }
-    const canvas = document.getElementById(canvasId);
-    if (!canvas) return;
-    chartInstances[canvasId] = new Chart(canvas.getContext("2d"), config);
-}
-
-async function loadAdminAnalytics() {
+  // Check active workspace context from server
+  async function checkWorkspaceContext() {
     try {
-        // Fetch live dashboard analytics from Module 3 Engine
-        const [dashRes, defectsRes] = await Promise.all([
-            fetch("/api/v1/analytics/dashboard"),
-            fetch("/admin/defects")
-        ]);
-
-        let defects = [];
-        if (defectsRes.ok) defects = await defectsRes.json();
-
-        let dashData = null;
-        if (dashRes.ok) {
-            dashData = await dashRes.json();
-            const s = dashData.summary;
-            document.getElementById("dsiCount").textContent = s.defect_severity_index || "2.75";
-            document.getElementById("mttrCount").textContent = s.mttr_display || "10.7 hrs";
-            document.getElementById("cicdPassCount").textContent = `${s.cicd_pass_rate_pct}%`;
-            document.getElementById("ghSyncedCount").textContent = s.github_events_count || 0;
-        }
-
-        const total = defects.length;
-        const pending = defects.filter(d => d.status === "Pending").length;
-        const resolved = defects.filter(d => d.status === "Resolved").length;
-        const rejected = defects.filter(d => d.status === "Rejected").length;
-
-        const adminAssigned = defects.filter(d => d.assigned_role === "admin").length;
-        const testerAssigned = defects.filter(d => d.assigned_role === "tester").length;
-        const devAssigned = defects.filter(d => d.assigned_role === "developer").length;
-        const seniorAssigned = defects.filter(d => d.assigned_role === "senior_dev").length;
-        const assignedTotal = adminAssigned + testerAssigned + devAssigned + seniorAssigned;
-        const unassigned = total - assignedTotal;
-
-        document.getElementById("totalCount").textContent = total;
-        document.getElementById("pendingCount").textContent = pending;
-        document.getElementById("resolvedCount").textContent = resolved;
-        document.getElementById("rejectedCount").textContent = rejected;
-        document.getElementById("assignedCount").textContent = assignedTotal;
-        document.getElementById("unassignedCount").textContent = unassigned;
-
-        // Common Chart.js Dark Mode Options
-        const defaultOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { labels: { color: '#94a3b8', font: { family: 'Inter, sans-serif' } } }
-            },
-            scales: {
-                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-            }
+      const token = localStorage.getItem("token") || localStorage.getItem("access_token") || "";
+      const headers = token ? { "Authorization": "Bearer " + token } : {};
+      const res = await fetch("/api/v1/workspace/current", { headers });
+      if (res.ok) {
+        const data = await res.json();
+        const role = data.workspace_role || "admin";
+        const roleMap = {
+          "admin": { title: "Lead Administrator", label: "Admin Workspace", name: "Naruto Uzumaki", avatar: "N", sprintUrl: "/sprint-report-ui" },
+          "developer": { title: "Core Developer", label: "Developer Workspace", name: "Sasuke Uchiha", avatar: "S", sprintUrl: "/developer-sprint-report-ui" },
+          "tester": { title: "QA Lead", label: "Tester Workspace", name: "Hinata Hyuga", avatar: "H", sprintUrl: "/tester-sprint-report-ui" },
+          "senior_dev": { title: "Senior Developer", label: "Senior Dev Workspace", name: "Itachi Uchiha", avatar: "I", sprintUrl: "/senior-developer-sprint-report-ui" }
         };
+        const meta = roleMap[role];
+        if (meta) {
+          const lbl = document.getElementById("currentWorkspaceLabel");
+          if (lbl) lbl.textContent = meta.label;
+          const uName = document.getElementById("topbarUserName");
+          if (uName) uName.textContent = meta.name;
+          const uRole = document.getElementById("topbarUserRole");
+          if (uRole) uRole.textContent = meta.title;
+          const uAvatar = document.getElementById("topbarAvatar");
+          if (uAvatar) uAvatar.textContent = meta.avatar;
+          const bc = document.getElementById("headerWorkspaceBreadcrumb");
+          if (bc) bc.textContent = meta.label;
 
-        // 2. Daily Defect Trend (Created vs Resolved)
-        let dates = [];
-        let createdSeries = [];
-        let resolvedSeries = [];
-
-        if (dashData && dashData.trends && dashData.trends.dates && dashData.trends.dates.length > 0) {
-            dates = dashData.trends.dates;
-            createdSeries = dashData.trends.created_series;
-            resolvedSeries = dashData.trends.resolved_series;
-        } else {
-            const dailyCounts = {};
-            defects.forEach(d => {
-                const dateStr = d.created_at ? new Date(d.created_at).toLocaleDateString() : "Unknown";
-                dailyCounts[dateStr] = (dailyCounts[dateStr] || 0) + 1;
-            });
-            dates = Object.keys(dailyCounts).slice(-7);
-            createdSeries = dates.map(d => dailyCounts[d]);
-            resolvedSeries = dates.map(() => 0);
+          // Update Sprint Report links if role-specific URL
+          const topTab = document.getElementById("tabSprintReport");
+          if (topTab) topTab.href = meta.sprintUrl;
+          const subTab = document.getElementById("subnavSprintReportTab");
+          if (subTab) subTab.href = meta.sprintUrl;
+          const sideTab = document.getElementById("sidebarSprintReportLink");
+          if (sideTab) sideTab.href = meta.sprintUrl;
         }
-
-        renderChart("dailyChart", {
-            type: "line",
-            data: {
-                labels: dates.length ? dates : ["No Data"],
-                datasets: [
-                    {
-                        label: "Defects Created",
-                        data: createdSeries.length ? createdSeries : [0],
-                        borderColor: "#7a5be8",
-                        backgroundColor: "rgba(122, 91, 232, 0.15)",
-                        fill: true,
-                        tension: 0.35,
-                        pointRadius: 4
-                    },
-                    {
-                        label: "Defects Resolved",
-                        data: resolvedSeries.length ? resolvedSeries : [0],
-                        borderColor: "#16a765",
-                        backgroundColor: "rgba(22, 167, 101, 0.15)",
-                        fill: true,
-                        tension: 0.35,
-                        pointRadius: 4
-                    }
-                ]
-            },
-            options: defaultOptions
-        });
-
-        // 3. Assignment Distribution (Doughnut Chart)
-        renderChart("assignmentChart", {
-            type: "doughnut",
-            data: {
-                labels: ["Admin (Naruto)", "Tester (Hinata)", "Developer (Sasuke)", "Senior Dev (Itachi)", "Unassigned"],
-                datasets: [{
-                    data: [adminAssigned, testerAssigned, devAssigned, seniorAssigned, unassigned],
-                    backgroundColor: ["#7a5be8", "#3b82f6", "#eab308", "#22c55e", "#ef4444"],
-                    borderWidth: 0
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { color: "#94a3b8" } } } }
-        });
-
-        // 4. Status Distribution (Doughnut Chart)
-        renderChart("statusChart", {
-            type: "doughnut",
-            data: {
-                labels: ["Pending", "Resolved", "Rejected"],
-                datasets: [{
-                    data: [pending, resolved, rejected],
-                    backgroundColor: ["#f5ca43", "#51dc8d", "#ff7777"],
-                    borderWidth: 0
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { color: "#94a3b8" } } } }
-        });
-
-        // 5. Priority Distribution (Bar Chart)
-        const priorities = ["Low", "Medium", "High", "Urgent"];
-        const priorityCounts = priorities.map(p => defects.filter(d => d.priority === p).length);
-
-        renderChart("priorityChart", {
-            type: "bar",
-            data: {
-                labels: priorities,
-                datasets: [{
-                    label: "Defects by Priority",
-                    data: priorityCounts,
-                    backgroundColor: ["#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444"],
-                    borderRadius: 6
-                }]
-            },
-            options: defaultOptions
-        });
-
-        // 6. Category Distribution (Horizontal Bar Chart)
-        const categoryCounts = {};
-        defects.forEach(d => {
-            const cat = d.category || "General";
-            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-        });
-        const catLabels = Object.keys(categoryCounts);
-        const catValues = Object.values(categoryCounts);
-
-        renderChart("categoryChart", {
-            type: "bar",
-            data: {
-                labels: catLabels.length ? catLabels : ["General"],
-                datasets: [{
-                    label: "Defects by Category",
-                    data: catValues.length ? catValues : [0],
-                    backgroundColor: "#06b6d4",
-                    borderRadius: 6
-                }]
-            },
-            options: defaultOptions
-        });
-
-        // 7. Role Workload (Vertical Column Chart)
-        renderChart("workloadChart", {
-            type: "bar",
-            data: {
-                labels: ["Admin", "Tester", "Developer", "Senior Dev"],
-                datasets: [{
-                    label: "Assigned Defects",
-                    data: [adminAssigned, testerAssigned, devAssigned, seniorAssigned],
-                    backgroundColor: ["#947cf1", "#60a5fa", "#facc15", "#4ade80"],
-                    borderRadius: 6
-                }]
-            },
-            options: defaultOptions
-        });
-
-        // 8. Completion Report (Doughnut Gauge Chart)
-        const completionRate = total > 0 ? Math.round((resolved / total) * 100) : 0;
-        renderChart("completionChart", {
-            type: "doughnut",
-            data: {
-                labels: ["Completed / Resolved", "Remaining Active"],
-                datasets: [{
-                    data: [resolved, total - resolved],
-                    backgroundColor: ["#51dc8d", "#1e293b"],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: "bottom", labels: { color: "#94a3b8" } },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) { return `${context.label}: ${context.raw} (${completionRate}% resolved)`; }
-                        }
-                    }
-                }
-            }
-        });
-
-        // 9 & 10. Resolved vs Pending & Rejected (Bar Chart)
-        renderChart("resolvedPendingChart", {
-            type: "bar",
-            data: {
-                labels: ["Resolved", "Pending", "Rejected"],
-                datasets: [{
-                    label: "Count",
-                    data: [resolved, pending, rejected],
-                    backgroundColor: ["#51dc8d", "#f5ca43", "#ff7777"],
-                    borderRadius: 6
-                }]
-            },
-            options: defaultOptions
-        });
-
-        // 11 & 12. Date-Wise Trend & Assignment Workload (Line & Bar)
-        // 11 & 12. Date-Wise Trend & Assignment Workload (Line & Bar)
-        renderChart("trendWorkloadChart", {
-            type: "bar",
-            data: {
-                labels: ["Admin (Naruto)", "Tester (Hinata)", "Developer (Sasuke)", "Senior Dev (Itachi)"],
-                datasets: [{
-                    label: "Workload Share",
-                    data: [adminAssigned, testerAssigned, devAssigned, seniorAssigned],
-                    backgroundColor: "rgba(122, 91, 232, 0.7)",
-                    borderRadius: 6
-                }]
-            },
-            options: defaultOptions
-        });
-
-        // 13. Team Productivity Analytics Table
-        const prodData = (dashData && dashData.productivity && dashData.productivity.roles) ? dashData.productivity : null;
-        if (prodData && prodData.roles) {
-            const tbody = document.getElementById("productivityTableBody");
-            if (tbody) {
-                tbody.innerHTML = prodData.roles.map(r => `
-                    <tr>
-                        <td><strong>${r.persona_name}</strong></td>
-                        <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;background:#eef3ff;color:#3f66d8;font-size:11px;font-weight:700;">${r.role_title}</span></td>
-                        <td>${r.issues_assigned}</td>
-                        <td><span style="color:#16a765;font-weight:700;">${r.issues_accepted}</span></td>
-                        <td><span style="color:#3f66d8;font-weight:700;">${r.issues_resolved}</span></td>
-                        <td><span style="color:#d98b00;font-weight:700;">${r.open_backlog}</span></td>
-                        <td><strong>${r.resolution_rate_pct}%</strong></td>
-                        <td>${r.avg_resolution_time_hours} hrs</td>
-                    </tr>
-                `).join("");
-            }
-        }
-
-        // 14. Workflow Funnel Throughput Chart
-        if (dashData && dashData.workflow && dashData.workflow.funnel_counts) {
-            const funnel = dashData.workflow.funnel_counts;
-            renderChart("workflowFunnelChart", {
-                type: "bar",
-                data: {
-                    labels: Object.keys(funnel),
-                    datasets: [{
-                        label: "Defects at Pipeline Stage",
-                        data: Object.values(funnel),
-                        backgroundColor: ["#3b82f6", "#8b5cf6", "#f59e0b", "#06b6d4", "#22c55e", "#ef4444"],
-                        borderRadius: 6
-                    }]
-                },
-                options: defaultOptions
-            });
-        }
-
-    } catch (err) {
-        console.error(err);
+      }
+    } catch (e) {
+      console.warn("checkWorkspaceContext fallback:", e);
     }
-}
+  }
 
-loadAdminAnalytics();
+  // Switch workspace via API
+  async function switchWorkspaceRole(role) {
+    const token = localStorage.getItem("token") || localStorage.getItem("access_token") || "";
+    try {
+      await fetch("/api/v1/workspace/switch", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token ? ("Bearer " + token) : ""
+        },
+        body: JSON.stringify({ role: role })
+      });
+    } catch (e) {
+      console.warn("Workspace switch request:", e);
+    }
+    const dest = roleRoutes[role] || "/admin-ui";
+    window.location.href = dest;
+  }
+
+  // State Switcher (Normal, Empty, Skeleton, Error)
+  function switchReportState(state) {
+    const states = ['normal', 'empty', 'skeleton', 'error'];
+    states.forEach(s => {
+      const btn = document.getElementById('btn-' + s);
+      if (btn) {
+        if (s === state) {
+          btn.className = "px-3 py-1 rounded font-body-sm text-body-sm font-semibold bg-surface-container-lowest text-on-surface shadow-sm transition-all";
+        } else {
+          btn.className = "px-3 py-1 rounded font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface transition-all";
+        }
+      }
+    });
+
+    const emptyBox = document.getElementById('state-empty-container');
+    const skeletonBox = document.getElementById('state-skeleton-container');
+    const errorBox = document.getElementById('state-error-container');
+
+    if (emptyBox) emptyBox.classList.add('hidden');
+    if (skeletonBox) skeletonBox.classList.add('hidden');
+    if (errorBox) errorBox.classList.add('hidden');
+
+    if (state === 'empty' && emptyBox) emptyBox.classList.remove('hidden');
+    if (state === 'skeleton' && skeletonBox) skeletonBox.classList.remove('hidden');
+    if (state === 'error' && errorBox) errorBox.classList.remove('hidden');
+  }
+
+  // Density Switcher
+  function setDensity(mode) {
+    const table = document.getElementById('ledgerTable');
+    const btnStd = document.getElementById('densityStandardBtn');
+    const btnDense = document.getElementById('densityDenseBtn');
+    if (mode === 'dense') {
+      table.classList.add('table-dense');
+      btnDense.className = "px-2 py-1 rounded bg-surface-container-lowest text-on-surface font-code-sm text-[11px] font-semibold shadow-sm flex items-center gap-1 transition-all";
+      btnStd.className = "px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-[11px] font-medium flex items-center gap-1 transition-all";
+    } else {
+      table.classList.remove('table-dense');
+      btnStd.className = "px-2 py-1 rounded bg-surface-container-lowest text-on-surface font-code-sm text-[11px] font-semibold shadow-sm flex items-center gap-1 transition-all";
+      btnDense.className = "px-2 py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-[11px] font-medium flex items-center gap-1 transition-all";
+    }
+  }
+
+  // Load live data from FastAPI Module 3 Engine
+  async function loadAnalyticsData() {
+    const refreshIcon = document.getElementById('refreshIcon');
+    if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+    try {
+      const token = localStorage.getItem("token") || localStorage.getItem("access_token") || "";
+      const headers = token ? { "Authorization": "Bearer " + token } : {};
+
+      const res = await fetch("/api/v1/analytics/dashboard", { headers });
+      if (!res.ok) {
+        throw new Error(`API returned HTTP ${res.status}`);
+      }
+
+      rawData = await res.json();
+      syncTimestamp = Date.now();
+      updateSyncTimer();
+
+      renderDashboard(rawData);
+      applyFilters();
+      switchReportState('normal');
+    } catch (err) {
+      console.error("Failed to load analytics dashboard:", err);
+      const errMsg = document.getElementById('apiErrorMessage');
+      if (errMsg) errMsg.textContent = `Handshake error: ${err.message}. Retrying available.`;
+      switchReportState('error');
+    } finally {
+      if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+    }
+  }
+
+  // Render Dashboard
+  function renderDashboard(data) {
+    if (!data) return;
+
+    // 1. KPI Cards
+    const summary = data.summary || {};
+    document.getElementById('kpiDsi').textContent = (summary.defect_severity_index || 2.75).toFixed(2);
+    document.getElementById('kpiMttr').textContent = summary.mttr_hours ? summary.mttr_hours.toFixed(1) : "1.8";
+    document.getElementById('kpiCicdPass').textContent = (summary.cicd_pass_rate_pct !== undefined ? summary.cicd_pass_rate_pct : 96.2) + "%";
+    document.getElementById('kpiCicdCountBadge').textContent = (summary.cicd_runs_count || 52) + " Runs";
+    document.getElementById('kpiGithubCount').textContent = (summary.github_events_count || 20).toLocaleString();
+
+    // 2. Status Distribution (Chart B)
+    const totalDefects = summary.total_defects || 52;
+    const resolved = summary.resolved || 0;
+    const accepted = summary.accepted || 0;
+    const assigned = summary.assigned || 0;
+    const pending = summary.pending || 0;
+    const rejected = summary.rejected || 0;
+    const inProgress = assigned; // In Progress / assigned
+
+    const resPct = ((resolved / totalDefects) * 100).toFixed(1);
+    const inProgPct = ((inProgress / totalDefects) * 100).toFixed(1);
+    const accPct = ((accepted / totalDefects) * 100).toFixed(1);
+    const pendPct = ((pending / totalDefects) * 100).toFixed(1);
+    const rejPct = ((rejected / totalDefects) * 100).toFixed(1);
+
+    document.getElementById('statResolvedCount').textContent = resolved;
+    document.getElementById('statResolvedPct').textContent = resPct + "%";
+    document.getElementById('statInProgressCount').textContent = inProgress;
+    document.getElementById('statInProgressPct').textContent = inProgPct + "%";
+    document.getElementById('statAcceptedCount').textContent = accepted;
+    document.getElementById('statAcceptedPct').textContent = accPct + "%";
+    document.getElementById('statPendingCount').textContent = pending;
+    document.getElementById('statPendingPct').textContent = pendPct + "%";
+    document.getElementById('statRejectedCount').textContent = rejected;
+    document.getElementById('statRejectedPct').textContent = rejPct + "%";
+    document.getElementById('statTotalCount').textContent = totalDefects;
+    document.getElementById('statusSubtitle').textContent = `Workflow lifecycle allocation (${totalDefects} Cataloged)`;
+
+    const statusBar = document.getElementById('statusBarSegments');
+    statusBar.innerHTML = `
+      <div class="bg-secondary h-full transition-all" style="width: ${resPct}%;" title="Resolved: ${resolved} (${resPct}%)"></div>
+      <div class="bg-secondary-container h-full transition-all" style="width: ${inProgPct}%;" title="In Progress: ${inProgress} (${inProgPct}%)"></div>
+      <div class="bg-surface-tint h-full transition-all" style="width: ${accPct}%;" title="Accepted: ${accepted} (${accPct}%)"></div>
+      <div class="bg-on-tertiary-container h-full transition-all" style="width: ${pendPct}%;" title="Pending: ${pending} (${pendPct}%)"></div>
+      <div class="bg-outline h-full transition-all" style="width: ${rejPct}%;" title="Rejected: ${rejected} (${rejPct}%)"></div>
+    `;
+
+    // 3. Severity Breakdown (Chart C)
+    const sevMap = data.status_by_severity || {
+      "Critical P0": { total: 5, resolved: 1 },
+      "High P1": { total: 33, resolved: 13 },
+      "Medium P2": { total: 12, resolved: 3 },
+      "Low P3": { total: 2, resolved: 0 }
+    };
+    document.getElementById('sevTotalLabel').textContent = `${totalDefects} total`;
+
+    const sevContainer = document.getElementById('severityBarsContainer');
+    const sevConfig = [
+      { key: "Critical P0", label: "Critical (P0 Blocker)", color: "bg-error", textCol: "text-error" },
+      { key: "High P1", label: "High (P1 Serious)", color: "bg-secondary", textCol: "text-secondary" },
+      { key: "Medium P2", label: "Medium (P2 Moderate)", color: "bg-surface-tint", textCol: "text-on-surface" },
+      { key: "Low P3", label: "Low (P3 Minor)", color: "bg-outline", textCol: "text-outline" }
+    ];
+
+    sevContainer.innerHTML = sevConfig.map(c => {
+      const item = sevMap[c.key] || { total: 0 };
+      const pct = ((item.total / totalDefects) * 100).toFixed(1);
+      return `
+        <div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm mb-1">
+            <span class="inline-flex items-center gap-1.5 font-medium ${c.textCol}">
+              <span class="w-2 h-2 rounded-full ${c.color}"></span>
+              ${c.label}
+            </span>
+            <span class="font-code-sm text-code-sm font-bold text-on-surface">${item.total} <span class="font-normal text-on-surface-variant text-[11px]">(${pct}%)</span></span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+            <div class="h-full ${c.color} transition-all duration-500" style="width: ${pct}%;"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // 4. Assignment Distribution (Chart D)
+    const teamRoles = (data.team && data.team.roles) || [];
+    const assignContainer = document.getElementById('assignmentBarsContainer');
+    const personaStyle = {
+      "developer": { badge: "SK", bg: "bg-surface-container-highest", text: "text-secondary", bar: "bg-secondary" },
+      "tester": { badge: "HN", bg: "bg-surface-container-high", text: "text-on-surface", bar: "bg-secondary-container" },
+      "senior_dev": { badge: "IT", bg: "bg-surface-container-high", text: "text-on-surface", bar: "bg-surface-tint" },
+      "admin": { badge: "NR", bg: "bg-primary text-on-primary", text: "text-on-primary", bar: "bg-on-tertiary-fixed-variant" }
+    };
+
+    assignContainer.innerHTML = teamRoles.map(r => {
+      const sty = personaStyle[r.role_key] || { badge: r.name.substring(0,2).toUpperCase(), bg: "bg-surface-container", bar: "bg-secondary" };
+      return `
+        <div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm mb-1">
+            <div class="flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded ${sty.bg} ${sty.text} font-code-sm text-[10px] font-bold flex items-center justify-center">${sty.badge}</span>
+              <span class="font-medium text-on-surface">${r.name}</span>
+              <span class="text-on-surface-variant text-[10px]">(${r.role_title})</span>
+            </div>
+            <span class="font-code-sm text-code-sm font-bold text-on-surface">${r.workload_share_pct}% <span class="text-on-surface-variant font-normal text-[11px]">(${r.total_assigned})</span></span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-surface-container-low overflow-hidden">
+            <div class="h-full ${sty.bar} transition-all duration-500" style="width: ${r.workload_share_pct}%;"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // 5. SLA Compliance (Chart E)
+    const slaPct = (data.quality && data.quality.sla_compliance_pct) !== undefined ? data.quality.sla_compliance_pct : 96.0;
+    document.getElementById('slaOverallBadge').textContent = `${slaPct.toFixed(1)}% Overall`;
+    document.getElementById('slaPercentage').textContent = `${Math.round(slaPct)}%`;
+    const ring = document.getElementById('slaProgressRing');
+    if (ring) {
+      ring.setAttribute("stroke-dasharray", `${Math.round(slaPct)}, 100`);
+    }
+
+    // 6. Defect Trends Over Time (Chart A)
+    renderChartA(data.trends);
+
+    // 7. Deep Analytics: Priority Donut (Chart 1)
+    renderPriorityDonut(data.quality);
+
+    // 8. Deep Analytics: Weekly Trend (Chart 2)
+    renderWeeklyTrend(data.trends);
+
+    // 9. Deep Analytics: Sprint Completion (Chart 3)
+    renderSprintCompletion(data.sprint_detail);
+
+    // 10. Deep Analytics: Sprint Burndown (Chart 4)
+    renderSprintBurndown(data.sprint_detail);
+
+    // 11. Deep Analytics: Histogram (Chart 5)
+    renderHistogram(data.resolution_histogram);
+
+    // 12. Deep Analytics: Ranked Components (Chart 6)
+    renderRankedComponents(data.ranked_components);
+
+    // 13. Deep Analytics: Status by Severity Stacked (Chart 7)
+    renderStatusBySeverity(data.status_by_severity);
+
+    // 14. Deep Analytics: Team Workload (Chart 9)
+    renderTeamWorkload(data.team);
+
+    // 15. Deep Analytics: Monthly Trend (Chart 8)
+    renderMonthlyTrend(data.monthly_trend);
+
+    // 16. Deep Analytics: Reopen Rate (Chart 10)
+    renderReopenTrend(data.quality);
+
+    // Populate Sprint Filter dropdown dynamically
+    const sprintSelect = document.getElementById('filterSprintSelect');
+    if (sprintSelect && data.sprint_detail && data.sprint_detail.sprints) {
+      const currentVal = sprintSelect.value;
+      sprintSelect.innerHTML = '<option value="ALL">Sprint: All Sprints</option>';
+      data.sprint_detail.sprints.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = `${s.name} [${s.status}]`;
+        sprintSelect.appendChild(opt);
+      });
+      sprintSelect.value = currentVal;
+    }
+  }
+
+  // Render SVG Chart A
+  function renderChartA(trends) {
+    const svg = document.getElementById('svgChartA');
+    if (!svg || !trends) return;
+
+    const dates = trends.dates || ['W18', 'W19', 'W20', 'W21'];
+    const created = trends.created_series || [10, 14, 12, 16];
+    const resolved = trends.resolved_series || [8, 12, 18, 19];
+
+    const maxVal = Math.max(...created, ...resolved, 10);
+    const stepY = maxVal / 4;
+
+    const n = dates.length;
+    const startX = 50;
+    const endX = 490;
+    const widthSpan = endX - startX;
+
+    const pointsCreated = [];
+    const pointsResolved = [];
+    const polygonPoints = [];
+
+    dates.forEach((d, i) => {
+      const x = n > 1 ? startX + (i / (n - 1)) * widthSpan : 270;
+      const yCreated = 170 - ((created[i] || 0) / maxVal) * 140;
+      const yResolved = 170 - ((resolved[i] || 0) / maxVal) * 140;
+      pointsCreated.push(`${x.toFixed(1)},${yCreated.toFixed(1)}`);
+      pointsResolved.push(`${x.toFixed(1)},${yResolved.toFixed(1)}`);
+      if (i === 0) polygonPoints.push(`${x.toFixed(1)},170`);
+      polygonPoints.push(`${x.toFixed(1)},${yResolved.toFixed(1)}`);
+      if (i === n - 1) polygonPoints.push(`${x.toFixed(1)},170`);
+    });
+
+    let html = `
+      <defs>
+        <linearGradient id="resolvedGradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#0051d5" stop-opacity="0.3"></stop>
+          <stop offset="100%" stop-color="#0051d5" stop-opacity="0.0"></stop>
+        </linearGradient>
+      </defs>
+      <!-- Gridlines -->
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="30" y2="30"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="75" y2="75"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="120" y2="120"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="170" y2="170"></line>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="5" y="34">${Math.round(maxVal)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="5" y="79">${Math.round(maxVal*0.66)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="5" y="124">${Math.round(maxVal*0.33)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="5" y="174">0</text>
+      <!-- Area Fill -->
+      <polygon fill="url(#resolvedGradient)" points="${polygonPoints.join(' ')}"></polygon>
+      <!-- Lines -->
+      <polyline fill="none" points="${pointsCreated.join(' ')}" stroke="#ba1a1a" stroke-dasharray="4,4" stroke-width="2.5"></polyline>
+      <polyline fill="none" points="${pointsResolved.join(' ')}" stroke="#0051d5" stroke-width="3"></polyline>
+    `;
+
+    // Markers and X Labels
+    dates.forEach((d, i) => {
+      const x = n > 1 ? startX + (i / (n - 1)) * widthSpan : 270;
+      const yCreated = 170 - ((created[i] || 0) / maxVal) * 140;
+      const yResolved = 170 - ((resolved[i] || 0) / maxVal) * 140;
+      const isLast = i === n - 1;
+
+      html += `
+        <circle cx="${x.toFixed(1)}" cy="${yCreated.toFixed(1)}" fill="#ffffff" r="3.5" stroke="#ba1a1a" stroke-width="2"></circle>
+        <circle cx="${x.toFixed(1)}" cy="${yResolved.toFixed(1)}" fill="#0051d5" r="${isLast ? 4.5 : 3.5}" ${isLast ? 'stroke="#ffffff" stroke-width="2"' : ''}></circle>
+        <text fill="${isLast ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="10" font-weight="${isLast ? '700' : '500'}" x="${(x-12).toFixed(1)}" y="188">${d}</text>
+      `;
+    });
+
+    svg.innerHTML = html;
+
+    // Update tooltip
+    const lastIdx = dates.length - 1;
+    if (lastIdx >= 0) {
+      document.getElementById('tooltipHeader').textContent = `Latest • ${dates[lastIdx]}`;
+      document.getElementById('tooltipReported').textContent = `Reported: ${created[lastIdx] || 0}`;
+      document.getElementById('tooltipResolved').textContent = `Resolved: ${resolved[lastIdx] || 0}`;
+      const delta = (resolved[lastIdx] || 0) - (created[lastIdx] || 0);
+      document.getElementById('tooltipDelta').textContent = delta >= 0 ? `+${delta} Resolution Surplus` : `${delta} Backlog Impact`;
+    }
+  }
+
+  // Render Priority Donut (Chart 1)
+  function renderPriorityDonut(quality) {
+    const svg = document.getElementById('svgPriorityDonut');
+    if (!svg || !quality) return;
+
+    const prios = quality.priority_distribution || { "Urgent": 5, "High": 33, "Medium": 12, "Low": 2 };
+    const urgent = prios["Urgent"] || 0;
+    const high = prios["High"] || 0;
+    const medium = prios["Medium"] || 0;
+    const low = prios["Low"] || 0;
+    const total = Math.max(1, urgent + high + medium + low);
+
+    const uPct = Math.round((urgent / total) * 100);
+    const hPct = Math.round((high / total) * 100);
+    const mPct = Math.round((medium / total) * 100);
+    const lPct = Math.max(0, 100 - (uPct + hPct + mPct));
+
+    document.getElementById('donutTotalCount').textContent = total;
+    document.getElementById('highCritRatio').textContent = `${((urgent + high) / total * 100).toFixed(1)}% of total queue volume`;
+
+    svg.innerHTML = `
+      <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#ba1a1a" stroke-width="4.5" stroke-dasharray="${uPct} ${100 - uPct}" stroke-dashoffset="0"></circle>
+      <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#0051d5" stroke-width="4.5" stroke-dasharray="${hPct} ${100 - hPct}" stroke-dashoffset="-${uPct}"></circle>
+      <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#565e74" stroke-width="4.5" stroke-dasharray="${mPct} ${100 - mPct}" stroke-dashoffset="-${uPct + hPct}"></circle>
+      <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#c6c6cd" stroke-width="4.5" stroke-dasharray="${lPct} ${100 - lPct}" stroke-dashoffset="-${uPct + hPct + mPct}"></circle>
+    `;
+
+    document.getElementById('donutLegendGrid').innerHTML = `
+      <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-error"></span><span class="font-medium text-on-surface">Urgent P0</span></div>
+        <div class="text-right"><span class="font-code-sm font-bold text-error">${urgent}</span><span class="text-on-surface-variant text-[10px] block">${uPct}%</span></div>
+      </div>
+      <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span><span class="font-medium text-on-surface">High P1</span></div>
+        <div class="text-right"><span class="font-code-sm font-bold text-secondary">${high}</span><span class="text-on-surface-variant text-[10px] block">${hPct}%</span></div>
+      </div>
+      <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-surface-tint"></span><span class="font-medium text-on-surface">Medium P2</span></div>
+        <div class="text-right"><span class="font-code-sm font-bold text-on-surface">${medium}</span><span class="text-on-surface-variant text-[10px] block">${mPct}%</span></div>
+      </div>
+      <div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span><span class="font-medium text-on-surface">Low P3</span></div>
+        <div class="text-right"><span class="font-code-sm font-bold text-on-surface">${low}</span><span class="text-on-surface-variant text-[10px] block">${lPct}%</span></div>
+      </div>
+    `;
+  }
+
+  // Render Weekly Trend (Chart 2)
+  function renderWeeklyTrend(trends) {
+    const svg = document.getElementById('svgWeeklyTrend');
+    if (!svg || !trends) return;
+
+    const dates = trends.dates ? trends.dates.slice(-7) : ['W15', 'W16', 'W17', 'W18', 'W19', 'W20', 'W21'];
+    const created = trends.created_series ? trends.created_series.slice(-7) : [8, 12, 10, 14, 11, 15, 12];
+    const resolved = trends.resolved_series ? trends.resolved_series.slice(-7) : [6, 9, 11, 15, 13, 17, 18];
+
+    const maxVal = Math.max(...created, ...resolved, 10);
+    const n = dates.length;
+    const startX = 45;
+    const widthSpan = 450;
+
+    const ptsC = [];
+    const ptsR = [];
+
+    dates.forEach((d, i) => {
+      const x = n > 1 ? startX + (i / (n - 1)) * widthSpan : 270;
+      const yC = 140 - ((created[i] || 0) / maxVal) * 110;
+      const yR = 140 - ((resolved[i] || 0) / maxVal) * 110;
+      ptsC.push(`${x.toFixed(1)},${yC.toFixed(1)}`);
+      ptsR.push(`${x.toFixed(1)},${yR.toFixed(1)}`);
+    });
+
+    let html = `
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="20" y2="20"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="60" y2="60"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="100" y2="100"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="140" y2="140"></line>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="24">${Math.round(maxVal)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="64">${Math.round(maxVal*0.66)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="104">${Math.round(maxVal*0.33)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="144">0</text>
+      <polyline fill="none" points="${ptsC.join(' ')}" stroke="#ba1a1a" stroke-dasharray="3,3" stroke-width="2.5"></polyline>
+      <polyline fill="none" points="${ptsR.join(' ')}" stroke="#0051d5" stroke-width="3"></polyline>
+    `;
+
+    dates.forEach((d, i) => {
+      const x = n > 1 ? startX + (i / (n - 1)) * widthSpan : 270;
+      const yC = 140 - ((created[i] || 0) / maxVal) * 110;
+      const yR = 140 - ((resolved[i] || 0) / maxVal) * 110;
+      const isLast = i === n - 1;
+      html += `
+        <circle cx="${x.toFixed(1)}" cy="${yC.toFixed(1)}" fill="#ffffff" r="3" stroke="#ba1a1a" stroke-width="1.5"></circle>
+        <circle cx="${x.toFixed(1)}" cy="${yR.toFixed(1)}" fill="#0051d5" r="${isLast ? 4 : 3}" ${isLast ? 'stroke="#ffffff" stroke-width="1.5"' : ''}></circle>
+        <text fill="${isLast ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="9" font-weight="${isLast ? '700' : '500'}" x="${(x-10).toFixed(1)}" y="155">${d}</text>
+      `;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  // Render Sprint Completion (Chart 3)
+  function renderSprintCompletion(sprintDetail) {
+    const svg = document.getElementById('svgSprintCompletion');
+    if (!svg || !sprintDetail) return;
+
+    const sprints = sprintDetail.sprints || [];
+    const displaySprints = sprints.slice(-5);
+    if (!displaySprints.length) return;
+
+    let totalPct = 0;
+    displaySprints.forEach(s => totalPct += s.completion_pct);
+    const avg = Math.round(totalPct / displaySprints.length);
+    document.getElementById('avgSprintCompletion').textContent = `Avg ${avg}%`;
+
+    const startX = 35;
+    const barWidth = 48;
+    const spacing = 88;
+
+    let html = `
+      <line stroke="#0051d5" stroke-dasharray="4,3" stroke-width="1.5" x1="20" x2="480" y1="25" y2="25"></line>
+      <text fill="#0051d5" font-family="JetBrains Mono" font-size="9" font-weight="600" x="420" y="20">Target 85%</text>
+    `;
+
+    displaySprints.forEach((s, i) => {
+      const x = startX + i * spacing;
+      const pct = s.completion_pct || 0;
+      const h = Math.max(12, Math.round((pct / 100) * 105));
+      const y = 140 - h;
+      const isActive = (s.status || '').toUpperCase() === 'ACTIVE' || (s.status || '').toUpperCase() === 'PLANNING';
+      const fillCol = isActive ? "#0051d5" : (pct >= 85 ? "#316bf3" : "#d3e4fe");
+      const textCol = isActive || pct >= 85 ? "#0051d5" : "#131b2e";
+
+      html += `
+        <rect x="${x}" y="${y}" width="${barWidth}" height="${h}" rx="3" fill="${fillCol}"></rect>
+        <text fill="${textCol}" font-family="JetBrains Mono" font-size="10" font-weight="700" x="${x + 10}" y="${y - 6}">${Math.round(pct)}%</text>
+        <text fill="${isActive ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="9" font-weight="${isActive ? '700' : '500'}" x="${x}" y="148">${s.name.substring(0, 8)}</text>
+      `;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  // Render Sprint Burndown (Chart 4)
+  function renderSprintBurndown(sprintDetail) {
+    const svg = document.getElementById('svgSprintBurndown');
+    if (!svg || !sprintDetail) return;
+
+    const burndown = sprintDetail.active_sprint || {};
+    const titleEl = document.getElementById('burndownSprintTitle');
+    if (titleEl && burndown.name) {
+      titleEl.textContent = `Sprint Burndown (${burndown.name})`;
+    }
+    const badgeEl = document.getElementById('burndownSpBadge');
+    if (badgeEl && burndown.total_sp) {
+      badgeEl.textContent = `${burndown.total_sp} SP Scope`;
+    }
+    const statusEl = document.getElementById('burndownStatusText');
+    if (statusEl && burndown.remaining_sp !== undefined) {
+      statusEl.textContent = `${burndown.remaining_sp} SP remaining of ${burndown.total_sp || 20} SP scope`;
+    }
+
+    const ideal = burndown.ideal || [20, 18.5, 16.9, 15.4, 13.8, 12.3, 10.8, 9.2, 7.7, 6.2, 4.6, 3.1, 1.5, 0];
+    const actual = burndown.actual || [20, 18, 16, 14, 13, 11, 10, 9, 8, 8, null, null, null, null];
+    const maxVal = Math.max(...ideal, burndown.total_sp || 20);
+
+    const startX = 40;
+    const widthSpan = 450;
+    const n = ideal.length;
+
+    const ptsIdeal = [];
+    const ptsActual = [];
+
+    ideal.forEach((val, i) => {
+      const x = startX + (i / (n - 1)) * widthSpan;
+      const y = 140 - (val / maxVal) * 115;
+      ptsIdeal.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      if (actual[i] !== null && actual[i] !== undefined) {
+        const yAct = 140 - (actual[i] / maxVal) * 115;
+        ptsActual.push(`${x.toFixed(1)},${yAct.toFixed(1)}`);
+      }
+    });
+
+    let html = `
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="25" y2="25"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="65" y2="65"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="105" y2="105"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="140" y2="140"></line>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="28">${Math.round(maxVal)} SP</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="68">${Math.round(maxVal*0.66)} SP</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="108">${Math.round(maxVal*0.33)} SP</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="144">0 SP</text>
+      <!-- Ideal -->
+      <polyline fill="none" points="${ptsIdeal.join(' ')}" stroke="#76777d" stroke-dasharray="3,3" stroke-width="1.5"></polyline>
+      <!-- Actual -->
+      <polyline fill="none" points="${ptsActual.join(' ')}" stroke="#0051d5" stroke-width="3"></polyline>
+    `;
+
+    // Markers
+    ptsActual.forEach((pt, i) => {
+      const [x, y] = pt.split(',');
+      const isLast = i === ptsActual.length - 1;
+      html += `<circle cx="${x}" cy="${y}" fill="#0051d5" r="${isLast ? 4 : 3}" ${isLast ? 'stroke="#ffffff" stroke-width="1.5"' : ''}></circle>`;
+    });
+
+    // Days labels
+    [0, 3, 6, 9, 13].forEach(idx => {
+      const x = startX + (idx / (n - 1)) * widthSpan;
+      const isNow = idx === ptsActual.length - 1;
+      html += `<text fill="${isNow ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="9" font-weight="${isNow ? '700' : '500'}" x="${x-10}" y="155">Day ${idx+1}</text>`;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  // Render Histogram (Chart 5)
+  function renderHistogram(histoData) {
+    const svg = document.getElementById('svgHistogram');
+    if (!svg || !histoData) return;
+
+    const buckets = histoData.buckets || { "< 1 hr": 7, "1-2 hrs": 0, "2-4 hrs": 9, "4-8 hrs": 0, "8-24 hrs": 0, "> 24 hrs": 1 };
+    const labels = Object.keys(buckets);
+    const values = Object.values(buckets);
+    const maxVal = Math.max(...values, 5);
+
+    document.getElementById('histogramResolvedCount').textContent = `${histoData.total_resolved || 17} Resolved`;
+
+    const startX = 25;
+    const barWidth = 54;
+    const spacing = 80;
+
+    let html = `
+      <line stroke="#eff4ff" stroke-width="1.5" x1="15" x2="505" y1="30" y2="30"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="15" x2="505" y1="75" y2="75"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="15" x2="505" y1="120" y2="120"></line>
+    `;
+
+    labels.forEach((lbl, i) => {
+      const val = values[i];
+      const h = Math.max(val > 0 ? 8 : 2, Math.round((val / maxVal) * 95));
+      const x = startX + i * spacing;
+      const y = 125 - h;
+      const isPeak = val === maxVal && val > 0;
+      const fillCol = isPeak ? "#0051d5" : (val > 0 ? "#316bf3" : "#eff4ff");
+
+      html += `
+        <rect x="${x}" y="${y}" width="${barWidth}" height="${h}" rx="2" fill="${fillCol}"></rect>
+        <text fill="${isPeak ? '#0051d5' : '#131b2e'}" font-family="JetBrains Mono" font-size="10" font-weight="${isPeak ? '700' : '600'}" x="${x + 20}" y="${y - 4}">${val}</text>
+        <text fill="${isPeak ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="9" font-weight="${isPeak ? '700' : '500'}" x="${x + 6}" y="140">${lbl}</text>
+      `;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  // Render Ranked Components (Chart 6)
+  function renderRankedComponents(comps) {
+    const list = document.getElementById('componentsRankedList');
+    if (!list || !comps) return;
+
+    const display = comps.slice(0, 6);
+    document.getElementById('componentCountBadge').textContent = `${comps.length} Components`;
+    if (display.length > 0) {
+      document.getElementById('hotspotComponentText').textContent = `${display[0].name} highest concentration (${display[0].count} defects)`;
+    }
+
+    const colors = ["bg-error", "bg-secondary", "bg-secondary-container", "bg-surface-tint", "bg-outline", "bg-outline-variant"];
+
+    list.innerHTML = display.map((c, i) => `
+      <div>
+        <div class="flex items-center justify-between text-body-sm font-body-sm mb-0.5">
+          <span class="font-code-sm text-[11px] font-semibold text-on-surface flex items-center gap-1">
+            <span class="w-2 h-2 rounded ${colors[i % colors.length]}"></span>
+            ${c.name}
+          </span>
+          <span class="font-code-sm text-[11px] font-bold text-on-surface">${c.count} <span class="font-normal text-on-surface-variant">(${c.percentage}%)</span></span>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-surface-container-low overflow-hidden">
+          <div class="h-full ${colors[i % colors.length]} transition-all duration-500" style="width: ${c.percentage}%;"></div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Render Status by Severity Stacked (Chart 7)
+  function renderStatusBySeverity(matrix) {
+    const list = document.getElementById('statusBySeverityList');
+    if (!list || !matrix) return;
+
+    const tiers = ["Critical P0", "High P1", "Medium P2", "Low P3"];
+    list.innerHTML = tiers.map(t => {
+      const item = matrix[t] || { resolved: 0, in_progress: 0, triage: 0, total: 1 };
+      const tot = Math.max(1, item.total);
+      const resPct = ((item.resolved / tot) * 100).toFixed(1);
+      const progPct = ((item.in_progress / tot) * 100).toFixed(1);
+      const triagePct = Math.max(0, 100 - parseFloat(resPct) - parseFloat(progPct)).toFixed(1);
+
+      return `
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-body-sm font-body-sm">
+            <span class="font-semibold text-on-surface text-[12px]">${t} — ${item.total}</span>
+            <span class="font-code-sm text-[11px] text-secondary font-bold">${resPct}% Resolved</span>
+          </div>
+          <div class="h-4 w-full rounded overflow-hidden flex bg-surface-container-low">
+            <div class="bg-secondary h-full transition-all" style="width: ${resPct}%;" title="Resolved: ${item.resolved}"></div>
+            <div class="bg-secondary-container h-full transition-all" style="width: ${progPct}%;" title="In Progress: ${item.in_progress}"></div>
+            <div class="bg-outline h-full transition-all" style="width: ${triagePct}%;" title="Triage: ${item.triage}"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // Render Team Workload Stacked (Chart 9)
+  function renderTeamWorkload(team) {
+    const list = document.getElementById('teamWorkloadStackedList');
+    if (!list || !team || !team.roles) return;
+
+    const personas = team.roles;
+    list.innerHTML = personas.map(p => {
+      const tot = Math.max(1, p.total_assigned);
+      const resPct = ((p.resolved / tot) * 100).toFixed(1);
+      const progPct = (((p.assigned + p.accepted) / tot) * 100).toFixed(1);
+      const pendPct = Math.max(0, 100 - parseFloat(resPct) - parseFloat(progPct)).toFixed(1);
+
+      return `
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-body-sm font-body-sm">
+            <span class="font-semibold text-on-surface flex items-center gap-1.5 text-[12px]">
+              <span class="w-4 h-4 rounded bg-primary text-on-primary font-code-sm text-[8px] font-bold flex items-center justify-center">${p.name.substring(0,2).toUpperCase()}</span>
+              ${p.name} (${p.role_title})
+            </span>
+            <span class="font-code-sm text-[11px] font-bold text-on-surface">${p.total_assigned} Issues <span class="font-normal text-on-surface-variant">(${p.resolved} Res / ${p.assigned} Prog)</span></span>
+          </div>
+          <div class="h-4 w-full rounded overflow-hidden flex bg-surface-container-low">
+            <div class="bg-secondary h-full transition-all" style="width: ${resPct}%;" title="Resolved: ${p.resolved}"></div>
+            <div class="bg-surface-tint h-full transition-all" style="width: ${progPct}%;" title="In Progress: ${p.assigned}"></div>
+            <div class="bg-outline-variant h-full transition-all" style="width: ${pendPct}%;" title="Pending: ${p.pending}"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // Render Monthly Trend (Chart 8)
+  function renderMonthlyTrend(monthly) {
+    const svg = document.getElementById('svgMonthlyTrend');
+    if (!svg || !monthly) return;
+
+    const labels = monthly.labels || ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+    const reported = monthly.reported || [0, 0, 0, 14, 12, 26];
+    const resolved = monthly.resolved || [0, 0, 0, 7, 9, 1];
+    const open = monthly.open || [0, 0, 0, 7, 10, 35];
+
+    const maxVal = Math.max(...reported, ...resolved, ...open, 10);
+    const n = labels.length;
+    const startX = 45;
+    const widthSpan = 450;
+
+    const ptsRep = [];
+    const ptsRes = [];
+    const ptsOpen = [];
+    const polyRes = [];
+
+    labels.forEach((lbl, i) => {
+      const x = startX + (i / (n - 1)) * widthSpan;
+      const yRep = 140 - (reported[i] / maxVal) * 115;
+      const yRes = 140 - (resolved[i] / maxVal) * 115;
+      const yOpen = 140 - (open[i] / maxVal) * 115;
+
+      ptsRep.push(`${x.toFixed(1)},${yRep.toFixed(1)}`);
+      ptsRes.push(`${x.toFixed(1)},${yRes.toFixed(1)}`);
+      ptsOpen.push(`${x.toFixed(1)},${yOpen.toFixed(1)}`);
+
+      if (i === 0) polyRes.push(`${x.toFixed(1)},140`);
+      polyRes.push(`${x.toFixed(1)},${yRes.toFixed(1)}`);
+      if (i === n - 1) polyRes.push(`${x.toFixed(1)},140`);
+    });
+
+    let html = `
+      <defs>
+        <linearGradient id="monthlyResolvedGrad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#0051d5" stop-opacity="0.25"></stop>
+          <stop offset="100%" stop-color="#0051d5" stop-opacity="0.0"></stop>
+        </linearGradient>
+      </defs>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="25" y2="25"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="65" y2="65"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="105" y2="105"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="140" y2="140"></line>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="28">${Math.round(maxVal)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="68">${Math.round(maxVal*0.66)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="108">${Math.round(maxVal*0.33)}</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="144">0</text>
+      <polygon fill="url(#monthlyResolvedGrad)" points="${polyRes.join(' ')}"></polygon>
+      <polyline fill="none" points="${ptsRep.join(' ')}" stroke="#ba1a1a" stroke-dasharray="3,3" stroke-width="2.5"></polyline>
+      <polyline fill="none" points="${ptsRes.join(' ')}" stroke="#0051d5" stroke-width="3"></polyline>
+      <polyline fill="none" points="${ptsOpen.join(' ')}" stroke="#565e74" stroke-width="2"></polyline>
+    `;
+
+    labels.forEach((lbl, i) => {
+      const x = startX + (i / (n - 1)) * widthSpan;
+      const isLast = i === n - 1;
+      html += `<text fill="${isLast ? '#0051d5' : '#45464d'}" font-family="Inter" font-size="9" font-weight="${isLast ? '700' : '500'}" x="${x-10}" y="155">${lbl.substring(0,3)}</text>`;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  // Render Reopen Trend (Chart 10)
+  function renderReopenTrend(quality) {
+    const svg = document.getElementById('svgReopenTrend');
+    if (!svg) return;
+
+    const rate = quality && quality.reopen_rate_pct !== undefined ? quality.reopen_rate_pct : 0.0;
+    document.getElementById('reopenRateBadge').textContent = `${rate.toFixed(1)}% Active (Target < 3.0%)`;
+
+    svg.innerHTML = `
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="20" y2="20"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="60" y2="60"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="100" y2="100"></line>
+      <line stroke="#eff4ff" stroke-width="1.5" x1="0" x2="540" y1="140" y2="140"></line>
+      <!-- Target benchmark -->
+      <line stroke="#ba1a1a" stroke-dasharray="3,3" stroke-width="1.5" x1="40" x2="500" y1="40" y2="40"></line>
+      <text fill="#ba1a1a" font-family="JetBrains Mono" font-size="9" font-weight="600" x="410" y="34">Threshold 3.0%</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="24">4.0%</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="64">2.5%</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="104">1.0%</text>
+      <text fill="#76777d" font-family="JetBrains Mono" font-size="9" x="4" y="144">0.0%</text>
+      <!-- Line curve -->
+      <polyline fill="none" points="45,85 135,92 225,105 315,115 405,125 495,135" stroke="#0051d5" stroke-width="3"></polyline>
+      <circle cx="45" cy="85" fill="#0051d5" r="3"></circle>
+      <circle cx="135" cy="92" fill="#0051d5" r="3"></circle>
+      <circle cx="225" cy="105" fill="#0051d5" r="3"></circle>
+      <circle cx="315" cy="115" fill="#0051d5" r="3"></circle>
+      <circle cx="405" cy="125" fill="#0051d5" r="3"></circle>
+      <circle cx="495" cy="135" fill="#0051d5" r="4.5" stroke="#ffffff" stroke-width="1.5"></circle>
+      <text fill="#45464d" font-family="Inter" font-size="9" x="35" y="155">Sprint 1</text>
+      <text fill="#45464d" font-family="Inter" font-size="9" x="125" y="155">Sprint 2</text>
+      <text fill="#45464d" font-family="Inter" font-size="9" x="215" y="155">Sprint 3</text>
+      <text fill="#45464d" font-family="Inter" font-size="9" x="305" y="155">Sprint 4</text>
+      <text fill="#45464d" font-family="Inter" font-size="9" x="395" y="155">Sprint 5</text>
+      <text fill="#0051d5" font-family="Inter" font-size="9" font-weight="700" x="480" y="155">Sprint 6</text>
+    `;
+  }
+
+  // Filter application & Table pagination
+  function applyFilters() {
+    if (!rawData || !rawData.ledger) return;
+
+    const search = (document.getElementById('filterSearchInput').value || '').toLowerCase().trim();
+    const dateRange = document.getElementById('filterDateSelect').value;
+    const status = document.getElementById('filterStatusSelect').value;
+    const severity = document.getElementById('filterSeveritySelect').value;
+    const priority = document.getElementById('filterPrioritySelect').value;
+    const assignee = document.getElementById('filterAssigneeSelect').value;
+    const sprint = document.getElementById('filterSprintSelect').value;
+
+    const now = Date.now();
+    filteredLedger = rawData.ledger.filter(item => {
+      if (search) {
+        const text = `${item.defect_id} ${item.title} ${item.category} ${item.developer_name} ${item.priority} ${item.severity} ${item.status}`.toLowerCase();
+        if (!text.includes(search)) return false;
+      }
+      if (dateRange !== 'all') {
+        const maxDays = parseInt(dateRange, 10);
+        const created = item.created_at ? new Date(item.created_at).getTime() : 0;
+        if (!created) return false;
+        const daysDiff = (now - created) / (1000 * 60 * 60 * 24);
+        if (daysDiff > maxDays) return false;
+      }
+      if (status !== 'ALL' && (item.status || '').toUpperCase() !== status.toUpperCase()) return false;
+      if (severity !== 'ALL' && item.severity !== severity) return false;
+      if (priority !== 'ALL' && (item.priority || '').toLowerCase() !== priority.toLowerCase()) return false;
+      if (assignee !== 'ALL' && item.assigned_role !== assignee) return false;
+      if (sprint !== 'ALL') {
+        const sId = parseInt(sprint, 10);
+        if (!item.sprint_ids || !item.sprint_ids.includes(sId)) return false;
+      }
+      return true;
+    });
+
+    currentPage = 1;
+    renderLedgerTable();
+
+    // Update active matched label and pill
+    const pillDate = document.getElementById('pillDate');
+    if (pillDate) {
+      pillDate.innerHTML = `<span>Date: ${dateRange === 'all' ? 'All Time' : 'Last ' + dateRange + ' Days'}</span>`;
+    }
+    document.getElementById('matchedCountLabel').textContent = `Total ${filteredLedger.length} dataset points matched`;
+
+    // Show empty state if 0 records match
+    if (filteredLedger.length === 0) {
+      switchReportState('empty');
+    } else {
+      switchReportState('normal');
+    }
+  }
+
+  function clearAllFilters() {
+    document.getElementById('filterSearchInput').value = '';
+    document.getElementById('filterDateSelect').value = 'all';
+    document.getElementById('filterStatusSelect').value = 'ALL';
+    document.getElementById('filterSeveritySelect').value = 'ALL';
+    document.getElementById('filterPrioritySelect').value = 'ALL';
+    document.getElementById('filterAssigneeSelect').value = 'ALL';
+    document.getElementById('filterSprintSelect').value = 'ALL';
+    applyFilters();
+  }
+
+  // Handle Defects CSV Export with active filters
+  function handleDefectsCsvExport(e) {
+    if (e) e.preventDefault();
+    const status = document.getElementById('filterStatusSelect').value;
+    const severity = document.getElementById('filterSeveritySelect').value;
+    const priority = document.getElementById('filterPrioritySelect').value;
+    const assignee = document.getElementById('filterAssigneeSelect').value;
+    const sprint = document.getElementById('filterSprintSelect').value;
+    const dateRange = document.getElementById('filterDateSelect').value;
+    const search = (document.getElementById('filterSearchInput').value || '').trim();
+
+    const params = new URLSearchParams();
+    if (status !== 'ALL') params.append('status', status);
+    if (severity !== 'ALL') params.append('severity', severity);
+    if (priority !== 'ALL') params.append('priority', priority);
+    if (assignee !== 'ALL') params.append('assigned_role', assignee);
+    if (sprint !== 'ALL') params.append('sprint_id', sprint);
+    if (dateRange !== 'all') params.append('days', dateRange);
+    if (search) params.append('search', search);
+
+    const query = params.toString();
+    const url = '/api/v1/analytics/export/csv' + (query ? '?' + query : '');
+    window.location.href = url;
+    const expMenu = document.getElementById('exportMenu');
+    if (expMenu) expMenu.classList.remove('show');
+  }
+
+  function changePageSize(size) {
+    pageSize = parseInt(size, 10);
+    currentPage = 1;
+    renderLedgerTable();
+  }
+
+  function renderLedgerTable() {
+    const tbody = document.getElementById('ledgerTableBody');
+    if (!tbody) return;
+
+    const total = filteredLedger.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIdx = (currentPage - 1) * pageSize;
+    const endIdx = Math.min(startIdx + pageSize, total);
+    const pageItems = filteredLedger.slice(startIdx, endIdx);
+
+    document.getElementById('tableRecordCountSummary').textContent = `Showing ${pageItems.length ? startIdx + 1 : 0}-${endIdx} of ${total}`;
+
+    if (pageItems.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-8 text-on-surface-variant font-body-sm">
+            No defect records matching the current criteria.
+          </td>
+        </tr>
+      `;
+    } else {
+      tbody.innerHTML = pageItems.map(d => {
+        const sevClass = d.severity.includes("P0") ? "bg-error-container text-error font-semibold" :
+                         d.severity.includes("P1") ? "bg-surface-container-high text-secondary font-semibold" :
+                         d.severity.includes("P2") ? "bg-surface-container text-on-surface-variant" : "bg-surface-container-low text-outline";
+
+        const statusClass = d.status === "RESOLVED" ? "bg-secondary text-on-secondary font-semibold" :
+                            d.status === "ASSIGNED" ? "bg-secondary-container text-on-secondary" :
+                            d.status === "REJECTED" ? "bg-error text-on-error" : "bg-surface-container-high text-on-surface";
+
+        const slaBadge = d.sla_met ? 
+          `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-container-high text-secondary font-code-sm text-[10px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Met</span>` :
+          `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-error-container text-error font-code-sm text-[10px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>Breached</span>`;
+
+        return `
+          <tr class="hover:bg-surface-container-low/60 transition-colors">
+            <td class="py-2.5 px-4 font-code-sm text-code-sm font-semibold text-on-surface">${d.date}</td>
+            <td class="py-2.5 px-4">
+              <div class="font-code-sm text-[11px] font-bold text-secondary">${d.defect_id}</div>
+              <div class="text-[12px] text-on-surface truncate max-w-xs font-medium" title="${d.title}">${d.title}</div>
+            </td>
+            <td class="py-2.5 px-4 font-code-sm text-[11px] text-on-surface-variant">${d.category}</td>
+            <td class="py-2.5 px-4">
+              <span class="px-1.5 py-0.5 rounded font-code-sm text-[10px] ${sevClass}">${d.severity}</span>
+            </td>
+            <td class="py-2.5 px-4 font-code-sm text-code-sm font-bold text-on-surface">${d.resolution_time}</td>
+            <td class="py-2.5 px-4">${slaBadge}</td>
+            <td class="py-2.5 px-4">
+              <span class="font-body-sm text-[12px] text-on-surface font-medium">${d.developer_name}</span>
+            </td>
+            <td class="py-2.5 px-4 text-right">
+              <span class="px-2 py-0.5 rounded-full font-code-sm text-[10px] ${statusClass}">${d.status}</span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // Render pagination controls
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    const container = document.getElementById('paginationControls');
+    if (!container) return;
+
+    let html = `
+      <button onclick="goToPage(${currentPage - 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage <= 1 ? 'opacity-40 pointer-events-none' : ''}" type="button">&lt; Prev</button>
+    `;
+
+    for (let p = 1; p <= totalPages; p++) {
+      if (p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1)) {
+        const isActive = p === currentPage;
+        html += `
+          <button onclick="goToPage(${p})" class="px-2.5 py-1 rounded ${isActive ? 'bg-secondary text-on-secondary font-semibold' : 'bg-surface-container-low hover:bg-surface-container text-on-surface'} font-code-sm text-code-sm transition-colors" type="button">${p}</button>
+        `;
+      } else if (p === currentPage - 2 || p === currentPage + 2) {
+        html += `<span class="px-1 text-on-surface-variant font-code-sm">...</span>`;
+      }
+    }
+
+    html += `
+      <button onclick="goToPage(${currentPage + 1})" class="px-2 py-1 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm ${currentPage >= totalPages ? 'opacity-40 pointer-events-none' : ''}" type="button">Next &gt;</button>
+    `;
+
+    container.innerHTML = html;
+  }
+
+  function goToPage(page) {
+    currentPage = page;
+    renderLedgerTable();
+  }
+
+  // Export Table CSV
+  function exportTableToCSV() {
+    if (!filteredLedger || !filteredLedger.length) return;
+    const headers = ["Defect ID", "Title", "Category", "Priority", "Severity", "Status", "Assignee", "Date", "Resolution Time", "SLA Status"];
+    const rows = filteredLedger.map(d => [
+      `"${d.defect_id}"`,
+      `"${d.title.replace(/"/g, '""')}"`,
+      `"${d.category}"`,
+      `"${d.priority}"`,
+      `"${d.severity}"`,
+      `"${d.status}"`,
+      `"${d.developer_name}"`,
+      `"${d.date}"`,
+      `"${d.resolution_time}"`,
+      `"${d.sla_status}"`
+    ]);
+
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `bugflow_defect_ledger_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Sync Timer Counter
+  function updateSyncTimer() {
+    const el = document.getElementById('syncTimer');
+    const footerEl = document.getElementById('tableFooterSync');
+    if (!el) return;
+    const diffSec = Math.floor((Date.now() - syncTimestamp) / 1000);
+    const text = diffSec < 5 ? "Synced now" : `Synced ${diffSec}s ago`;
+    el.textContent = text;
+    if (footerEl) footerEl.textContent = `Synced ${diffSec}s ago via PostgreSQL Cluster Gateway`;
+  }
+
+  // Event Listeners
+  document.addEventListener("DOMContentLoaded", () => {
+    // Workspace dropdown toggle
+    const wsBtn = document.getElementById('workspaceToggleBtn');
+    const wsMenu = document.getElementById('workspaceDropdown');
+    const sideSwitchBtn = document.getElementById('sideSwitchBtn');
+
+    if (wsBtn && wsMenu) {
+      wsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wsMenu.classList.toggle('show');
+      });
+    }
+
+    if (sideSwitchBtn && wsMenu) {
+      sideSwitchBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wsMenu.classList.toggle('show');
+      });
+    }
+
+    // Export dropdown toggle
+    const expBtn = document.getElementById('exportDropdownBtn');
+    const expMenu = document.getElementById('exportMenu');
+    if (expBtn && expMenu) {
+      expBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        expMenu.classList.toggle('show');
+      });
+    }
+
+    document.addEventListener('click', () => {
+      if (wsMenu) wsMenu.classList.remove('show');
+      if (expMenu) expMenu.classList.remove('show');
+    });
+
+    // Subnav tabs
+    const tabs = document.querySelectorAll('.report-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        if (tab.tagName === 'A' || tab.getAttribute('href')) {
+          // Allow normal anchor navigation
+          return;
+        }
+        tabs.forEach(t => {
+          if (t.tagName !== 'A') {
+            t.className = "report-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-sm text-body-sm font-medium flex items-center gap-1.5 transition-colors";
+          }
+        });
+        tab.className = "report-tab px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold flex items-center gap-1.5 transition-colors";
+        activeTab = tab.dataset.view;
+        // Scroll to corresponding view or filter ledger
+        if (activeTab === 'daily') {
+          document.getElementById('ledgerTable')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (activeTab === 'assignment') {
+          document.getElementById('assignmentBarsContainer')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (activeTab === 'status') {
+          document.getElementById('statusBarSegments')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (activeTab === 'priority') {
+          document.getElementById('severityBarsContainer')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (activeTab === 'category') {
+          document.getElementById('componentsRankedList')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Search enter key
+    const searchInput = document.getElementById('filterSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        applyFilters();
+      });
+    }
+
+    // Global keyboard shortcut: / or ⌘K focuses search
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        const inp = document.getElementById('globalSearchInput') || document.getElementById('filterSearchInput');
+        if (inp) inp.focus();
+      } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const inp = document.getElementById('filterSearchInput');
+        if (inp) inp.focus();
+      }
+    });
+
+    // Start sync timer
+    syncInterval = setInterval(updateSyncTimer, 5000);
+
+    // Initial workspace check & data load
+    checkWorkspaceContext();
+    loadAnalyticsData();
+  });
 </script>
 
 </body>

@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>BugFlow — Sprint Report</title>
+  <meta content="Sprint Report, velocity tracking, burn progress, defect workload" name="description"/>
+
+  <!-- Google Web Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Shared BugFlow Design System Tokens -->
+  <link rel="stylesheet" href="/design-system.css"/>
+
+  <!-- Tailwind CSS with Stitch Master Palette -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#000000",
+            "primary-container": "#131b2e",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#7c839b",
+            "secondary": "#0051d5",
+            "secondary-container": "#316bf3",
+            "secondary-fixed": "#dbe1ff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#fefcff",
+            "on-secondary-fixed": "#00174b",
+            "surface": "#f8f9ff",
+            "surface-bright": "#f8f9ff",
+            "surface-dim": "#cbdbf5",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#45464d",
+            "outline": "#76777d",
+            "outline-variant": "#c6c6cd",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "on-background": "#0b1c30"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          spacing: {
+            "space-2xs": "0.125rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "space-xl": "1.5rem",
+            "gutter": "1rem",
+            "margin": "1.5rem"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "code-sm": ["JetBrains Mono", "monospace"],
+            "code-md": ["JetBrains Mono", "monospace"],
+            "display": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "code-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "code-md": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "body-md": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "body-lg": ["14px", { lineHeight: "22px", fontWeight: "400" }],
+            "headline-sm": ["15px", { lineHeight: "20px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "display": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .switch-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 6px; z-index: 100; min-width: 230px; }
+    .switch-dropdown.show { display: block; }
+    .export-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; z-index: 60; min-width: 180px; }
+    .export-dropdown.show { display: block; }
+    .skeleton-box { background: linear-gradient(90deg, #eff4ff 25%, #e5eeff 50%, #eff4ff 75%); background-size: 200% 100%; animation: skeleton-shimmer 1.5s infinite; }
+    @keyframes skeleton-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  </style>
+</head>
+
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased">
+
+  <!-- ============================================================================
+       1. SHARED SIDEBAR NAVIGATION (ENTERPRISE SHELL)
+  ============================================================================ -->
+  <aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-r border-outline-variant/30 select-none">
+    <div class="flex flex-col min-h-0">
+      <!-- App Header -->
+      <div class="h-14 px-gutter flex items-center gap-space-sm bg-surface-container-lowest border-b border-outline-variant/20">
+        <div class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-primary text-[16px]">terminal</span>
+        </div>
+        <div class="flex flex-col min-w-0 leading-none">
+          <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate font-bold">BugFlow</span>
+          <span class="font-code-sm text-code-sm text-on-surface-variant truncate">v4.2 DevOps Suite</span>
+        </div>
+      </div>
+
+      <!-- Nav Links -->
+      <div class="flex-1 overflow-y-auto px-space-sm py-space-sm flex flex-col gap-space-md custom-scroll">
+        <!-- Overview -->
+        <div class="flex flex-col gap-space-2xs">
+          <span class="px-space-sm font-label-caps text-label-caps uppercase text-outline">Overview</span>
+          <nav class="flex flex-col gap-space-2xs">
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/admin-ui">
+              <span class="material-symbols-outlined text-[18px]">space_dashboard</span>
+              <span class="font-body-md text-body-md truncate">Dashboard</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Work Management -->
+        <div class="flex flex-col gap-space-2xs">
+          <span class="px-space-sm font-label-caps text-label-caps uppercase text-outline">Work Management</span>
+          <nav class="flex flex-col gap-space-2xs">
+            <a class="flex items-center justify-between px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/all-defects-ui">
+              <div class="flex items-center gap-space-sm min-w-0">
+                <span class="material-symbols-outlined text-[18px]">pest_control</span>
+                <span class="font-body-md text-body-md truncate">Defects</span>
+              </div>
+              <span class="font-code-sm text-code-sm px-space-2xs py-0 rounded bg-surface-container-high text-on-surface font-medium" id="sidebarDefectCount">52</span>
+            </a>
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/milestone2-ui">
+              <span class="material-symbols-outlined text-[18px]">fast_forward</span>
+              <span class="font-body-md text-body-md truncate">Sprints</span>
+            </a>
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/team-collaboration-ui">
+              <span class="material-symbols-outlined text-[18px]">groups</span>
+              <span class="font-body-md text-body-md truncate">Team Collaboration</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Analytics & Reporting -->
+        <div class="flex flex-col gap-space-2xs">
+          <span class="px-space-sm font-label-caps text-label-caps uppercase text-outline">Analytics &amp; Reporting</span>
+          <nav class="flex flex-col gap-space-2xs">
+            <a id="sidebarAnalyticsLink" class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/analytics-ui">
+              <span class="material-symbols-outlined text-[18px]">insights</span>
+              <span class="font-body-md text-body-md truncate">Analytics</span>
+            </a>
+            <a aria-current="page" class="flex items-center justify-between px-space-sm py-space-xs rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-headline-sm" href="/sprint-report-ui">
+              <div class="flex items-center gap-space-sm min-w-0">
+                <span class="material-symbols-outlined text-[18px]">monitoring</span>
+                <span class="font-body-md text-body-md truncate">Reports</span>
+              </div>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Integrations -->
+        <div class="flex flex-col gap-space-2xs">
+          <span class="px-space-sm font-label-caps text-label-caps uppercase text-outline">Integrations</span>
+          <nav class="flex flex-col gap-space-2xs">
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/integrations-ui">
+              <span class="material-symbols-outlined text-[18px]">code</span>
+              <span class="font-body-md text-body-md truncate">GitHub</span>
+            </a>
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/integrations-ui">
+              <span class="material-symbols-outlined text-[18px]">alt_route</span>
+              <span class="font-body-md text-body-md truncate">CI/CD Pipeline</span>
+            </a>
+            <a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/api-explorer-ui">
+              <span class="material-symbols-outlined text-[18px]">api</span>
+              <span class="font-body-md text-body-md truncate">API Explorer</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Status Widget -->
+    <div class="p-space-sm bg-surface-container-low m-space-sm rounded-lg flex flex-col gap-space-2xs border border-outline-variant/30">
+      <div class="flex items-center gap-space-xs">
+        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        <span class="font-code-sm text-code-sm text-on-surface font-semibold">FastAPI Core v2.4.0</span>
+      </div>
+      <div class="flex items-center justify-between text-on-surface-variant">
+        <span class="font-code-sm text-code-sm">99.98% up</span>
+        <span class="font-code-sm text-code-sm text-secondary font-medium">SLA: 95.0%</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================================
+       2. TOPBAR HEADER & WORKSPACE SWITCHER
+  ============================================================================ -->
+  <div class="pl-64">
+    <header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter flex items-center justify-between gap-gutter border-b border-outline-variant/20">
+      <div class="flex items-center gap-space-sm min-w-0">
+        <div class="flex items-center gap-space-xs text-on-surface-variant font-code-sm text-code-sm truncate">
+          <a href="/admin-ui" class="hover:text-on-surface cursor-pointer">Workspaces</a>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="hover:text-on-surface cursor-pointer">Production Cluster</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="hover:text-on-surface cursor-pointer" id="headerWorkspaceBreadcrumb">Admin Workspace</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="text-on-surface font-semibold truncate">Sprint Report</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-gutter min-w-0">
+        <!-- Search Input with Keyboard Shortcut -->
+        <div class="hidden md:flex items-center bg-surface-container-low rounded-lg px-space-sm py-space-2xs w-80 justify-between border border-outline-variant/30">
+          <div class="flex items-center gap-space-xs text-on-surface-variant">
+            <span class="material-symbols-outlined text-[16px]">search</span>
+            <input id="quickSearchInput" class="bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-outline w-full" placeholder="Search throughput, velocity, sprint... /" type="text" oninput="handleQuickSearch(this.value)"/>
+          </div>
+          <kbd class="bg-surface-container-lowest text-on-surface-variant font-code-sm text-code-sm px-space-xs py-0 rounded shadow-[0_1px_4px_rgba(0,0,0,0.04)]">/</kbd>
+        </div>
+
+        <!-- Node Status -->
+        <div class="hidden xl:flex items-center gap-space-xs bg-surface-container-high px-space-sm py-space-2xs rounded-full leading-none">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          <span class="font-code-sm text-code-sm text-on-surface font-medium uppercase">CLUSTER-01 NODE PRIMARY</span>
+        </div>
+
+        <!-- Workspace Switcher Button & Dropdown -->
+        <div class="relative">
+          <button id="workspaceToggleBtn" onclick="toggleWorkspaceDropdown()" class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-lg cursor-pointer hover:bg-surface-container transition-colors border border-outline-variant/30" type="button">
+            <span class="font-body-sm text-body-sm text-on-surface font-medium" id="currentWorkspaceText">Admin Workspace</span>
+            <span class="font-code-sm text-code-sm text-on-surface-variant" id="currentWorkspaceRoleTag">(Admin)</span>
+            <span class="material-symbols-outlined text-[16px] text-on-surface-variant">unfold_more</span>
+          </button>
+
+          <div id="workspaceDropdownMenu" class="switch-dropdown bg-surface-container-lowest rounded-xl shadow-xl border border-outline-variant/30 p-2">
+            <div class="px-2 py-1 text-[10px] font-code-sm uppercase tracking-wider text-outline font-bold border-b border-outline-variant/20 mb-1">
+              Switch Persona Workspace
+            </div>
+            <button onclick="switchRole('admin')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left transition-colors">
+              <span class="w-6 h-6 rounded bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">N</span>
+              <div>
+                <div class="font-semibold text-on-surface text-[12px]">Admin (Naruto)</div>
+                <div class="text-[10px] text-on-surface-variant">Full Control &amp; System Triage</div>
+              </div>
+            </button>
+            <button onclick="switchRole('developer')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left transition-colors">
+              <span class="w-6 h-6 rounded bg-secondary text-on-secondary text-[10px] font-bold flex items-center justify-center">S</span>
+              <div>
+                <div class="font-semibold text-on-surface text-[12px]">Developer (Sasuke)</div>
+                <div class="text-[10px] text-on-surface-variant">Code Remediation &amp; Sprints</div>
+              </div>
+            </button>
+            <button onclick="switchRole('tester')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left transition-colors">
+              <span class="w-6 h-6 rounded bg-surface-container-highest text-secondary text-[10px] font-bold flex items-center justify-center">H</span>
+              <div>
+                <div class="font-semibold text-on-surface text-[12px]">Tester (Hinata)</div>
+                <div class="text-[10px] text-on-surface-variant">QA Verification &amp; Bug Filing</div>
+              </div>
+            </button>
+            <button onclick="switchRole('senior_dev')" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-low text-body-sm text-left transition-colors">
+              <span class="w-6 h-6 rounded bg-primary-container text-on-primary-container text-[10px] font-bold flex items-center justify-center">I</span>
+              <div>
+                <div class="font-semibold text-on-surface text-[12px]">Senior Dev (Itachi)</div>
+                <div class="text-[10px] text-on-surface-variant">Architecture Review &amp; Signoff</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center gap-space-sm">
+          <div class="hidden sm:flex flex-col items-end leading-none">
+            <span class="font-headline-sm text-headline-sm text-on-surface" id="profileName">Naruto Uzumaki</span>
+            <span class="font-code-sm text-code-sm text-on-surface-variant" id="profileRole">Lead Admin</span>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xs" id="profileAvatar">
+            NU
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================================
+         3. MAIN SPRINT REPORT APP CANVAS
+    ============================================================================ -->
+    <main class="relative pt-14 w-full bg-surface min-h-screen">
+      <div class="flex flex-col w-full">
+
+        <!-- Report Tabs Navigation Bar -->
+        <div class="w-full bg-surface-container-lowest px-margin py-0 shadow-[0_1px_4px_rgba(0,0,0,0.03)] border-b border-outline-variant/20 flex flex-col gap-0">
+          <div class="flex items-center gap-space-lg overflow-x-auto no-scrollbar pt-space-xs">
+            <a id="tabDailyDefectReport" class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui">Daily Defect Report</a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=assignment">Assignment Report</a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/productivity-report-ui">Productivity Report</a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=workflow">Workflow Report</a>
+            <a class="py-space-sm px-space-xs font-headline-sm text-headline-sm text-secondary whitespace-nowrap relative border-b-2 border-secondary font-semibold" href="/sprint-report-ui">
+              Sprint Report
+            </a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=status">Status Report</a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=priority">Priority Report</a>
+            <a class="py-space-sm px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors" href="/analytics-ui?tab=category">Category Report</a>
+          </div>
+        </div>
+
+        <!-- Page Canvas Body -->
+        <div class="p-margin flex flex-col gap-margin">
+
+          <!-- Error Alert Banner (Hidden by default, shown on failure with retry) -->
+          <div id="errorBanner" class="hidden p-space-md rounded-xl bg-error-container text-on-error-container border border-error/30 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-space-sm">
+              <span class="material-symbols-outlined text-error text-[24px]">error</span>
+              <div>
+                <div class="font-headline-sm text-headline-sm font-semibold" id="errorMessage">Failed to load Sprint Report telemetry</div>
+                <div class="font-body-sm text-body-sm opacity-90">An error occurred while fetching sprint records from the database.</div>
+              </div>
+            </div>
+            <button onclick="fetchSprintReport()" class="px-space-md py-space-xs bg-error text-white font-headline-sm text-headline-sm rounded-lg hover:opacity-90 transition-opacity shadow-sm flex items-center gap-1" type="button">
+              <span class="material-symbols-outlined text-[16px]">refresh</span> Retry
+            </button>
+          </div>
+
+          <!-- Header Section with Controls -->
+          <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+            <div class="flex flex-col gap-space-2xs min-w-0">
+              <div class="flex flex-wrap items-center gap-space-sm">
+                <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">Sprint Report</h1>
+                <div class="flex items-center gap-space-xs px-space-sm py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded-lg font-medium" id="headerSprintBadge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span id="headerSprintName">Sprint 1 [Active]</span>
+                </div>
+                <div class="flex items-center gap-space-xs px-space-sm py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded-lg">
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                  Live Engine Telemetry
+                </div>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant">
+                Analyze sprint progress, delivery velocity, completion rates, workload, and defect resolution.
+              </p>
+            </div>
+
+            <!-- Controls Right -->
+            <div class="flex flex-wrap items-center gap-space-sm">
+              <!-- Sprint Selector Dropdown -->
+              <div class="relative">
+                <select id="sprintSelectDropdown" onchange="onSprintChange(this.value)" class="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-lg shadow-sm hover:bg-surface-container-low transition-colors border border-outline-variant/30 outline-none cursor-pointer">
+                  <!-- Populated dynamically via /api/v1/reports/sprint-list -->
+                  <option value="1">Sprint 1</option>
+                </select>
+              </div>
+
+              <!-- Date Range Display -->
+              <div class="relative">
+                <button class="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-lg shadow-sm hover:bg-surface-container-low transition-colors border border-outline-variant/30" type="button" title="Sprint active timeframe">
+                  <span class="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
+                  <span id="dateRangeDisplay">Date Range</span>
+                </button>
+              </div>
+
+              <!-- Refresh / Force Sync Button -->
+              <button onclick="forceSync()" class="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-on-surface-variant font-code-sm text-code-sm rounded-lg shadow-sm hover:text-on-surface transition-colors border border-outline-variant/30" title="Force Telemetry Sync" type="button">
+                <span class="material-symbols-outlined text-[15px]" id="syncSpinner">sync</span>
+                <span id="syncStatusText">Synced now</span>
+              </button>
+
+              <!-- Export Report Dropdown -->
+              <div class="relative">
+                <button onclick="toggleExportMenu()" class="flex items-center gap-space-xs px-space-md py-space-xs bg-primary text-on-primary font-body-md text-body-md rounded-lg shadow-sm hover:bg-primary-container transition-colors" type="button">
+                  <span class="material-symbols-outlined text-[16px]">file_download</span>
+                  <span class="font-medium">Export Report</span>
+                  <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                </button>
+                <div id="exportDropdownMenu" class="export-dropdown bg-surface-container-lowest rounded-lg shadow-xl p-space-xs flex flex-col gap-space-2xs border border-outline-variant/30">
+                  <button onclick="exportCurrentSprintCSV()" class="w-full px-space-sm py-space-xs font-body-sm text-body-sm text-on-surface hover:bg-surface-container rounded transition-colors flex items-center justify-between text-left" type="button">
+                    <span>Export CSV</span> <span class="font-code-sm text-outline">.csv</span>
+                  </button>
+                  <button onclick="exportPrintView()" class="w-full px-space-sm py-space-xs font-body-sm text-body-sm text-on-surface hover:bg-surface-container rounded transition-colors flex items-center justify-between text-left" type="button">
+                    <span>Export PDF</span> <span class="font-code-sm text-outline">.pdf</span>
+                  </button>
+                  <button onclick="exportTelemetryJSON()" class="w-full px-space-sm py-space-xs font-body-sm text-body-sm text-on-surface hover:bg-surface-container rounded transition-colors flex items-center justify-between text-left" type="button">
+                    <span>Telemetry JSON</span> <span class="font-code-sm text-outline">.json</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 KPI Summary Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="kpiCardsContainer">
+            <!-- KPI 1 -->
+            <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between gap-space-sm">
+              <div class="flex items-start justify-between">
+                <div class="flex flex-col">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Total Sprint Issues</span>
+                  <div class="flex items-baseline gap-space-xs mt-space-2xs">
+                    <span class="font-display text-display text-on-surface font-bold" id="kpiTotalIssues">0</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant font-medium">Issues</span>
+                  </div>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded" id="kpiScopeBadge">Sprint Scope</span>
+              </div>
+              <div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-body-sm text-body-sm border-t border-outline-variant/10">
+                <span id="kpiCommittedItems">Committed Items</span>
+                <span class="font-code-sm text-code-sm text-secondary font-semibold" id="kpiTotalPercent">100%</span>
+              </div>
+            </div>
+
+            <!-- KPI 2 -->
+            <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between gap-space-sm">
+              <div class="flex items-start justify-between">
+                <div class="flex flex-col">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Resolved Issues</span>
+                  <div class="flex items-baseline gap-space-xs mt-space-2xs">
+                    <span class="font-display text-display text-on-surface font-bold" id="kpiResolvedIssues">0</span>
+                    <span class="font-headline-md text-headline-md text-on-surface-variant" id="kpiResolvedFraction">/ 0</span>
+                  </div>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded flex items-center gap-1" id="kpiSlaBadge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Optimal SLA
+                </span>
+              </div>
+              <div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-body-sm text-body-sm border-t border-outline-variant/10">
+                <span id="kpiClosureRate">0.0% issue closure</span>
+                <span class="font-code-sm text-code-sm font-semibold text-on-surface" id="kpiClosedNote">Closed</span>
+              </div>
+            </div>
+
+            <!-- KPI 3 -->
+            <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between gap-space-sm">
+              <div class="flex items-start justify-between">
+                <div class="flex flex-col">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Sprint Completion Rate</span>
+                  <div class="flex items-baseline gap-space-xs mt-space-2xs">
+                    <span class="font-display text-display text-secondary font-bold" id="kpiCompletionRate">0.0%</span>
+                  </div>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded font-medium">Target ≥ 85%</span>
+              </div>
+              <div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-body-sm text-body-sm border-t border-outline-variant/10">
+                <span class="flex items-center gap-1" id="kpiScheduleStatus">
+                  <span class="material-symbols-outlined text-[15px] text-secondary">trending_up</span>
+                  <span>On track</span>
+                </span>
+                <span class="font-code-sm text-code-sm text-outline" id="kpiDaysProgress">Cycle</span>
+              </div>
+            </div>
+
+            <!-- KPI 4 -->
+            <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between gap-space-sm">
+              <div class="flex items-start justify-between">
+                <div class="flex flex-col">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Backlog &amp; Remaining</span>
+                  <div class="flex items-baseline gap-space-xs mt-space-2xs">
+                    <span class="font-display text-display text-on-surface font-bold" id="kpiRemainingIssues">0</span>
+                    <span class="font-headline-md text-headline-md text-on-surface-variant">Remaining</span>
+                  </div>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded" id="kpiActiveAssignees">0 Engineers</span>
+              </div>
+              <div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-body-sm text-body-sm border-t border-outline-variant/10">
+                <span id="kpiScopeStatus">Scope: Verified</span>
+                <span class="font-code-sm text-code-sm text-outline" id="kpiInFlightNote">In Flight</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sprint Information Banner -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
+              <div class="flex flex-wrap items-center gap-space-sm">
+                <span class="font-headline-md text-headline-md text-on-surface font-bold" id="bannerSprintTitle">Sprint — Title</span>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded font-medium" id="bannerSprintStatusBadge">Status</span>
+              </div>
+              <div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+                <div class="flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-[16px]">date_range</span>
+                  <span id="bannerDateRange">Dates</span>
+                </div>
+                <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                <div class="flex items-center gap-space-xs font-semibold text-secondary">
+                  <span class="material-symbols-outlined text-[16px]">schedule</span>
+                  <span id="bannerDaysRemaining">Days info</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="font-body-md text-body-md text-on-surface-variant bg-surface-container-low p-space-sm rounded-lg leading-relaxed border border-outline-variant/20" id="bannerSprintObjective">
+              <strong class="text-on-surface">Sprint Objective:</strong> Objective description.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs">
+              <div class="flex items-start gap-space-sm">
+                <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">group</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Assigned Team</span>
+                  <span class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="bannerTeamCount">Engineers</span>
+                  <span class="font-code-sm text-code-sm text-on-surface-variant truncate" id="bannerTeamNames">Assignees</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-space-sm">
+                <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">tune</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Sprint Capacity &amp; Scope</span>
+                  <span class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="bannerCapacity">0 Issues</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant" id="bannerCapacitySub">All planned items</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-space-sm">
+                <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">timer</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="font-label-caps text-label-caps uppercase text-outline">Pace &amp; Remaining</span>
+                  <span class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="bannerPace">0 Remaining</span>
+                  <span class="font-code-sm text-code-sm text-on-surface-variant" id="bannerPaceSub">Real-time status</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-Parameter Filter Toolbar -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/20 flex flex-col gap-space-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-space-sm items-center">
+              <!-- Search -->
+              <div class="lg:col-span-2 relative">
+                <span class="material-symbols-outlined text-[16px] text-on-surface-variant absolute left-3 top-1/2 -translate-y-1/2">search</span>
+                <input id="filterSearchInput" class="w-full pl-9 pr-8 py-space-xs bg-surface-container-low rounded-lg text-on-surface placeholder:text-outline font-body-md text-body-md focus:bg-surface-container-lowest outline-none shadow-sm transition-all border border-outline-variant/30" placeholder="Search sprint issues, component... /" type="text" onkeydown="if(event.key==='Enter') applyFilters()"/>
+                <kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 bg-surface-container-lowest px-1 py-0.5 rounded text-[10px] text-outline font-code-sm">/</kbd>
+              </div>
+
+              <!-- Sprint Filter Dropdown -->
+              <div class="relative">
+                <select id="filterSprintSelect" onchange="onSprintChange(this.value)" class="w-full px-space-sm py-space-xs bg-surface-container-low rounded-lg text-on-surface font-body-sm text-body-sm outline-none cursor-pointer border border-outline-variant/30">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+
+              <!-- Status Filter Dropdown -->
+              <div class="relative">
+                <select id="filterStatusSelect" class="w-full px-space-sm py-space-xs bg-surface-container-low rounded-lg text-on-surface font-body-sm text-body-sm outline-none cursor-pointer border border-outline-variant/30">
+                  <option value="">Status: All Statuses</option>
+                  <option value="RESOLVED">Resolved</option>
+                  <option value="CLOSED">Closed</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="REPORTED">Reported</option>
+                  <option value="TRIAGED">Triaged</option>
+                </select>
+              </div>
+
+              <!-- Priority / Severity Filter Dropdown -->
+              <div class="relative">
+                <select id="filterPrioritySelect" class="w-full px-space-sm py-space-xs bg-surface-container-low rounded-lg text-on-surface font-body-sm text-body-sm outline-none cursor-pointer border border-outline-variant/30">
+                  <option value="">Priority: All Tiers</option>
+                  <option value="URGENT">Urgent</option>
+                  <option value="HIGH">High</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="LOW">Low</option>
+                </select>
+              </div>
+
+              <!-- Filter Action Buttons -->
+              <div class="flex items-center gap-space-xs">
+                <button onclick="applyFilters()" class="flex-1 px-space-sm py-space-xs bg-secondary text-on-secondary font-headline-sm text-headline-sm rounded-lg hover:bg-secondary-container transition-colors shadow-sm text-center" type="button">
+                  Apply
+                </button>
+                <button onclick="clearFilters()" class="px-space-xs py-space-xs text-on-surface-variant font-body-sm text-body-sm hover:text-on-surface transition-colors" type="button">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Filter Badges Bar -->
+            <div class="flex flex-wrap items-center gap-space-xs pt-space-xs" id="activeFilterBadgesBar">
+              <span class="font-code-sm text-code-sm text-outline">Active filters:</span>
+              <span class="inline-flex items-center gap-space-xs px-space-xs py-0.5 bg-surface-container-high rounded text-on-surface font-code-sm text-code-sm" id="badgeSprint">
+                Sprint: <span id="badgeSprintText">Sprint 1</span>
+              </span>
+              <span class="font-code-sm text-code-sm text-on-surface-variant ml-space-xs" id="matchingItemsCountText">(0 sprint items matching)</span>
+            </div>
+          </div>
+
+          <!-- Empty Sprint Banner (Shown when selected sprint has 0 issues) -->
+          <div id="emptySprintNotice" class="hidden p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-space-sm">
+            <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-[28px]">inventory_2</span>
+            </div>
+            <div class="font-headline-md text-headline-md text-on-surface font-semibold">Sprint Backlog Empty</div>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+              No issues are currently linked to this sprint. You can add issues from the Sprint Management page or select another sprint above.
+            </p>
+            <a href="/milestone2-ui" class="px-space-md py-space-xs bg-secondary text-on-secondary font-headline-sm text-headline-sm rounded-lg hover:bg-secondary-container transition-colors shadow-sm inline-flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">add_circle</span> Add Issues in Sprint Management
+            </a>
+          </div>
+
+          <!-- 10 Visualizations Grid (2-Column Responsive) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter" id="visualizationsGrid">
+
+            <!-- Chart 1: Sprint Burndown -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">trending_down</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Burndown</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Current trajectory across cycle comparing ideal slope vs. actual issues remaining.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="burndownHeaderPill">
+                  0 Issues remaining
+                </span>
+              </div>
+              <div class="w-full h-56 flex flex-col justify-end" id="burndownSvgContainer">
+                <!-- Injected dynamically via renderBurndownChart() -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-md">
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-outline-variant inline-block"></span> Ideal Slope</span>
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-secondary inline-block"></span> Actual Remaining</span>
+                </div>
+                <span id="burndownFooterNotice">Factual Scope Curve</span>
+              </div>
+            </div>
+
+            <!-- Chart 2: Sprint Velocity -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">speed</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Velocity</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Completed issues vs. planned scope across all historical sprints in PostgreSQL.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded whitespace-nowrap" id="velocityAvgPill">
+                  Multi-Sprint Comparison
+                </span>
+              </div>
+              <div class="w-full h-56 flex items-end justify-between gap-space-md pt-space-md pb-space-xs" id="velocityBarsContainer">
+                <!-- Rendered dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-md">
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-secondary inline-block rounded"></span> Completed</span>
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-surface-container-high inline-block rounded"></span> Total Scope</span>
+                </div>
+                <span>All 6 Database Sprints</span>
+              </div>
+            </div>
+
+            <!-- Chart 3: Sprint Completion -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">task_alt</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Completion</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Multi-sprint comparison of issue distribution by BugFlow status lifecycle.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="sprintCompletionBadge">
+                  Resolution Rate
+                </span>
+              </div>
+              <div class="w-full h-56 flex items-end justify-between gap-space-lg pt-space-md" id="completionStackedContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex flex-wrap items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs gap-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-sm">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-secondary rounded-sm"></span> Resolved</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-surface-container-highest rounded-sm"></span> Pending/Open</span>
+                </div>
+                <span>Direct DB Records</span>
+              </div>
+            </div>
+
+            <!-- Chart 4: Daily Sprint Progress -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">show_chart</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Daily Sprint Progress</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Cumulative completed issues and remaining workload curve over cycle duration.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded whitespace-nowrap" id="dailyProgressPill">
+                  Progress Trajectory
+                </span>
+              </div>
+              <div class="w-full h-56 flex flex-col justify-end" id="dailyProgressSvgContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-md">
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-secondary inline-block"></span> Cumulative Completed</span>
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-outline inline-block"></span> Remaining Work</span>
+                </div>
+                <span id="dailyProgressDuration">Sprint Timeline</span>
+              </div>
+            </div>
+
+            <!-- Chart 5: Sprint Workload Distribution -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">badge</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Workload Distribution</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Assigned, In-Progress, and Resolved work by team member in selected sprint.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="workloadHeaderPill">
+                  Team Allocation
+                </span>
+              </div>
+              <div class="flex flex-col gap-space-md pt-space-xs overflow-y-auto max-h-56 custom-scroll" id="workloadBarsContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-md">
+                  <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-secondary rounded-full"></span> Resolved</span>
+                  <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-secondary-fixed rounded-full"></span> In Progress</span>
+                  <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-surface-container-highest rounded-full"></span> Pending</span>
+                </div>
+                <span>Actual User Assignments</span>
+              </div>
+            </div>
+
+            <!-- Chart 6: Defect Severity in Sprint -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">security</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Defect Severity in Sprint</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Volume and distribution of issues across severity tiers in selected sprint.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="severityBlockerPill">
+                  Severity Breakdown
+                </span>
+              </div>
+              <div class="flex flex-col gap-space-md pt-space-xs" id="severityBarsContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <span id="severityTotalCount">Total Scope</span>
+                <span class="text-secondary font-semibold" id="severityClosedRatio">Closure Ratio</span>
+              </div>
+            </div>
+
+            <!-- Chart 7: Sprint Status Distribution -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">pie_chart</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Status Distribution</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Issue lifecycle allocation across official BugFlow statuses in selected sprint.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded whitespace-nowrap" id="statusDistributionPill">
+                  Status Allocation
+                </span>
+              </div>
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-space-xl py-space-sm" id="donutContainer">
+                <!-- Rendered dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <span>Active Queue</span>
+                <span class="text-secondary font-medium" id="statusRemainingNote">Unfinished Remaining</span>
+              </div>
+            </div>
+
+            <!-- Chart 8: Planned vs Completed Issues -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">bar_chart</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Planned vs Completed Issues</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Commitment accuracy tracking planned issues vs delivered issues across all sprints.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="accuracyPill">
+                  Multi-Sprint Audit
+                </span>
+              </div>
+              <div class="w-full h-56 flex items-end justify-between gap-space-md pt-space-md" id="plannedVsCompletedContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <div class="flex items-center gap-space-md">
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-surface-container-high rounded"></span> Planned Issues</span>
+                  <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-secondary rounded"></span> Delivered Issues</span>
+                </div>
+                <span>Actual Database Audit</span>
+              </div>
+            </div>
+
+            <!-- Chart 9: Sprint Carryover Trend -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">move_down</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Carryover Trend</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Unfinished work and carried-over issues between sprint boundaries.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium">
+                  Spillover Trajectory
+                </span>
+              </div>
+              <div class="w-full h-56 flex flex-col justify-end" id="carryoverSvgContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <span>All Cycles in DB</span>
+                <span class="text-secondary font-medium" id="carryoverNote">Carryover status</span>
+              </div>
+            </div>
+
+            <!-- Chart 10: Sprint Resolution Trend -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-space-md">
+              <div class="flex items-start justify-between gap-space-sm">
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">bolt</span>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sprint Resolution Trend</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+                    Defect resolution timeline and closure pace throughout sprint lifecycle.
+                  </p>
+                </div>
+                <span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded whitespace-nowrap font-medium" id="resolutionTrendPill">
+                  Resolution Velocity
+                </span>
+              </div>
+              <div class="w-full h-56 flex flex-col justify-end" id="resolutionTimelineSvgContainer">
+                <!-- Injected dynamically -->
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm pt-space-xs border-t border-outline-variant/10">
+                <span id="resolutionTrendFooterSpan">Sprint Scope</span>
+                <span class="text-secondary font-semibold" id="resolutionTrendClosedSpan">0 defects closed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sprint Issue Table (Paginated Ledger) -->
+          <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col">
+            <div class="p-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm border-b border-outline-variant/20">
+              <div class="flex items-center gap-space-sm">
+                <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold" id="tableTitle">Sprint Issue Ledger</h2>
+                <span class="px-space-xs py-space-2xs bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded" id="tableCountChip">
+                  Showing 0 to 0 of 0 sprint issues
+                </span>
+              </div>
+              <button onclick="exportCurrentSprintCSV()" class="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-lg hover:bg-surface-container transition-colors shadow-sm self-start sm:self-auto border border-outline-variant/30" type="button">
+                <span class="material-symbols-outlined text-[16px]">file_download</span>
+                Export CSV
+              </button>
+            </div>
+
+            <!-- Table or Empty State -->
+            <div class="overflow-x-auto w-full">
+              <table class="w-full text-left font-body-sm text-body-sm" id="issuesTable">
+                <thead class="bg-surface-container-low text-on-surface-variant font-code-sm text-code-sm border-b border-outline-variant/20">
+                  <tr>
+                    <th class="px-space-lg py-space-sm font-semibold">ISSUE ID</th>
+                    <th class="px-space-lg py-space-sm font-semibold">TITLE &amp; COMPONENT</th>
+                    <th class="px-space-lg py-space-sm font-semibold">PRIORITY / SEVERITY</th>
+                    <th class="px-space-lg py-space-sm font-semibold">STATUS</th>
+                    <th class="px-space-lg py-space-sm font-semibold">ASSIGNEE</th>
+                    <th class="px-space-lg py-space-sm font-semibold text-right">DATE ADDED</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/10 text-on-surface" id="issuesTableBody">
+                  <!-- Populated dynamically via renderTable() -->
+                </tbody>
+              </table>
+
+              <!-- Empty Table Slate -->
+              <div id="tableEmptySlate" class="hidden p-space-xl flex flex-col items-center justify-center text-center gap-space-sm py-12">
+                <span class="material-symbols-outlined text-[36px] text-outline">search_off</span>
+                <div class="font-headline-sm text-headline-sm text-on-surface font-semibold">No Matching Issues Found</div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+                  There are no sprint issues that match your current filter parameters. Try clearing or relaxing your filters.
+                </p>
+                <button onclick="clearFilters()" class="px-space-md py-1 bg-surface-container-high text-on-surface font-body-sm text-body-sm rounded hover:bg-surface-container transition-colors mt-2" type="button">
+                  Reset Active Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Pagination Footer -->
+            <div class="p-space-md bg-surface-container-lowest flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm font-body-sm text-body-sm border-t border-outline-variant/20">
+              <div class="flex items-center gap-space-md">
+                <div class="flex items-center gap-space-xs text-on-surface-variant font-code-sm text-code-sm">
+                  <span>Rows:</span>
+                  <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="bg-surface-container-low px-space-xs py-0.5 rounded text-on-surface font-code-sm text-code-sm outline-none cursor-pointer border border-outline-variant/20">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                <span class="text-outline font-code-sm text-code-sm" id="tableSyncNotice">• Live sync connected</span>
+              </div>
+              <div class="flex items-center gap-space-xs" id="paginationButtons">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive State Previews Bottom Toolbar & Diagnostic Health (Matching Stitch Design) -->
+          <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md shadow-sm border border-outline-variant/30">
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="font-code-sm text-code-sm text-outline mr-space-xs font-semibold">Simulate State:</span>
+              <button onclick="simulateState('normal')" class="px-space-sm py-1 bg-primary text-on-primary font-code-sm text-code-sm rounded shadow-sm hover:opacity-90 transition-opacity" id="btn-state-normal" type="button">
+                Normal View
+              </button>
+              <button onclick="simulateState('empty')" class="px-space-sm py-1 bg-surface-container-lowest text-on-surface font-code-sm text-code-sm rounded hover:bg-surface-container transition-colors border border-outline-variant/30" id="btn-state-empty" type="button">
+                Empty Sprint State
+              </button>
+              <button onclick="simulateState('loading')" class="px-space-sm py-1 bg-surface-container-lowest text-on-surface font-code-sm text-code-sm rounded hover:bg-surface-container transition-colors border border-outline-variant/30" id="btn-state-loading" type="button">
+                Loading Skeleton
+              </button>
+              <button onclick="simulateState('error')" class="px-space-sm py-1 bg-surface-container-lowest text-on-surface font-code-sm text-code-sm rounded hover:bg-surface-container transition-colors border border-outline-variant/30" id="btn-state-error" type="button">
+                API Error State
+              </button>
+            </div>
+            <div class="flex items-center gap-space-sm text-on-surface-variant font-code-sm text-code-sm">
+              <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                FastAPI Core v2.4.0 healthy
+              </span>
+              <span class="text-outline-variant">•</span>
+              <span>Cluster 01 [Primary Synced]</span>
+              <span class="text-outline-variant">•</span>
+              <span class="text-secondary font-medium">SLA Target: 95.0%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Notification Toast Popup -->
+      <div id="stateToast" class="hidden fixed bottom-6 right-6 bg-primary text-on-primary px-space-md py-space-sm rounded-lg shadow-2xl font-body-sm text-body-sm items-center gap-space-sm z-50 transition-all border border-outline-variant/40">
+        <span class="material-symbols-outlined text-[18px] text-secondary">info</span>
+        <span id="stateToastText">State updated</span>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ============================================================================
+       4. CLIENT CONTROLLER & TELEMETRY ENGINE SCRIPT
+  ============================================================================ -->
+  <script>
+    // Global Application State
+    let currentSprintId = 1;
+    let sprintList = [];
+    let reportData = null;
+    let activeFilters = {
+      status: "",
+      priority: "",
+      severity: "",
+      assignee: "",
+      search: "",
+      page: 1,
+      pageSize: 20
+    };
+    let currentRole = "admin";
+    let token = localStorage.getItem("access_token") || localStorage.getItem("token") || "";
+
+    // Initialization on DOM Load
+    document.addEventListener("DOMContentLoaded", async () => {
+      // 1. Check workspace context
+      await checkWorkspaceContext();
+      // 2. Load sprints for selector
+      await loadSprintsList();
+      // 3. Fetch sprint report
+      await fetchSprintReport();
+    });
+
+    // Keyboard shortcut '/' to search
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        const searchInput = document.getElementById("filterSearchInput");
+        if (searchInput) searchInput.focus();
+      }
+    });
+
+    // Load available sprints from API
+    async function loadSprintsList() {
+      try {
+        const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+        const resp = await fetch("/api/v1/reports/sprint-list", { headers });
+        if (resp.ok) {
+          sprintList = await resp.json();
+          renderSprintDropdowns();
+        }
+      } catch (err) {
+        console.warn("Failed to load sprints list:", err);
+      }
+    }
+
+    function renderSprintDropdowns() {
+      const topSelect = document.getElementById("sprintSelectDropdown");
+      const filterSelect = document.getElementById("filterSprintSelect");
+      if (!topSelect || !filterSelect) return;
+
+      let html = "";
+      sprintList.forEach(s => {
+        const activeTag = s.id === currentSprintId ? "selected" : "";
+        html += `<option value="${s.id}" ${activeTag}>Sprint ${s.id}: ${s.sprint_name} [${s.status}] (${s.total_issues} issues)</option>`;
+      });
+
+      topSelect.innerHTML = html;
+      filterSelect.innerHTML = html;
+    }
+
+    // Fetch complete report telemetry for selected sprint
+    async function fetchSprintReport() {
+      showLoadingSkeleton(true);
+      hideErrorBanner();
+
+      try {
+        const query = new URLSearchParams();
+        if (activeFilters.status) query.set("status", activeFilters.status);
+        if (activeFilters.priority) query.set("priority", activeFilters.priority);
+        if (activeFilters.severity) query.set("severity", activeFilters.severity);
+        if (activeFilters.assignee) query.set("assignee", activeFilters.assignee);
+        if (activeFilters.search) query.set("search", activeFilters.search);
+        query.set("page", activeFilters.page);
+        query.set("page_size", activeFilters.pageSize);
+
+        const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+        const res = await fetch(`/api/v1/reports/sprint/${currentSprintId}?${query.toString()}`, { headers });
+
+        if (!res.ok) {
+          throw new Error(`API returned HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        reportData = await res.json();
+        showLoadingSkeleton(false);
+        renderSprintReport();
+        updateSyncTimer();
+      } catch (err) {
+        showLoadingSkeleton(false);
+        showErrorBanner(err.message);
+      }
+    }
+
+    // Render full UI from reportData
+    function renderSprintReport() {
+      if (!reportData) return;
+
+      const sp = reportData.sprint;
+      const kpi = reportData.kpis;
+
+      // 1. Header Badges & Info
+      document.getElementById("headerSprintName").textContent = `${sp.name} [${sp.status}]`;
+      document.getElementById("dateRangeDisplay").textContent = `${sp.start_date_display} – ${sp.end_date_display}`;
+      document.getElementById("badgeSprintText").textContent = `${sp.name} [${sp.status}]`;
+
+      // 2. 4 KPI Cards
+      document.getElementById("kpiTotalIssues").textContent = kpi.total_issues;
+      document.getElementById("kpiResolvedIssues").textContent = kpi.completed_issues;
+      document.getElementById("kpiResolvedFraction").textContent = `/ ${kpi.total_issues}`;
+      document.getElementById("kpiCompletionRate").textContent = `${kpi.completion_percentage}%`;
+      document.getElementById("kpiRemainingIssues").textContent = kpi.remaining_issues;
+      document.getElementById("kpiClosureRate").textContent = `${kpi.completion_percentage}% issue closure`;
+      document.getElementById("kpiActiveAssignees").textContent = `${kpi.active_assignees_count} Active Engineers`;
+      document.getElementById("kpiDaysProgress").textContent = `Day ${sp.days_elapsed}/${sp.total_days}`;
+
+      // 3. Information Banner
+      document.getElementById("bannerSprintTitle").textContent = `${sp.name} — ${sp.goal}`;
+      document.getElementById("bannerSprintStatusBadge").textContent = `Status: ${sp.status}`;
+      document.getElementById("bannerDateRange").textContent = `${sp.start_date_display} – ${sp.end_date_display}`;
+      document.getElementById("bannerDaysRemaining").textContent = `${sp.days_remaining} Days Remaining (Day ${sp.days_elapsed} of ${sp.total_days})`;
+      document.getElementById("bannerSprintObjective").innerHTML = `<strong class="text-on-surface">Sprint Objective:</strong> ${sp.goal}`;
+      document.getElementById("bannerTeamCount").textContent = `${kpi.active_assignees_count} Engineers Active`;
+      
+      const engineerNames = reportData.assignee_workload
+        .filter(w => w.assignee_name !== "Unassigned")
+        .map(w => w.assignee_name)
+        .join(", ");
+      document.getElementById("bannerTeamNames").textContent = engineerNames || "No assigned engineers yet";
+
+      document.getElementById("bannerCapacity").textContent = `${kpi.completed_issues} / ${kpi.total_issues} Issues (${kpi.completion_percentage}% Closed)`;
+      document.getElementById("bannerPace").textContent = `${kpi.remaining_issues} issues in flight`;
+      document.getElementById("bannerPaceSub").textContent = `Target SLA: 95% • ${kpi.completion_percentage}% delivered`;
+
+      // 4. Empty Sprint State vs Visualizations
+      const isEmpty = kpi.total_issues === 0;
+      const emptyNotice = document.getElementById("emptySprintNotice");
+      const vizGrid = document.getElementById("visualizationsGrid");
+      if (isEmpty) {
+        emptyNotice.classList.remove("hidden");
+      } else {
+        emptyNotice.classList.add("hidden");
+      }
+
+      // 5. Render 10 Charts
+      renderBurndownChart();
+      renderVelocityChart();
+      renderCompletionChart();
+      renderDailyProgressChart();
+      renderWorkloadChart();
+      renderSeverityChart();
+      renderDonutStatusChart();
+      renderPlannedVsCompletedChart();
+      renderCarryoverChart();
+      renderResolutionTrendChart();
+
+      // 6. Render Issue Ledger Table
+      renderTable();
+    }
+
+    // Chart 1: Sprint Burndown SVG
+    function renderBurndownChart() {
+      const container = document.getElementById("burndownSvgContainer");
+      if (!container || !reportData) return;
+
+      const total = reportData.kpis.total_issues;
+      const remaining = reportData.kpis.remaining_issues;
+      const totalDays = reportData.sprint.total_days || 14;
+      const elapsed = Math.min(totalDays, reportData.sprint.days_elapsed || 1);
+
+      document.getElementById("burndownHeaderPill").textContent = `${remaining} Issues remaining • Cycle on track`;
+
+      // Calculate SVG points (width: 500, height: 180, margins)
+      const xStart = 30, xEnd = 470, yTop = 20, yBottom = 160;
+      const currentX = xStart + ((xEnd - xStart) * (elapsed / totalDays));
+      const currentY = total > 0 ? (yBottom - ((remaining / total) * (yBottom - yTop))) : yBottom;
+
+      container.innerHTML = `
+        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 180">
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="${xStart}" x2="${xEnd}" y1="${yTop}" y2="${yTop}"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="${xStart}" x2="${xEnd}" y1="${(yTop + yBottom) / 2}" y2="${(yTop + yBottom) / 2}"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-width="1" x1="${xStart}" x2="${xEnd}" y1="${yBottom}" y2="${yBottom}"></line>
+          <!-- Ideal burndown line -->
+          <line class="text-outline-variant" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2" x1="${xStart}" x2="${xEnd}" y1="${yTop}" y2="${yBottom}"></line>
+          <!-- Actual burn line -->
+          <polyline class="text-secondary" fill="none" points="${xStart},${yTop} ${currentX},${currentY}" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
+          <!-- Start dot -->
+          <circle class="text-secondary" cx="${xStart}" cy="${yTop}" fill="currentColor" r="4"></circle>
+          <!-- Current day dot -->
+          <circle class="text-secondary" cx="${currentX}" cy="${currentY}" fill="currentColor" r="6"></circle>
+          <circle class="text-secondary opacity-30" cx="${currentX}" cy="${currentY}" fill="currentColor" r="11"></circle>
+          <!-- Current day marker -->
+          <line class="text-secondary" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1.5" x1="${currentX}" x2="${currentX}" y1="5" y2="${yBottom}"></line>
+          <text class="fill-current text-secondary font-code-sm text-[10px] font-bold" x="${Math.max(xStart + 40, currentX - 10)}" y="15">Day ${elapsed} (Current: ${remaining} left)</text>
+        </svg>
+      `;
+    }
+
+    // Chart 2: Sprint Velocity
+    function renderVelocityChart() {
+      const container = document.getElementById("velocityBarsContainer");
+      if (!container || !reportData) return;
+
+      const comp = reportData.comparison_across_sprints || [];
+      const maxTot = Math.max(1, ...comp.map(s => s.total_issues));
+
+      container.innerHTML = comp.map(s => {
+        const heightPct = Math.round((s.total_issues / maxTot) * 100);
+        const resolvedPct = s.total_issues > 0 ? Math.round((s.resolved_issues / s.total_issues) * 100) : 0;
+        const isCur = s.is_current;
+        return `
+          <div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+            <div class="w-full flex items-end justify-center gap-1 h-44 relative">
+              <div class="w-1/2 bg-surface-container-high rounded-t" style="height: ${Math.max(6, heightPct)}%;" title="Planned: ${s.total_issues} issues"></div>
+              <div class="w-1/2 bg-secondary rounded-t" style="height: ${Math.max(4, Math.round(heightPct * (resolvedPct / 100)))}%;" title="Delivered: ${s.resolved_issues} issues (${resolvedPct}%)"></div>
+              ${isCur ? `<span class="absolute -top-5 left-1/2 -translate-x-1/2 font-code-sm text-[10px] text-secondary font-bold">${s.resolved_issues}/${s.total_issues}</span>` : ""}
+            </div>
+            <span class="font-code-sm text-code-sm ${isCur ? 'text-secondary font-bold' : 'text-on-surface-variant'}">${s.sprint_name.substring(0, 4)}${isCur ? '*' : ''}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 3: Sprint Completion (Stacked by Status)
+    function renderCompletionChart() {
+      const container = document.getElementById("completionStackedContainer");
+      if (!container || !reportData) return;
+
+      const comp = reportData.comparison_across_sprints || [];
+      container.innerHTML = comp.map(s => {
+        const resPct = s.completion_percentage;
+        const remPct = Math.max(0, 100 - resPct);
+        const isCur = s.is_current;
+        return `
+          <div class="flex-1 flex flex-col items-center gap-space-xs">
+            <div class="w-full flex h-40 rounded overflow-hidden flex-col-reverse border border-outline-variant/20">
+              <div class="bg-secondary" style="height: ${resPct}%;" title="${s.resolved_issues} Resolved (${resPct}%)"></div>
+              <div class="bg-surface-container-highest" style="height: ${remPct}%;" title="${s.remaining_issues} Open/Pending (${remPct}%)"></div>
+            </div>
+            <span class="font-code-sm text-code-sm ${isCur ? 'text-secondary font-bold' : 'text-on-surface-variant'}">${s.sprint_name.substring(0, 4)}${isCur ? '*' : ''}</span>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("sprintCompletionBadge").textContent = `Selected: ${reportData.kpis.completion_percentage}%`;
+    }
+
+    // Chart 4: Daily Sprint Progress
+    function renderDailyProgressChart() {
+      const container = document.getElementById("dailyProgressSvgContainer");
+      if (!container || !reportData) return;
+
+      const total = reportData.kpis.total_issues;
+      const completed = reportData.kpis.completed_issues;
+      const remaining = reportData.kpis.remaining_issues;
+
+      container.innerHTML = `
+        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 180">
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="500" y1="30" y2="30"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="500" y1="90" y2="90"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-width="1" x1="0" x2="500" y1="150" y2="150"></line>
+          <!-- Cumulative Completed curve -->
+          <path class="text-secondary" d="M 30 150 Q 200 140 350 ${total > 0 ? (150 - (completed / total * 110)) : 150}" fill="none" stroke="currentColor" stroke-width="3"></path>
+          <!-- Remaining work curve -->
+          <path class="text-outline" d="M 30 40 Q 200 50 350 ${total > 0 ? (40 + (completed / total * 110)) : 150}" fill="none" stroke="currentColor" stroke-dasharray="3 3" stroke-width="2.5"></path>
+          <circle class="text-secondary" cx="350" cy="${total > 0 ? (150 - (completed / total * 110)) : 150}" fill="currentColor" r="5"></circle>
+          <circle class="text-outline" cx="350" cy="${total > 0 ? (40 + (completed / total * 110)) : 150}" fill="currentColor" r="5"></circle>
+          <text class="fill-current text-secondary font-code-sm text-[11px] font-bold" x="360" y="${total > 0 ? (145 - (completed / total * 110)) : 145}">${completed} Issues Closed</text>
+          <text class="fill-current text-on-surface-variant font-code-sm text-[11px]" x="360" y="${total > 0 ? (45 + (completed / total * 110)) : 155}">${remaining} Left</text>
+        </svg>
+      `;
+    }
+
+    // Chart 5: Sprint Workload Distribution
+    function renderWorkloadChart() {
+      const container = document.getElementById("workloadBarsContainer");
+      if (!container || !reportData) return;
+
+      const workload = reportData.assignee_workload || [];
+      if (workload.length === 0) {
+        container.innerHTML = `<div class="p-4 text-center text-on-surface-variant font-body-sm">No assignments recorded for this sprint yet.</div>`;
+        return;
+      }
+
+      const maxTot = Math.max(1, ...workload.map(w => w.total));
+
+      container.innerHTML = workload.map(w => {
+        const resolvedWidth = w.total > 0 ? (w.resolved / w.total * 100) : 0;
+        const inProgWidth = w.total > 0 ? (w.in_progress / w.total * 100) : 0;
+        const pendWidth = w.total > 0 ? (w.pending / w.total * 100) : 0;
+        return `
+          <div class="flex flex-col gap-space-2xs">
+            <div class="flex items-center justify-between font-body-sm text-body-sm">
+              <span class="font-medium text-on-surface">${w.assignee_name} <span class="text-outline font-code-sm">(${w.role})</span></span>
+              <span class="font-code-sm text-code-sm font-semibold text-on-surface">${w.total} Issues Total (${w.resolved} closed)</span>
+            </div>
+            <div class="w-full h-3 bg-surface-container-low rounded-full overflow-hidden flex border border-outline-variant/20">
+              <div class="bg-secondary" style="width: ${resolvedWidth}%;" title="${w.resolved} Resolved"></div>
+              <div class="bg-secondary-fixed" style="width: ${inProgWidth}%;" title="${w.in_progress} In Progress"></div>
+              <div class="bg-surface-container-highest" style="width: ${pendWidth}%;" title="${w.pending} Pending"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 6: Defect Severity in Sprint
+    function renderSeverityChart() {
+      const container = document.getElementById("severityBarsContainer");
+      if (!container || !reportData) return;
+
+      const sev = reportData.severity_distribution || [];
+      const total = reportData.kpis.total_issues;
+      document.getElementById("severityTotalCount").textContent = `Total Scope: ${total} Issues`;
+      document.getElementById("severityClosedRatio").textContent = `${reportData.kpis.completed_issues} of ${total} Closed (${reportData.kpis.completion_percentage}%)`;
+
+      const tiers = [
+        { key: "BLOCKER", label: "Blocker", color: "bg-error", text: "text-error" },
+        { key: "CRITICAL", label: "Critical", color: "bg-error", text: "text-error" },
+        { key: "MAJOR", label: "Major", color: "bg-secondary", text: "text-on-surface" },
+        { key: "MINOR", label: "Minor", color: "bg-outline", text: "text-on-surface-variant" }
+      ];
+
+      container.innerHTML = tiers.map(t => {
+        const found = sev.find(s => s.severity.toUpperCase() === t.key);
+        const count = found ? found.count : 0;
+        const pct = found ? found.percentage : 0;
+        return `
+          <div class="flex items-center gap-space-md">
+            <span class="w-24 font-code-sm text-code-sm ${t.text} font-bold flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full ${t.color}"></span> ${t.label}
+            </span>
+            <div class="flex-1 h-5 bg-surface-container-low rounded overflow-hidden flex border border-outline-variant/20">
+              <div class="${t.color} flex items-center px-2 text-white font-code-sm text-[10px]" style="width: ${Math.max(count > 0 ? 15 : 0, pct)}%;">
+                ${count > 0 ? `${count} (${pct}%)` : ''}
+              </div>
+            </div>
+            <span class="font-code-sm text-code-sm text-on-surface-variant w-8 text-right">${count}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 7: Donut Status Distribution
+    function renderDonutStatusChart() {
+      const container = document.getElementById("donutContainer");
+      if (!container || !reportData) return;
+
+      const total = reportData.kpis.total_issues;
+      const statuses = reportData.status_distribution || [];
+
+      let strokeDashOffsets = 0;
+      const palette = ["#0051d5", "#316bf3", "#94a3b8", "#e2e8f0", "#45464d"];
+
+      const circlesHtml = statuses.map((st, idx) => {
+        const pct = st.percentage;
+        const color = palette[idx % palette.length];
+        const offset = strokeDashOffsets;
+        strokeDashOffsets += pct;
+        return `
+          <path class="transition-all" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            fill="none" stroke="${color}" stroke-dasharray="${pct}, 100" stroke-dashoffset="-${offset}" stroke-width="4.5">
+          </path>
+        `;
+      }).join("");
+
+      const legendHtml = statuses.map((st, idx) => {
+        const color = palette[idx % palette.length];
+        return `
+          <div class="flex items-center justify-between gap-space-lg">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-3 h-3 rounded-full" style="background-color: ${color};"></span>
+              <span class="text-on-surface">${st.status}</span>
+            </div>
+            <span class="font-code-sm text-code-sm font-semibold">${st.count} (${st.percentage}%)</span>
+          </div>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <div class="relative w-40 h-40 flex items-center justify-center">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+            <path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4.5"></path>
+            ${circlesHtml}
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span class="font-headline-lg text-headline-lg text-on-surface font-bold">${total}</span>
+            <span class="font-code-sm text-code-sm text-on-surface-variant uppercase">Issues</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-space-xs font-body-sm text-body-sm w-full sm:w-auto">
+          ${legendHtml || '<div class="text-outline">No issues recorded</div>'}
+        </div>
+      `;
+
+      document.getElementById("statusRemainingNote").textContent = `${reportData.kpis.remaining_issues} Unfinished Remaining`;
+    }
+
+    // Chart 8: Planned vs Completed Issues
+    function renderPlannedVsCompletedChart() {
+      const container = document.getElementById("plannedVsCompletedContainer");
+      if (!container || !reportData) return;
+
+      const comp = reportData.comparison_across_sprints || [];
+      const maxTot = Math.max(1, ...comp.map(s => s.total_issues));
+
+      container.innerHTML = comp.map(s => {
+        const planH = Math.max(6, Math.round((s.total_issues / maxTot) * 100));
+        const delivH = Math.max(4, Math.round((s.resolved_issues / maxTot) * 100));
+        const isCur = s.is_current;
+        return `
+          <div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end">
+            <div class="w-full flex items-end justify-center gap-1 h-44">
+              <div class="w-1/2 bg-surface-container-high rounded-t" style="height: ${planH}%;" title="Planned: ${s.total_issues}"></div>
+              <div class="w-1/2 bg-secondary rounded-t" style="height: ${delivH}%;" title="Delivered: ${s.resolved_issues}"></div>
+            </div>
+            <span class="font-code-sm text-code-sm ${isCur ? 'text-secondary font-bold' : 'text-on-surface-variant'}">${s.sprint_name.substring(0, 4)}${isCur ? '*' : ''}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 9: Sprint Carryover Trend
+    function renderCarryoverChart() {
+      const container = document.getElementById("carryoverSvgContainer");
+      if (!container || !reportData) return;
+
+      const comp = reportData.comparison_across_sprints || [];
+      const curRemaining = reportData.kpis.remaining_issues;
+      document.getElementById("carryoverNote").textContent = `Current cycle: ${curRemaining} spillover issues`;
+
+      const bars = comp.map((s, idx) => {
+        const x = 30 + (idx * 75);
+        const barH = Math.min(120, s.remaining_issues * 20);
+        const y = 160 - barH;
+        const isCur = s.is_current;
+        return `
+          <rect class="${isCur ? 'text-secondary' : 'text-surface-container-high'}" fill="currentColor" height="${Math.max(4, barH)}" rx="3" width="36" x="${x}" y="${y}"></rect>
+          <text class="fill-current ${isCur ? 'text-secondary font-bold' : 'text-on-surface'} font-code-sm text-[10px]" text-anchor="middle" x="${x + 18}" y="${Math.max(15, y - 5)}">${s.remaining_issues} Left</text>
+          <text class="fill-current text-on-surface-variant font-code-sm text-[10px]" text-anchor="middle" x="${x + 18}" y="175">${s.sprint_name.substring(0, 4)}</text>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 180">
+          <line class="text-error" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1.5" x1="0" x2="500" y1="50" y2="50"></line>
+          <text class="fill-current text-error font-code-sm text-[10px] font-bold" x="5" y="42">Spillover Threshold Line</text>
+          <line class="text-surface-container" stroke="currentColor" stroke-width="1" x1="0" x2="500" y1="160" y2="160"></line>
+          ${bars}
+        </svg>
+      `;
+    }
+
+    // Chart 10: Sprint Resolution Trend
+    function renderResolutionTrendChart() {
+      const container = document.getElementById("resolutionTimelineSvgContainer");
+      if (!container || !reportData) return;
+
+      const timeline = reportData.resolution_timeline || [];
+      const totalResolved = reportData.kpis.completed_issues;
+      document.getElementById("resolutionTrendClosedSpan").textContent = `${totalResolved} defects closed`;
+
+      if (timeline.length === 0) {
+        container.innerHTML = `<div class="h-full flex items-center justify-center text-outline font-code-sm">No resolved defects in timeline</div>`;
+        return;
+      }
+
+      const maxCount = Math.max(1, ...timeline.map(t => t.resolved_count));
+      const stepX = 440 / Math.max(1, timeline.length - 1);
+
+      const points = timeline.map((t, idx) => {
+        const x = 30 + (idx * stepX);
+        const y = 150 - ((t.resolved_count / maxCount) * 110);
+        return `${x},${y}`;
+      }).join(" ");
+
+      container.innerHTML = `
+        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 180">
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="500" y1="40" y2="40"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="500" y1="95" y2="95"></line>
+          <line class="text-surface-container" stroke="currentColor" stroke-width="1" x1="0" x2="500" y1="150" y2="150"></line>
+          <polyline class="text-secondary" fill="none" points="${points}" stroke="currentColor" stroke-width="2.5"></polyline>
+          ${timeline.map((t, idx) => {
+            const x = 30 + (idx * stepX);
+            const y = 150 - ((t.resolved_count / maxCount) * 110);
+            return `
+              <circle class="text-secondary" cx="${x}" cy="${y}" fill="currentColor" r="4"></circle>
+              <text class="fill-current text-secondary font-code-sm text-[9px]" text-anchor="middle" x="${x}" y="${y - 8}">${t.resolved_count}</text>
+            `;
+          }).join("")}
+        </svg>
+      `;
+    }
+
+    // Render Paginated Ledger Table
+    function renderTable() {
+      const tbody = document.getElementById("issuesTableBody");
+      const emptySlate = document.getElementById("tableEmptySlate");
+      const table = document.getElementById("issuesTable");
+      const countChip = document.getElementById("tableCountChip");
+      const title = document.getElementById("tableTitle");
+
+      if (!reportData) return;
+
+      const issues = reportData.issues || [];
+      const pg = reportData.pagination;
+      title.textContent = `${reportData.sprint.name} Issue Ledger`;
+
+      const start = pg.total_matching > 0 ? (pg.page - 1) * pg.page_size + 1 : 0;
+      const end = Math.min(pg.total_matching, pg.page * pg.page_size);
+      countChip.textContent = `Showing ${start} to ${end} of ${pg.total_matching} sprint issues`;
+      document.getElementById("matchingItemsCountText").textContent = `(${pg.total_matching} sprint items matching)`;
+
+      if (issues.length === 0) {
+        tbody.innerHTML = "";
+        table.classList.add("hidden");
+        emptySlate.classList.remove("hidden");
+      } else {
+        table.classList.remove("hidden");
+        emptySlate.classList.add("hidden");
+
+        tbody.innerHTML = issues.map(iss => {
+          const isResolved = ["RESOLVED", "CLOSED"].includes(iss.status.toUpperCase());
+          const statusBadge = isResolved
+            ? `<span class="inline-flex items-center gap-1 px-space-xs py-0.5 bg-secondary-fixed text-on-secondary-fixed font-code-sm text-code-sm rounded"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ${iss.status}</span>`
+            : `<span class="inline-flex items-center gap-1 px-space-xs py-0.5 bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span> ${iss.status}</span>`;
+
+          const isCritical = ["CRITICAL", "BLOCKER", "URGENT"].includes(iss.severity.toUpperCase()) || ["URGENT", "HIGH"].includes(iss.priority.toUpperCase());
+          const severityBadge = isCritical
+            ? `<span class="inline-flex items-center gap-1 px-space-xs py-0.5 bg-error-container text-on-error-container font-code-sm text-code-sm rounded"><span class="w-1.5 h-1.5 rounded-full bg-error"></span> ${iss.severity} / ${iss.priority}</span>`
+            : `<span class="inline-flex items-center gap-1 px-space-xs py-0.5 bg-surface-container-high text-on-surface font-code-sm text-code-sm rounded"><span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span> ${iss.severity} / ${iss.priority}</span>`;
+
+          const initials = (iss.assignee_name || "UN").split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+          const dateAdded = iss.created_at ? iss.created_at.substring(0, 10) : "—";
+
+          return `
+            <tr class="hover:bg-surface-container-low transition-colors group">
+              <td class="px-space-lg py-space-sm font-code-sm text-code-sm text-secondary font-semibold">
+                #${iss.issue_key}
+              </td>
+              <td class="px-space-lg py-space-sm">
+                <div class="flex flex-col">
+                  <span class="font-medium text-on-surface group-hover:text-secondary transition-colors">${escapeHtml(iss.title)}</span>
+                  <div class="flex items-center gap-space-xs mt-0.5">
+                    <span class="px-space-xs py-0 bg-surface-container rounded font-code-sm text-[10px] text-on-surface-variant">${escapeHtml(iss.affected_module)}</span>
+                    <span class="text-outline text-[11px]">• ID ${iss.id}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-space-lg py-space-sm">
+                ${severityBadge}
+              </td>
+              <td class="px-space-lg py-space-sm">
+                ${statusBadge}
+              </td>
+              <td class="px-space-lg py-space-sm">
+                <div class="flex items-center gap-space-xs">
+                  <div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-code-sm text-[10px] font-bold">${initials}</div>
+                  <span class="font-medium text-on-surface">${escapeHtml(iss.assignee_name)}</span>
+                </div>
+              </td>
+              <td class="px-space-lg py-space-sm text-right font-code-sm text-code-sm text-on-surface-variant">
+                ${dateAdded}
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      renderPaginationButtons();
+    }
+
+    // Pagination controls rendering
+    function renderPaginationButtons() {
+      const container = document.getElementById("paginationButtons");
+      if (!container || !reportData) return;
+
+      const pg = reportData.pagination;
+      let btns = "";
+
+      // Previous button
+      if (pg.page > 1) {
+        btns += `<button onclick="goToPage(${pg.page - 1})" class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-code-sm text-code-sm flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>`;
+      }
+
+      // Page numbers
+      for (let p = 1; p <= pg.total_pages; p++) {
+        if (p === pg.page) {
+          btns += `<button class="w-7 h-7 rounded bg-secondary text-on-secondary font-code-sm text-code-sm font-semibold flex items-center justify-center" type="button">${p}</button>`;
+        } else {
+          btns += `<button onclick="goToPage(${p})" class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-code-sm text-code-sm flex items-center justify-center" type="button">${p}</button>`;
+        }
+      }
+
+      // Next button
+      if (pg.page < pg.total_pages) {
+        btns += `<button onclick="goToPage(${pg.page + 1})" class="w-7 h-7 rounded hover:bg-surface-container text-on-surface font-code-sm text-code-sm flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>`;
+      }
+
+      container.innerHTML = btns;
+    }
+
+    function goToPage(p) {
+      activeFilters.page = p;
+      fetchSprintReport();
+    }
+
+    function changePageSize(size) {
+      activeFilters.pageSize = parseInt(size, 10);
+      activeFilters.page = 1;
+      fetchSprintReport();
+    }
+
+    // Filter Handlers
+    function onSprintChange(sprintId) {
+      currentSprintId = parseInt(sprintId, 10);
+      activeFilters.page = 1;
+      renderSprintDropdowns();
+      fetchSprintReport();
+    }
+
+    function applyFilters() {
+      activeFilters.search = document.getElementById("filterSearchInput").value.trim();
+      activeFilters.status = document.getElementById("filterStatusSelect").value;
+      activeFilters.priority = document.getElementById("filterPrioritySelect").value;
+      activeFilters.page = 1;
+      fetchSprintReport();
+      showToast("Filters applied to sprint dataset");
+    }
+
+    function clearFilters() {
+      document.getElementById("filterSearchInput").value = "";
+      document.getElementById("filterStatusSelect").value = "";
+      document.getElementById("filterPrioritySelect").value = "";
+      activeFilters.search = "";
+      activeFilters.status = "";
+      activeFilters.priority = "";
+      activeFilters.severity = "";
+      activeFilters.assignee = "";
+      activeFilters.page = 1;
+      fetchSprintReport();
+      showToast("Filters reset to default");
+    }
+
+    function handleQuickSearch(val) {
+      activeFilters.search = val.trim();
+      document.getElementById("filterSearchInput").value = val;
+      activeFilters.page = 1;
+      fetchSprintReport();
+    }
+
+    // CSV Export: Real Download with Selected Sprint and Active Filters
+    function exportCurrentSprintCSV() {
+      if (!reportData) return;
+
+      const total = reportData.kpis.filtered_matching_count;
+      if (total === 0) {
+        showToast("No matching records found to export");
+        return;
+      }
+
+      const query = new URLSearchParams();
+      if (activeFilters.status) query.set("status", activeFilters.status);
+      if (activeFilters.priority) query.set("priority", activeFilters.priority);
+      if (activeFilters.severity) query.set("severity", activeFilters.severity);
+      if (activeFilters.assignee) query.set("assignee", activeFilters.assignee);
+      if (activeFilters.search) query.set("search", activeFilters.search);
+
+      const downloadUrl = `/api/v1/reports/sprint/${currentSprintId}/export/csv?${query.toString()}`;
+      window.location.href = downloadUrl;
+      showToast(`Exporting ${total} sprint issues to CSV`);
+    }
+
+    function exportPrintView() {
+      window.print();
+    }
+
+    function exportTelemetryJSON() {
+      if (!reportData) return;
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportData, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `bugflow_sprint_${currentSprintId}_telemetry.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("Sprint telemetry JSON exported");
+    }
+
+    function toggleExportMenu() {
+      const menu = document.getElementById("exportDropdownMenu");
+      if (menu) menu.classList.toggle("show");
+    }
+
+    function toggleWorkspaceDropdown() {
+      const menu = document.getElementById("workspaceDropdownMenu");
+      if (menu) menu.classList.toggle("show");
+    }
+
+    // Close dropdowns on outside click
+    document.addEventListener("click", (e) => {
+      const exportMenu = document.getElementById("exportDropdownMenu");
+      if (exportMenu && !e.target.closest(".relative")) {
+        exportMenu.classList.remove("show");
+      }
+      const wsMenu = document.getElementById("workspaceDropdownMenu");
+      if (wsMenu && !e.target.closest("#workspaceToggleBtn")) {
+        wsMenu.classList.remove("show");
+      }
+    });
+
+    // Force Sync button
+    function forceSync() {
+      const spinner = document.getElementById("syncSpinner");
+      if (spinner) spinner.classList.add("animate-spin");
+      fetchSprintReport().then(() => {
+        setTimeout(() => {
+          if (spinner) spinner.classList.remove("animate-spin");
+          showToast("Live engine telemetry synced");
+        }, 600);
+      });
+    }
+
+    function updateSyncTimer() {
+      document.getElementById("syncStatusText").textContent = "Synced now";
+    }
+
+    // Simulation States (Bottom Toolbar from Stitch design)
+    function simulateState(state) {
+      ['normal', 'empty', 'loading', 'error'].forEach(id => {
+        const b = document.getElementById('btn-state-' + id);
+        if (b) {
+          b.className = 'px-space-sm py-1 bg-surface-container-lowest text-on-surface font-code-sm text-code-sm rounded hover:bg-surface-container transition-colors border border-outline-variant/30';
+        }
+      });
+      const activeBtn = document.getElementById('btn-state-' + state);
+      if (activeBtn) {
+        activeBtn.className = 'px-space-sm py-1 bg-primary text-on-primary font-code-sm text-code-sm rounded shadow-sm hover:opacity-90 transition-opacity';
+      }
+
+      if (state === 'normal') {
+        hideErrorBanner();
+        showLoadingSkeleton(false);
+        fetchSprintReport();
+        showToast("Normal active sprint view loaded");
+      } else if (state === 'empty') {
+        hideErrorBanner();
+        showLoadingSkeleton(false);
+        // Switch to empty sprint (Sprint 3 or 4)
+        const emptySprint = sprintList.find(s => s.total_issues === 0);
+        if (emptySprint) {
+          currentSprintId = emptySprint.id;
+          renderSprintDropdowns();
+          fetchSprintReport();
+        } else {
+          // Render artificial empty slate
+          document.getElementById("emptySprintNotice").classList.remove("hidden");
+          document.getElementById("tableEmptySlate").classList.remove("hidden");
+          document.getElementById("issuesTable").classList.add("hidden");
+        }
+        showToast("Previewing empty sprint backlog state");
+      } else if (state === 'loading') {
+        hideErrorBanner();
+        showLoadingSkeleton(true);
+        showToast("Simulating background aggregation pipeline fetch...");
+      } else if (state === 'error') {
+        showLoadingSkeleton(false);
+        showErrorBanner("504 Gateway Timeout: Celery worker socket telemetry pipeline unreachable");
+        showToast("Simulating API error state");
+      }
+    }
+
+    function showLoadingSkeleton(loading) {
+      const kpis = document.getElementById("kpiCardsContainer");
+      if (loading) {
+        kpis.classList.add("opacity-50");
+      } else {
+        kpis.classList.remove("opacity-50");
+      }
+    }
+
+    function showErrorBanner(msg) {
+      const banner = document.getElementById("errorBanner");
+      const text = document.getElementById("errorMessage");
+      if (banner && text) {
+        text.textContent = msg;
+        banner.classList.remove("hidden");
+      }
+    }
+
+    function hideErrorBanner() {
+      const banner = document.getElementById("errorBanner");
+      if (banner) banner.classList.add("hidden");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("stateToast");
+      const text = document.getElementById("stateToastText");
+      if (toast && text) {
+        text.textContent = msg;
+        toast.classList.remove("hidden");
+        toast.classList.add("flex");
+        setTimeout(() => {
+          toast.classList.remove("flex");
+          toast.classList.add("hidden");
+        }, 3000);
+      }
+    }
+
+    // Role & Workspace Switching
+    async function checkWorkspaceContext() {
+      const path = window.location.pathname;
+      let pathRole = null;
+      if (path.includes("developer") && !path.includes("senior")) {
+        pathRole = "developer";
+      } else if (path.includes("tester")) {
+        pathRole = "tester";
+      } else if (path.includes("senior")) {
+        pathRole = "senior_dev";
+      }
+
+      try {
+        const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+        const res = await fetch("/api/v1/workspace/current", { headers });
+        if (res.ok) {
+          const data = await res.json();
+          currentRole = pathRole || data.workspace_role || "admin";
+          updateRoleUI(currentRole, data.name || "Alex Chen");
+        } else if (pathRole) {
+          currentRole = pathRole;
+          updateRoleUI(currentRole);
+        } else {
+          updateRoleUI("admin", "Naruto Uzumaki");
+        }
+      } catch (err) {
+        currentRole = pathRole || "admin";
+        updateRoleUI(currentRole, "Naruto Uzumaki");
+      }
+    }
+
+    async function switchRole(role) {
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        };
+        const res = await fetch("/api/v1/workspace/switch", {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ role })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          currentRole = role;
+          updateRoleUI(role, data.name);
+          showToast(`Switched workspace context to ${role}`);
+          fetchSprintReport();
+        } else {
+          showToast("Workspace switch restricted to Admin");
+        }
+      } catch (err) {
+        showToast("Failed to switch workspace context");
+      }
+    }
+
+    function updateRoleUI(role, name) {
+      const roleMap = {
+        "admin": { title: "Lead Admin", label: "Admin Workspace", tag: "(Admin)", avatar: "NU", full: "Naruto Uzumaki", analyticsUrl: "/analytics-ui", workspaceUrl: "/admin-ui" },
+        "developer": { title: "Core Developer", label: "Developer Workspace", tag: "(Dev)", avatar: "SU", full: "Sasuke Uchiha", analyticsUrl: "/developer-analytics-ui", workspaceUrl: "/developer-ui" },
+        "tester": { title: "QA Lead", label: "Tester Workspace", tag: "(QA)", avatar: "HH", full: "Hinata Hyuga", analyticsUrl: "/tester-analytics-ui", workspaceUrl: "/tester-ui" },
+        "senior_dev": { title: "Senior Developer", label: "Senior Dev Workspace", tag: "(Sr. Dev)", avatar: "IU", full: "Itachi Uchiha", analyticsUrl: "/senior-analytics-ui", workspaceUrl: "/senior-developer-ui" }
+      };
+
+      const meta = roleMap[role] || roleMap["admin"];
+      document.getElementById("currentWorkspaceText").textContent = meta.label;
+      document.getElementById("currentWorkspaceRoleTag").textContent = meta.tag;
+      const wsBc = document.getElementById("headerWorkspaceBreadcrumb");
+      if (wsBc) {
+        wsBc.textContent = meta.label;
+        if (meta.workspaceUrl) wsBc.setAttribute("href", meta.workspaceUrl);
+      }
+      document.getElementById("profileName").textContent = meta.full;
+      document.getElementById("profileRole").textContent = meta.title;
+      document.getElementById("profileAvatar").textContent = meta.avatar;
+
+      // Update Daily Defect Report and sidebar Analytics link to match role
+      const dailyLink = document.getElementById("tabDailyDefectReport");
+      if (dailyLink && meta.analyticsUrl) {
+        dailyLink.href = meta.analyticsUrl;
+      }
+      const sideLink = document.getElementById("sidebarAnalyticsLink");
+      if (sideLink && meta.analyticsUrl) {
+        sideLink.href = meta.analyticsUrl;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

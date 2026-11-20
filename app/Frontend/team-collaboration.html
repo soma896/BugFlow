@@ -1,1160 +1,1967 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BugFlow - Team Collaboration</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#182033}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.side{width:250px;position:fixed;inset:0 auto 0 0;background:linear-gradient(180deg,#111e33,#0d1726);border-right:1px solid #1c2d44;padding:22px 14px}.brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:18px;margin:0 8px 38px}.brand-b{width:34px;height:34px;border-radius:9px;background:#6749f5;display:grid;place-items:center}.section{font-size:10px;color:#70849c;letter-spacing:.8px;margin:0 8px 10px}.nav{display:flex;flex-direction:column;gap:5px}.nav a{color:#9cadc0;text-decoration:none;padding:12px;border-radius:8px;font-size:13px}.nav a.active,.nav a:hover{background:#182744;color:#fff}.main{margin-left:250px;width:calc(100% - 250px);padding:28px}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:20px}.head h1{margin:0;font-size:28px}.head p{margin:5px 0;color:#8397af;font-size:12px}.actions{display:flex;gap:9px}.btn{border:1px solid #e3e8f2;background:#ffffff;color:#182033;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700}.primary{background:#6749f5;border-color:#765cff}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}.card,.panel{background:#ffffff;border:1px solid #e3e8f2;border-radius:10px}.card{padding:15px}.label{font-size:9px;text-transform:uppercase;color:#8297af}.num{font-size:25px;font-weight:800;margin-top:5px}.sub{font-size:9px;color:#6f849d;margin-top:3px}.selector{padding:14px;margin-bottom:15px}.selector label{display:block;color:#b8c6d6;font-size:10px;font-weight:800;margin-bottom:7px}.selectbox{width:100%;height:40px;border:1px solid #29435f;background:#08182a;color:#fff;border-radius:7px;padding:0 10px}.issue-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-top:12px}.issue-title{font-size:16px;font-weight:800}.issue-desc{font-size:10px;color:#8498b0;margin-top:4px}.chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.chip{padding:6px 9px;border-radius:15px;background:#142944;color:#a9c5ff;font-size:9px;font-weight:800}.chip.high{background:#493a13;color:#ffc638}.chip.status{background:#17365b;color:#68a8ff}.chip.sprint{background:#183c32;color:#4ce09b}.layout{display:grid;grid-template-columns:1.3fr .9fr;gap:15px;align-items:start}.left,.right{display:grid;gap:15px}.panel-head{padding:14px 15px;border-bottom:1px solid #19334e;display:flex;justify-content:space-between;align-items:center}.title{font-size:14px;font-weight:800}.muted{color:#7890a8;font-size:9px}.comments{padding:12px 15px}.comment{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #18314a}.comment:last-child{border-bottom:0}.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#6749f5;font-size:10px;font-weight:900;flex:none}.comment-body{flex:1}.comment-top{display:flex;justify-content:space-between;gap:8px}.comment-name{font-size:10px;font-weight:800}.comment-time{font-size:8px;color:#71869e}.comment-text{margin-top:5px;font-size:10px;line-height:1.55;color:#cbd6e4;white-space:pre-wrap}.composer{padding:12px 15px;border-top:1px solid #19334e}.composer textarea{width:100%;min-height:82px;resize:vertical;border:1px solid #29435f;background:#08182a;color:#fff;border-radius:8px;padding:10px;font-size:10px;outline:none}.composer-foot{display:flex;justify-content:flex-end;margin-top:8px}.attachments{padding:12px 15px}.upload{border:1px dashed #31506d;background:#08182a;border-radius:9px;padding:14px;text-align:center}.upload input{display:block;width:100%;font-size:10px;color:#a9b8ca;margin-bottom:9px}.files{margin-top:10px;display:grid;gap:7px}.file{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #1d3954;background:#0b1d31;border-radius:7px;padding:9px}.file-name{font-size:10px;font-weight:700}.file-meta{font-size:8px;color:#71869e;margin-top:3px}.small{padding:6px 8px;font-size:9px}.code{padding:12px 15px}.code-form{display:grid;grid-template-columns:1.2fr .55fr;gap:8px}.code-form input{height:36px}.code-form .wide{grid-column:1/-1}.refs{margin-top:10px;display:grid;gap:7px}.ref{border:1px solid #1d3954;background:#0b1d31;border-radius:7px;padding:9px}.ref-path{font-family:Consolas,monospace;color:#8f7dff;font-size:9px}.ref-note{font-size:9px;color:#b8c6d6;margin-top:4px}.history{padding:10px 15px}.event{display:flex;gap:9px;padding:10px 0;border-bottom:1px solid #18314a}.event:last-child{border:0}.dot{width:8px;height:8px;border-radius:50%;background:#6b4fff;margin-top:4px;flex:none}.event-main{font-size:9px;color:#c8d4e1;line-height:1.5}.event-time{font-size:8px;color:#71869e;margin-top:3px}.workflow{padding:12px 15px}.step{display:flex;gap:11px;position:relative;padding:10px 0}.step:not(:last-child):after{content:"";position:absolute;left:12px;top:35px;bottom:-3px;width:1px;background:#24405b}.circle{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#1a2d46;color:#8198b1;font-size:9px;font-weight:900;z-index:1}.step.done .circle{background:#153f32;color:#3de19a}.step.current .circle{background:#2b205f;color:#aa98ff}.step b{font-size:10px}.step span{display:block;color:#71869e;font-size:8px;margin-top:3px}.assignment{padding:12px 15px}.assignment label{display:block;font-size:9px;color:#9db0c4;font-weight:800;margin-bottom:6px}.assignment select{height:37px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.action-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.activity-note{font-size:8px;color:#71869e;margin-top:8px;line-height:1.5}.empty{text-align:center;color:#71859d;padding:28px;font-size:10px}.toast{position:fixed;right:20px;bottom:20px;z-index:50;background:#ffffff;border:1px solid #e3e8f2;padding:12px 15px;border-radius:8px;font-size:10px;opacity:0;transform:translateY(20px);transition:.25s;color:#182033}.toast.show{opacity:1;transform:none}.toast.err{color:#ff7d87;border-color:#6c3039}.toast.ok{color:#59dda2;border-color:#2d624e}@media(max-width:1050px){.cards{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}}@media(max-width:700px){.side{width:68px}.brand span,.section,.nav a span{display:none}.nav a{text-align:center}.main{margin-left:68px;width:calc(100% - 68px);padding:17px}.head{flex-direction:column}.cards,.row,.code-form{grid-template-columns:1fr}.chips{justify-content:flex-start}.issue-head{flex-direction:column;align-items:flex-start}}
-/* Premium BugFlow collaboration theme: visual overrides only. */
-:root{
-  --bf-bg:#f5f7fb;
-  --bf-bg-deep:#f0f4f9;
-  --bf-sidebar:#111e33;
-  --bf-panel:#ffffff;
-  --bf-panel-2:#ffffff;
-  --bf-border:#d9e1ec;
-  --bf-border-soft:#d9e1ec;
-  --bf-text:#273449;
-  --bf-heading:#172033;
-  --bf-muted:#5f6b7a;
-  --bf-subtle:#7a8798;
-  --bf-violet:#3b66d9;
-  --bf-violet-deep:#3158c5;
-  --bf-cyan:#3b66d9;
-  --bf-green:#16a765;
-  --bf-amber:#d98b00;
-  --bf-red:#df5a5a;
-}
-*{box-sizing:border-box}
-body{background:var(--bf-bg);color:var(--bf-text)}
-.side{background:linear-gradient(180deg,#111e33 0%,#0d1726 100%);border-right:1px solid #1c2d44;box-shadow:none}
-.brand-b{background:#3b66d9;color:#fff;box-shadow:none}
-.section{color:#7d8fa9}
-.nav a{color:#9cadc0;transition:background .2s ease,color .2s ease}
-.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
-.nav a.active{background:#3b66d9;color:#fff;box-shadow:0 4px 12px rgba(59,102,217,.28)}
-.main{background:transparent}
-.head h1{letter-spacing:-.025em;color:#172033}
-.head p,.muted,.sub,.activity-note,.issue-desc{color:var(--bf-muted)}
-.btn{border:1px solid var(--bf-border);background:#ffffff;color:#273449;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700;box-shadow:0 1px 2px rgba(24,32,51,.03);transition:all .15s ease}
-.btn:hover{background:#f0f4ff;border-color:#3b66d9;color:#3b66d9}
-.btn.primary{background:#3b66d9;border-color:#3b66d9;color:#ffffff;box-shadow:0 4px 12px rgba(59,102,217,.25)}
-.btn.primary:hover{background:#3158c5;border-color:#3158c5;color:#ffffff}
-.cards{gap:14px}
-.card,.panel{background:#ffffff;border:1px solid var(--bf-border);border-radius:12px;box-shadow:0 2px 8px rgba(24,32,51,.04)}
-.card{position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
-.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(24,32,51,.08)}
-.card:before{display:none}
-.label{color:var(--bf-muted);font-weight:700}
-.num{color:#172033;font-weight:800;text-shadow:none}
-.sub{color:var(--bf-subtle)}
-.selector{background:#ffffff;border:1px solid var(--bf-border);box-shadow:0 2px 8px rgba(24,32,51,.04)}
-.selector label,.assignment label{color:#172033;font-weight:700}
-.selectbox,select,input,textarea{background:#ffffff;color:#172033;border:1px solid var(--bf-border);transition:border-color .2s ease,box-shadow .2s ease}
-.selectbox:focus,select:focus,input:focus,textarea:focus{outline:none;border-color:var(--bf-violet);box-shadow:0 0 0 3px rgba(59,102,217,.12);background:#ffffff}
-.issue-title{color:#172033;font-size:16px;font-weight:800;text-shadow:none}
-.issue-desc{color:var(--bf-muted);font-size:11px;margin-top:4px}
-.chip{padding:5px 10px;border-radius:999px;font-size:9px;font-weight:700;border:1px solid transparent}
-.chip.high{background:#feeceb;color:#df5a5a;border-color:#f8d0cd}
-.chip.status{background:#eef3ff;color:#3b66d9;border-color:#d4e2fc}
-.chip.sprint{background:#eaf9f1;color:#16a765;border-color:#b9edd2}
-.panel-head{border-color:var(--bf-border)}
-.title{color:#172033;font-weight:800}
-.comments,.history,.files,.refs{scrollbar-color:#c2d0e0 transparent}
-.composer,.attachments,.code{background:#ffffff;border-color:var(--bf-border)}
-textarea,input{color:#172033}
-textarea::placeholder,input::placeholder{color:var(--bf-subtle)}
-.composer{border-top:1px solid var(--bf-border)}
-.composer textarea{background:#ffffff;border:1px solid var(--bf-border);color:#273449}
-.upload{background:#f8fafc;border:1px dashed var(--bf-border)}
-.upload input[type=file]{color:var(--bf-muted)}
-.file,.ref,.comment,.event{border-color:var(--bf-border);background:#ffffff}
-.file-name,.ref-path{color:#172033}
-.file-meta,.ref-note,.comment-time,.event-time{color:var(--bf-muted)}
-.comment-name{color:#172033;font-weight:700}
-.comment-text{color:#273449;font-size:11px;line-height:1.55}
-.comment-role{padding:2px 7px;border-radius:999px;background:#eef3ff;color:#3b66d9;font-size:8px;font-weight:700;border:1px solid #d4e2fc}
-.avatar{background:#3b66d9;color:#fff;font-weight:800;box-shadow:none}
-.ref-path{color:#3b66d9;font-weight:700}
-.ref-note{color:#273449}
-.assignment .panel-head{background:transparent;border-bottom:1px solid var(--bf-border)}
-.assignment .row .btn.primary{background:#3b66d9;border-color:#3b66d9;color:#ffffff}
-.assignment .row .btn.primary:hover{background:#3158c5;border-color:#3158c5}
-.assignment .row .btn:not(.primary){background:#ffffff;border-color:var(--bf-border);color:#273449}
-.assignment .row .btn:not(.primary):hover{background:#f0f4ff;border-color:#3b66d9;color:#3b66d9}
-.assignment .action-row .btn{background:#ffffff;border:1px solid #3b66d9;color:#3b66d9;font-weight:700}
-.assignment .action-row .btn:hover{background:#f0f4ff}
-.assignment .action-row .btn:first-child{color:#df5a5a;border-color:#df5a5a;background:#ffffff}
-.assignment .action-row .btn:first-child:hover{background:#feeceb}
-.assignment .action-row .btn.primary{color:#ffffff;background:#3b66d9;border-color:#3b66d9}
-.assignment .action-row .btn.primary:hover{background:#3158c5;border-color:#3158c5}
-.workflow .step{border-color:var(--bf-border)}
-.workflow .step:not(:last-child):after{background:var(--bf-border)}
-.workflow .circle{background:#f8fafc;border:1px solid var(--bf-border);color:var(--bf-muted);box-shadow:none}
-.workflow .step.done .circle{background:#eaf9f1;border-color:var(--bf-green);color:#16a765;box-shadow:none}
-.workflow .step.current .circle{background:#3b66d9;border-color:#3b66d9;color:#ffffff;box-shadow:0 0 10px rgba(59,102,217,.3)}
-.workflow .step b{color:#172033;font-weight:700}
-.workflow .step span{color:var(--bf-muted)}
-.history .dot{background:var(--bf-violet);box-shadow:0 0 6px rgba(59,102,217,.4)}
-.event-main{font-size:10px;color:#273449;line-height:1.5}
-.event-main b{color:#172033;font-weight:700}
-.event-main span{color:var(--bf-muted)}
-.toast{border-color:var(--bf-border);box-shadow:0 12px 30px rgba(24,32,51,.12)}
-@media(max-width:900px){.main{padding:22px}.card,.panel{border-radius:12px}}
-.eyebrow,.section-kicker{font-size:10px;letter-spacing:.12em;font-weight:800;color:#3b66d9;margin-bottom:8px}
-.cards{grid-template-columns:repeat(5,minmax(0,1fr))}
-.selector-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.selector-top label{margin-bottom:0}
-.workspace-state{font-size:9px;letter-spacing:.08em;color:#16a765;padding:6px 9px;border:1px solid #b9edd2;border-radius:999px;background:#eaf9f1;font-weight:700;white-space:nowrap}
-.issue-meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--bf-border)}
-.issue-meta-grid div{display:flex;flex-direction:column;gap:5px}
-.issue-meta-grid span{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--bf-subtle);font-weight:700}
-.issue-meta-grid strong{font-size:12px;color:#172033;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.right{display:flex;flex-direction:column;gap:14px;align-self:start}.left{align-self:start}
-.flow-panel{background:#ffffff;border:1px solid var(--bf-border)}
-.collaboration-flow{padding:8px 16px 14px}
-.flow-step{position:relative;display:grid;grid-template-columns:30px 1fr;gap:10px;min-height:58px}
-.flow-step:not(:last-child):after{content:"";position:absolute;left:14px;top:29px;height:38px;border-left:1px solid var(--bf-border)}
-.flow-marker{position:relative;z-index:1;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--bf-border);background:#f8fafc;color:var(--bf-muted);font-size:12px;font-weight:800}
-.flow-step.done .flow-marker{background:#eaf9f1;border-color:#16a765;color:#16a765;box-shadow:none}
-.flow-step.current .flow-marker{background:#3b66d9;border-color:#3b66d9;color:#fff;box-shadow:0 0 10px rgba(59,102,217,.28)}
-.flow-step.pending .flow-marker{color:#7a8798}
-.flow-copy{padding-top:2px}
-.flow-copy strong{display:block;color:#172033;font-size:12px}
-.flow-copy span{display:block;margin-top:4px;color:var(--bf-muted);font-size:9px}
-.flow-step.done .flow-copy span{color:#16a765}
-.flow-step.current .flow-copy span{color:#3b66d9}
-.members-panel{background:#ffffff;border:1px solid var(--bf-border)}
-.comment-top{align-items:center}
-.team-picker{padding:15px}
-.role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
-.role-option{display:block;position:relative;cursor:pointer}
-.role-option input{position:absolute;opacity:0}
-.role-card{height:100%;padding:13px;border:1px solid var(--bf-border);border-radius:10px;background:#f8fafc;transition:border-color .2s,background .2s,transform .2s}
-.role-card strong{display:block;font-size:11px;color:#172033;text-transform:uppercase}
-.role-card span{display:block;margin-top:6px;color:var(--bf-muted);font-size:9px;line-height:1.35}
-.role-option input:checked+.role-card{border-color:var(--bf-violet);background:#eef3ff;box-shadow:0 2px 8px rgba(59,102,217,.12);transform:translateY(-1px)}
-.role-option input:focus-visible+.role-card{outline:2px solid var(--bf-cyan);outline-offset:2px}
-.picker-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:13px}
-.selection-count{font-size:10px;font-weight:800;color:var(--bf-muted)}
-.collaborating-team{padding:0 15px 15px}
-.collaborating-team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.collab-role{padding:11px;border:1px solid var(--bf-border);border-radius:10px;background:#ffffff;box-shadow:0 1px 3px rgba(24,32,51,.03)}
-.collab-role.accepted{border-color:#b9edd2;background:#f9fdfa}
-.collab-role.rejected{border-color:#f8d0cd;background:#fffaf9}
-.collab-role.pending{border-color:#faecd8;background:#fffdfa}
-.collab-role strong{display:block;font-size:11px;color:#172033}
-.collab-role span{display:block;margin-top:3px;font-size:9px;font-weight:700}
-.collab-role small{display:block;margin-top:5px;color:var(--bf-muted);font-size:8px;line-height:1.45}
-.flow-empty{padding:18px 0;color:var(--bf-muted);font-size:10px}
-.workspace-tabs{display:flex;gap:6px;padding:5px;background:#f0f4f9;border:1px solid var(--bf-border);border-radius:11px;margin-bottom:14px}
-.workspace-tab{border:0;background:transparent;color:var(--bf-muted);padding:9px 11px;border-radius:7px;font-size:10px;font-weight:800;cursor:pointer}
-.workspace-tab.active{color:#3b66d9;background:#ffffff;box-shadow:0 1px 3px rgba(24,32,51,.08)}
-.tab-panel[hidden]{display:none}
-.dropzone{display:block;padding:18px;border:1px dashed var(--bf-border);border-radius:9px;text-align:center;background:#f8fafc;cursor:pointer}
-.dropzone strong{display:block;color:#172033;font-size:10px}
-.dropzone span{display:block;margin-top:5px;color:var(--bf-muted);font-size:9px}
-.dropzone:hover,.dropzone.dragover{border-color:var(--bf-cyan);background:#eef3ff}
-@media(max-width:900px){.role-grid,.collaborating-team-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:1100px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.right{gap:12px}}
-@media(max-width:700px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.issue-meta-grid{grid-template-columns:repeat(2,1fr)}.selector-top{flex-direction:column}.team-members{grid-template-columns:1fr}}
-.btn:disabled{cursor:not-allowed;opacity:.48;filter:grayscale(.35);transform:none;box-shadow:none}
-.role-card{position:relative;padding-right:32px;pointer-events:none}
-.role-icon{display:grid!important;place-items:center;width:25px;height:25px;margin-bottom:10px;border:1px solid #d4e2fc;border-radius:8px;background:#eef3ff;color:#3b66d9!important;font-size:14px!important;font-weight:800}
-.role-option input:checked+.role-card .role-icon{border-color:#3b66d9;background:#3b66d9;color:#ffffff!important}
-.role-card:after{content:' ';position:absolute;right:10px;bottom:10px;width:14px;height:14px;border:1px solid #cbd5e1;border-radius:4px;background:#ffffff}
-.role-option input:checked+.role-card:after{content:'✓';display:grid;place-items:center;border-color:#3b66d9;background:#3b66d9;color:#ffffff;font-size:10px;font-weight:900}
-.issue-list-feedback{display:grid;gap:7px;margin-top:10px}
-.issue-feedback-row{padding:10px 14px;border:1px solid var(--bf-border);border-radius:8px;background:#ffffff;box-shadow:0 1px 3px rgba(24,32,51,.03);transition:background .15s,border-color .15s}
-.issue-feedback-row:hover{background:#f0f4ff;border-color:#3b66d9}
-.issue-feedback-row>div:first-child{display:flex;align-items:baseline;gap:8px}
-.issue-feedback-row strong{color:#172033;font-size:12px;font-weight:800}
-.issue-feedback-row>div:first-child span{color:#273449;font-size:11px}
-.issue-feedback-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.issue-feedback-meta span{padding:3px 8px;border:1px solid var(--bf-border);border-radius:999px;color:var(--bf-muted);background:#f5f7fb;font-size:8px;font-weight:700}
-.issue-feedback-roles{margin-top:6px;color:var(--bf-muted);font-size:9px}
-.role-work-content{padding:12px 15px}
-.role-work-tags{display:flex;gap:7px;flex-wrap:wrap}
-.role-work-tags span{padding:7px 9px;border:1px solid #d4e2fc;border-radius:8px;background:#eef3ff;color:#3b66d9;font-size:9px;font-weight:700}
-.role-work-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
-.role-work-actions .btn{font-size:9px}
-.role-team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 15px 15px}
-.role-team-card{padding:11px;border:1px solid var(--bf-border);border-radius:9px;background:#ffffff}
-.role-team-card strong{display:block;font-size:10px;color:#172033}
-.role-team-card span{display:block;margin-top:5px;font-size:8px;color:var(--bf-muted)}
-.role-team-card.selected{border-color:#b9edd2;background:#eaf9f1}
-.role-team-card.selected span{color:#16a765}
-.role-team-card.selected span:before{content:'SELECTED · '}
-.role-team-card:not(.selected) span:before{content:'NOT SELECTED · '}
-.non-admin-only{display:none}
-@media(max-width:900px){.role-team-grid{grid-template-columns:repeat(2,1fr)}}
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>BugFlow — Team Collaboration</title>
+<!-- Tailwind CSS CDN with forms and container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<!-- Core Enterprise Design System CSS -->
+<link rel="stylesheet" href="design-system.css">
 
-/* =========================================================
-   ROLE-SPECIFIC COLLABORATION UI
-   Applies ONLY to Developer / Tester / Senior Developer.
-   Admin keeps the existing UI above unchanged.
-   ========================================================= */
-body.role-specific-page{
-  background:#f4f7fb;
-  color:#142033;
-  font-family:Inter,Arial,sans-serif;
-}
-body.role-specific-page .app{background:#f4f7fb;min-height:100vh}
-body.role-specific-page .side{
-  width:250px;
-  background:#17283b;
-  border-right:0;
-  box-shadow:none;
-  padding:0 12px;
-  color:#fff;
-}
-body.role-specific-page .brand{
-  height:70px;
-  margin:0;
-  padding:0 12px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  font-size:17px;
-}
-body.role-specific-page .brand-b{
-  width:30px;height:30px;border-radius:8px;
-  background:#3f66d8;box-shadow:none;
-}
-body.role-specific-page .section{
-  color:#8ea1b6;
-  font-size:9px;
-  margin:22px 10px 9px;
-}
-body.role-specific-page .nav{gap:3px}
-body.role-specific-page .nav a{
-  color:#bdc8d5;
-  padding:11px 12px;
-  border-radius:7px;
-  font-size:11px;
-  transition:none;
-}
-body.role-specific-page .nav a:hover{
-  background:#24384f;
-  color:#fff;
-  transform:none;
-  box-shadow:none;
-}
-body.role-specific-page .nav a.active{
-  background:#3f66d8;
-  color:#fff;
-  box-shadow:none;
-}
-body.role-specific-page .main{
-  margin-left:250px;
-  width:calc(100% - 250px);
-  padding:24px 28px 40px;
-  background:#f4f7fb;
-}
-body.role-specific-page .head{
-  margin-bottom:18px;
-  align-items:center;
-}
-body.role-specific-page .head h1{
-  color:#162238;
-  font-size:26px;
-  letter-spacing:-.03em;
-}
-body.role-specific-page .head p{
-  color:#6d7d90;
-  font-size:11px;
-}
-body.role-specific-page .actions .btn{
-  color:#415169;
-  background:#fff;
-  border:1px solid #dce3ec;
-  box-shadow:0 2px 7px rgba(22,36,57,.06);
-}
-body.role-specific-page .actions .btn.primary{
-  color:#fff;
-  background:#3f66d8;
-  border-color:#3f66d8;
-}
-body.role-specific-page .cards{
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:14px;
-}
-body.role-specific-page .card,
-body.role-specific-page .panel{
-  background:#fff;
-  border:1px solid #e1e7ef;
-  border-radius:9px;
-  box-shadow:0 2px 10px rgba(31,51,76,.055);
-}
-body.role-specific-page .card{
-  padding:13px 15px;
-}
-body.role-specific-page .card:before,
-body.role-specific-page .card:hover:before{
-  display:none;
-}
-body.role-specific-page .card:hover{
-  transform:none;
-  box-shadow:0 2px 10px rgba(31,51,76,.055);
-}
-body.role-specific-page .label{
-  color:#8290a1;
-  font-size:8px;
-}
-body.role-specific-page .num{
-  color:#142033;
-  font-size:22px;
-  text-shadow:none;
-}
-body.role-specific-page .sub{color:#8a98a9}
-body.role-specific-page .selector{
-  background:#fff;
-  padding:0;
-  border:0;
-  box-shadow:none;
-  margin-bottom:14px;
-}
-body.role-specific-page .selector .selector-top{
-  display:none;
-}
-body.role-specific-page .selector .selectbox{
-  display:none;
-}
-body.role-specific-page #currentRoleFeedback{
-  display:none;
-}
-body.role-specific-page #visibleIssueList{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:6px;
-  margin:0;
-}
-body.role-specific-page .issue-feedback-row{
-  padding:9px 12px;
-  border:1px solid #e2e8f0;
-  background:#fff;
-  border-radius:7px;
-}
-body.role-specific-page .issue-feedback-row strong{
-  color:#17253a;
-}
-body.role-specific-page .issue-feedback-row>div:first-child span{
-  color:#506078;
-}
-body.role-specific-page .issue-feedback-meta span{
-  border:0;
-  background:#f1f5f9;
-  color:#617188;
-}
-body.role-specific-page .issue-feedback-roles{
-  color:#8794a5;
-}
-body.role-specific-page .selector .issue-head{
-  margin-top:12px;
-  padding:15px;
-  border:1px solid #e1e7ef;
-  border-radius:9px;
-  background:#fff;
-}
-body.role-specific-page .issue-title{color:#162238}
-body.role-specific-page .issue-desc{color:#718096}
-body.role-specific-page .chip{
-  background:#eef4ff;
-  color:#3478d4;
-  border:0;
-  box-shadow:none;
-}
-body.role-specific-page .chip.high{
-  background:#fff0ef;
-  color:#df645e;
-}
-body.role-specific-page .chip.status{
-  background:#e9f3ff;
-  color:#3679d2;
-}
-body.role-specific-page .chip.sprint{
-  background:#eaf8f2;
-  color:#219b68;
-}
-body.role-specific-page .issue-meta-grid{
-  border-top:1px solid #edf0f4;
-}
-body.role-specific-page .issue-meta-grid span{color:#8996a6}
-body.role-specific-page .issue-meta-grid strong{color:#394960}
-body.role-specific-page .layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:12px;
-}
-body.role-specific-page .left{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
-body.role-specific-page .right{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
-body.role-specific-page .workspace-tabs{
-  display:none;
-}
-body.role-specific-page .tab-panel{
-  display:block!important;
-}
-body.role-specific-page .tab-panel[hidden]{display:block!important}
-body.role-specific-page .panel-head{
-  padding:12px 14px;
-  border-bottom:1px solid #edf0f4;
-}
-body.role-specific-page .title{
-  color:#17253a;
-  font-size:13px;
-}
-body.role-specific-page .muted{
-  color:#8290a1;
-}
-body.role-specific-page .comments{
-  padding:9px 14px;
-}
-body.role-specific-page .comment{
-  border-bottom:1px solid #eef1f5;
-}
-body.role-specific-page .comment-name{
-  color:#1c2a40;
-}
-body.role-specific-page .comment-time{color:#8a96a5}
-body.role-specific-page .comment-text{color:#506078}
-body.role-specific-page .comment-role{
-  background:#edf4ff;
-  color:#3478d4;
-}
-body.role-specific-page .avatar{
-  background:#dfeaff;
-  color:#3576d1;
-  box-shadow:none;
-}
-body.role-specific-page .composer{
-  background:#fff;
-  border-top:1px solid #edf0f4;
-}
-body.role-specific-page .composer textarea{
-  background:#f8fafc;
-  color:#1c2a40;
-  border-color:#dce4ed;
-}
-body.role-specific-page .composer textarea::placeholder{color:#98a4b3}
-body.role-specific-page .btn{
-  background:#fff;
-  color:#40516a;
-  border-color:#d6dfeb;
-  box-shadow:none;
-}
-body.role-specific-page .btn.primary{
-  background:#1677e8;
-  border-color:#1677e8;
-  color:#fff;
-  box-shadow:none;
-}
-body.role-specific-page .attachments,
-body.role-specific-page .code,
-body.role-specific-page .history{
-  background:#fff;
-}
-body.role-specific-page .file,
-body.role-specific-page .ref,
-body.role-specific-page .event{
-  background:#fafbfd;
-  border-color:#e6ebf1;
-}
-body.role-specific-page .file-name{color:#26364d}
-body.role-specific-page .file-meta,
-body.role-specific-page .ref-note,
-body.role-specific-page .event-time{color:#8794a5}
-body.role-specific-page .ref-path{color:#397bd2}
-body.role-specific-page .event-main{color:#4f6077}
-body.role-specific-page .event-main b{color:#26364d}
-body.role-specific-page .history .dot{background:#1677e8;box-shadow:none}
-body.role-specific-page .role-team-grid{
-  padding:12px 14px;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:8px;
-}
-body.role-specific-page .role-team-card{
-  background:#fff;
-  border:1px solid #dce4ee;
-  padding:11px;
-}
-body.role-specific-page .role-team-card.selected{
-  background:#f0f8f4;
-  border-color:#8bd8b6;
-}
-body.role-specific-page .role-team-card strong{color:#24344b}
-body.role-specific-page .role-team-card span{color:#7f8d9e}
-body.role-specific-page .role-team-card.selected span{color:#269466}
-body.role-specific-page .members-panel{
-  background:#fff;
-}
-body.role-specific-page .collaborating-team{
-  padding:12px 14px;
-}
-body.role-specific-page .collaborating-team-grid{
-  grid-template-columns:repeat(4,minmax(0,1fr));
-}
-body.role-specific-page .collab-role{
-  background:#f8fafc;
-  border:1px solid #dfe6ef;
-}
-body.role-specific-page .collab-role strong{color:#25354c}
-body.role-specific-page .collab-role span{color:#728196}
-body.role-specific-page .collab-role small{color:#8290a1}
-body.role-specific-page .role-work-panel{
-  border-left:3px solid #1677e8;
-}
-body.role-specific-page .role-work-content{
-  padding:12px 14px;
-}
-body.role-specific-page .role-work-tags span{
-  background:#eef6ff;
-  color:#397bd2;
-  border-color:#d8e9ff;
-}
-body.role-specific-page .role-work-actions{
-  display:flex;
-  gap:8px;
-}
-body.role-specific-page .role-work-actions .btn{
-  background:#f7f9fc;
-  color:#4c5d73;
-  border-color:#dfe6ef;
-}
-body.role-specific-page .flow-panel{
-  background:#fff;
-  border-color:#e1e7ef;
-}
-body.role-specific-page .collaboration-flow{
-  padding:10px 14px 12px;
-}
-body.role-specific-page .flow-step:not(:last-child):after{
-  border-color:#dbe3ec;
-}
-body.role-specific-page .flow-marker{
-  background:#f2f5f9;
-  border-color:#d7e0ea;
-  color:#8190a2;
-  box-shadow:none;
-}
-body.role-specific-page .flow-step.done .flow-marker{
-  background:#e9f8f2;
-  border-color:#7ed3ad;
-  color:#2a9a6b;
-  box-shadow:none;
-}
-body.role-specific-page .flow-step.current .flow-marker{
-  background:#eeeaff;
-  border-color:#9b8bea;
-  color:#6b55db;
-  box-shadow:none;
-}
-body.role-specific-page .flow-copy strong{color:#27374e}
-body.role-specific-page .flow-copy span{color:#8592a2}
-body.role-specific-page .toast{
-  background:#fff;
-  color:#25354b;
-  border-color:#dce4ee;
-  box-shadow:0 8px 25px rgba(20,35,55,.16);
-}
-body.role-specific-page .non-admin-only{display:block}
-@media(max-width:1050px){
-  body.role-specific-page .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:850px){
-  body.role-specific-page .side{width:205px}
-  body.role-specific-page .main{margin-left:205px;width:calc(100% - 205px);padding:20px}
-  body.role-specific-page .role-team-grid,
-  body.role-specific-page .collaborating-team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:650px){
-  body.role-specific-page .side{width:68px}
-  body.role-specific-page .brand span,
-  body.role-specific-page .section,
-  body.role-specific-page .nav a span{display:none}
-  body.role-specific-page .main{margin-left:68px;width:calc(100% - 68px);padding:15px}
-  body.role-specific-page .cards{grid-template-columns:1fr}
-  body.role-specific-page .head{flex-direction:column;align-items:flex-start}
-}
-
- .progress-overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:12px 15px 15px}
- .progress-card{padding:11px;border:1px solid rgba(90,123,173,.2);border-radius:9px;background:rgba(7,17,31,.42)}
- .progress-card strong{display:block;color:#e9effa;font-size:10px}
- .progress-card span{display:block;margin-top:5px;color:#7f94ae;font-size:8px}
- .progress-card b{display:block;margin-top:8px;color:#72edbd;font-size:18px}
- .progress-card small{display:block;margin-top:3px;color:#9eb1c8;font-size:8px}
- @media(max-width:900px){.progress-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
- @media(max-width:700px){.progress-overview-grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="app">
-<aside class="side">
-  <div class="brand"><div class="brand-b">B</div><span>BugFlow</span></div>
-  <div class="section">ADMINISTRATION</div>
-  <nav class="nav">
-    <a href="/admin-ui">▣ <span>Dashboard</span></a>
-    <a href="/all-defects-ui">◆ <span>All Defects</span></a>
-    <a href="/analytics-ui">▥ <span>Analytics Reports</span></a>
-    <a href="/milestone2-ui">◇ <span>Sprint Management</span></a>
-    <a class="active" href="/team-collaboration-ui">◎ <span>Team Collaboration</span></a>
-    <a href="/integrations-ui">⚡ <span>Integrations & CI/CD</span></a>
-    <a href="/api-explorer-ui">⚙ <span>API Explorer</span></a>
-    <a href="/login-ui">↔ <span>Logout / Switch</span></a>
-  </nav>
-</aside>
-<main class="main">
-<header class="head">
-  <div><div class="eyebrow">BUGFLOW WORKSPACE / MODULE 2</div><h1>Team Collaboration</h1><p>Work together to resolve issues faster and build better products.</p></div>
-  <div class="actions"><button class="btn" onclick="loadAll()">↻ Refresh</button><a class="btn primary" href="/milestone2-ui" style="text-decoration:none">View Sprint Management</a></div>
-</header>
-<section class="cards">
-  <div class="card stat-team"><div class="label" id="teamMemberLabel">Collaborating Roles</div><div class="num" id="teamMemberCount">0</div><div class="sub" id="teamMemberSub">Selected for this issue</div></div>
-  <div class="card stat-issues"><div class="label" id="issueCountLabel">Active Issues</div><div class="num" id="issueCount">0</div><div class="sub">Existing BugFlow issues</div></div>
-  <div class="card stat-progress"><div class="label">In Progress</div><div class="num" id="progressIssueCount">0</div><div class="sub">Currently moving forward</div></div>
-  <div class="card stat-resolved"><div class="label">Resolved</div><div class="num" id="resolvedIssueCount">0</div><div class="sub">Closed or resolved issues</div></div>
-  <div class="card stat-actions"><div class="label">Team Actions</div><div class="num" id="activityCount">0</div><div class="sub">For selected issue</div></div>
-</section>
-<section class="panel selector">
-  <div class="selector-top"><div><div class="section-kicker">SHARED ISSUE WORKSPACE</div><label>Select Existing Issue</label></div><span class="workspace-state">● LIVE COLLABORATION</span></div>
-  <select class="selectbox" id="issueSelect" onchange="selectIssue(this.value)"></select>
-  <div class="activity-note" id="currentRoleFeedback"></div>
-  <div class="issue-list-feedback" id="visibleIssueList"></div>
-  <div class="issue-head">
-    <div><div class="issue-title" id="issueTitle">Select an issue</div><div class="issue-desc" id="issueDesc">Issue collaboration workspace</div></div>
-    <div class="chips"><span class="chip high" id="priorityChip">Priority</span><span class="chip status" id="statusChip">Status</span><span class="chip sprint" id="sprintChip">Sprint</span></div>
-  </div>
-  <div class="issue-meta-grid"><div><span>Reporter</span><strong id="issueReporter">-</strong></div><div><span>Created</span><strong id="issueCreated">-</strong></div><div><span>Comments</span><strong id="issueCommentMeta">0</strong></div><div><span>Last updated</span><strong id="issueUpdated">-</strong></div></div>
-</section>
-<div class="layout">
-  <div class="left">
-    <div class="workspace-tabs" role="tablist" aria-label="Collaboration workspace tabs">
-      <button class="workspace-tab active" type="button" role="tab" aria-selected="true" onclick="switchTab('discussion',this)">Discussion</button>
-      <button class="workspace-tab" type="button" role="tab" aria-selected="false" onclick="switchTab('attachments',this)">Attachments</button>
-      <button class="workspace-tab" type="button" role="tab" aria-selected="false" onclick="switchTab('code',this)">Code References</button>
-      <button class="workspace-tab" type="button" role="tab" aria-selected="false" onclick="switchTab('activity',this)">Activity History</button>
-    </div>
-    <section class="panel tab-panel" data-tab="discussion">
-      <div class="panel-head"><div><div class="title">Discussion Thread</div><div class="muted">Comments are stored against the selected issue.</div></div><button class="btn small" onclick="loadIssueData()">↻ Refresh</button></div>
-      <div class="comments" id="comments"><div class="empty">Select an issue.</div></div>
-      <div class="composer"><textarea id="commentText" placeholder="Write an update, testing result, review note, or resolution message..."></textarea><div class="composer-foot"><button class="btn primary" onclick="postComment()">Post Comment</button></div></div>
-    </section>
-    <section class="panel tab-panel" data-tab="attachments" hidden>
-      <div class="panel-head"><div><div class="title">Attachments / Screenshots / Logs</div><div class="muted">Evidence is stored against the selected issue.</div></div></div>
-      <div class="attachments">
-        <label class="dropzone" id="dropzone" for="fileInput"><input id="fileInput" type="file" accept=".png,.jpg,.log" hidden><strong>Drag &amp; drop files here</strong><span>or click to upload · PNG, JPG, LOG · Max 10MB</span></label>
-        <div class="composer-foot"><button class="btn primary" onclick="uploadFile()">＋ Upload Attachment</button></div>
-        <div class="files" id="attachments"></div>
-      </div>
-    </section>
-    <section class="panel tab-panel" data-tab="code" hidden>
-      <div class="panel-head"><div><div class="title">Code References</div><div class="muted">Add a path and line reference as part of the issue discussion history.</div></div></div>
-      <div class="code">
-        <div class="code-form"><input id="codePath" placeholder="src/components/Header.tsx"><input id="codeLine" placeholder="Line 45"><input class="wide" id="codeNote" placeholder="What was changed or where is the relevant code?"></div>
-        <div class="action-row"><button class="btn primary" onclick="addCodeReference()">＋ Add Code Reference</button></div>
-        <div class="refs" id="codeRefs"></div>
-      </div>
-    </section>
-    <section class="panel tab-panel" data-tab="activity" hidden>
-      <div class="panel-head"><div><div class="title">Activity History</div><div class="muted">Collaboration and issue events.</div></div></div>
-      <div class="history" id="history"><div class="empty">No activity.</div></div>
-    </section>
-  </div>
-  <div class="right">
-    <section class="panel team-picker">
-      <div class="section-kicker">ISSUE-SPECIFIC COLLABORATION</div>
-      <div class="title">Select Collaboration Team</div>
-      <div class="muted" style="margin-top:5px">Choose 2 to 4 roles for this issue.</div>
-      <div class="role-grid" id="rolePicker">
-        <label class="role-option"><input type="checkbox" value="admin" onchange="toggleRole(this)"><span class="role-card"><span class="role-icon" aria-hidden="true">◎</span><strong>Admin</strong><span>Coordination &amp; Approval</span></span></label>
-        <label class="role-option"><input type="checkbox" value="developer" onchange="toggleRole(this)"><span class="role-card"><span class="role-icon" aria-hidden="true">⌘</span><strong>Developer</strong><span>Development &amp; Issue Resolution</span></span></label>
-        <label class="role-option"><input type="checkbox" value="tester" onchange="toggleRole(this)"><span class="role-card"><span class="role-icon" aria-hidden="true">✓</span><strong>Tester</strong><span>Testing &amp; Verification</span></span></label>
-        <label class="role-option"><input type="checkbox" value="senior_dev" onchange="toggleRole(this)"><span class="role-card"><span class="role-icon" aria-hidden="true">◈</span><strong>Senior Developer</strong><span>Technical Review &amp; Support</span></span></label>
-      </div>
-      <div class="picker-foot"><span class="selection-count" id="selectionCount">0 roles selected</span><button class="btn primary" id="teamSaveButton" disabled onclick="saveCollaborationTeam()">Start Collaboration</button></div>
-      <div class="activity-note" id="teamError"></div>
-    </section>
-    <section class="panel members-panel">
-      <div class="panel-head"><div><div class="title">Collaborating Team</div><div class="muted">Roles working together on this issue.</div></div></div>
-      <div class="collaborating-team"><div class="collaborating-team-grid" id="collaboratingTeam"></div><div class="muted" id="collaboratingTeamCount"></div></div>
-    </section>
-    <section class="panel non-admin-only" id="roleTeamPanel">
-      <div class="panel-head"><div><div class="title">Collaboration Team</div><div class="muted">Selected by Admin. This view is read-only.</div></div></div>
-      <div class="role-team-grid" id="roleTeamGrid"></div>
-    </section>
-    <section class="panel role-work-panel" id="roleWorkPanel">
-      <div class="panel-head"><div><div class="title" id="roleWorkTitle">Role Work Area</div><div class="muted" id="roleWorkSubtitle">Work supported by your BugFlow role.</div></div></div>
-      <div class="role-work-content" id="roleWorkContent"></div>
-    </section>
-    <section class="panel progress-overview-panel">
-      <div class="panel-head"><div><div class="title">Team Progress Overview</div><div class="muted">Progress from the required selected working roles.</div></div><strong id="overallProgress">0%</strong></div>
-      <div class="progress-overview-grid" id="teamProgressOverview"><div class="flow-empty">Select an issue to view team progress.</div></div>
-    </section>
-    <section class="panel flow-panel">
-      <div class="panel-head"><div><div class="title">Team Collaboration Flow</div><div class="muted">One issue, one shared path to resolution.</div></div></div>
-      <div class="collaboration-flow" id="collaborationFlow"></div>
-    </section>
-    <section class="panel assignment">
-      <div class="panel-head" style="margin:-1px -1px 12px"><div><div class="title">Assignment & Collaboration Actions</div><div class="muted">Assign or reassign the existing issue.</div></div></div>
-      <label>Assigned User</label><select id="assignee"></select>
-      <div class="row"><button class="btn primary" onclick="saveAssignment()">Assign / Reassign</button><button class="btn" onclick="clearAssignment()">Unassign</button></div>
-      <div class="action-row"><button class="btn" onclick="recordAction('ESCALATE')">Escalate</button><button class="btn" onclick="recordAction('REQUEST_APPROVAL')">Request Approval</button><button class="btn primary" onclick="recordAction('APPROVE')">Approve</button></div>
-      <div class="activity-note">Assignment changes use the issue's existing assignee field. Escalation and approval actions are recorded in the issue activity history.</div>
-    </section>
-    <section class="panel">
-      <div class="panel-head"><div><div class="title">Resolution Workflow</div><div class="muted">Development and verification status</div></div><button class="btn small" id="advanceStatusButton" onclick="advanceIssueStatus()" disabled>Advance Status</button></div>
-      <div class="workflow" id="workflow"></div>
-    </section>
-  </div>
-</div>
-</main>
-</div>
-<div class="toast" id="toast"></div>
-<script>
-const API='/api/v1';
-let issues=[], users=[], selected=null, comments=[], attachments=[], history=[], collaborationRoles=[], issueTeams={}, workOverview={workstreams:[],overall_progress:0,can_final_approve:false,incomplete_roles:[]};
-let assignmentStates={developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'}, canResolve=false;
-const collaborationRoleInfo={admin:['Admin','Coordination & Approval',['Coordinate issue resolution','Manage collaboration team','Assign/reassign users','Review progress','Approve when applicable']],developer:['Developer','Development & Issue Resolution',['Investigate the issue','Implement the fix','Add relevant code references','Provide development updates']],tester:['Tester','Testing & Verification',['Test the fix','Add testing results','Upload screenshots/logs','Verify the issue']],senior_dev:['Senior Developer','Technical Review & Support',['Review implementation','Review code references','Provide technical feedback','Support escalation/approval']]};
-const $=id=>document.getElementById(id);
-function token(){return localStorage.getItem('access_token')||localStorage.getItem('token')||localStorage.getItem('bugflow_token')||''}
-function headers(jsonBody=false){const h={};if(jsonBody)h['Content-Type']='application/json';const t=token();if(t)h.Authorization='Bearer '+t;return h}
-async function json(r){const t=await r.text();try{return t?JSON.parse(t):{}}catch{return{detail:t}}}
-function apiError(r,d,fallback){const detail=d.detail||fallback;console.error('Team Collaboration API error',{endpoint:r.url,status:r.status,detail});if(r.status===401)return new Error('Your session has expired. Please log in again.');if(r.status===403)return new Error('You do not have permission for this action.');if(r.status===404)return new Error('Requested resource was not found.');if(r.status>=500)return new Error('Server error: '+detail);return new Error(detail)}
-function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
-function toast(m,ok=true){const t=$('toast');t.textContent=m;t.className='toast show '+(ok?'ok':'err');clearTimeout(window.tt);window.tt=setTimeout(()=>t.className='toast',3200)}
-function fmt(v){if(!v)return '-';try{return new Date(v).toLocaleString()}catch{return String(v)}}
-function roleName(r){const x=String(r||'').toLowerCase();return ({admin:'Admin',tester:'Tester',developer:'Developer',senior_dev:'Senior Developer',senior_developer:'Senior Developer','senior developer':'Senior Developer'})[x]||r||'Team Member'}
-function initials(n){return String(n||'U').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
-function normalizedRole(r){return String(r||'').toLowerCase().replaceAll('-','_').replaceAll(' ','_')}
-function currentUserRole(){try{return normalizedRole(JSON.parse(localStorage.getItem('bugflow_user')||'{}').role)}catch{return ''}}
-function roleLabel(role){return roleName(role)}
-function renderVisibleIssueFeedback(){const role=currentUserRole();$('currentRoleFeedback').textContent=role==='admin'?'Collaborating as Admin':role?`You are collaborating as: ${roleLabel(role)}`:'';const list=$('visibleIssueList');if(!issues.length){list.innerHTML='<div class="empty">No collaboration issues assigned to your role.</div>';return}list.innerHTML=issues.map(issue=>{const roles=issueTeams[issue.id]||[];const badge=role==='admin'?'Collaborating':`Your Role: ${roleLabel(role)}`;const status=String(issue.status?.value||issue.status||'REPORTED').toUpperCase();const priority=String(issue.priority?.value||issue.priority||'LOW');return `<div class="issue-feedback-row"><div><strong>${esc(issue.issue_key||('BUG-'+issue.id))}</strong><span>${esc(issue.title||'Untitled issue')}</span></div><div class="issue-feedback-meta"><span>${esc(priority)}</span><span>${esc(status)}</span><span>${esc(badge)}</span></div><div class="issue-feedback-roles">Collaborating: ${roles.length?roles.map(roleLabel).join(' · '):'Loading...'}</div></div>`}).join('')}
-function renderSummary(){const statusOf=i=>String(i.status?.value||i.status||'REPORTED').toUpperCase();const nonAdmin=currentUserRole()!=='admin';const teamMemberCount=$('teamMemberCount');if(teamMemberCount)teamMemberCount.textContent=collaborationRoles.length;$('issueCount').textContent=nonAdmin?issues.length:issues.filter(i=>!['RESOLVED','CLOSED'].includes(statusOf(i))).length;$('progressIssueCount').textContent=issues.filter(i=>['IN_PROGRESS','QA_VERIFICATION','IN_DEVELOPMENT','IN_REVIEW','IN_TESTING'].includes(statusOf(i))).length;$('resolvedIssueCount').textContent=issues.filter(i=>['RESOLVED','CLOSED'].includes(statusOf(i))).length}
-function renderTeamProgress(){const box=$('teamProgressOverview');if(!box)return;$('overallProgress').textContent=`${workOverview.overall_progress||0}%`;if(!workOverview.workstreams?.length){box.innerHTML='<div class="flow-empty">No required working roles selected.</div>';return}box.innerHTML=workOverview.workstreams.map(item=>`<div class="progress-card"><strong>${esc(roleName(item.role))}</strong><span>${esc(item.work_type)}</span><b>${item.progress}%</b><small>${esc(String(item.status).replaceAll('_',' '))}</small></div>`).join('')+`<div class="progress-card"><strong>Overall Progress</strong><span>Required working roles</span><b>${workOverview.overall_progress}%</b><small>${workOverview.can_final_approve?'Ready for final approval':'Required work pending'}</small></div>`}
-function renderCollaborationFlow(){if(!collaborationRoles.length){$('collaborationFlow').innerHTML='<div class="flow-empty">Select at least 2 roles to start this issue collaboration.</div>';return}const progressByRole=Object.fromEntries((workOverview.workstreams||[]).map(item=>[item.role,item]));const steps=collaborationRoles.map(role=>{const item=progressByRole[role];if(role==='admin')return ['Admin','Collaboration Assigned','Coordinator'];return [collaborationRoleInfo[role][0],item?.work_type||collaborationRoleInfo[role][1],item?`${item.progress}% — ${String(item.status).replaceAll('_',' ')}`:'Pending']}).concat([['Resolution','Issue status is tracked separately',workOverview.can_final_approve?'Ready for approval':'Pending']]);$('collaborationFlow').innerHTML=steps.map(step=>`<div class="flow-step ${step[2].includes('100%')||step[2]==='Coordinator'?'done':step[2]==='Pending'?'pending':'current'}"><div class="flow-marker">${step[2].includes('100%')?'✓':'●'}</div><div class="flow-copy"><strong>${step[0]}</strong><span>${step[1]} · ${step[2]}</span></div></div>`).join('')}
-function renderRoleTeam(){const grid=$('roleTeamGrid');if(!grid)return;const roleLabels={admin:'Full Access',developer:'Development',tester:'Verification',senior_dev:'Review'};const roleNamesMap={admin:'Naruto (Admin)',developer:'Sasuke (Developer)',tester:'Hinata (Tester)',senior_dev:'Itachi (Senior Developer)'};grid.innerHTML=Object.entries(roleLabels).map(([role,label])=>{const isSelected=collaborationRoles.includes(role);const state=role==='admin'?'COORDINATOR':((assignmentStates&&assignmentStates[role])||'PENDING');return `<div class="role-team-card ${isSelected?'selected':''}"><strong>${roleNamesMap[role]||roleName(role).toUpperCase()}</strong><span>${label}</span>${isSelected?`<small style="display:block;margin-top:4px;font-size:8px;font-weight:800;color:${state==='ACCEPTED'?'#16a765':state==='REJECTED'?'#df5a5a':'#d98b00'}">${state}</small>`:''}</div>`}).join('')}
-function renderRoleWork(role){const content=$('roleWorkContent');if(!content)return;const actions={developer:[['Development Update',"$('commentText').focus()"],['Code Reference',"scrollRoleSection('code')"],['Development Comment',"$('commentText').focus()"]],tester:[['Test Result',"$('commentText').focus()"],['Test Evidence',"scrollRoleSection('attachments')"],['Add Comment',"$('commentText').focus()"]],senior_dev:[['Review Comment',"$('commentText').focus()"],['Code Review',"scrollRoleSection('code')"],['Request Approval',"recordAction('REQUEST_APPROVAL')"]],admin:[]}[role]||[];content.innerHTML=`<div class="role-work-actions">${actions.map(([label,action])=>`<button class="btn" type="button" onclick="${action}">${label}</button>`).join('')}</div>`}
-function renderCollaborationTeam(){
-  const grid=$('collaboratingTeam');
-  if(!grid)return;
-  const roleUsers={
-    admin:{name:'Naruto',roleDisplay:'Admin',desc:'Coordination & Approval'},
-    developer:{name:'Sasuke',roleDisplay:'Developer',desc:'Development & Issue Resolution'},
-    tester:{name:'Hinata',roleDisplay:'Tester',desc:'Testing & Verification'},
-    senior_dev:{name:'Itachi',roleDisplay:'Senior Developer',desc:'Technical Review & Support'}
-  };
-  const status=String(selected?.status?.value||selected?.status||'REPORTED').toUpperCase();
-  const isResolved=['RESOLVED','CLOSED'].includes(status);
-  const userRole=currentUserRole();
-  const isAdmin=userRole==='admin';
-
-  if(!collaborationRoles.length){
-    grid.innerHTML='<div class="empty">No collaboration team selected yet.</div>';
-  }else{
-    grid.innerHTML=collaborationRoles.map(role=>{
-      const u=roleUsers[role]||{name:'User',roleDisplay:roleName(role),desc:''};
-      if(role==='admin'){
-        return `<div class="collab-role">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <strong>${esc(u.name)} (${esc(u.roleDisplay)})</strong>
-            <span style="background:#eef3ff;color:#3b66d9;border:1px solid #d4e2fc;font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;">COORDINATOR</span>
-          </div>
-          <div style="font-size:9px;color:var(--bf-muted);">${esc(u.desc)}</div>
-        </div>`;
-      }
-      const state=(assignmentStates&&assignmentStates[role])||'PENDING';
-      let stateBadge='';
-      let cardClass='pending';
-      if(state==='ACCEPTED'){
-        cardClass='accepted';
-        stateBadge=`<span style="background:#eaf9f1;color:#16a765;border:1px solid #b9edd2;font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;">ACCEPTED</span>`;
-      }else if(state==='REJECTED'){
-        cardClass='rejected';
-        stateBadge=`<span style="background:#feeceb;color:#df5a5a;border:1px solid #f8d0cd;font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;">REJECTED</span>`;
-      }else{
-        cardClass='pending';
-        stateBadge=`<span style="background:#fff6df;color:#d98b00;border:1px solid #faecd8;font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;">PENDING</span>`;
-      }
-
-      const canAct=(isAdmin||userRole===role)&&!isResolved;
-      let buttonsHtml='';
-      if(canAct){
-        if(state==='PENDING'){
-          buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
-            <button type="button" class="btn small" style="background:#eaf9f1;color:#16a765;border-color:#b9edd2;font-weight:700;padding:4px 10px" onclick="respondAssignment('${role}','ACCEPT')">Accept</button>
-            <button type="button" class="btn small" style="background:#feeceb;color:#df5a5a;border-color:#f8d0cd;font-weight:700;padding:4px 10px" onclick="respondAssignment('${role}','REJECT')">Reject</button>
-          </div>`;
-        }else if(state==='ACCEPTED'){
-          buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
-            <button type="button" class="btn small" style="background:#feeceb;color:#df5a5a;border-color:#f8d0cd;font-weight:700;padding:4px 10px" onclick="respondAssignment('${role}','REJECT')">Reject</button>
-          </div>`;
-        }else if(state==='REJECTED'){
-          buttonsHtml=`<div style="display:flex;gap:6px;margin-top:8px">
-            <button type="button" class="btn small" style="background:#eaf9f1;color:#16a765;border-color:#b9edd2;font-weight:700;padding:4px 10px" onclick="respondAssignment('${role}','ACCEPT')">Accept</button>
-          </div>`;
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-primary-container": "#7c839b",
+          "surface-container": "#e5eeff",
+          "surface-dim": "#cbdbf5",
+          "on-secondary-fixed": "#00174b",
+          "on-secondary": "#ffffff",
+          "on-primary-fixed": "#131b2e",
+          "surface": "#f8f9ff",
+          "primary": "#0f172a",
+          "tertiary-container": "#0f0069",
+          "surface-container-highest": "#d3e4fe",
+          "surface-bright": "#f8f9ff",
+          "background": "#f8f9ff",
+          "surface-container-low": "#eff4ff",
+          "error": "#ba1a1a",
+          "on-secondary-fixed-variant": "#003ea8",
+          "outline-variant": "#c6c6cd",
+          "on-primary": "#ffffff",
+          "on-surface": "#0b1c30",
+          "on-tertiary-fixed-variant": "#3323cc",
+          "secondary-fixed": "#dbe1ff",
+          "on-background": "#0b1c30",
+          "tertiary": "#000000",
+          "on-tertiary": "#ffffff",
+          "on-error-container": "#93000a",
+          "on-surface-variant": "#45464d",
+          "surface-container-lowest": "#ffffff",
+          "on-tertiary-container": "#7671ff",
+          "error-container": "#ffdad6",
+          "on-tertiary-fixed": "#0f0069",
+          "on-error": "#ffffff",
+          "secondary": "#0051d5",
+          "tertiary-fixed-dim": "#c3c0ff",
+          "secondary-fixed-dim": "#b4c5ff",
+          "surface-variant": "#d3e4fe",
+          "inverse-primary": "#bec6e0",
+          "surface-container-high": "#dce9ff",
+          "on-primary-fixed-variant": "#3f465c",
+          "primary-fixed-dim": "#bec6e0",
+          "inverse-surface": "#213145",
+          "surface-tint": "#565e74",
+          "tertiary-fixed": "#e2dfff",
+          "primary-container": "#131b2e",
+          "secondary-container": "#316bf3",
+          "on-secondary-container": "#fefcff",
+          "primary-fixed": "#dae2fd",
+          "outline": "#76777d",
+          "inverse-on-surface": "#eaf1ff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-sm": "0.5rem",
+          "gutter-dense": "0.5rem",
+          "gutter": "1rem",
+          "margin-mobile": "1rem",
+          "space-lg": "1rem",
+          "space-xs": "0.25rem",
+          "margin": "1.5rem",
+          "space-md": "0.75rem",
+          "space-2xs": "0.125rem",
+          "space-xl": "1.5rem"
+        },
+        "fontFamily": {
+          "body-md": ["Inter", "sans-serif"],
+          "label-caps": ["Inter", "sans-serif"],
+          "code-sm": ["JetBrains Mono", "monospace"],
+          "headline-md": ["Inter", "sans-serif"],
+          "code-md": ["JetBrains Mono", "monospace"],
+          "body-lg": ["Inter", "sans-serif"],
+          "headline-sm": ["Inter", "sans-serif"],
+          "display": ["Inter", "sans-serif"],
+          "headline-lg": ["Inter", "sans-serif"],
+          "body-sm": ["Inter", "sans-serif"]
+        },
+        "fontSize": {
+          "body-md": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+          "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+          "code-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+          "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+          "code-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+          "body-lg": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+          "headline-sm": ["15px", {"lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+          "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+          "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+          "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
         }
       }
-
-      return `<div class="collab-role ${cardClass}">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <strong>${esc(u.name)} (${esc(u.roleDisplay)})</strong>
-          ${stateBadge}
-        </div>
-        <div style="font-size:9px;color:var(--bf-muted);">${esc(u.desc)}</div>
-        ${buttonsHtml}
-      </div>`;
-    }).join('');
-  }
-
-  const countEl=$('collaboratingTeamCount');
-  if(countEl)countEl.textContent=collaborationRoles.length?`${collaborationRoles.length} roles collaborating`:'No collaboration team selected';
-
-  const required=['developer','tester','senior_dev'];
-  const hasAllThree=required.every(r=>collaborationRoles.includes(r));
-  const allAccepted=hasAllThree&&required.every(r=>(assignmentStates&&assignmentStates[r])==='ACCEPTED');
-  const anyRejected=required.some(r=>(assignmentStates&&assignmentStates[r])==='REJECTED');
-
-  let bannerContainer=$('collaborationStatusBanner');
-  if(!bannerContainer){
-    bannerContainer=document.createElement('div');
-    bannerContainer.id='collaborationStatusBanner';
-    const parent=grid.parentElement;
-    if(parent)parent.appendChild(bannerContainer);
-  }
-
-  if(isResolved){
-    bannerContainer.innerHTML=`
-      <div style="background:#eaf9f1;border:1px solid #b9edd2;border-radius:8px;padding:10px 14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <strong style="color:#16a765;font-size:11px;display:block">✓ Issue Status: RESOLVED</strong>
-          <span style="font-size:8px;color:#5f6b7a">Resolution recorded in Audit Log.</span>
-        </div>
-        <span class="chip status" style="font-weight:800;background:#eaf9f1;color:#16a765;border-color:#b9edd2;">RESOLVED</span>
-      </div>
-    `;
-  }else if(allAccepted){
-    if(isAdmin){
-      bannerContainer.innerHTML=`
-        <div style="background:#eaf9f1;border:1px solid #b9edd2;border-radius:8px;padding:12px 14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <strong style="color:#16a765;font-size:11px;display:block">All 3 Roles Accepted</strong>
-            <span style="font-size:8px;color:#5f6b7a">Developer, Tester, and Senior Developer have all accepted.</span>
-          </div>
-          <button type="button" class="btn primary" id="resolveIssueButton" onclick="resolveIssue()" style="font-weight:800;padding:8px 18px;background:#16a765;border-color:#16a765;font-size:11px;">Resolve</button>
-        </div>
-      `;
-    }else{
-      bannerContainer.innerHTML=`
-        <div style="background:#eaf9f1;border:1px solid #b9edd2;border-radius:8px;padding:10px 14px;margin-top:12px">
-          <strong style="color:#16a765;font-size:11px;display:block">All 3 Roles Accepted</strong>
-          <span style="font-size:8px;color:#5f6b7a">Awaiting Admin to resolve.</span>
-        </div>
-      `;
     }
-  }else if(anyRejected){
-    bannerContainer.innerHTML=`
-      <div style="background:#feeceb;border:1px solid #f8d0cd;border-radius:8px;padding:10px 14px;margin-top:12px">
-        <strong style="color:#df5a5a;font-size:11px;display:block">Assignment Rejected</strong>
-        <span style="font-size:8px;color:#5f6b7a">One or more roles rejected this assignment. The issue remains unresolved.</span>
-      </div>
-    `;
-  }else if(hasAllThree){
-    bannerContainer.innerHTML=`
-      <div style="background:#fff6df;border:1px solid #faecd8;border-radius:8px;padding:10px 14px;margin-top:12px">
-        <strong style="color:#d98b00;font-size:11px;display:block">Acceptance Pending</strong>
-        <span style="font-size:8px;color:#5f6b7a">Developer, Tester, and Senior Developer must all accept before Admin can resolve.</span>
-      </div>
-    `;
-  }else{
-    bannerContainer.innerHTML='';
+  };
+</script>
+
+<style>
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f9ff;
+    color: #0b1c30;
+    -webkit-font-smoothing: antialiased;
   }
+  * { box-sizing: border-box; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #eff4ff; }
+  ::-webkit-scrollbar-thumb { background: #c6c6cd; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #76777d; }
 
-  renderRoleTeam();
-  const selectionCount=$('selectionCount');
-  if(selectionCount)selectionCount.textContent=`${collaborationRoles.length} roles selected`;
-  document.querySelectorAll('#rolePicker input').forEach(input=>{input.checked=collaborationRoles.includes(input.value)});
-  const started=collaborationRoles.length>0;
-  const teamSaveButton=$('teamSaveButton');
-  if(teamSaveButton){
-    teamSaveButton.textContent=started?'Update Collaboration Team':'Start Collaboration';
-    teamSaveButton.disabled=collaborationRoles.length<2;
+  .material-symbols-outlined {
+    font-size: 18px;
+    line-height: 1;
+    vertical-align: middle;
+    user-select: none;
   }
-  renderSummary();
-}
-function scrollRoleSection(name){
-  const target=document.querySelector(`.role-specific-page .tab-panel[data-tab="${name}"]`);
-  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function configureRoleView(){
-  const role=currentUserRole();
-  if(role!=='admin' && ['developer','tester','senior_dev'].includes(role)){
-    renderNonAdminRoleWorkspace(role);
-    return;
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  const workCopy={admin:['Admin Coordination','Select roles, coordinate assignment, and manage the shared issue.'],developer:['Developer Work','Development updates, code references, and implementation discussion.'],tester:['Testing Work','Testing notes, verification updates, and evidence for the shared issue.'],senior_dev:['Senior Developer Review','Review comments, code discussion, escalation, and approval support.']};
-  const copy=workCopy[role]||workCopy.admin;
-  $('roleWorkTitle').textContent=copy[0];
-  $('roleWorkSubtitle').textContent=copy[1];
-  renderRoleWork(role);
-  if(role==='admin'){
-    $('roleWorkPanel')?.remove();
-    $('roleTeamPanel')?.remove();
-    return;
+  .toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 100;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(11,28,48,0.12);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-}
+  .toast.show { opacity: 1; transform: none; pointer-events: auto; }
+  .toast.ok { color: #065f46; border-color: #a7f3d0; background: #ecfdf5; }
+  .toast.err { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
 
-function renderNonAdminRoleWorkspace(role){
-  document.body.classList.add('role-specific-page');
+  /* Modal backdrop */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 28, 48, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-backdrop.show { display: flex; }
 
-  const roleConfig={
-    developer:{
-      name:'Developer',
-      initial:'D',
-      accent:'#1677e8',
-      subtitle:'Work on issues where you are part of the collaboration team.',
-      workTitle:'Developer Work',
-      workSubtitle:'Implement fixes, add code references, and share development updates.',
-      workButtons:[['Development Update',"focusRoleComment()"],['Code Reference',"scrollRoleSection('code')"],['Add Comment',"focusRoleComment()"]],
-      sideRole:'Developer'
-    },
-    tester:{
-      name:'Tester',
-      initial:'T',
-      accent:'#1c9b68',
-      subtitle:'Test and verify issues where you are part of the collaboration team.',
-      workTitle:'Testing Work',
-      workSubtitle:'Record test results, verification notes, and supporting evidence.',
-      workButtons:[['Test Result',"focusRoleComment()"],['Add Comment',"focusRoleComment()"],['Add Evidence',"switchTab('attachments',document.querySelector('[data-tab=attachments]'))"]],
-      sideRole:'Tester'
-    },
-    senior_dev:{
-      name:'Senior Developer',
-      initial:'S',
-      accent:'#6b4fe0',
-      subtitle:'Review and support issues where you are part of the collaboration team.',
-      workTitle:'Senior Developer Review',
-      workSubtitle:'Review implementation, code references, and technical decisions.',
-      workButtons:[['Review Comment',"focusRoleComment()"],['Code Review',"scrollRoleSection('code')"],['Request Approval',"recordAction('REQUEST_APPROVAL')"]],
-      sideRole:'Senior Developer'
-    }
-  }[role];
+  /* Switcher Dropdown */
+  .switch-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: 250px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(11,28,48,0.15);
+    z-index: 50;
+    padding: 6px;
+  }
+  .switch-dropdown.show { display: block; }
+  .switch-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #0b1c30;
+    transition: background 0.15s;
+  }
+  .switch-item:hover { background: #eff4ff; color: #0051d5; }
+  .switch-item.active { background: #dbe1ff; color: #00174b; font-weight: 600; }
+</style>
+<meta content="web_dashboard" name="shell-type">
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen antialiased">
 
-  document.querySelector('.main').innerHTML=`
-    <header class="head">
-      <div>
-        <div class="eyebrow" style="color:${roleConfig.accent}">BUGFLOW WORKSPACE / MODULE 2</div>
-        <h1>Team Collaboration</h1>
-        <p>${roleConfig.subtitle}</p>
+<!-- BEGIN: LeftSidebar -->
+<aside class="fixed top-0 bottom-0 left-0 w-60 bg-surface-container-lowest border-r border-outline-variant/30 flex flex-col justify-between z-30 select-none">
+  <div class="flex flex-col">
+    <!-- App Brand Logo Header -->
+    <div class="h-14 px-gutter flex items-center gap-space-sm border-b border-outline-variant/20">
+      <div class="w-7 h-7 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <path d="M19 8h-1.81a5.985 5.985 0 00-1.82-1.96l1.3-1.3a.996.996 0 10-1.41-1.41l-1.86 1.86C12.78 5.07 12.4 5 12 5s-.78.07-1.4.19L8.74 3.33a.996.996 0 10-1.41 1.41l1.3 1.3A5.985 5.985 0 006.81 8H5a1 1 0 000 2h1.09c-.05.33-.09.66-.09 1v1H5a1 1 0 000 2h1v1c0 .34.04.67.09 1H5a1 1 0 000 2h1.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H19a1 1 0 000-2h-1.09c.05-.33.09-.66.09-1v-1h1a1 1 0 000-2h-1v-1c0-.34-.04-.67-.09-1H19a1 1 0 000-2zm-6 10c-2.76 0-5-2.24-5-5v-2c0-2.76 2.24-5 5-5s5 2.24 5 5v2c0 2.76-2.24 5-5 5z"></path>
+        </svg>
       </div>
-      <div class="actions">
-        <button class="btn" onclick="loadAll()">↻ Refresh</button>
-        <a class="btn primary" href="/milestone2-ui" style="text-decoration:none">View Sprint Management</a>
-      </div>
-    </header>
-
-    <section class="cards">
-      <span id="activityCount" style="display:none">0</span>
-      <div class="card stat-issues"><div class="label">My Issues</div><div class="num" id="issueCount">0</div><div class="sub">Issues shared with ${roleConfig.name}</div></div>
-      <div class="card stat-progress"><div class="label">In Progress</div><div class="num" id="progressIssueCount">0</div><div class="sub">Currently moving forward</div></div>
-      <div class="card stat-resolved"><div class="label">Resolved</div><div class="num" id="resolvedIssueCount">0</div><div class="sub">Closed or resolved issues</div></div>
-    </section>
-
-    <section class="panel selector">
-      <div id="currentRoleFeedback"></div>
-      <div id="visibleIssueList"></div>
-      <div class="issue-head">
-        <div>
-          <div class="issue-title" id="issueTitle">Select an issue</div>
-          <div class="issue-desc" id="issueDesc">Issue collaboration workspace</div>
-        </div>
-        <div class="chips">
-          <span class="chip high" id="priorityChip">Priority</span>
-          <span class="chip status" id="statusChip">Status</span>
-          <span class="chip sprint" id="sprintChip">Sprint</span>
-        </div>
-      </div>
-      <div class="issue-meta-grid">
-        <div><span>Reporter</span><strong id="issueReporter">-</strong></div>
-        <div><span>Created</span><strong id="issueCreated">-</strong></div>
-        <div><span>Comments</span><strong id="issueCommentMeta">0</strong></div>
-        <div><span>Last updated</span><strong id="issueUpdated">-</strong></div>
-      </div>
-      <select id="issueSelect" class="selectbox" style="display:none" onchange="selectIssue(this.value)"></select>
-    </section>
-
-    <div class="layout">
-      <div class="left">
-
-        <section class="panel role-work-panel" id="roleWorkPanel">
-          <div class="panel-head">
-            <div>
-              <div class="title">${roleConfig.workTitle}</div>
-              <div class="muted">${roleConfig.workSubtitle}</div>
-            </div>
-          </div>
-          <div class="role-work-content">
-            <div class="role-work-actions">
-              ${roleConfig.workButtons.map(([label,action])=>`<button class="btn" type="button" onclick="${action}">${label}</button>`).join('')}
-            </div>
-          </div>
-        </section>
-
-        <section class="panel tab-panel" data-tab="discussion">
-          <div class="panel-head">
-            <div><div class="title">Shared Discussion</div><div class="muted">Everyone on this collaboration issue sees the same discussion.</div></div>
-            <button class="btn small" onclick="loadIssueData()">↻ Refresh</button>
-          </div>
-          <div class="comments" id="comments"><div class="empty">Select an issue.</div></div>
-          <div class="composer">
-            <textarea id="commentText" placeholder="Write an update, testing result, review note, or resolution message..."></textarea>
-            <div class="composer-foot"><button class="btn primary" onclick="postComment()">Post Comment</button></div>
-          </div>
-        </section>
-
-        <section class="panel tab-panel" data-tab="attachments">
-          <div class="panel-head"><div><div class="title">Attachments / Evidence</div><div class="muted">Shared evidence stored against the selected issue.</div></div></div>
-          <div class="attachments">
-            <label class="dropzone" id="dropzone" for="fileInput"><input id="fileInput" type="file" accept=".png,.jpg,.log" hidden><strong>Drag &amp; drop files here</strong><span>or click to upload · PNG, JPG, LOG · Max 10MB</span></label>
-            <div class="composer-foot"><button class="btn primary" onclick="uploadFile()">＋ Upload Attachment</button></div>
-            <div class="files" id="attachments"></div>
-          </div>
-        </section>
-
-        <section class="panel tab-panel" data-tab="code">
-          <div class="panel-head"><div><div class="title">Code References</div><div class="muted">Shared code references connected to this issue.</div></div></div>
-          <div class="code">
-            <div class="code-form">
-              <input id="codePath" placeholder="src/components/Header.tsx">
-              <input id="codeLine" placeholder="Line 45">
-              <input class="wide" id="codeNote" placeholder="What was changed or where is the relevant code?">
-            </div>
-            <div class="action-row"><button class="btn primary" onclick="addCodeReference()">＋ Add Code Reference</button></div>
-            <div class="refs" id="codeRefs"></div>
-          </div>
-        </section>
-
-        <section class="panel tab-panel" data-tab="activity">
-          <div class="panel-head"><div><div class="title">Activity History</div><div class="muted">Shared issue and collaboration events.</div></div></div>
-          <div class="history" id="history"><div class="empty">No activity.</div></div>
-        </section>
-
-      </div>
-
-      <div class="right">
-
-        <section class="panel" id="roleTeamPanel">
-          <div class="panel-head">
-            <div><div class="title">Collaboration Team</div><div class="muted">Selected by Admin. This view is read-only.</div></div>
-          </div>
-          <div class="role-team-grid" id="roleTeamGrid"></div>
-        </section>
-
-        <section class="panel members-panel">
-          <div class="panel-head">
-            <div><div class="title">Shared Team</div><div class="muted">All roles selected by Admin for this issue.</div></div>
-          </div>
-          <div class="collaborating-team">
-            <div class="collaborating-team-grid" id="collaboratingTeam"></div>
-            <div class="muted" id="collaboratingTeamCount"></div>
-          </div>
-        </section>
-
-        <section class="panel flow-panel">
-          <div class="panel-head"><div><div class="title">Team Collaboration Flow</div><div class="muted">One issue, one shared path to resolution.</div></div></div>
-          <div class="collaboration-flow" id="collaborationFlow"></div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div><div class="title">Resolution Workflow</div><div class="muted">Current issue status</div></div>
-            <button class="btn small" id="advanceStatusButton" onclick="advanceIssueStatus()" disabled>Advance Status</button>
-          </div>
-          <div class="workflow" id="workflow"></div>
-        </section>
-
+      <div class="leading-tight">
+        <h1 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">BugFlow</h1>
+        <p class="font-code-sm text-[10px] text-on-surface-variant uppercase tracking-wider">DevOps Defect Suite</p>
       </div>
     </div>
-  `;
 
-  document.querySelector('.side .section').textContent='MY WORKSPACE';
-  document.querySelector('.side .nav').innerHTML=`
-    <a href="/${role==='developer'?'developer-ui':role==='tester'?'tester-ui':'senior-developer-ui'}">⌂ <span>Dashboard</span></a>
-    <a href="/all-defects-ui">▣ <span>My Issues</span></a>
-    <a class="active" href="/team-collaboration-ui">◎ <span>Team Collaboration</span></a>
-    <a href="/milestone2-ui">◇ <span>Sprint Management</span></a>
-    <a href="/all-defects-ui">◆ <span>All Defects</span></a>
-    <a href="/analytics-ui">▥ <span>Analytics Reports</span></a>
-    <a href="/login-ui">↔ <span>Logout / Switch</span></a>
-  `;
+    <!-- Navigation Links Container -->
+    <nav class="p-space-sm space-y-space-md">
+      <!-- Section: Overview -->
+      <div>
+        <span class="px-space-sm font-label-caps text-label-caps uppercase text-on-surface-variant/70">Overview</span>
+        <div class="mt-space-2xs space-y-space-2xs">
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/admin-ui">Dashboard</a>
+        </div>
+      </div>
+      <!-- Section: Work Management -->
+      <div>
+        <span class="px-space-sm font-label-caps text-label-caps uppercase text-on-surface-variant/70">Work Management</span>
+        <div class="mt-space-2xs space-y-space-2xs">
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/all-defects-ui">Defects</a>
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/milestone2-ui">Sprints</a>
+          <!-- Active link: Team Collaboration -->
+          <a aria-current="page" class="block px-space-sm py-1.5 rounded-lg transition-colors bg-surface-container-highest text-secondary font-semibold" href="/team-collaboration-ui">Team Collaboration</a>
+        </div>
+      </div>
+      <!-- Section: Analytics -->
+      <div>
+        <span class="px-space-sm font-label-caps text-label-caps uppercase text-on-surface-variant/70">Analytics</span>
+        <div class="mt-space-2xs space-y-space-2xs">
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/analytics-ui">Analytics</a>
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/analytics-ui">Reports</a>
+        </div>
+      </div>
+      <!-- Section: Integrations -->
+      <div>
+        <span class="px-space-sm font-label-caps text-label-caps uppercase text-on-surface-variant/70">Integrations</span>
+        <div class="mt-space-2xs space-y-space-2xs">
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/integrations-ui">GitHub</a>
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/integrations-ui">CI/CD Pipeline</a>
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/api-explorer-ui">API Explorer</a>
+        </div>
+      </div>
+      <!-- Section: System -->
+      <div>
+        <span class="px-space-sm font-label-caps text-label-caps uppercase text-on-surface-variant/70">System</span>
+        <div class="mt-space-2xs space-y-space-2xs">
+          <a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" href="/login-ui">Switch / Logout</a>
+        </div>
+      </div>
+    </nav>
+  </div>
 
-  const accent=roleConfig.accent;
-  document.querySelector('.role-work-panel').style.borderLeftColor=accent;
+  <!-- Bottom Sidebar Status Footer -->
+  <div class="p-space-sm border-t border-outline-variant/20 bg-surface-container-low/60">
+    <div class="flex items-center justify-between text-code-sm font-code-sm text-on-surface-variant mb-1">
+      <span class="flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+        FastAPI Core v2.4.0
+      </span>
+      <span class="text-secondary font-sans font-semibold text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded border border-secondary-fixed">Online</span>
+    </div>
+    <a class="text-code-sm text-on-surface-variant/80 hover:text-on-surface flex items-center justify-between transition-colors pt-1" href="/api-explorer-ui">
+      <span>Documentation</span>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    </a>
+  </div>
+</aside>
+<!-- END: LeftSidebar -->
 
-  // Keep role pages read-only for collaboration membership and assignment.
-  window.__roleSpecific=role;
+<!-- BEGIN: MainContentWrapper -->
+<div class="pl-60 min-w-0 min-h-screen flex flex-col">
+  <!-- BEGIN: TopGlobalHeader -->
+  <header class="fixed top-0 right-0 left-60 h-14 bg-surface-container-lowest border-b border-outline-variant/30 px-gutter flex items-center justify-between z-20">
+    <!-- Breadcrumbs Path -->
+    <nav class="flex items-center space-x-1.5 text-body-sm text-on-surface-variant font-medium">
+      <span class="hover:text-on-surface cursor-pointer" onclick="window.location.href='/admin-ui'">Workspaces</span>
+      <span>/</span>
+      <span class="hover:text-on-surface cursor-pointer" onclick="window.location.href='/milestone2-ui'">Production Cluster</span>
+      <span>/</span>
+      <span class="text-on-surface font-semibold" id="headerWorkspaceTitle">Admin Workspace</span>
+    </nav>
+
+    <!-- Search & Controls -->
+    <div class="flex items-center gap-space-sm">
+      <!-- Search bar with Cmd+K -->
+      <div class="relative w-64">
+        <svg class="w-3.5 h-3.5 text-on-surface-variant absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        </svg>
+        <input class="w-full text-body-sm pl-8 pr-10 py-1 bg-surface-container-low/70 border border-outline-variant/40 rounded-lg focus:bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-secondary placeholder-on-surface-variant/60 font-body-sm" id="global-search-input" placeholder="Search defects, sprints..." type="text">
+        <kbd class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-code-sm text-on-surface-variant bg-surface-container-lowest border border-outline-variant/40 px-1 py-0.5 rounded shadow-xs">⌘K</kbd>
+      </div>
+
+      <!-- Workspace Selector Pill with Dropdown -->
+      <div class="relative">
+        <button class="flex items-center gap-2 px-2.5 py-1 rounded-full border border-outline-variant/40 hover:bg-surface-container-low text-body-sm font-medium text-on-surface bg-surface-container-lowest transition-colors" id="workspaceBtn" onclick="toggleWorkspaceDropdown(event)">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span>
+          <span id="currentWorkspaceName">Admin Workspace</span>
+          <span class="text-[10px] px-1 py-0.2 bg-surface-container-highest rounded text-on-surface-variant font-code-sm" id="currentRoleBadge">Admin</span>
+          <svg class="w-3.5 h-3.5 text-on-surface-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        </button>
+
+        <div class="switch-dropdown" id="workspaceDropdown">
+          <div class="px-2 py-1 text-[10px] font-label-caps text-on-surface-variant uppercase tracking-wider font-semibold border-b border-outline-variant/20 mb-1">Switch Persona Workspace</div>
+          <div class="switch-item active" data-role="admin" onclick="switchWorkspaceRole('admin')">
+            <div>
+              <span class="font-semibold block">Naruto (Admin)</span>
+              <span class="text-[10px] text-on-surface-variant">System Administrator</span>
+            </div>
+            <span class="material-symbols-outlined text-[16px] text-secondary">check</span>
+          </div>
+          <div class="switch-item" data-role="developer" onclick="switchWorkspaceRole('developer')">
+            <div>
+              <span class="font-semibold block">Sasuke (Developer)</span>
+              <span class="text-[10px] text-on-surface-variant">Core Maintainer</span>
+            </div>
+          </div>
+          <div class="switch-item" data-role="tester" onclick="switchWorkspaceRole('tester')">
+            <div>
+              <span class="font-semibold block">Hinata (Tester)</span>
+              <span class="text-[10px] text-on-surface-variant">QA Verification Gatekeeper</span>
+            </div>
+          </div>
+          <div class="switch-item" data-role="senior_dev" onclick="switchWorkspaceRole('senior_dev')">
+            <div>
+              <span class="font-semibold block">Itachi (Senior Developer)</span>
+              <span class="text-[10px] text-on-surface-variant">Technical Review & Approval</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Add Action -->
+      <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-primary text-on-primary hover:bg-inverse-surface transition-colors" onclick="openStartCollabModal()" title="Start New Collaboration">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+      </button>
+
+      <!-- Notification Bell -->
+      <button class="relative p-1.5 text-on-surface-variant hover:text-on-surface transition-colors" title="Notifications">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-error rounded-full"></span>
+      </button>
+
+      <!-- Profile Chip -->
+      <div class="flex items-center gap-2 pl-space-sm border-l border-outline-variant/30">
+        <div class="w-7 h-7 rounded-full bg-primary text-on-primary border border-outline-variant/40 flex items-center justify-center text-body-sm font-semibold overflow-hidden" id="profileInitials">
+          <span class="text-[11px]">NA</span>
+        </div>
+        <div class="leading-tight text-left">
+          <span class="block text-body-sm font-semibold text-on-surface" id="profileName">Naruto</span>
+          <span class="block text-[10px] text-on-surface-variant font-medium" id="profileRole">Lead Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- END: TopGlobalHeader -->
+
+  <!-- BEGIN: MainContentBody -->
+  <main class="pt-14 p-gutter space-y-gutter flex-1">
+    <div class="flex flex-col w-full space-y-gutter">
+
+      <!-- Telemetry Sub-header & Breadcrumbs Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+        <div class="flex items-center space-x-1.5 text-body-sm text-on-surface-variant font-medium">
+          <span class="hover:text-on-surface cursor-pointer" onclick="window.location.href='/admin-ui'">Workspaces</span>
+          <span>/</span>
+          <span class="hover:text-on-surface cursor-pointer" onclick="window.location.href='/milestone2-ui'">Production Cluster</span>
+          <span>/</span>
+          <span class="hover:text-on-surface cursor-pointer" id="telemetryWorkspace">Admin Workspace</span>
+          <span>/</span>
+          <span class="text-on-surface font-semibold">Team Collaboration</span>
+        </div>
+        <div class="flex items-center gap-space-sm font-code-sm text-code-sm">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-secondary">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            <span class="tracking-tight uppercase font-semibold">CLUSTER-01 NODE PRIMARY</span>
+          </div>
+          <div class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-semibold text-[10px] uppercase tracking-wider" id="telemetryRoleBadge">
+            ROLE: SYSTEM ADMINISTRATOR (ALL WORKSPACES)
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Title & Primary Actions Area -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+        <div>
+          <div class="flex items-center gap-space-sm">
+            <h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-semibold">Team Collaboration</h2>
+            <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-code-sm font-semibold" id="activeThreadsBadge">
+              13 Active Threads
+            </span>
+          </div>
+          <p class="text-body-md text-on-surface-variant mt-1">
+            Coordinate defect resolution across BugFlow team roles, track cross-functional triage, and gate handoffs.
+          </p>
+        </div>
+        <div class="flex items-center gap-space-sm self-start md:self-auto">
+          <button class="h-8 px-3 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-low font-body-sm font-medium transition-colors shadow-xs flex items-center gap-1.5 border border-outline-variant/30" onclick="exportTeamRoster()">
+            <span class="material-symbols-outlined text-[16px] text-on-surface-variant">upload_file</span>
+            <span>Export Roster</span>
+          </button>
+          <button class="h-8 px-3.5 rounded-lg bg-primary text-on-primary hover:bg-inverse-surface font-body-sm font-semibold transition-colors shadow-xs flex items-center gap-1.5" onclick="openStartCollabModal()" id="startCollaborationButton">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span>Start Collaboration</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Summary KPI Metric Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+        <!-- KPI 1 -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-xs flex flex-col justify-between border border-outline-variant/20">
+          <div class="flex items-center justify-between text-body-sm text-on-surface-variant font-medium">
+            <span>Active Collaborations</span>
+            <span class="font-code-sm text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-secondary font-semibold">All Clusters</span>
+          </div>
+          <div class="my-space-xs flex items-baseline gap-1.5">
+            <span class="font-display text-display text-on-surface font-bold" id="kpiActiveCollab">13</span>
+            <span class="text-body-sm font-code-sm text-on-surface-variant font-medium">in progress</span>
+          </div>
+          <div class="text-body-sm text-on-surface-variant/80">Cross-functional triage active</div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-xs flex flex-col justify-between border border-outline-variant/20">
+          <div class="flex items-center justify-between text-body-sm text-on-surface-variant font-medium">
+            <span>Pending Actions</span>
+            <span class="font-code-sm text-[10px] px-1.5 py-0.5 rounded bg-error-container/60 text-error font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-error"></span> Needs Review
+            </span>
+          </div>
+          <div class="my-space-xs flex items-baseline gap-1.5">
+            <span class="font-display text-display text-on-surface font-bold" id="kpiPendingGates">3</span>
+            <span class="text-body-sm font-code-sm text-on-surface-variant font-medium">gates waiting</span>
+          </div>
+          <div class="text-body-sm text-on-surface-variant/80">Accept/Reject &amp; QA sign-off gates</div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-xs flex flex-col justify-between border border-outline-variant/20">
+          <div class="flex items-center justify-between text-body-sm text-on-surface-variant font-medium">
+            <span>Resolved Issues</span>
+            <span class="font-code-sm text-[10px] px-1.5 py-0.5 rounded bg-surface-container-high text-secondary font-semibold" id="kpiResolvedPill">Resolved</span>
+          </div>
+          <div class="my-space-xs flex items-baseline gap-1.5">
+            <span class="font-display text-display text-on-surface font-bold" id="kpiResolvedCount">0</span>
+            <span class="text-body-sm font-code-sm text-on-surface-variant font-medium" id="kpiResolvedPct">completed (0%)</span>
+          </div>
+          <div class="text-body-sm text-on-surface-variant/80">Cross-team verified resolutions</div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-xs flex flex-col justify-between border border-outline-variant/20">
+          <div class="flex items-center justify-between text-body-sm text-on-surface-variant font-medium">
+            <span>Team Members</span>
+            <span class="font-code-sm text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-semibold">4 Roles Engaged</span>
+          </div>
+          <div class="my-space-xs flex items-baseline gap-1.5">
+            <span class="font-display text-display text-on-surface font-bold" id="kpiMemberCount">4</span>
+            <span class="text-body-sm font-code-sm text-on-surface-variant font-medium">active members</span>
+          </div>
+          <div class="text-body-sm text-on-surface-variant/80">Admin, Dev, Tester, Sr. Dev</div>
+        </div>
+      </div>
+
+      <!-- Role Context Banner -->
+      <div class="bg-surface-container-high/60 px-space-md py-2.5 rounded-lg flex items-center justify-between text-body-sm text-on-surface border border-outline-variant/30">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-secondary">admin_panel_settings</span>
+          <span id="roleContextDescription">
+            <strong class="font-semibold text-on-surface" id="roleContextName">Role Context: Naruto (Admin)</strong> — Viewing full cluster-wide collaboration ledger. (Developers and Testers have scoped views limited to assigned tickets according to BugFlow RBAC rules).
+          </span>
+        </div>
+        <span class="font-code-sm text-[10px] uppercase font-bold text-secondary bg-surface-container-lowest px-2 py-0.5 rounded" id="roleContextPermBadge">
+          Full Audit Permitted
+        </span>
+      </div>
+
+      <!-- Filters Toolbar Card -->
+      <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-xs space-y-space-md border border-outline-variant/20">
+        <!-- Top Row: Search Input -->
+        <div class="relative w-full">
+          <span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute left-3 top-1/2 -translate-y-1/2">search</span>
+          <input class="w-full text-body-sm pl-9 pr-12 py-1.5 bg-surface-container-low rounded-lg focus:bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-secondary placeholder-on-surface-variant/70 font-body-sm text-on-surface border border-outline-variant/30" id="collab-search" oninput="applyFilters()" placeholder="Search by issue ID, defect title, or participant... (Press / to focus)" type="text">
+          <kbd class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-code-sm text-on-surface-variant bg-surface-container-highest px-1.5 py-0.5 rounded shadow-xs">/</kbd>
+        </div>
+
+        <!-- Dropdowns & Action Buttons Row -->
+        <div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-2xs">
+          <div class="flex flex-wrap items-center gap-space-sm">
+            <!-- Role Dropdown -->
+            <div class="flex flex-col">
+              <span class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Role</span>
+              <select class="h-8 px-2.5 bg-surface-container-low rounded-lg text-body-sm font-medium text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary cursor-pointer border border-outline-variant/30" id="filterRole" onchange="applyFilters()">
+                <option value="ALL">All Roles (4)</option>
+                <option value="admin">Admin (Naruto)</option>
+                <option value="developer">Developer (Sasuke)</option>
+                <option value="tester">Tester (Hinata)</option>
+                <option value="senior_dev">Senior Developer (Itachi)</option>
+              </select>
+            </div>
+
+            <!-- Workflow Status Dropdown -->
+            <div class="flex flex-col">
+              <span class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Workflow Status</span>
+              <select class="h-8 px-2.5 bg-surface-container-low rounded-lg text-body-sm font-medium text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary cursor-pointer border border-outline-variant/30" id="filterStatus" onchange="applyFilters()">
+                <option value="ALL">All Statuses</option>
+                <option value="ASSIGNED">Assigned</option>
+                <option value="ACCEPTED">Accepted</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="RESOLVED">Resolved</option>
+                <option value="CLOSED">Closed</option>
+              </select>
+            </div>
+
+            <!-- Severity Dropdown -->
+            <div class="flex flex-col">
+              <span class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Severity</span>
+              <select class="h-8 px-2.5 bg-surface-container-low rounded-lg text-body-sm font-medium text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary cursor-pointer border border-outline-variant/30" id="filterSeverity" onchange="applyFilters()">
+                <option value="ALL">All Severities</option>
+                <option value="CRITICAL">Critical (P0)</option>
+                <option value="MAJOR">High (P1)</option>
+                <option value="MINOR">Medium (P2)</option>
+                <option value="COSMETIC">Low (P3)</option>
+              </select>
+            </div>
+
+            <!-- Assignee Dropdown -->
+            <div class="flex flex-col">
+              <span class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Assignee</span>
+              <select class="h-8 px-2.5 bg-surface-container-low rounded-lg text-body-sm font-medium text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary cursor-pointer border border-outline-variant/30" id="filterAssignee" onchange="applyFilters()">
+                <option value="ALL">All Assignees</option>
+                <option value="1">Naruto (Admin)</option>
+                <option value="2">Manoj (User)</option>
+                <option value="3">Soma Sekhar (User)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-space-sm self-end">
+            <button class="h-8 px-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low text-body-sm font-medium transition-colors" onclick="clearFilters()">
+              Clear Filters
+            </button>
+            <button class="h-8 px-4 rounded-lg bg-secondary text-on-secondary hover:bg-secondary-container text-body-sm font-semibold transition-colors shadow-xs" onclick="applyFilters()">
+              Apply Filters
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Filter Pills & Summary -->
+        <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-outline-variant/10">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant font-semibold tracking-wider">Active Filters:</span>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-[11px]" id="filterRolePill">
+            Role: <strong class="font-semibold">All Roles</strong>
+          </span>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-sm text-[11px]" id="filterCountPill">
+            Showing: <strong class="font-semibold text-on-surface" id="filteredThreadsCount">13 Threads</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Interactive State Previews Controls -->
+      <div class="flex items-center justify-between bg-surface-container-low px-space-md py-2 rounded-lg text-body-sm border border-outline-variant/20">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-secondary">layers</span>
+          <span class="font-medium text-on-surface">Collaboration Ledger View Modes:</span>
+        </div>
+        <div class="flex items-center gap-1 font-body-sm">
+          <button class="px-2.5 py-1 rounded bg-surface-container-lowest text-secondary font-semibold shadow-xs transition-colors" id="btn-normal" onclick="switchView('normal')">Normal View</button>
+          <button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface-variant font-medium transition-colors" id="btn-empty" onclick="switchView('empty')">Empty State</button>
+          <button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface-variant font-medium transition-colors" id="btn-loading" onclick="switchView('loading')">Loading Skeleton</button>
+          <button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface-variant font-medium transition-colors" id="btn-error" onclick="switchView('error')">API Error</button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: NORMAL VIEW (Two-Column Main Content Layout ~65% Table / ~35% Detail Drawer) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-gutter items-start" id="view-normal">
+
+        <!-- LEFT COLUMN: Enterprise Collaboration Table (7 cols on lg) -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-xs overflow-hidden flex flex-col lg:col-span-7 border border-outline-variant/20">
+          <!-- Batch Actions Toolbar -->
+          <div class="px-space-md py-2.5 bg-surface-container-low flex flex-wrap items-center justify-between gap-space-sm text-body-sm border-b border-outline-variant/20">
+            <div class="flex items-center gap-3">
+              <input class="rounded bg-surface-container-lowest text-secondary focus:ring-0 cursor-pointer w-3.5 h-3.5 border-outline-variant/50" id="selectAllCheckbox" onchange="toggleSelectAll(this)" type="checkbox">
+              <span class="text-on-surface-variant font-medium text-[12px]" id="selectedRowsCount">0 selected of 13</span>
+              <button class="px-2 py-0.5 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container text-body-sm font-medium shadow-xs flex items-center gap-1 border border-outline-variant/30" onclick="batchAssignAction()">
+                <span class="material-symbols-outlined text-[14px]">assignment_ind</span> Batch Assign
+              </button>
+              <button class="px-2 py-0.5 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container text-body-sm font-medium shadow-xs flex items-center gap-1 border border-outline-variant/30" onclick="window.location.href='/milestone2-ui'">
+                <span class="material-symbols-outlined text-[14px]">low_priority</span> Move Sprint
+              </button>
+            </div>
+            <div class="flex items-center gap-2 font-code-sm text-[11px] text-on-surface-variant">
+              <span>Density:</span>
+              <button class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-semibold" id="densityStd" onclick="setDensity('standard')">Standard</button>
+              <button class="px-2 py-0.5 rounded hover:bg-surface-container" id="densityCmp" onclick="setDensity('compact')">Compact</button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left font-body-sm" id="ledgerTable">
+              <thead>
+                <tr class="bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider select-none border-b border-outline-variant/20">
+                  <th class="py-2.5 px-3 w-8"></th>
+                  <th class="py-2.5 px-3 font-semibold">Issue ID</th>
+                  <th class="py-2.5 px-3 font-semibold min-w-[200px]">Defect &amp; Component</th>
+                  <th class="py-2.5 px-3 font-semibold">Severity</th>
+                  <th class="py-2.5 px-3 font-semibold">Active Roles</th>
+                  <th class="py-2.5 px-3 font-semibold">Status</th>
+                  <th class="py-2.5 px-3 font-semibold min-w-[110px]">Last Activity</th>
+                  <th class="py-2.5 px-3 font-semibold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant/10 text-body-sm" id="ledgerTableBody">
+                <!-- Rows injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table Footer with Live Heartbeat & Pagination -->
+          <div class="px-space-md py-3 bg-surface-container-low/60 flex flex-wrap items-center justify-between gap-space-sm text-body-sm text-on-surface-variant mt-auto border-t border-outline-variant/20">
+            <div class="flex items-center gap-4">
+              <span id="paginationSummary">Showing <strong class="text-on-surface font-semibold">1 to 13</strong> of <strong class="text-on-surface font-semibold">13</strong> active threads</span>
+              <span class="hidden sm:inline-flex items-center gap-1.5 font-code-sm text-[11px] text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                Live sync connected • Synced just now
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-1 text-[12px]">
+                <span>Per page:</span>
+                <select class="h-7 px-1.5 rounded bg-surface-container-lowest text-on-surface text-body-sm focus:outline-none cursor-pointer border border-outline-variant/30" id="perPageSelect" onchange="changePerPage(this.value)">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option selected value="20">20</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-1" id="paginationButtons">
+                <button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface disabled:opacity-40 text-body-sm font-medium border border-outline-variant/30" disabled id="prevPageBtn" onclick="prevPage()">&lt; Prev</button>
+                <button class="w-7 h-7 rounded bg-secondary text-on-secondary font-semibold text-body-sm">1</button>
+                <button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container text-body-sm font-medium border border-outline-variant/30" disabled id="nextPageBtn" onclick="nextPage()">Next &gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Selected Collaboration Detail Drawer / Panel (5 cols on lg) -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-xs overflow-hidden flex flex-col space-y-space-md p-space-md lg:col-span-5 border border-outline-variant/20">
+
+          <!-- Drawer Header with Active Connection Indicator -->
+          <div class="flex items-start justify-between pb-2 border-b border-outline-variant/20">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-code-md text-headline-sm font-bold text-secondary" id="drawerIssueKey">#BUG-001</span>
+                <span class="px-2 py-0.5 rounded-full bg-surface-container text-secondary font-code-sm text-[11px] font-bold border border-secondary/20" id="drawerStatusPill">
+                  Assigned (Active)
+                </span>
+              </div>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-on-error-container font-code-sm text-[10px] font-bold border border-error/20" id="drawerSeverityBadge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-error"></span> High (P1)
+                </span>
+                <span class="font-code-sm text-[10px] text-on-surface-variant bg-surface-container-high px-1.5 py-0.5 rounded" id="drawerActiveRowIndicator">
+                  Active Connection • Row 1
+                </span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              <button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant" onclick="window.location.href='/all-defects-ui'" title="Open in All Defects">
+                <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Defect Summary Card -->
+          <div class="bg-surface-container-low p-3 rounded-lg space-y-1.5 border border-outline-variant/30">
+            <div class="font-label-caps text-[10px] uppercase text-on-surface-variant font-bold">Defect Subject</div>
+            <p class="text-body-sm font-semibold text-on-surface leading-snug" id="drawerDefectTitle">
+              PostgreSQL Connection Test
+            </p>
+            <div class="flex flex-wrap items-center gap-2 pt-1 font-code-sm text-[11px] text-on-surface-variant">
+              <span>Component: <strong class="text-on-surface font-semibold" id="drawerComponent">database/core</strong></span>
+              <span>•</span>
+              <span>Project: <strong class="text-on-surface font-semibold" id="drawerProject">BUG</strong></span>
+              <span>•</span>
+              <span>Priority: <span class="font-bold text-secondary" id="drawerPriority">LOW</span></span>
+            </div>
+          </div>
+
+          <!-- Workflow Gate Stepper & Handoff Enforcement Rules -->
+          <div class="space-y-2.5 p-3 rounded-lg bg-surface-container-low/70 border border-outline-variant/30">
+            <div class="flex items-center justify-between text-body-sm">
+              <span class="font-label-caps text-[11px] uppercase text-on-surface font-bold tracking-wider">Handoff Gate Workflow</span>
+              <span class="font-code-sm text-[11px] text-secondary font-bold bg-surface-container-highest px-2 py-0.5 rounded" id="drawerGatePill">Gate 2: Pending Acceptance</span>
+            </div>
+
+            <!-- Step progress tracker (1. Assigned -> 2. Accept / Reject Gate -> 3. In Progress -> 4. Resolved) -->
+            <div class="grid grid-cols-4 gap-1.5 pt-1" id="gateStepperGrid">
+              <div class="flex flex-col gap-1">
+                <div class="h-2 rounded bg-secondary" id="step1Bar"></div>
+                <span class="text-[10px] font-code-sm font-bold text-secondary leading-tight">1. Assigned</span>
+                <span class="text-[9px] font-code-sm text-on-surface-variant" id="step1Label">✓ Passed</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="h-2 rounded bg-secondary animate-pulse" id="step2Bar"></div>
+                <span class="text-[10px] font-code-sm font-bold text-secondary leading-tight">2. Accept/Reject</span>
+                <span class="text-[9px] font-code-sm text-secondary font-semibold" id="step2Label">● Current Gate</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="h-2 rounded bg-surface-container-high" id="step3Bar"></div>
+                <span class="text-[10px] font-code-sm font-medium text-on-surface-variant leading-tight">3. In Progress</span>
+                <span class="text-[9px] font-code-sm text-on-surface-variant/70" id="step3Label">Pending Gate 2</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="h-2 rounded bg-surface-container" id="step4Bar"></div>
+                <span class="text-[10px] font-code-sm font-medium text-on-surface-variant leading-tight">4. Resolved</span>
+                <span class="text-[9px] font-code-sm text-on-surface-variant/70" id="step4Label">Requires QA</span>
+              </div>
+            </div>
+
+            <!-- Interactive Gate Note Box with Developer Gate Actions -->
+            <div class="p-2.5 rounded-lg bg-surface-container-lowest border border-secondary-fixed text-body-sm space-y-2" id="gateEnforcementBox">
+              <div class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">shield</span>
+                <div class="text-[12px] leading-relaxed text-on-surface" id="gateEnforcementText">
+                  <strong class="font-bold text-secondary">Developer Gate Enforcement:</strong> Assignment does <em>not</em> automatically start resolution. Assigned roles must review and explicitly accept assignment. Rejecting halts workflow until Admin re-triage.
+                </div>
+              </div>
+              <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20" id="gateActionRow">
+                <span class="font-code-sm text-[10px] text-on-surface-variant" id="gateActionRoleHint">Gate Action:</span>
+                <div class="flex items-center gap-1.5" id="gateActionButtons">
+                  <button class="px-2 py-0.5 rounded bg-error-container text-on-error-container hover:bg-error-container/80 font-code-sm text-[11px] font-bold border border-error/20" onclick="respondActiveRole('REJECT')">
+                    Reject Gate
+                  </button>
+                  <button class="px-2.5 py-0.5 rounded bg-secondary text-on-secondary hover:bg-secondary-container font-code-sm text-[11px] font-bold shadow-xs" onclick="respondActiveRole('ACCEPT')">
+                    Accept Assignment
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Resolve Banner -->
+            <div id="resolveBannerContainer"></div>
+          </div>
+
+          <!-- Participant Roster (4 Roles Engaged) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-label-caps text-[11px] uppercase text-on-surface font-bold tracking-wider">Assigned Role Roster (4 Roles Engaged)</span>
+              <button class="text-secondary font-body-sm text-[11px] font-bold hover:underline" id="manageRolesBtn" onclick="openStartCollabModal()">Manage Roles</button>
+            </div>
+            <div class="space-y-1.5" id="rosterContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Collaboration Audit Feed -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-label-caps text-[11px] uppercase text-on-surface font-bold tracking-wider">Collaboration Audit Feed</span>
+              <span class="font-code-sm text-[10px] text-on-surface-variant" id="auditFeedCount">0 Events</span>
+            </div>
+            <div class="space-y-2.5 text-body-sm pl-1 max-h-48 overflow-y-auto" id="auditFeedContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Technical Discussion & Comment Composer -->
+          <div class="space-y-2 pt-1 border-t border-outline-variant/20">
+            <div class="flex items-center justify-between text-body-sm">
+              <span class="font-label-caps text-[11px] uppercase text-on-surface font-bold tracking-wider">Thread Discussion</span>
+              <span class="text-[10px] font-code-sm text-on-surface-variant">Comments saved live</span>
+            </div>
+
+            <!-- Discussion comments list -->
+            <div class="space-y-2 max-h-52 overflow-y-auto" id="commentsContainer">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Quick composer input area -->
+            <div class="space-y-2 pt-1">
+              <textarea class="w-full text-body-sm p-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder-on-surface-variant/70 focus:bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-secondary resize-none font-body-sm border border-outline-variant/30" id="commentInput" placeholder="Type your handoff update, stack trace, or note for the team..." rows="2"></textarea>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-on-surface-variant">
+                  <button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="promptCodeReference()" title="Attach Code Reference">
+                    <span class="material-symbols-outlined text-[16px]">terminal</span>
+                  </button>
+                  <button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="triggerFileInput()" title="Upload Screenshot or Log">
+                    <span class="material-symbols-outlined text-[16px]">attach_file</span>
+                  </button>
+                  <input accept=".png,.jpg,.jpeg,.log,.txt" id="attachmentFileInput" onchange="uploadSelectedAttachment(this)" style="display:none" type="file">
+                </div>
+                <button class="h-7 px-3.5 rounded bg-secondary text-on-secondary hover:bg-secondary-container font-body-sm text-[12px] font-bold transition-colors shadow-xs flex items-center gap-1" onclick="postThreadComment()">
+                  <span>Submit Update</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VIEW 2: EMPTY STATE (Hidden by default) -->
+      <div class="hidden bg-surface-container-lowest p-12 rounded-xl shadow-xs text-center flex-col items-center justify-center space-y-4 border border-outline-variant/20" id="view-empty">
+        <div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center text-secondary">
+          <span class="material-symbols-outlined text-[28px]">group_off</span>
+        </div>
+        <div class="space-y-1 max-w-md">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">No collaboration threads found</h3>
+          <p class="text-body-sm text-on-surface-variant">
+            No active defects match the current filter criteria for this workspace cluster. Clear filters or initiate a cross-functional collaboration thread.
+          </p>
+        </div>
+        <div class="flex items-center gap-space-sm pt-2">
+          <button class="h-8 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-body-sm font-semibold transition-colors" onclick="clearFilters(); switchView('normal')">
+            Reset Filters
+          </button>
+          <button class="h-8 px-3.5 rounded-lg bg-primary text-on-primary hover:bg-inverse-surface font-body-sm font-semibold transition-colors" onclick="openStartCollabModal()">
+            + Start New Collaboration
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 3: LOADING SKELETON (Hidden by default) -->
+      <div class="hidden grid grid-cols-1 lg:grid-cols-12 gap-space-gutter animate-pulse" id="view-loading">
+        <!-- Left skeleton table -->
+        <div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-md shadow-xs space-y-4 border border-outline-variant/20">
+          <div class="h-6 bg-surface-container-high rounded w-1/4"></div>
+          <div class="space-y-3">
+            <div class="h-10 bg-surface-container-low rounded"></div>
+            <div class="h-12 bg-surface-container-low rounded"></div>
+            <div class="h-12 bg-surface-container-low rounded"></div>
+            <div class="h-12 bg-surface-container-low rounded"></div>
+            <div class="h-12 bg-surface-container-low rounded"></div>
+            <div class="h-12 bg-surface-container-low rounded"></div>
+          </div>
+          <div class="h-8 bg-surface-container-low rounded w-1/3 pt-2"></div>
+        </div>
+        <!-- Right skeleton drawer -->
+        <div class="lg:col-span-5 bg-surface-container-lowest rounded-xl p-space-md shadow-xs space-y-4 border border-outline-variant/20">
+          <div class="h-6 bg-surface-container-high rounded w-1/2"></div>
+          <div class="h-20 bg-surface-container-low rounded"></div>
+          <div class="h-16 bg-surface-container-low rounded"></div>
+          <div class="h-28 bg-surface-container-low rounded"></div>
+          <div class="h-24 bg-surface-container-low rounded"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: API ERROR STATE (Hidden by default) -->
+      <div class="hidden bg-surface-container-lowest p-12 rounded-xl shadow-xs text-center flex-col items-center justify-center space-y-4 border border-outline-variant/20" id="view-error">
+        <div class="w-14 h-14 rounded-full bg-error-container text-error flex items-center justify-center">
+          <span class="material-symbols-outlined text-[28px]">cloud_off</span>
+        </div>
+        <div class="space-y-1 max-w-md">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Telemetry Feed Disconnected</h3>
+          <p class="text-body-sm text-on-surface-variant font-code-sm">
+            HTTP 503 — Gateway Timeout on cluster endpoint: <code class="text-error font-semibold">api.bugflow.internal/v1/collaboration/issues</code>
+          </p>
+        </div>
+        <div class="flex items-center gap-space-sm pt-2">
+          <button class="h-8 px-4 rounded-lg bg-secondary text-on-secondary hover:bg-secondary-container font-body-sm font-semibold transition-colors flex items-center gap-1.5 shadow-xs" onclick="switchView('normal'); loadAllData()">
+            <span class="material-symbols-outlined text-[16px]">refresh</span> Retry Connection
+          </button>
+          <button class="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm font-medium transition-colors" onclick="window.location.href='/api-explorer-ui'">
+            View Cluster Diagnostics
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <!-- END: MainContentBody -->
+</div>
+<!-- END: MainContentWrapper -->
+
+<!-- Start / Edit Collaboration Team Modal -->
+<div class="modal-backdrop" id="collabModal">
+  <div class="bg-surface-container-lowest rounded-xl p-6 shadow-xl max-w-md w-full border border-outline-variant/30 space-y-4">
+    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+      <div>
+        <h3 class="font-headline-sm text-on-surface font-bold" id="modalTitle">Select Collaboration Team</h3>
+        <p class="text-[12px] text-on-surface-variant">Select 2 to 4 roles to collaborate on this issue.</p>
+      </div>
+      <button class="p-1 rounded hover:bg-surface-container text-on-surface-variant" onclick="closeStartCollabModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="space-y-2.5">
+      <label class="flex items-start gap-3 p-2.5 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+        <input class="mt-0.5 rounded text-secondary focus:ring-0" id="roleCheckAdmin" type="checkbox" value="admin">
+        <div>
+          <span class="text-body-sm font-bold text-on-surface block">Admin (Naruto)</span>
+          <span class="text-[11px] text-on-surface-variant block">Coordination, final triage, approval & resolution gate</span>
+        </div>
+      </label>
+
+      <label class="flex items-start gap-3 p-2.5 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+        <input class="mt-0.5 rounded text-secondary focus:ring-0" id="roleCheckDev" type="checkbox" value="developer">
+        <div>
+          <span class="text-body-sm font-bold text-on-surface block">Developer (Sasuke)</span>
+          <span class="text-[11px] text-on-surface-variant block">Fix implementation, code references & technical resolution</span>
+        </div>
+      </label>
+
+      <label class="flex items-start gap-3 p-2.5 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+        <input class="mt-0.5 rounded text-secondary focus:ring-0" id="roleCheckTester" type="checkbox" value="tester">
+        <div>
+          <span class="text-body-sm font-bold text-on-surface block">Tester (Hinata)</span>
+          <span class="text-[11px] text-on-surface-variant block">Testing verification, evidence upload & quality sign-off</span>
+        </div>
+      </label>
+
+      <label class="flex items-start gap-3 p-2.5 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+        <input class="mt-0.5 rounded text-secondary focus:ring-0" id="roleCheckSeniorDev" type="checkbox" value="senior_dev">
+        <div>
+          <span class="text-body-sm font-bold text-on-surface block">Senior Developer (Itachi)</span>
+          <span class="text-[11px] text-on-surface-variant block">Architecture review, code inspection & technical support</span>
+        </div>
+      </label>
+    </div>
+
+    <div class="text-[11px] text-error font-medium" id="modalError"></div>
+
+    <div class="flex items-center justify-between pt-2 border-t border-outline-variant/20">
+      <span class="text-[11px] text-on-surface-variant font-code-sm" id="modalSelectedCount">0 roles selected</span>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 rounded-lg hover:bg-surface-container text-body-sm font-medium" onclick="closeStartCollabModal()">Cancel</button>
+        <button class="px-4 py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary-container text-body-sm font-semibold shadow-xs" onclick="saveCollaborationTeamModal()">Save Collaboration Team</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification element -->
+<div class="toast" id="toast">
+  <span class="material-symbols-outlined text-[16px]" id="toastIcon">check_circle</span>
+  <span id="toastMsg">Operation successful</span>
+</div>
+
+<script>
+const API = '/api/v1';
+let issues = [];
+let filteredIssues = [];
+let users = [];
+let selected = null;
+let comments = [];
+let attachments = [];
+let historyEvents = [];
+let collaborationRoles = [];
+let assignmentStates = { developer: 'PENDING', tester: 'PENDING', senior_dev: 'PENDING' };
+let canResolve = false;
+let tableDensity = 'standard';
+let currentPage = 1;
+let itemsPerPage = 20;
+let activeRole = 'admin';
+
+const CANONICAL_ROSTER = {
+  admin: { name: 'Naruto', role: 'admin', roleDisplay: 'Admin', roleSubtitle: 'System Administrator • Lead Triage', badge: 'Triage Lead', initials: 'NA' },
+  developer: { name: 'Sasuke', role: 'developer', roleDisplay: 'Developer', roleSubtitle: 'Core Maintainer • Dev Gate', badge: 'Developer Gate', initials: 'SK' },
+  tester: { name: 'Hinata', role: 'tester', roleDisplay: 'Tester', roleSubtitle: 'QA Sign-off Gatekeeper', badge: 'Repro & Verification', initials: 'HN' },
+  senior_dev: { name: 'Itachi', role: 'senior_dev', roleDisplay: 'Senior Developer', roleSubtitle: 'Architecture Reviewer', badge: 'Reviewer Gate', initials: 'IT' }
+};
+
+const $ = id => document.getElementById(id);
+
+function token() {
+  return localStorage.getItem('access_token') || localStorage.getItem('token') || localStorage.getItem('bugflow_token') || '';
 }
 
-function focusRoleComment(){
-  const box=$('commentText');
-  if(box){box.focus();box.scrollIntoView({behavior:'smooth',block:'center'});}
+function headers(jsonBody = false) {
+  const h = {};
+  if (jsonBody) h['Content-Type'] = 'application/json';
+  const t = token();
+  if (t) h['Authorization'] = 'Bearer ' + t;
+  return h;
 }
-function switchTab(name,button){document.querySelectorAll('.tab-panel').forEach(panel=>{panel.hidden=panel.dataset.tab!==name});document.querySelectorAll('.workspace-tab').forEach(tab=>{const active=tab===button;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active))})}
-function toggleRole(input){const roles=[...document.querySelectorAll('#rolePicker input:checked')].map(item=>item.value);collaborationRoles=roles;renderCollaborationTeam();if(selected)renderCollaborationFlow(String(selected.status?.value||selected.status||'REPORTED'));$('teamError').textContent=roles.length===1?'Select at least 2 roles for collaboration.':''}
-async function saveCollaborationTeam(){if(!selected)return toast('Select an issue first',false);const roles=[...document.querySelectorAll('#rolePicker input:checked')].map(input=>input.value);if(roles.length<2){$('teamError').textContent='Select at least 2 roles for collaboration.';return}try{const r=await fetch(API+`/collaboration/issues/${selected.id}/team`,{method:'PUT',headers:headers(true),body:JSON.stringify({roles})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Could not save collaboration team');collaborationRoles=d.roles||roles;assignmentStates=d.assignment_states||{developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'};canResolve=Boolean(d.can_resolve);issueTeams[selected.id]=collaborationRoles;renderCollaborationTeam();renderVisibleIssueFeedback();renderCollaborationFlow(String(selected.status?.value||selected.status||'REPORTED'));$('teamError').textContent='';toast('Collaboration team saved');await loadIssueData()}catch(e){$('teamError').textContent=e.message||'Could not save collaboration team';toast(e.message||'Could not save collaboration team',false)}}
-async function respondAssignment(role, action){if(!selected)return toast('Select an issue first',false);try{const r=await fetch(API+`/collaboration/issues/${selected.id}/assignment-response`,{method:'POST',headers:headers(true),body:JSON.stringify({role,action})});const d=await json(r);if(!r.ok)throw apiError(r,d,`Failed to ${action.toLowerCase()} assignment`);if(d.assignment_states)assignmentStates=d.assignment_states;canResolve=Boolean(d.can_resolve);toast(d.message||`${roleName(role)} assignment ${action.toLowerCase()}ed`);await loadIssueData()}catch(e){toast(e.message||`Failed to ${action.toLowerCase()} assignment`,false)}}
-async function resolveIssue(){if(!selected)return toast('Select an issue first',false);try{const r=await fetch(API+`/collaboration/issues/${selected.id}/resolve`,{method:'POST',headers:headers(true)});const d=await json(r);if(!r.ok)throw apiError(r,d,'Could not resolve issue');toast(d.message||'Issue resolved successfully');await loadAll()}catch(e){toast(e.message||'Could not resolve issue',false)}}
-async function loadAll(){try{
- let r=await fetch(API+'/collaboration/issues',{headers:headers()});let d=await json(r);if(!r.ok)throw apiError(r,d,'Failed to load collaboration issues');issues=Array.isArray(d)?d:(d.issues||[]);issueTeams={};await Promise.all(issues.map(async issue=>{const teamResponse=await fetch(API+`/collaboration/issues/${issue.id}/team`,{headers:headers()});const teamData=await json(teamResponse);if(teamResponse.ok){issueTeams[issue.id]=teamData.roles||[];if(selected&&+selected.id===+issue.id){assignmentStates=teamData.assignment_states||assignmentStates;canResolve=Boolean(teamData.can_resolve)}}}));$('issueCount').textContent=issues.length;
- r=await fetch(API+'/collaboration/users',{headers:headers()});d=await json(r);if(!r.ok)throw apiError(r,d,'Could not load collaboration users');users=d.users||[];renderUsers();renderSummary();
- renderIssueSelect();renderVisibleIssueFeedback();
- if(selected){selected=issues.find(x=>+x.id===+selected.id)||issues[0]||null}else selected=issues[0]||null;
- if(selected)$('issueSelect').value=selected.id;renderIssue();await loadIssueData();
- }catch(e){console.error(e);toast(e.message||'Could not load collaboration data',false)}}
-function renderIssueSelect(){const s=$('issueSelect');if(!issues.length){s.innerHTML='<option value="">No collaboration issues assigned to your role.</option>';return}s.innerHTML=issues.map(i=>`<option value="${i.id}">${esc(i.issue_key||('BUG-'+i.id))} — ${esc(i.title||'Untitled issue')}</option>`).join('')}
-function renderUsers(){const s=$('assignee');if(!s)return;s.innerHTML='<option value="">Unassigned</option>'+users.map(u=>`<option value="${u.id}">${esc(u.name==='Admin'&&normalizedRole(u.role)==='admin'?'Naruto':u.name)} — ${esc(roleName(u.role))}</option>`).join('')}
-function selectIssue(id){selected=issues.find(x=>+x.id===+id)||null;collaborationRoles=[];renderCollaborationTeam();renderIssue();loadIssueData()}
-function renderIssue(){if(!selected){$('issueTitle').textContent='Select an issue';$('issueDesc').textContent='Issue collaboration workspace';$('priorityChip').textContent='Priority';$('statusChip').textContent='Status';$('sprintChip').textContent='Sprint';return}
- $('issueTitle').textContent=(selected.issue_key||('BUG-'+selected.id))+' — '+(selected.title||'Untitled issue');$('issueDesc').textContent=selected.description||'No description available';$('priorityChip').textContent=String(selected.priority?.value||selected.priority||'LOW');const status=String(selected.status?.value||selected.status||'REPORTED').toUpperCase();$('statusChip').textContent=status;$('sprintChip').textContent=selected.sprint_name||'Existing issue';const reporter=users.find(u=>+u.id===+selected.reporter_id);$('issueReporter').textContent=reporter?.name||'Not assigned';$('issueCreated').textContent=fmt(selected.created_at);$('issueUpdated').textContent=fmt(selected.updated_at);$('issueCommentMeta').textContent=comments.length;const assignee=$('assignee');if(assignee){const aid=selected.assignee_id;assignee.value=aid?String(aid):''}renderWorkflow(status);renderCollaborationFlow(status)}
-async function loadIssueData(){if(!selected)return;try{const id=selected.id;const [cr,ar,hr,tr,wr]=await Promise.all([fetch(API+`/collaboration/issues/${id}/comments`,{headers:headers()}),fetch(API+`/collaboration/issues/${id}/attachments`,{headers:headers()}),fetch(API+`/issues/${id}/audit-log`,{headers:headers()}),fetch(API+`/collaboration/issues/${id}/team`,{headers:headers()}),fetch(API+`/collaboration/issues/${id}/work`,{headers:headers()})]);let d=await json(cr);if(cr.ok)comments=d.comments||[];else throw Error(d.detail||'Comments could not be loaded');d=await json(ar);if(ar.ok)attachments=d.attachments||[];else throw Error(d.detail||'Attachments could not be loaded');d=await json(hr);if(hr.ok)history=d.audit_history||[];else history=[];d=await json(tr);if(tr.ok){collaborationRoles=d.roles||[];assignmentStates=d.assignment_states||{developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'};canResolve=Boolean(d.can_resolve)}else{collaborationRoles=[];assignmentStates={developer:'PENDING',tester:'PENDING',senior_dev:'PENDING'};canResolve=false}d=await json(wr);workOverview=wr.ok?d:{workstreams:[],overall_progress:0,can_final_approve:false,incomplete_roles:[]};renderComments();renderAttachments();renderHistory();renderCodeRefs();renderCollaborationTeam();renderTeamProgress();renderCollaborationFlow();$('activityCount').textContent=history.length;$('issueCommentMeta').textContent=comments.length;const fresh=issues.find(x=>+x.id===+id);if(fresh){selected=fresh;renderIssue();renderSummary()}}
-catch(e){console.error(e);toast(e.message||'Could not load issue collaboration',false)}}
-function renderComments(){const b=$('comments');if(!comments.length){b.innerHTML='<div class="empty">No comments yet. Start the issue discussion.</div>';return}b.innerHTML=comments.map(c=>{const commenter=users.find(u=>+u.id===+c.user_id);return `<div class="comment"><div class="avatar">${initials(c.user_name)}</div><div class="comment-body"><div class="comment-top"><span class="comment-name">${esc(c.user_name)}</span><span class="comment-role">${esc(roleName(commenter?.role||'Team Member'))}</span><span class="comment-time">${fmt(c.created_at)}</span></div><div class="comment-text">${esc(c.comment)}</div></div></div>`}).join('')}
-function renderAttachments(){const b=$('attachments');if(!attachments.length){b.innerHTML='<div class="empty">No attachments for this issue.</div>';return}b.innerHTML=attachments.map(a=>`<div class="file"><div><div class="file-name">📎 ${esc(a.filename)}</div><div class="file-meta">Uploaded by ${esc(a.user_name)} · ${fmt(a.uploaded_at)}</div></div><button class="btn small" onclick="downloadFile(${a.attachment_id})">Open</button></div>`).join('')}
-async function downloadFile(id){try{const r=await fetch(API+`/collaboration/attachments/${id}/download`,{headers:headers()});if(!r.ok){const d=await json(r);throw apiError(r,d,'Download failed')}const blob=await r.blob();const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='attachment';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url)}catch(e){toast(e.message||'Download failed',false)}}
-function renderHistory(){const b=$('history');if(!history.length){b.innerHTML='<div class="empty">No activity recorded for this issue yet.</div>';return}b.innerHTML=history.slice().reverse().map(h=>`<div class="event"><div class="dot"></div><div><div class="event-main"><b>${esc(h.who)}</b> — ${esc(h.action)}${h.old_status&&h.new_status&&h.old_status!==h.new_status?` <span>(${esc(h.old_status)} → ${esc(h.new_status)})</span>`:''}</div><div class="event-time">${fmt(h.when)}</div></div></div>`).join('')}
-function workflowSteps(status){const s=String(status||'REPORTED').toUpperCase();if(s==='REOPENED')return {idx:0,label:'Reopened'};if(['REPORTED'].includes(s))return {idx:0,label:'Reported'};if(['TRIAGED'].includes(s))return {idx:0,label:'Triaged'};if(['IN_PROGRESS','IN_DEVELOPMENT'].includes(s))return {idx:1,label:'In Development'};if(['IN_REVIEW'].includes(s))return {idx:2,label:'Review'};if(['QA_VERIFICATION','IN_TESTING'].includes(s))return {idx:3,label:'Verification / Testing'};if(['RESOLVED'].includes(s))return {idx:4,label:'Resolved'};if(['CLOSED'].includes(s))return {idx:5,label:'Closed'};return {idx:0,label:s}}
-function nextWorkflowStatus(status){return ({REPORTED:'TRIAGED',TRIAGED:'IN_PROGRESS',IN_PROGRESS:'QA_VERIFICATION',QA_VERIFICATION:'RESOLVED',RESOLVED:'CLOSED'})[String(status||'').toUpperCase()]||''}
-function renderWorkflow(status){const w=workflowSteps(status);const next=nextWorkflowStatus(status);const button=$('advanceStatusButton');button.disabled=!selected||!next||(next==='RESOLVED'&&!canResolve);button.textContent=next?`Advance to ${next}`:'Workflow Complete';const names=['Assigned','In Development','Review','In Testing','Resolved','Closed'];$('workflow').innerHTML=names.map((n,i)=>`<div class="step ${i<w.idx?'done':''} ${i===w.idx?'current':''}"><div class="circle">${i<w.idx?'✓':i+1}</div><div><b>${n}</b><span>${i<w.idx?'Completed':i===w.idx?'Current issue stage':'Pending'}</span></div></div>`).join('')}
-async function advanceIssueStatus(){if(!selected)return;const status=String(selected.status?.value||selected.status||'REPORTED').toUpperCase();const next=nextWorkflowStatus(status);if(!next)return;if(next==='RESOLVED'&&!canResolve){return toast('Cannot resolve: Developer, Tester, and Senior Developer must all accept first.',false)}try{const r=await fetch(API+`/issues/${selected.id}/status`,{method:'POST',headers:headers(true),body:JSON.stringify({status:next})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Could not update issue status');toast(d.message||`Issue moved to ${next}`);await loadAll()}catch(e){toast(e.message||'Could not update issue status',false)}}
-function codeRefs(){return comments.filter(c=>String(c.comment||'').startsWith('[CODE_REFERENCE]')).map(c=>({user:c.user_name,created:c.created_at,text:String(c.comment).replace('[CODE_REFERENCE]','').trim()}))}
-function renderCodeRefs(){const refs=codeRefs();const b=$('codeRefs');if(!refs.length){b.innerHTML='<div class="empty">No code references added yet.</div>';return}b.innerHTML=refs.map(r=>{const m=r.text.match(/^([^|]+)\|([^|]+)\|(.*)$/);return `<div class="ref"><div class="ref-path">${esc(m?m[1]:r.text)}${m&&m[2]?': '+esc(m[2]):''}</div><div class="ref-note">${esc(m?m[3]:'')} · ${esc(r.user)} · ${fmt(r.created)}</div></div>`}).join('')}
-async function postComment(){if(!selected)return toast('Select an issue first',false);const text=$('commentText').value.trim();if(!text)return toast('Write a comment first',false);try{const r=await fetch(API+`/collaboration/issues/${selected.id}/comments`,{method:'POST',headers:headers(true),body:JSON.stringify({comment:text})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Could not post comment');$('commentText').value='';toast('Comment posted');await loadIssueData()}catch(e){toast(e.message||'Could not post comment',false)}}
-async function uploadFile(){if(!selected)return toast('Select an issue first',false);const f=$('fileInput').files[0];if(!f)return toast('Choose a file first',false);if(f.size>10*1024*1024)return toast('Attachments must be 10MB or smaller',false);const fd=new FormData();fd.append('file',f);try{const h={};const t=token();if(t)h.Authorization='Bearer '+t;const r=await fetch(API+`/collaboration/issues/${selected.id}/attachments`,{method:'POST',headers:h,body:fd});const d=await json(r);if(!r.ok)throw apiError(r,d,'Upload failed');$('fileInput').value='';toast('Attachment uploaded');await loadIssueData()}catch(e){toast(e.message||'Upload failed',false)}}
-async function addCodeReference(){if(!selected)return toast('Select an issue first',false);const path=$('codePath').value.trim(),line=$('codeLine').value.trim(),note=$('codeNote').value.trim();if(!path)return toast('Enter a code path',false);const text=`[CODE_REFERENCE] ${path}|${line||'Line not specified'}|${note||'Code reference added'}`;try{const r=await fetch(API+`/collaboration/issues/${selected.id}/comments`,{method:'POST',headers:headers(true),body:JSON.stringify({comment:text})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Could not add code reference');$('codePath').value='';$('codeLine').value='';$('codeNote').value='';toast('Code reference added');await loadIssueData()}catch(e){toast(e.message||'Could not add code reference',false)}}
-async function saveAssignment(){if(!selected)return toast('Select an issue first',false);const id=$('assignee').value?Number($('assignee').value):null;try{const r=await fetch(API+`/collaboration/issues/${selected.id}/assignment`,{method:'POST',headers:headers(true),body:JSON.stringify({assignee_id:id})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Assignment failed');toast(d.message||'Assignment updated');await loadAll()}catch(e){toast(e.message||'Assignment failed',false)}}
-async function clearAssignment(){if(!selected)return; $('assignee').value='';await saveAssignment()}
-async function recordAction(action){if(!selected)return toast('Select an issue first',false);if(action==='APPROVE'&&!workOverview.can_final_approve)return toast(`Required team work is not complete: ${(workOverview.incomplete_roles||[]).map(roleName).join(', ')}`,false);let note='';if(action==='ESCALATE'||action==='REQUEST_APPROVAL')note=prompt(action==='ESCALATE'?'Escalation note (optional):':'Approval request note (optional):')||'';try{const r=await fetch(API+`/collaboration/issues/${selected.id}/action`,{method:'POST',headers:headers(true),body:JSON.stringify({action,note})});const d=await json(r);if(!r.ok)throw apiError(r,d,'Action failed');toast(d.message||'Action recorded');await loadIssueData()}catch(e){toast(e.message||'Action failed',false)}}
-const dropzone=$('dropzone');
-if(dropzone){['dragenter','dragover'].forEach(event=>dropzone.addEventListener(event,e=>{e.preventDefault();dropzone.classList.add('dragover')}));['dragleave','drop'].forEach(event=>dropzone.addEventListener(event,e=>{e.preventDefault();dropzone.classList.remove('dragover')}));dropzone.addEventListener('drop',e=>{if(e.dataTransfer.files.length){$('fileInput').files=e.dataTransfer.files}})}
-configureRoleView();
-(async function syncActiveWorkspace(){
+
+async function json(r) {
+  const text = await r.text();
+  try { return text ? JSON.parse(text) : {}; } catch { return { detail: text }; }
+}
+
+function esc(v) {
+  return String(v ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
+function toast(m, ok = true) {
+  const t = $('toast');
+  const msgEl = $('toastMsg');
+  const iconEl = $('toastIcon');
+  if (msgEl) msgEl.textContent = m;
+  if (iconEl) iconEl.textContent = ok ? 'check_circle' : 'error';
+  t.className = 'toast show ' + (ok ? 'ok' : 'err');
+  clearTimeout(window.__toastTimeout);
+  window.__toastTimeout = setTimeout(() => { t.className = 'toast'; }, 3200);
+}
+
+function fmt(v) {
+  if (!v) return '-';
+  try {
+    const d = new Date(v);
+    const now = new Date();
+    const diffSec = Math.floor((now - d) / 1000);
+    if (diffSec < 60) return 'just now';
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return String(v);
+  }
+}
+
+function getActiveWorkspaceRole() {
+  const r = localStorage.getItem('bugflow_workspace_role') || '';
+  if (['admin', 'developer', 'tester', 'senior_dev'].includes(r)) return r;
+  try {
+    const u = JSON.parse(localStorage.getItem('bugflow_user') || '{}');
+    const role = String(u.role || '').toLowerCase().replace('-', '_');
+    if (['admin', 'developer', 'tester', 'senior_dev'].includes(role)) return role;
+  } catch {}
+  return 'admin';
+}
+
+function updateWorkspaceUI() {
+  activeRole = getActiveWorkspaceRole();
+  const persona = CANONICAL_ROSTER[activeRole] || CANONICAL_ROSTER.admin;
+
+  const currentWorkspaceName = $('currentWorkspaceName');
+  if (currentWorkspaceName) currentWorkspaceName.textContent = `${persona.roleDisplay} Workspace`;
+
+  const currentRoleBadge = $('currentRoleBadge');
+  if (currentRoleBadge) currentRoleBadge.textContent = persona.roleDisplay;
+
+  const headerWorkspaceTitle = $('headerWorkspaceTitle');
+  if (headerWorkspaceTitle) headerWorkspaceTitle.textContent = `${persona.roleDisplay} Workspace`;
+
+  const telemetryWorkspace = $('telemetryWorkspace');
+  if (telemetryWorkspace) telemetryWorkspace.textContent = `${persona.roleDisplay} Workspace`;
+
+  const profileName = $('profileName');
+  if (profileName) profileName.textContent = persona.name;
+
+  const profileRole = $('profileRole');
+  if (profileRole) profileRole.textContent = persona.roleDisplay;
+
+  const profileInitials = $('profileInitials');
+  if (profileInitials) profileInitials.innerHTML = `<span class="text-[11px]">${persona.initials}</span>`;
+
+  // Role Context Banner
+  const descEl = $('roleContextDescription');
+  const permEl = $('roleContextPermBadge');
+  const roleNameEl = $('roleContextName');
+  const teleRoleBadge = $('telemetryRoleBadge');
+
+  if (activeRole === 'admin') {
+    if (teleRoleBadge) teleRoleBadge.textContent = 'ROLE: SYSTEM ADMINISTRATOR (ALL WORKSPACES)';
+    if (descEl) descEl.innerHTML = `<strong class="font-semibold text-on-surface">Role Context: Naruto (Admin)</strong> — Viewing full cluster-wide collaboration ledger. (Developers and Testers have scoped views limited to assigned tickets according to BugFlow RBAC rules).`;
+    if (permEl) permEl.textContent = 'Full Audit Permitted';
+    $('startCollaborationButton')?.classList.remove('hidden');
+    $('manageRolesBtn')?.classList.remove('hidden');
+  } else if (activeRole === 'developer') {
+    if (teleRoleBadge) teleRoleBadge.textContent = 'ROLE: DEVELOPER (SCOPED WORKSPACE)';
+    if (descEl) descEl.innerHTML = `<strong class="font-semibold text-on-surface">Role Context: Sasuke (Developer)</strong> — Scoped view limited to defects assigned to Development. Review code references and update gate status.`;
+    if (permEl) permEl.textContent = 'Developer Gate Active';
+    $('startCollaborationButton')?.classList.add('hidden');
+    $('manageRolesBtn')?.classList.add('hidden');
+  } else if (activeRole === 'tester') {
+    if (teleRoleBadge) teleRoleBadge.textContent = 'ROLE: TESTER (SCOPED WORKSPACE)';
+    if (descEl) descEl.innerHTML = `<strong class="font-semibold text-on-surface">Role Context: Hinata (Tester)</strong> — Scoped view limited to QA verification and testing handoffs.`;
+    if (permEl) permEl.textContent = 'QA Gate Active';
+    $('startCollaborationButton')?.classList.add('hidden');
+    $('manageRolesBtn')?.classList.add('hidden');
+  } else if (activeRole === 'senior_dev') {
+    if (teleRoleBadge) teleRoleBadge.textContent = 'ROLE: SENIOR DEVELOPER (REVIEW & APPROVAL)';
+    if (descEl) descEl.innerHTML = `<strong class="font-semibold text-on-surface">Role Context: Itachi (Senior Developer)</strong> — Scoped view for architecture review, code inspection, and technical approval.`;
+    if (permEl) permEl.textContent = 'Review Gate Active';
+    $('startCollaborationButton')?.classList.add('hidden');
+    $('manageRolesBtn')?.classList.add('hidden');
+  }
+
+  // Update dropdown active highlight
+  document.querySelectorAll('.switch-item').forEach(el => {
+    const r = el.getAttribute('data-role');
+    el.classList.toggle('active', r === activeRole);
+  });
+}
+
+function toggleWorkspaceDropdown(e) {
+  e.stopPropagation();
+  $('workspaceDropdown')?.classList.toggle('show');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#workspaceBtn') && !e.target.closest('#workspaceDropdown')) {
+    $('workspaceDropdown')?.classList.remove('show');
+  }
+});
+
+async function switchWorkspaceRole(role) {
+  $('workspaceDropdown')?.classList.remove('show');
+  localStorage.setItem('bugflow_workspace_role', role);
+  activeRole = role;
   const t = token();
   if (t) {
     try {
       await fetch('/api/v1/workspace/switch', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + t },
-        body: JSON.stringify({ role: 'admin' })
+        headers: headers(true),
+        body: JSON.stringify({ role: role })
       });
-    } catch(e) {}
+    } catch (err) {
+      console.warn('Workspace switch API error:', err);
+    }
   }
-})();
-loadAll();
+  updateWorkspaceUI();
+  applyFilters();
+  if (selected) renderSelectedDrawer();
+  toast(`Switched workspace to ${CANONICAL_ROSTER[role]?.name || role} (${CANONICAL_ROSTER[role]?.roleDisplay || role})`);
+}
+
+// Interactive State Previews Controls (4 views)
+function switchView(mode) {
+  const views = ['normal', 'empty', 'loading', 'error'];
+  views.forEach(v => {
+    const el = $('view-' + v);
+    const btn = $('btn-' + v);
+    if (!el || !btn) return;
+    if (v === mode) {
+      el.classList.remove('hidden');
+      if (v === 'empty' || v === 'error') {
+        el.classList.add('flex');
+      } else if (v === 'loading' || v === 'normal') {
+        el.classList.add('grid');
+      }
+      btn.classList.add('bg-surface-container-lowest', 'text-secondary', 'font-semibold', 'shadow-xs');
+      btn.classList.remove('hover:bg-surface-container', 'text-on-surface-variant');
+    } else {
+      el.classList.add('hidden');
+      el.classList.remove('flex', 'grid');
+      btn.classList.remove('bg-surface-container-lowest', 'text-secondary', 'font-semibold', 'shadow-xs');
+      btn.classList.add('hover:bg-surface-container', 'text-on-surface-variant');
+    }
+  });
+}
+
+// Density Toggle
+function setDensity(mode) {
+  tableDensity = mode;
+  $('densityStd')?.classList.toggle('bg-surface-container-highest', mode === 'standard');
+  $('densityStd')?.classList.toggle('text-secondary', mode === 'standard');
+  $('densityStd')?.classList.toggle('font-semibold', mode === 'standard');
+  $('densityCmp')?.classList.toggle('bg-surface-container-highest', mode === 'compact');
+  $('densityCmp')?.classList.toggle('text-secondary', mode === 'compact');
+  $('densityCmp')?.classList.toggle('font-semibold', mode === 'compact');
+  renderLedgerTable();
+}
+
+// Data Fetching
+async function loadAllData() {
+  try {
+    const r = await fetch(API + '/collaboration/issues', { headers: headers() });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || 'Failed to load collaboration issues');
+    issues = Array.isArray(d) ? d : (d.issues || []);
+
+    // Also fetch users
+    try {
+      const ur = await fetch(API + '/collaboration/users', { headers: headers() });
+      const ud = await json(ur);
+      if (ur.ok) users = ud.users || [];
+    } catch {}
+
+    updateKPIs();
+    applyFilters();
+
+    // Select first issue if none selected
+    if (!selected && filteredIssues.length > 0) {
+      selectIssue(filteredIssues[0].id);
+    } else if (selected) {
+      const fresh = issues.find(x => +x.id === +selected.id);
+      if (fresh) selected = fresh;
+      renderSelectedDrawer();
+      loadIssueData();
+    }
+  } catch (err) {
+    console.error('Error loading collaboration data:', err);
+    toast(err.message || 'Error loading collaboration data', false);
+  }
+}
+
+function updateKPIs() {
+  $('activeThreadsBadge').textContent = `${issues.length} Active Threads`;
+  $('kpiActiveCollab').textContent = issues.length;
+
+  // Pending gates count: issues where developer, tester, or senior_dev is PENDING
+  const pendingCount = issues.filter(i => {
+    const states = i.assignment_states || {};
+    return Object.values(states).some(s => s === 'PENDING');
+  }).length;
+  $('kpiPendingGates').textContent = pendingCount || 3;
+
+  const resolvedCount = issues.filter(i => {
+    const s = String(i.status?.value || i.status || '').toUpperCase();
+    return ['RESOLVED', 'CLOSED'].includes(s);
+  }).length;
+  $('kpiResolvedCount').textContent = resolvedCount;
+  const pct = issues.length ? Math.round((resolvedCount / issues.length) * 100) : 0;
+  $('kpiResolvedPct').textContent = `completed (${pct}%)`;
+}
+
+// Filters & Search
+function applyFilters() {
+  const query = ($('collab-search')?.value || '').trim().toLowerCase();
+  const roleVal = $('filterRole')?.value || 'ALL';
+  const statusVal = $('filterStatus')?.value || 'ALL';
+  const sevVal = $('filterSeverity')?.value || 'ALL';
+  const assigneeVal = $('filterAssignee')?.value || 'ALL';
+
+  filteredIssues = issues.filter(i => {
+    // Role filter
+    if (activeRole !== 'admin') {
+      const roles = i.collaboration_roles || [];
+      if (!roles.includes(activeRole)) return false;
+    } else if (roleVal !== 'ALL') {
+      const roles = i.collaboration_roles || [];
+      if (!roles.includes(roleVal)) return false;
+    }
+
+    // Status filter
+    const status = String(i.status?.value || i.status || '').toUpperCase();
+    if (statusVal !== 'ALL' && status !== statusVal) {
+      // Check assignment states too
+      const states = i.assignment_states || {};
+      const matchState = Object.values(states).some(s => s === statusVal);
+      if (status !== statusVal && !matchState) return false;
+    }
+
+    // Severity filter
+    const sev = String(i.severity?.value || i.severity || '').toUpperCase();
+    if (sevVal !== 'ALL' && sev !== sevVal) return false;
+
+    // Assignee filter
+    if (assigneeVal !== 'ALL' && String(i.assignee_id) !== String(assigneeVal)) return false;
+
+    // Text search query
+    if (query) {
+      const key = String(i.issue_key || ('BUG-' + i.id)).toLowerCase();
+      const title = String(i.title || '').toLowerCase();
+      const desc = String(i.description || '').toLowerCase();
+      if (!key.includes(query) && !title.includes(query) && !desc.includes(query)) return false;
+    }
+
+    return true;
+  });
+
+  $('filterRolePill').innerHTML = `Role: <strong class="font-semibold">${roleVal === 'ALL' ? (activeRole === 'admin' ? 'All Roles' : CANONICAL_ROSTER[activeRole]?.roleDisplay) : roleVal}</strong>`;
+  $('filteredThreadsCount').textContent = `${filteredIssues.length} Threads`;
+
+  if (filteredIssues.length === 0 && query) {
+    switchView('empty');
+  } else {
+    switchView('normal');
+    renderLedgerTable();
+  }
+}
+
+function clearFilters() {
+  if ($('collab-search')) $('collab-search').value = '';
+  if ($('filterRole')) $('filterRole').value = 'ALL';
+  if ($('filterStatus')) $('filterStatus').value = 'ALL';
+  if ($('filterSeverity')) $('filterSeverity').value = 'ALL';
+  if ($('filterAssignee')) $('filterAssignee').value = 'ALL';
+  applyFilters();
+}
+
+// Table Rendering
+function renderLedgerTable() {
+  const tbody = $('ledgerTableBody');
+  if (!tbody) return;
+
+  if (filteredIssues.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-on-surface-variant">No collaboration threads found matching current filters.</td></tr>`;
+    return;
+  }
+
+  const py = tableDensity === 'compact' ? 'py-2' : 'py-3';
+
+  tbody.innerHTML = filteredIssues.map((issue, idx) => {
+    const isSelected = selected && +selected.id === +issue.id;
+    const issueKey = issue.issue_key || ('BUG-' + issue.id);
+    const title = issue.title || 'Untitled defect';
+    const status = String(issue.status?.value || issue.status || 'REPORTED').toUpperCase();
+    const severity = String(issue.severity?.value || issue.severity || 'MEDIUM').toUpperCase();
+
+    // Severity pill
+    let sevBadge = `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-[11px] font-bold border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span> ${esc(severity)}</span>`;
+    if (['CRITICAL', 'BLOCKER'].includes(severity)) {
+      sevBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-code-sm text-[11px] font-bold border border-error/20"><span class="w-1.5 h-1.5 rounded-full bg-error"></span> Critical (P0)</span>`;
+    } else if (['HIGH', 'MAJOR'].includes(severity)) {
+      sevBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-[11px] font-bold border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> High (P1)</span>`;
+    } else if (['MEDIUM', 'NORMAL'].includes(severity)) {
+      sevBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-sm text-[11px] font-bold border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Medium (P2)</span>`;
+    } else {
+      sevBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-sm text-[11px] font-bold border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span> Low (P3)</span>`;
+    }
+
+    // Status pill
+    let statusPill = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container text-secondary font-code-sm text-[11px] font-bold border border-secondary/20"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span> ${esc(status)}</span>`;
+    if (['RESOLVED', 'CLOSED'].includes(status)) {
+      statusPill = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-bold border border-secondary/20"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ${esc(status)}</span>`;
+    } else if (status === 'REJECTED') {
+      statusPill = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-error-container text-error font-code-sm text-[11px] font-bold border border-error/20"><span class="w-1.5 h-1.5 rounded-full bg-error"></span> Rejected</span>`;
+    } else if (status === 'ACCEPTED') {
+      statusPill = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-secondary font-code-sm text-[11px] font-bold border border-secondary/20"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Accepted</span>`;
+    } else if (status === 'IN_PROGRESS') {
+      statusPill = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-code-sm text-[11px] font-bold border border-secondary/20"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> In Progress</span>`;
+    }
+
+    // Active roles chips
+    const roles = issue.collaboration_roles || ['admin', 'developer', 'tester', 'senior_dev'];
+    const rolesChips = `
+      <div class="flex items-center gap-1">
+        ${roles.includes('admin') ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-surface-container-high text-secondary border border-secondary-fixed" title="Admin (Naruto)">Admin</span>` : ''}
+        ${roles.includes('developer') ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-primary-fixed text-primary-container border border-outline-variant/40" title="Developer (Sasuke)">Dev</span>` : ''}
+        ${roles.includes('tester') ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-surface-container text-on-surface border border-outline-variant/30" title="Tester (Hinata)">QA</span>` : ''}
+        ${roles.includes('senior_dev') ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-tertiary-fixed text-tertiary-container border border-outline-variant/40" title="Senior Dev (Itachi)">Sr.Dev</span>` : ''}
+      </div>
+    `;
+
+    const rowClass = isSelected
+      ? 'bg-secondary-fixed/30 hover:bg-secondary-fixed/40 border-l-4 border-secondary transition-colors cursor-pointer group'
+      : 'hover:bg-surface-container-low border-l-4 border-l-transparent transition-colors cursor-pointer group';
+
+    return `
+      <tr class="${rowClass}" onclick="selectIssue(${issue.id})">
+        <td class="${py} px-3" onclick="event.stopPropagation()">
+          <input class="rounded bg-surface-container-lowest text-secondary focus:ring-0 cursor-pointer w-3.5 h-3.5 border-outline-variant/50" type="checkbox" onchange="updateSelectedCount()">
+        </td>
+        <td class="${py} px-3 whitespace-nowrap">
+          <div class="flex items-center gap-1.5">
+            <span class="font-code-md text-code-md font-bold text-secondary hover:underline">${esc(issueKey)}</span>
+            ${isSelected ? `<span class="w-1.5 h-1.5 rounded-full bg-secondary" title="Currently focused"></span>` : ''}
+          </div>
+        </td>
+        <td class="${py} px-3">
+          <div class="flex flex-col gap-0.5">
+            <span class="font-semibold text-on-surface group-hover:text-secondary transition-colors line-clamp-1">${esc(title)}</span>
+            <div class="flex items-center gap-1.5 font-code-sm text-[11px] text-on-surface-variant">
+              <span class="px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface font-medium border border-outline-variant/30">${esc(issue.project_key || 'core')}/svc</span>
+              <span>• ${esc(issue.status === 'CLOSED' ? 'Resolved Backlog' : 'Active Sprint')}</span>
+            </div>
+          </div>
+        </td>
+        <td class="${py} px-3 whitespace-nowrap">${sevBadge}</td>
+        <td class="${py} px-3 whitespace-nowrap">${rolesChips}</td>
+        <td class="${py} px-3 whitespace-nowrap">${statusPill}</td>
+        <td class="${py} px-3 whitespace-nowrap font-code-sm text-[11px]">
+          <div class="font-bold text-on-surface">${fmt(issue.updated_at || issue.created_at)}</div>
+          <div class="text-[10px] text-on-surface-variant">Naruto</div>
+        </td>
+        <td class="${py} px-3 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+          <div class="flex items-center justify-end gap-1.5">
+            <button class="px-2.5 py-1 rounded bg-secondary text-on-secondary text-[11px] font-bold hover:bg-secondary-container shadow-xs" onclick="selectIssue(${issue.id})">Triage</button>
+            <button class="p-1 rounded hover:bg-surface-container text-on-surface-variant" onclick="openStartCollabModalFor(${issue.id})" title="Manage Collaboration">
+              <span class="material-symbols-outlined text-[16px]">more_vert</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  $('selectedRowsCount').textContent = `0 selected of ${filteredIssues.length}`;
+  $('paginationSummary').innerHTML = `Showing <strong class="text-on-surface font-semibold">1 to ${filteredIssues.length}</strong> of <strong class="text-on-surface font-semibold">${issues.length}</strong> active threads`;
+}
+
+// Issue Selection
+function selectIssue(id) {
+  selected = issues.find(x => +x.id === +id) || null;
+  renderLedgerTable();
+  renderSelectedDrawer();
+  loadIssueData();
+}
+
+function renderSelectedDrawer() {
+  if (!selected) return;
+
+  const issueKey = selected.issue_key || ('BUG-' + selected.id);
+  const status = String(selected.status?.value || selected.status || 'REPORTED').toUpperCase();
+  const severity = String(selected.severity?.value || selected.severity || 'MEDIUM').toUpperCase();
+
+  $('drawerIssueKey').textContent = '#' + issueKey;
+  $('drawerStatusPill').textContent = status;
+  $('drawerDefectTitle').textContent = selected.title || 'Untitled defect';
+  $('drawerComponent').textContent = (selected.project_key || 'core') + '/redis-pool';
+  $('drawerProject').textContent = selected.project_key || 'BUG';
+  $('drawerPriority').textContent = String(selected.priority?.value || selected.priority || 'LOW');
+
+  // Drawer severity badge
+  let sevHtml = `<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> ${esc(severity)}`;
+  if (['CRITICAL', 'BLOCKER'].includes(severity)) {
+    sevHtml = `<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Critical (P0) Blocker`;
+  } else if (['HIGH', 'MAJOR'].includes(severity)) {
+    sevHtml = `<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> High (P1) Priority`;
+  }
+  $('drawerSeverityBadge').innerHTML = sevHtml;
+
+  const rowIdx = filteredIssues.findIndex(x => +x.id === +selected.id) + 1;
+  $('drawerActiveRowIndicator').textContent = `Active Connection • Row ${rowIdx > 0 ? rowIdx : 1}`;
+
+  // Update Stepper & Gate Status
+  renderGateWorkflow();
+  renderRoleRoster();
+}
+
+// Workflow Stepper & Developer Gate Enforcement
+function renderGateWorkflow() {
+  if (!selected) return;
+  const status = String(selected.status?.value || selected.status || 'REPORTED').toUpperCase();
+  const isResolved = ['RESOLVED', 'CLOSED'].includes(status);
+
+  const states = selected.assignment_states || assignmentStates || {};
+  const roles = selected.collaboration_roles || collaborationRoles || [];
+
+  const required = ['developer', 'tester', 'senior_dev'];
+  const hasAll = required.every(r => roles.includes(r));
+  const allAccepted = hasAll && required.every(r => (states[r] || 'PENDING') === 'ACCEPTED');
+  const anyRejected = required.some(r => (states[r] || 'PENDING') === 'REJECTED');
+
+  const s1Bar = $('step1Bar'), s2Bar = $('step2Bar'), s3Bar = $('step3Bar'), s4Bar = $('step4Bar');
+  const s1Lbl = $('step1Label'), s2Lbl = $('step2Label'), s3Lbl = $('step3Label'), s4Lbl = $('step4Label');
+  const gatePill = $('drawerGatePill');
+
+  if (isResolved) {
+    if (s1Bar) s1Bar.className = 'h-2 rounded bg-secondary';
+    if (s2Bar) s2Bar.className = 'h-2 rounded bg-secondary';
+    if (s3Bar) s3Bar.className = 'h-2 rounded bg-secondary';
+    if (s4Bar) s4Bar.className = 'h-2 rounded bg-secondary';
+    if (s1Lbl) s1Lbl.textContent = '✓ Passed';
+    if (s2Lbl) s2Lbl.textContent = '✓ Accepted';
+    if (s3Lbl) s3Lbl.textContent = '✓ Completed';
+    if (s4Lbl) s4Lbl.textContent = '✓ Resolved';
+    if (gatePill) gatePill.textContent = 'Workflow Complete';
+  } else if (allAccepted) {
+    if (s1Bar) s1Bar.className = 'h-2 rounded bg-secondary';
+    if (s2Bar) s2Bar.className = 'h-2 rounded bg-secondary';
+    if (s3Bar) s3Bar.className = 'h-2 rounded bg-secondary animate-pulse';
+    if (s4Bar) s4Bar.className = 'h-2 rounded bg-surface-container';
+    if (s1Lbl) s1Lbl.textContent = '✓ Passed';
+    if (s2Lbl) s2Lbl.textContent = '✓ All Accepted';
+    if (s3Lbl) s3Lbl.textContent = '● Ready to Resolve';
+    if (s4Lbl) s4Lbl.textContent = 'Requires Admin';
+    if (gatePill) gatePill.textContent = 'Gate 3: All Roles Accepted';
+  } else if (anyRejected) {
+    if (s1Bar) s1Bar.className = 'h-2 rounded bg-secondary';
+    if (s2Bar) s2Bar.className = 'h-2 rounded bg-error animate-pulse';
+    if (s3Bar) s3Bar.className = 'h-2 rounded bg-surface-container-high';
+    if (s4Bar) s4Bar.className = 'h-2 rounded bg-surface-container';
+    if (s1Lbl) s1Lbl.textContent = '✓ Passed';
+    if (s2Lbl) s2Lbl.textContent = '✖ Rejected';
+    if (s3Lbl) s3Lbl.textContent = 'Halted';
+    if (s4Lbl) s4Lbl.textContent = 'Pending Re-triage';
+    if (gatePill) gatePill.textContent = 'Gate 2: Assignment Rejected';
+  } else {
+    // Pending
+    if (s1Bar) s1Bar.className = 'h-2 rounded bg-secondary';
+    if (s2Bar) s2Bar.className = 'h-2 rounded bg-secondary animate-pulse';
+    if (s3Bar) s3Bar.className = 'h-2 rounded bg-surface-container-high';
+    if (s4Bar) s4Bar.className = 'h-2 rounded bg-surface-container';
+    if (s1Lbl) s1Lbl.textContent = '✓ Passed';
+    if (s2Lbl) s2Lbl.textContent = '● Current Gate';
+    if (s3Lbl) s3Lbl.textContent = 'Pending Gate 2';
+    if (s4Lbl) s4Lbl.textContent = 'Requires QA';
+    if (gatePill) gatePill.textContent = 'Gate 2: Pending Acceptance';
+  }
+
+  // Gate Enforcement Box & Action Buttons
+  const activePersona = CANONICAL_ROSTER[activeRole] || CANONICAL_ROSTER.admin;
+  $('gateActionRoleHint').textContent = `Action for ${activePersona.name} (${activePersona.roleDisplay}):`;
+
+  const banner = $('resolveBannerContainer');
+  if (isResolved) {
+    banner.innerHTML = `
+      <div class="p-2.5 rounded-lg bg-surface-container-high border border-secondary-fixed flex items-center justify-between text-body-sm">
+        <div>
+          <strong class="text-secondary font-bold block text-[12px]">✓ Issue Status: RESOLVED</strong>
+          <span class="text-[10px] text-on-surface-variant">Resolution recorded in live collaboration audit log.</span>
+        </div>
+        <span class="px-2 py-0.5 rounded font-code-sm text-[10px] bg-secondary-fixed text-on-secondary-fixed font-bold">RESOLVED</span>
+      </div>
+    `;
+    $('gateActionRow')?.classList.add('hidden');
+  } else if (allAccepted) {
+    if (activeRole === 'admin') {
+      banner.innerHTML = `
+        <div class="p-2.5 rounded-lg bg-secondary-fixed/40 border border-secondary flex items-center justify-between text-body-sm">
+          <div>
+            <strong class="text-secondary font-bold block text-[12px]">All 3 Roles Accepted</strong>
+            <span class="text-[10px] text-on-surface-variant">Sasuke, Hinata, and Itachi have all accepted this defect.</span>
+          </div>
+          <button class="h-7 px-3.5 rounded bg-secondary text-on-secondary hover:bg-secondary-container font-code-sm text-[11px] font-bold shadow-xs flex items-center gap-1" onclick="resolveCurrentIssue()">
+            <span class="material-symbols-outlined text-[14px]">task_alt</span> Resolve Issue
+          </button>
+        </div>
+      `;
+    } else {
+      banner.innerHTML = `
+        <div class="p-2.5 rounded-lg bg-secondary-fixed/40 border border-secondary flex items-center justify-between text-body-sm">
+          <div>
+            <strong class="text-secondary font-bold block text-[12px]">All 3 Roles Accepted</strong>
+            <span class="text-[10px] text-on-surface-variant">Awaiting Naruto (Admin) to execute final resolution.</span>
+          </div>
+          <span class="px-2 py-0.5 rounded font-code-sm text-[10px] bg-surface-container-highest text-secondary font-bold">Ready</span>
+        </div>
+      `;
+    }
+    $('gateActionRow')?.classList.remove('hidden');
+  } else if (anyRejected) {
+    banner.innerHTML = `
+      <div class="p-2.5 rounded-lg bg-error-container/60 border border-error/30 text-body-sm">
+        <strong class="text-error font-bold block text-[12px]">Assignment Rejected</strong>
+        <span class="text-[10px] text-on-surface-variant">One or more roles rejected this handoff. Workflow is halted pending Admin re-triage.</span>
+      </div>
+    `;
+    $('gateActionRow')?.classList.remove('hidden');
+  } else {
+    banner.innerHTML = '';
+    $('gateActionRow')?.classList.remove('hidden');
+  }
+}
+
+// Participant Roster
+function renderRoleRoster() {
+  if (!selected) return;
+  const container = $('rosterContainer');
+  if (!container) return;
+
+  const states = selected.assignment_states || assignmentStates || {};
+  const roles = selected.collaboration_roles || ['admin', 'developer', 'tester', 'senior_dev'];
+  const status = String(selected.status?.value || selected.status || 'REPORTED').toUpperCase();
+  const isResolved = ['RESOLVED', 'CLOSED'].includes(status);
+
+  container.innerHTML = ['admin', 'developer', 'tester', 'senior_dev'].map(rKey => {
+    const isEnrolled = roles.includes(rKey);
+    const persona = CANONICAL_ROSTER[rKey];
+    if (rKey === 'admin') {
+      return `
+        <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/30">
+          <div class="flex items-center gap-2.5">
+            <div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-code-sm text-[10px] font-bold">${persona.initials}</div>
+            <div class="leading-tight">
+              <span class="text-body-sm font-bold text-on-surface block">${persona.name}</span>
+              <span class="text-[10px] text-on-surface-variant block font-medium">${persona.roleSubtitle}</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded font-code-sm text-[10px] bg-surface-container-high text-secondary font-bold border border-secondary-fixed">
+            Triage Lead
+          </span>
+        </div>
+      `;
+    }
+
+    const state = states[rKey] || 'PENDING';
+    let badgeClass = 'bg-surface-container text-on-surface-variant';
+    let badgeBorder = 'border-outline-variant/30';
+    let badgeText = 'PENDING';
+
+    if (!isEnrolled) {
+      badgeClass = 'bg-surface-container/40 text-on-surface-variant/60';
+      badgeText = 'NOT ENROLLED';
+    } else if (state === 'ACCEPTED') {
+      badgeClass = 'bg-secondary-fixed text-on-secondary-fixed';
+      badgeBorder = 'border-secondary/20';
+      badgeText = 'ACCEPTED';
+    } else if (state === 'REJECTED') {
+      badgeClass = 'bg-error-container text-on-error-container';
+      badgeBorder = 'border-error/20';
+      badgeText = 'REJECTED';
+    } else {
+      badgeClass = 'bg-surface-container-high text-on-surface';
+      badgeText = 'PENDING GATE';
+    }
+
+    // Role interactive buttons
+    const canAct = (activeRole === 'admin' || activeRole === rKey) && isEnrolled && !isResolved;
+    const actionsHtml = canAct ? `
+      <div class="flex items-center gap-1">
+        <button class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-error-container text-on-error-container hover:bg-error-container/80" onclick="respondRole('${rKey}','REJECT')" title="Reject Assignment">✕</button>
+        <button class="px-1.5 py-0.5 rounded text-[10px] font-code-sm font-bold bg-secondary text-on-secondary hover:bg-secondary-container" onclick="respondRole('${rKey}','ACCEPT')" title="Accept Assignment">✓</button>
+      </div>
+    ` : '';
+
+    return `
+      <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/30">
+        <div class="flex items-center gap-2.5">
+          <div class="w-6 h-6 rounded-full bg-primary-fixed text-primary-container flex items-center justify-center font-code-sm text-[10px] font-bold border border-outline-variant/40">${persona.initials}</div>
+          <div class="leading-tight">
+            <span class="text-body-sm font-bold text-on-surface block">${persona.name}</span>
+            <span class="text-[10px] text-on-surface-variant block font-medium">${persona.roleSubtitle}</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded font-code-sm text-[10px] font-bold border ${badgeClass} ${badgeBorder}">
+            ${badgeText}
+          </span>
+          ${actionsHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Issue Data (Audit Logs, Comments, Team)
+async function loadIssueData() {
+  if (!selected) return;
+  const id = selected.id;
+
+  try {
+    const [cr, hr, tr] = await Promise.all([
+      fetch(API + `/collaboration/issues/${id}/comments`, { headers: headers() }),
+      fetch(API + `/issues/${id}/audit-log`, { headers: headers() }),
+      fetch(API + `/collaboration/issues/${id}/team`, { headers: headers() })
+    ]);
+
+    const cd = await json(cr);
+    comments = cr.ok ? (cd.comments || []) : [];
+
+    const hd = await json(hr);
+    historyEvents = hr.ok ? (hd.audit_history || []) : [];
+
+    const td = await json(tr);
+    if (tr.ok) {
+      collaborationRoles = td.roles || [];
+      assignmentStates = td.assignment_states || assignmentStates;
+      canResolve = Boolean(td.can_resolve);
+      if (selected) {
+        selected.collaboration_roles = collaborationRoles;
+        selected.assignment_states = assignmentStates;
+        selected.can_resolve = canResolve;
+      }
+    }
+
+    renderAuditFeed();
+    renderComments();
+    renderGateWorkflow();
+    renderRoleRoster();
+  } catch (err) {
+    console.error('Error loading issue collaboration data:', err);
+  }
+}
+
+function renderAuditFeed() {
+  const container = $('auditFeedContainer');
+  $('auditFeedCount').textContent = `${historyEvents.length} Events`;
+  if (!container) return;
+
+  if (historyEvents.length === 0) {
+    container.innerHTML = `<div class="text-[11px] text-on-surface-variant/70 italic py-2">No activity recorded for this defect yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = historyEvents.slice().reverse().map(h => `
+    <div class="flex items-start gap-2.5">
+      <span class="w-2 h-2 rounded-full bg-secondary mt-1.5 shrink-0"></span>
+      <div class="leading-tight">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="font-bold text-on-surface text-[12px]">${esc(h.who || 'Team Member')}</span>
+          <span class="text-on-surface-variant text-[11px]">${esc(h.action)}</span>
+          ${h.old_status && h.new_status && h.old_status !== h.new_status ? `<span class="font-code-sm text-[10px] bg-surface-container px-1 py-0.2 rounded text-secondary font-bold">(${esc(h.old_status)} → ${esc(h.new_status)})</span>` : ''}
+        </div>
+        <span class="block font-code-sm text-[10px] text-on-surface-variant font-medium mt-0.5">${fmt(h.when)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderComments() {
+  const container = $('commentsContainer');
+  if (!container) return;
+
+  if (comments.length === 0) {
+    container.innerHTML = `<div class="text-[11px] text-on-surface-variant/70 italic py-2">No discussion notes yet. Start the thread below.</div>`;
+    return;
+  }
+
+  container.innerHTML = comments.map(c => `
+    <div class="p-2.5 rounded-lg bg-surface-container-low text-body-sm space-y-1 border border-outline-variant/30">
+      <div class="flex items-center justify-between font-code-sm text-[11px]">
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-on-surface">${esc(c.user_name || 'Team Member')}</span>
+          <span class="px-1.5 py-0.2 rounded text-[10px] bg-surface-container-high text-secondary font-bold border border-secondary-fixed/50">Collaborator</span>
+        </div>
+        <span class="text-on-surface-variant font-semibold text-[10px]">${fmt(c.created_at)}</span>
+      </div>
+      <p class="text-on-surface text-[12px] leading-relaxed whitespace-pre-wrap">${esc(c.comment)}</p>
+    </div>
+  `).join('');
+}
+
+// Gate Acceptance & Rejection Actions
+async function respondRole(role, action) {
+  if (!selected) return toast('Select an issue first', false);
+  try {
+    const r = await fetch(API + `/collaboration/issues/${selected.id}/assignment-response`, {
+      method: 'POST',
+      headers: headers(true),
+      body: JSON.stringify({ role, action })
+    });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || `Failed to ${action.toLowerCase()} assignment`);
+
+    if (d.assignment_states) {
+      assignmentStates = d.assignment_states;
+      if (selected) selected.assignment_states = d.assignment_states;
+    }
+    canResolve = Boolean(d.can_resolve);
+    if (selected) selected.can_resolve = canResolve;
+
+    toast(d.message || `${CANONICAL_ROSTER[role]?.roleDisplay || role} assignment ${action.toLowerCase()}ed`);
+    await loadIssueData();
+    await loadAllData();
+  } catch (err) {
+    toast(err.message || `Failed to ${action.toLowerCase()} assignment`, false);
+  }
+}
+
+function respondActiveRole(action) {
+  const roleToRespond = activeRole === 'admin' ? 'developer' : activeRole;
+  respondRole(roleToRespond, action);
+}
+
+// Final Resolve Issue Action
+async function resolveCurrentIssue() {
+  if (!selected) return toast('Select an issue first', false);
+  try {
+    const r = await fetch(API + `/collaboration/issues/${selected.id}/resolve`, {
+      method: 'POST',
+      headers: headers(true)
+    });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || 'Could not resolve issue');
+
+    toast(d.message || 'Issue resolved successfully');
+    await loadAllData();
+  } catch (err) {
+    toast(err.message || 'Could not resolve issue', false);
+  }
+}
+
+// Post Comment
+async function postThreadComment() {
+  if (!selected) return toast('Select an issue first', false);
+  const input = $('commentInput');
+  const text = (input?.value || '').trim();
+  if (!text) return toast('Write an update before submitting', false);
+
+  try {
+    const r = await fetch(API + `/collaboration/issues/${selected.id}/comments`, {
+      method: 'POST',
+      headers: headers(true),
+      body: JSON.stringify({ comment: text })
+    });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || 'Could not post comment');
+
+    input.value = '';
+    toast('Update posted to discussion');
+    await loadIssueData();
+  } catch (err) {
+    toast(err.message || 'Could not post comment', false);
+  }
+}
+
+// Code Reference Prompt
+function promptCodeReference() {
+  if (!selected) return toast('Select an issue first', false);
+  const path = prompt('Enter File Path (e.g. app/core/redis_pool.py):', 'app/core/redis_pool.py');
+  if (!path) return;
+  const line = prompt('Enter Line Number or Range (e.g. 142-156):', 'Line 142');
+  const note = prompt('Enter Review / Fix Note:', 'Investigated connection timeout under load');
+
+  const text = `[CODE_REFERENCE] ${path}|${line || 'Line unspecified'}|${note || 'Code inspected'}`;
+  $('commentInput').value = text;
+  $('commentInput').focus();
+}
+
+// Attachment File Input Trigger
+function triggerFileInput() {
+  if (!selected) return toast('Select an issue first', false);
+  $('attachmentFileInput')?.click();
+}
+
+async function uploadSelectedAttachment(input) {
+  if (!selected || !input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 10 * 1024 * 1024) return toast('Attachments must be 10MB or smaller', false);
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try {
+    const h = {};
+    const t = token();
+    if (t) h['Authorization'] = 'Bearer ' + t;
+
+    const r = await fetch(API + `/collaboration/issues/${selected.id}/attachments`, {
+      method: 'POST',
+      headers: h,
+      body: fd
+    });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || 'Upload failed');
+
+    input.value = '';
+    toast(`Uploaded attachment: ${file.name}`);
+    await loadIssueData();
+  } catch (err) {
+    toast(err.message || 'Upload failed', false);
+  }
+}
+
+// Start / Edit Collaboration Team Modal
+function openStartCollabModal() {
+  if (!selected) return toast('Select an issue first', false);
+  const roles = selected.collaboration_roles || ['admin', 'developer', 'tester', 'senior_dev'];
+  $('roleCheckAdmin').checked = roles.includes('admin');
+  $('roleCheckDev').checked = roles.includes('developer');
+  $('roleCheckTester').checked = roles.includes('tester');
+  $('roleCheckSeniorDev').checked = roles.includes('senior_dev');
+  $('modalError').textContent = '';
+  updateModalSelectedCount();
+  $('collabModal')?.classList.add('show');
+}
+
+function openStartCollabModalFor(id) {
+  selectIssue(id);
+  openStartCollabModal();
+}
+
+function closeStartCollabModal() {
+  $('collabModal')?.classList.remove('show');
+}
+
+function updateModalSelectedCount() {
+  const count = ['roleCheckAdmin', 'roleCheckDev', 'roleCheckTester', 'roleCheckSeniorDev'].filter(id => $(id)?.checked).length;
+  $('modalSelectedCount').textContent = `${count} roles selected`;
+}
+
+['roleCheckAdmin', 'roleCheckDev', 'roleCheckTester', 'roleCheckSeniorDev'].forEach(id => {
+  $(id)?.addEventListener('change', updateModalSelectedCount);
+});
+
+async function saveCollaborationTeamModal() {
+  if (!selected) return toast('Select an issue first', false);
+  const roles = [];
+  if ($('roleCheckAdmin')?.checked) roles.push('admin');
+  if ($('roleCheckDev')?.checked) roles.push('developer');
+  if ($('roleCheckTester')?.checked) roles.push('tester');
+  if ($('roleCheckSeniorDev')?.checked) roles.push('senior_dev');
+
+  if (roles.length < 2) {
+    $('modalError').textContent = 'Please select at least 2 roles for collaboration.';
+    return;
+  }
+
+  try {
+    const r = await fetch(API + `/collaboration/issues/${selected.id}/team`, {
+      method: 'PUT',
+      headers: headers(true),
+      body: JSON.stringify({ roles })
+    });
+    const d = await json(r);
+    if (!r.ok) throw new Error(d.detail || 'Could not save collaboration team');
+
+    closeStartCollabModal();
+    toast('Collaboration team saved');
+    await loadAllData();
+  } catch (err) {
+    $('modalError').textContent = err.message || 'Could not save collaboration team';
+    toast(err.message || 'Could not save collaboration team', false);
+  }
+}
+
+// CSV Roster Export
+function exportTeamRoster() {
+  const rows = [
+    ['Member Name', 'Role', 'Email', 'Cluster Status', 'Current Defect Workload']
+  ];
+
+  const states = selected?.assignment_states || {};
+  rows.push(['Naruto', 'Admin', 'admin@example.com', 'COORDINATOR', `${issues.length} active threads`]);
+  rows.push(['Sasuke', 'Developer', 'sasuke@example.com', states['developer'] || 'ACTIVE', `${issues.filter(i => (i.collaboration_roles || []).includes('developer')).length} assigned`]);
+  rows.push(['Hinata', 'Tester', 'hinata@example.com', states['tester'] || 'ACTIVE', `${issues.filter(i => (i.collaboration_roles || []).includes('tester')).length} assigned`]);
+  rows.push(['Itachi', 'Senior Developer', 'itachi@example.com', states['senior_dev'] || 'ACTIVE', `${issues.filter(i => (i.collaboration_roles || []).includes('senior_dev')).length} assigned`]);
+
+  const csvContent = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bugflow-collaboration-roster-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Collaboration roster exported to CSV');
+}
+
+function batchAssignAction() {
+  toast('Batch assign: select collaboration team for highlighted defects');
+  openStartCollabModal();
+}
+
+function toggleSelectAll(cb) {
+  document.querySelectorAll('#ledgerTableBody input[type="checkbox"]').forEach(c => { c.checked = cb.checked; });
+  updateSelectedCount();
+}
+
+function updateSelectedCount() {
+  const count = document.querySelectorAll('#ledgerTableBody input[type="checkbox"]:checked').length;
+  $('selectedRowsCount').textContent = `${count} selected of ${filteredIssues.length}`;
+}
+
+// Keyboard shortcuts: '/' to focus search, 'Escape' to close modals
+window.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    $('collab-search')?.focus();
+  } else if (e.key === 'Escape') {
+    closeStartCollabModal();
+    $('workspaceDropdown')?.classList.remove('show');
+  }
+});
+
+// Initialization
+updateWorkspaceUI();
+loadAllData();
 </script>
 </body>
 </html>

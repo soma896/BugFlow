@@ -362,6 +362,10 @@ h1{
             ▥ <span>Analytics Reports</span>
         </a>
 
+        <a href="/developer-sprint-report-ui" id="navDeveloperSprintReport">
+            ⚡ <span>Sprint Report</span>
+        </a>
+
         <a href="#" id="sideSwitchBtn">
             ↪ <span>Switch</span>
         </a>
@@ -389,12 +393,19 @@ h1{
 
     </div>
 
-    <div class="switcher-container">
-        <button
-            class="switch-btn"
-            id="switchDropdownBtn"
-            type="button"
-        >
+    <div style="display:flex; align-items:center; gap:8px;">
+        <a href="/developer-sprint-report-ui" id="headerDeveloperSprintReport" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px; font-weight:600; font-size:12px; transition:all .15s ease;">
+            <span>⚡ Sprint Report</span> ↗
+        </a>
+        <a href="/developer-productivity-report-ui" id="headerDeveloperProductivityReport" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px; font-weight:600; font-size:12px; transition:all .15s ease;">
+            <span>📈 Productivity Report</span> ↗
+        </a>
+        <div class="switcher-container">
+            <button
+                class="switch-btn"
+                id="switchDropdownBtn"
+                type="button"
+            >
             <span>Switch Workspace</span> ▾
         </button>
 
@@ -416,6 +427,7 @@ h1{
                 <span class="role-badge">U</span> User
             </button>
         </div>
+    </div>
     </div>
 
 </header>
@@ -556,9 +568,9 @@ async function loadDeveloperAnalytics() {
         const defects = await res.json();
 
         const total = defects.length;
-        const pending = defects.filter(d => d.status === "Pending").length;
-        const resolved = defects.filter(d => d.status === "Resolved").length;
-        const rejected = defects.filter(d => d.status === "Rejected").length;
+        const pending = defects.filter(d => (d.status || "").toUpperCase() === "PENDING").length;
+        const resolved = defects.filter(d => (d.status || "").toUpperCase() === "RESOLVED").length;
+        const rejected = defects.filter(d => (d.status || "").toUpperCase() === "REJECTED").length;
 
         document.getElementById("totalCount").textContent = total;
         document.getElementById("pendingCount").textContent = pending;

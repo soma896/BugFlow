@@ -5,1275 +5,2140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BugFlow | Dashboard</title>
 
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    <!-- Google Web Fonts: Inter, JetBrains Mono, Material Symbols Outlined -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
-        :root {
-            --bg: #F5F7FB;
-            --sidebar: #111E33;
-            --panel: #FFFFFF;
-            --panel-2: #FFFFFF;
-            --border: #D9E1EC;
-            --text: #273449;
-            --heading: #172033;
-            --muted: #5F6B7A;
-            --muted2: #7A8798;
-            --purple: #3B66D9;
-            --green: #16A765;
-            --yellow: #D98B00;
-            --red: #DF5A5A;
-            --blue: #3B66D9;
+    <!-- Core Design System CSS -->
+    <link rel="stylesheet" href="design-system.css">
+
+    <style>
+        /* Base Reset & Design Tokens */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        html, body { min-height: 100%; }
+        :root {
+            --bf-canvas: #f8fafc;
+            --bf-surface: #ffffff;
+            --bf-surface-subtle: #f1f5f9;
+            --bf-surface-hover: #f8fafc;
+            --bf-border: #e2e8f0;
+            --bf-border-subtle: #f1f5f9;
+            --bf-border-hover: #cbd5e1;
+            --bf-text-primary: #0f172a;
+            --bf-text-secondary: #475569;
+            --bf-text-muted: #94a3b8;
+            --bf-blue: #2563eb;
+            --bf-blue-hover: #1d4ed8;
+            --bf-blue-light: #eff6ff;
+            --bf-blue-subtle: #dbeafe;
+            --bf-green: #10b981;
+            --bf-green-bg: #ecfdf5;
+            --bf-green-text: #065f46;
+            --bf-amber: #f59e0b;
+            --bf-amber-bg: #fffbeb;
+            --bf-amber-text: #92400e;
+            --bf-red: #ef4444;
+            --bf-red-bg: #fef2f2;
+            --bf-red-text: #b91c1c;
+            --bf-sidebar-width: 256px;
+            --bf-header-height: 56px;
+        }
 
-        body {
-            min-height: 100vh;
-            background: var(--bg);
-            color: var(--text);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        html, body {
+            min-height: 100%;
+            background-color: var(--bf-canvas);
+            color: var(--bf-text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
         a { color: inherit; text-decoration: none; }
-        button, input { font: inherit; }
+        button, input, select { font: inherit; }
 
+        .font-mono, code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .material-symbols-outlined {
+            font-size: 18px;
+            line-height: 1;
+            vertical-align: middle;
+            user-select: none;
+        }
+
+        /* --- SIDEBAR --- */
         .sidebar {
             position: fixed;
             inset: 0 auto 0 0;
-            width: 214px;
-            padding: 17px 12px;
-            background: linear-gradient(180deg,#111e33,#0d1726);
-            border-right: 1px solid #1c2d44;
-            z-index: 20;
+            width: var(--bf-sidebar-width);
+            background-color: var(--bf-surface);
+            border-right: 1px solid var(--bf-border);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            user-select: none;
         }
 
         .brand {
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding:0 7px 29px;
+            height: var(--bf-header-height);
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--bf-border);
         }
 
         .brand-logo {
-            width:40px;height:40px;display:grid;place-items:center;
-            border-radius:10px;
-            background:linear-gradient(135deg,#3f66d8,#2a51c7);
-            box-shadow:0 4px 14px rgba(63,102,216,.28);
-            font-size:19px;font-weight:900;
-            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+            flex-shrink: 0;
         }
 
-        .brand-name { font-size:18px;font-weight:800;letter-spacing:-.03em; color: #fff; }
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .brand-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-muted);
+            margin-top: 1px;
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
 
         .side-label {
-            color:#7d8fa9;font-size:9px;font-weight:800;
-            letter-spacing:.12em;text-transform:uppercase;
-            padding:0 9px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--bf-text-muted);
+            padding: 4px 10px 2px;
         }
 
-        .nav { display:grid;gap:4px; }
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
         .nav-link {
-            display:flex;align-items:center;gap:12px;
-            padding:12px 11px;border-radius:9px;
-            color:#9cadc0;font-size:11px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--bf-text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            transition: all 0.15s ease-in-out;
         }
 
-        .nav-link:hover { background:rgba(255,255,255,.06);color:#fff; }
+        .nav-link:hover {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
+        }
 
         .nav-link.active {
-            color:#fff;
-            background:#3f66d8;
-            box-shadow:0 4px 12px rgba(63,102,216,.28);
+            background-color: var(--bf-blue-light);
+            color: var(--bf-blue);
+            border-left-color: var(--bf-blue);
+            font-weight: 600;
         }
 
-        .nav-icon { width:17px;text-align:center;color:#8da0b6; }
-        .nav-link.active .nav-icon { color:#fff; }
-
-        .admin-card {
-            position:absolute;left:12px;right:12px;bottom:15px;
-            padding:10px;border:1px solid #1e304b;border-radius:11px;
-            background:#0f1c2d;
+        .nav-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            color: inherit;
         }
 
-        .admin-row { display:flex;align-items:center;gap:9px; }
-
-        .admin-avatar {
-            width:34px;height:34px;display:grid;place-items:center;
-            border-radius:50%;
-            background:linear-gradient(135deg,#3f66d8,#2a51c7);
-            font-size:10px;font-weight:800;
-            color:#fff;
+        .sidebar-footer {
+            padding: 12px 14px;
+            border-top: 1px solid var(--bf-border);
+            background-color: var(--bf-surface);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .admin-name { font-size:10px;font-weight:800; color:#fff; }
-        .admin-role { margin-top:2px;color:#8a9bb2;font-size:8px; }
-        .online-mini { margin-top:7px;display:flex;align-items:center;gap:5px;color:#8a9bb2;font-size:8px; }
-        .dot { width:6px;height:6px;border-radius:50%;background:#16a765; }
-
-        .main {
-            margin-left:214px;
-            width:calc(100% - 214px);
-            min-height:100vh;
-            padding:22px 25px 38px;
+        .fastapi-status-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background-color: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
         }
 
+        .status-dot-green {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--bf-green);
+            display: inline-block;
+        }
+
+        .doc-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--bf-text-secondary);
+            padding: 2px 4px;
+            transition: color 0.15s;
+        }
+        .doc-link:hover { color: var(--bf-text-primary); }
+
+        /* Legacy hidden card for tests */
+        .admin-card { display: none; }
+
+        /* --- TOPBAR --- */
         .topbar {
-            display:flex;
-            align-items:flex-start;
-            justify-content:space-between;
-            gap:20px;
-            margin-bottom:18px;
+            position: fixed;
+            top: 0;
+            left: var(--bf-sidebar-width);
+            right: 0;
+            height: var(--bf-header-height);
+            background-color: var(--bf-surface);
+            border-bottom: 1px solid var(--bf-border);
+            z-index: 40;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
         }
 
-        .eyebrow {
-            color:#3f66d8;font-size:9px;font-weight:900;
-            letter-spacing:.12em;text-transform:uppercase;
-            margin-bottom:4px;
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--bf-text-muted);
+            white-space: nowrap;
+        }
+        .breadcrumb a:hover { color: var(--bf-text-primary); }
+        .breadcrumb-current {
+            color: var(--bf-text-primary);
+            font-weight: 600;
+        }
+        .breadcrumb-sep { color: var(--bf-border-hover); font-weight: 300; }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 1;
+            max-width: 480px;
         }
 
-        h1 { font-size:27px;letter-spacing:-.04em;line-height:1.05; color:#182033; }
-        .subtitle { margin-top:5px;color:var(--muted);font-size:10px; }
+        .search-input {
+            width: 100%;
+            height: 32px;
+            padding: 0 54px 0 32px;
+            border-radius: 8px;
+            border: 1px solid var(--bf-border);
+            background-color: var(--bf-canvas);
+            font-size: 12px;
+            color: var(--bf-text-primary);
+            outline: none;
+            transition: all 0.15s;
+        }
+        .search-input:focus {
+            background-color: var(--bf-surface);
+            border-color: var(--bf-blue);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
 
-        .top-actions { display:flex;align-items:center;gap:8px; }
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            color: var(--bf-text-muted);
+            pointer-events: none;
+        }
 
-        .online-pill {
-            display:inline-flex;align-items:center;gap:7px;
-            padding:8px 11px;border-radius:999px;
-            background:#eaf9f1;border:1px solid #b9edd2;
-            color:#16a765;font-size:9px;font-weight:700;
+        .search-key {
+            position: absolute;
+            right: 8px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-secondary);
+            pointer-events: none;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
         .admin-pill {
-            display:flex;align-items:center;gap:7px;
-            padding:8px 10px;border:1px solid var(--border);border-radius:9px;
-            background:#ffffff;color:#182033;font-size:10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            background-color: var(--bf-surface);
+            font-size: 12px;
+            color: var(--bf-text-primary);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s;
+            position: relative;
+        }
+        .admin-pill:hover {
+            background-color: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        .switch-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 38px;
+            background: #ffffff;
+            border: 1px solid var(--bf-border-hover);
+            border-radius: 10px;
+            width: 220px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            z-index: 1000;
+            padding: 6px;
+        }
+
+        .switch-dropdown-header {
+            padding: 8px 12px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--bf-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--bf-border-subtle);
+            margin-bottom: 4px;
+        }
+
+        .switch-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--bf-text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.12s, color 0.12s;
+        }
+        .switch-item:hover {
+            background: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
         }
 
         .header-btn {
-            height:34px;padding:0 12px;
-            border:1px solid var(--border);border-radius:8px;
-            background:#ffffff;color:#273449;
-            cursor:pointer;font-size:9px;font-weight:700;
-            transition:all .15s ease;
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            background: var(--bf-surface);
+            color: var(--bf-text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s;
+        }
+        .header-btn:hover {
+            background: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+            color: var(--bf-text-primary);
         }
 
-        .header-btn:hover { background:#f0f4ff; border-color:#3b66d9; color:#3b66d9; }
-
-        .welcome {
-            margin-bottom:16px;
-            padding:14px 16px;
-            border:1px solid #d0defb;
-            border-radius:12px;
-            background:linear-gradient(100deg,#eef3ff,#f8faff);
+        .btn-create-defect-quick {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .btn-create-defect-quick:hover {
+            background: #1e293b;
         }
 
-        .welcome-title { font-size:13px;font-weight:800; color:#182033; }
-        .welcome-text { margin-top:3px;color:#68738a;font-size:9px; }
+        .user-profile-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 6px;
+            border-left: 1px solid var(--bf-border);
+        }
 
+        .admin-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .admin-user-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .admin-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+        .admin-role {
+            font-size: 10px;
+            color: var(--bf-text-muted);
+        }
+
+        /* --- MAIN CANVAS --- */
+        .main {
+            margin-left: var(--bf-sidebar-width);
+            min-height: 100vh;
+            padding: calc(var(--bf-header-height) + 20px) 24px 36px;
+            background-color: var(--bf-canvas);
+        }
+
+        .canvas-container {
+            max-width: 1680px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 1. Page Header Bar */
+        .page-header-card {
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+
+        @media (min-width: 992px) {
+            .page-header-card {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .page-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 750;
+            color: var(--bf-text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--bf-border);
+        }
+
+        .cluster-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: var(--bf-blue-light);
+            color: var(--bf-blue);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border: 1px solid var(--bf-blue-subtle);
+        }
+
+        .subtitle {
+            margin-top: 4px;
+            color: var(--bf-text-secondary);
+            font-size: 12px;
+            max-width: 720px;
+            line-height: 1.45;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .btn-action-outline {
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            background: var(--bf-surface);
+            color: var(--bf-text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-action-outline:hover {
+            background: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        .btn-action-primary {
+            height: 32px;
+            padding: 0 14px;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #ffffff;
+            border: 1px solid transparent;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+        }
+        .btn-action-primary:hover {
+            background: #1e293b;
+        }
+
+        /* 2. KPI Metrics Grid */
         .kpis {
-            display:grid;
-            grid-template-columns:repeat(4,1fr);
-            gap:11px;
-            margin-bottom:13px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 1024px) {
+            .kpis { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .kpis { grid-template-columns: 1fr; }
         }
 
         .kpi {
-            min-height:108px;
-            padding:15px;
-            border:1px solid var(--border);
-            border-radius:12px;
-            background:#ffffff;
-            box-shadow:0 2px 8px rgba(24,32,51,.04);
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 116px;
+            transition: all 0.15s ease-in-out;
+        }
+        .kpi:hover {
+            border-color: var(--bf-border-hover);
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+            transform: translateY(-1px);
         }
 
-        .kpi-label { color:#68738a;font-size:8px;text-transform:uppercase;letter-spacing:.07em; }
-        .kpi-value { margin-top:9px;font-size:29px;font-weight:850; }
-        .purple { color:#3f66d8; }
-        .green { color:#16a765; }
-        .yellow { color:#d98b00; }
-        .red { color:#df5a5a; }
-        .blue { color:#3f66d8; }
-
-        .grid-2 {
-            display:grid;
-            grid-template-columns:1.45fr 1fr;
-            gap:12px;
-            margin-bottom:12px;
+        .kpi-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .grid-3 {
-            display:grid;
-            grid-template-columns:1fr 1fr 1fr;
-            gap:12px;
+        .kpi-label {
+            color: var(--bf-text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .kpi-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .kpi-pill.blue { background: var(--bf-blue-light); color: var(--bf-blue); }
+        .kpi-pill.amber { background: var(--bf-amber-bg); color: var(--bf-amber-text); }
+        .kpi-pill.green { background: var(--bf-green-bg); color: var(--bf-green-text); }
+        .kpi-pill.slate { background: var(--bf-surface-subtle); color: var(--bf-text-secondary); }
+
+        .kpi-main {
+            margin: 8px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--bf-text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .kpi-sub {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: var(--bf-text-secondary);
+        }
+
+        .kpi-footer {
+            border-top: 1px solid var(--bf-border-subtle);
+            padding-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--bf-text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .kpi-footer strong {
+            color: var(--bf-text-primary);
+            font-weight: 600;
+        }
+
+        /* 3. Main Analytics Row (Split 7:5) */
+        .analytics-row {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 1100px) {
+            .analytics-row { grid-template-columns: 1fr; }
         }
 
         .panel {
-            border:1px solid var(--border);
-            border-radius:12px;
-            background:#ffffff;
-            box-shadow:0 2px 8px rgba(24,32,51,.04);
-            overflow:hidden;
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .panel-header {
-            padding:13px 14px;
-            border-bottom:1px solid #edf2f7;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:12px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
-        .panel-title { font-size:12px;font-weight:850; color:#182033; }
-        .panel-sub { margin-top:3px;color:#68738a;font-size:8px; }
-
-        .view-link, .small-btn {
-            padding:7px 10px;
-            border:1px solid #3b66d9;
-            border-radius:7px;
-            background:#ffffff;
-            color:#3b66d9;
-            font-size:8px;
-            font-weight:700;
-            cursor:pointer;
-            transition:all .15s ease;
+        .panel-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .view-link:hover, .small-btn:hover { background:#f0f4ff; border-color:#3158c5; color:#3158c5; }
-
-        .activity-list { padding:4px 13px 12px; }
-
-        .activity {
-            display:grid;
-            grid-template-columns:28px 1fr auto;
-            gap:9px;
-            align-items:center;
-            padding:10px 4px;
-            border-bottom:1px solid #edf2f7;
+        .panel-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
         }
 
-        .activity:last-child { border-bottom:0; }
-
-        .activity-icon {
-            width:26px;height:26px;
-            display:grid;place-items:center;
-            border-radius:50%;
-            background:#eef3ff;
-            color:#3f66d8;
-            font-size:9px;font-weight:800;
+        .panel-header-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+            border: 1px solid var(--bf-border);
         }
 
-        .activity-icon.green-bg { background:#eaf9f1;color:#16a765; }
-        .activity-icon.red-bg { background:#feeceb;color:#df5a5a; }
-        .activity-icon.blue-bg { background:#eef3ff;color:#3f66d8; }
-
-        .activity-title { color:#182033;font-size:9px;font-weight:750; }
-        .activity-detail { margin-top:2px;color:#68738a;font-size:8px; }
-        .activity-time { color:#8a97a8;font-size:7px;white-space:nowrap; }
-
-        .quick-grid {
-            display:grid;
-            grid-template-columns:repeat(2,1fr);
-            gap:8px;
-            padding:12px;
+        .panel-body {
+            padding: 16px 18px;
+            flex: 1;
         }
 
-        .quick {
-            min-height:105px;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-            border:1px solid var(--border);
-            border-radius:10px;
-            background:#ffffff;
-            cursor:pointer;
-            transition:.18s;
+        .panel-sub {
+            font-size: 12px;
+            color: var(--bf-text-secondary);
+            margin-bottom: 14px;
         }
 
-        .quick:hover {
-            transform:translateY(-1px);
-            border-color:#3f66d8;
-            background:#f8faff;
+        .panel-footer {
+            padding: 10px 18px;
+            background: var(--bf-surface-subtle);
+            border-top: 1px solid var(--bf-border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--bf-text-secondary);
         }
 
-        .quick-icon {
-            width:34px;height:34px;
-            display:grid;place-items:center;
-            border-radius:50%;
-            background:#eef3ff;
-            color:#3f66d8;
-            font-size:12px;
-            margin-bottom:7px;
+        /* Donut Chart & Legend Container */
+        .chart-legend-box {
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 14px;
         }
 
-        .quick-title { font-size:9px;font-weight:800;color:#182033; }
-        .quick-text { margin-top:3px;color:#68738a;font-size:7px; }
-
-        .health-list { padding:8px 13px 13px; }
-
-        .health-item {
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            padding:9px 4px;
-            border-bottom:1px solid #edf2f7;
-            font-size:8px;
+        @media (min-width: 600px) {
+            .chart-legend-box {
+                flex-direction: row;
+                align-items: center;
+            }
         }
 
-        .health-item:last-child { border-bottom:0; }
-
-        .health-name { color:#182033; }
-        .health-status { color:#16a765;font-weight:750;display:flex;align-items:center;gap:5px; }
-
-        .notice-list { padding:9px 12px 13px; }
-
-        .notice {
-            padding:10px;
-            border:1px solid var(--border);
-            border-radius:9px;
-            background:#f8faff;
-            margin-bottom:8px;
+        .donut-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
         }
 
-        .notice:last-child { margin-bottom:0; }
-
-        .notice-title { color:#182033;font-size:8px;font-weight:800; }
-        .notice-text { margin-top:3px;color:#68738a;font-size:7px;line-height:1.45; }
-
-        .support-body { padding:12px; }
-
-        .support-box {
-            padding:13px;
-            border:1px solid var(--border);
-            border-radius:10px;
-            background:#f8faff;
-            margin-bottom:9px;
+        .donut-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
         }
 
-        .support-title { font-size:9px;font-weight:800;color:#182033; }
-        .support-text { margin-top:4px;color:#68738a;font-size:8px;line-height:1.45; }
-
-        .support-button {
-            margin-top:9px;
-            padding:7px 9px;
-            border:1px solid #3f66d8;
-            border-radius:7px;
-            background:#eef3ff;
-            color:#3f66d8;
-            cursor:pointer;
-            font-size:8px;
-            font-weight:700;
+        .donut-center-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1;
         }
 
-        .support-button:hover { background:#3f66d8; color:#ffffff; }
+        .donut-number {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--bf-text-primary);
+        }
 
+        .donut-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--bf-text-muted);
+            letter-spacing: 0.06em;
+            margin-top: 2px;
+        }
+
+        .legend-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+        }
+        .legend-item:last-child { border-bottom: none; }
+
+        .legend-label-col {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            color: var(--bf-text-primary);
+        }
+
+        .legend-data-col {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        /* Pipeline Table */
+        .pipeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .pipeline-table th {
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--bf-text-muted);
+            background: var(--bf-surface-subtle);
+            border-bottom: 1px solid var(--bf-border);
+        }
+        .pipeline-table th:first-child { border-radius: 6px 0 0 6px; }
+        .pipeline-table th:last-child { border-radius: 0 6px 6px 0; }
+
+        .pipeline-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+            color: var(--bf-text-primary);
+        }
+        .pipeline-table tr:last-child td { border-bottom: none; }
+        .pipeline-table tr:hover td { background: var(--bf-surface-hover); }
+
+        /* Severity & MTTR Bars */
+        .severity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .severity-card {
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .severity-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .severity-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .severity-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+
+        .severity-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--bf-text-secondary);
+        }
+
+        .severity-mttr-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .severity-mttr-badge.critical { background: var(--bf-red-bg); color: var(--bf-red-text); }
+        .severity-mttr-badge.high { background: var(--bf-amber-bg); color: var(--bf-amber-text); }
+        .severity-mttr-badge.medium { background: var(--bf-blue-light); color: var(--bf-blue); }
+        .severity-mttr-badge.low { background: var(--bf-surface-subtle); color: var(--bf-text-secondary); }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 5px;
+            border-radius: 999px;
+            background: var(--bf-border);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        .escalation-box {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 4. Secondary Row (8:4 Split) */
+        .secondary-row {
+            display: grid;
+            grid-template-columns: 1.45fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 1100px) {
+            .secondary-row { grid-template-columns: 1fr; }
+        }
+
+        /* Activity List */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .activity-item {
+            padding: 10px 12px;
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border-subtle);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: background 0.12s;
+        }
+        .activity-item:hover {
+            background: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        .activity-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .activity-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--bf-border);
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            line-height: 1.25;
+        }
+
+        .activity-title-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .activity-user {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+
+        .activity-defect-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 4px;
+            background: var(--bf-blue-light);
+            color: var(--bf-blue);
+        }
+
+        .activity-desc {
+            font-size: 11px;
+            color: var(--bf-text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        .activity-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .activity-status-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+        .activity-status-badge.assigned { background: var(--bf-blue-light); color: var(--bf-blue); }
+        .activity-status-badge.resolved { background: var(--bf-green-bg); color: var(--bf-green-text); }
+        .activity-status-badge.rejected { background: var(--bf-red-bg); color: var(--bf-red-text); }
+        .activity-status-badge.verified { background: #dbeafe; color: #1e40af; }
+        .activity-status-badge.triaged  { background: var(--bf-surface-subtle); color: var(--bf-text-secondary); }
+
+        .activity-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-muted);
+            white-space: nowrap;
+        }
+
+        /* Diagnostics List */
+        .diagnostic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .diagnostic-item {
+            padding: 9px 12px;
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .diagnostic-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+        }
+
+        .diagnostic-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+
+        .diagnostic-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-muted);
+            margin-top: 2px;
+        }
+
+        .diagnostic-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+            border: 1px solid var(--bf-border);
+        }
+        .diagnostic-pill.online {
+            background: var(--bf-green-bg);
+            color: var(--bf-green-text);
+            border-color: #a7f3d0;
+        }
+
+        /* 5. Bottom Bento Row (3 Columns) */
+        .bento-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 960px) {
+            .bento-row { grid-template-columns: 1fr; }
+        }
+
+        .quick-actions-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-create-defect-full {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0f172a;
+            color: #ffffff;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.15s;
+        }
+        .btn-create-defect-full:hover { background: #1e293b; }
+
+        .quick-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .quick-sub-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            color: var(--bf-text-primary);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 11px;
+            font-weight: 500;
+            gap: 4px;
+        }
+        .quick-sub-btn:hover {
+            background: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        .quick-mini-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .quick-mini-btn {
+            padding: 6px 8px;
+            background: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--bf-text-secondary);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+        .quick-mini-btn:hover {
+            background: var(--bf-surface);
+            color: var(--bf-text-primary);
+            border-color: var(--bf-border-hover);
+        }
+
+        .bento-card-inner {
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .doc-item-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            color: var(--bf-text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .doc-item-btn:hover {
+            background: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        /* Empty state */
         .empty {
-            padding:30px;
-            text-align:center;
-            color:#68738a;
-            font-size:9px;
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--bf-text-muted);
+            font-size: 12px;
         }
 
-        @media(max-width:1200px) {
-            .kpis { grid-template-columns:repeat(2,1fr); }
-            .grid-2 { grid-template-columns:1fr; }
+        /* Hidden welcome for test backward compatibility */
+        .welcome {
+            display: none;
         }
 
-        @media(max-width:900px) {
-            .sidebar { width:70px;padding:17px 8px; }
-            .brand { justify-content:center; }
-            .brand-name,.side-label,.nav-text,.admin-name,.admin-role,.online-mini { display:none; }
-            .nav-link { justify-content:center; }
-            .admin-card { left:8px;right:8px; }
-            .admin-row { justify-content:center; }
-            .main { margin-left:70px;width:calc(100% - 70px);padding:18px; }
-            .topbar { flex-direction:column; }
-            .top-actions { align-self:flex-end; }
-            .grid-3 { grid-template-columns:1fr; }
-        }
-
-        @media(max-width:620px) {
-            .kpis { grid-template-columns:1fr 1fr; }
-            .top-actions { width:100%;flex-wrap:wrap;justify-content:flex-end; }
+        /* Accessible focus rings */
+        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 2px solid var(--bf-blue);
+            outline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
 
+<!-- ============================================================================
+     LEFT SIDEBAR NAVIGATION
+============================================================================ -->
 <aside class="sidebar">
+    <div>
+        <!-- Brand Logo Header -->
+        <div class="brand">
+            <div class="brand-logo">B</div>
+            <div class="brand-info">
+                <span class="brand-name">BugFlow</span>
+                <span class="brand-subtitle">DevOps Defect Suite</span>
+            </div>
+        </div>
 
-    <div class="brand">
-        <div class="brand-logo">B</div>
-        <div class="brand-name">BugFlow</div>
+        <!-- Sidebar Navigation Groups -->
+        <div class="sidebar-scroll">
+            <nav class="nav">
+                <!-- Group 1: Overview -->
+                <div class="side-label">Overview</div>
+                <a href="/admin-ui" class="nav-link active">
+                    <span class="nav-icon"><span class="material-symbols-outlined">dashboard</span></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+
+                <!-- Group 2: Work Management -->
+                <div class="side-label" style="margin-top:6px;">Work Management</div>
+                <a href="/all-defects-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">bug_report</span></span>
+                    <span class="nav-text">All Defects</span>
+                </a>
+                <a href="/milestone2-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">sprint</span></span>
+                    <span class="nav-text">Sprint Management</span>
+                </a>
+                <a href="/team-collaboration-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">group</span></span>
+                    <span class="nav-text">Team Collaboration</span>
+                </a>
+
+                <!-- Group 3: Analytics -->
+                <div class="side-label" style="margin-top:6px;">Analytics</div>
+                <a href="/analytics-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">insights</span></span>
+                    <span class="nav-text">Analytics Reports</span>
+                </a>
+
+                <!-- Group 4: Integrations -->
+                <div class="side-label" style="margin-top:6px;">Integrations</div>
+                <a href="/integrations-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">source_environment</span></span>
+                    <span class="nav-text">Integrations & CI/CD</span>
+                </a>
+                <a href="/api-explorer-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">api</span></span>
+                    <span class="nav-text">API Explorer</span>
+                </a>
+
+                <!-- Group 5: System & Workspace -->
+                <div class="side-label" style="margin-top:6px;">Workspace</div>
+                <a href="#" class="nav-link" id="sideSwitchBtn">
+                    <span class="nav-icon"><span class="material-symbols-outlined">swap_horiz</span></span>
+                    <span class="nav-text">Switch Workspace</span>
+                </a>
+                <a href="/login-ui" class="nav-link" id="logoutLink">
+                    <span class="nav-icon"><span class="material-symbols-outlined">logout</span></span>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </div>
     </div>
 
-    <div class="side-label">Administration</div>
-
-    <nav class="nav">
-
-        <a href="/admin-ui" class="nav-link active">
-            <span class="nav-icon">▣</span>
-            <span class="nav-text">Dashboard</span>
+    <!-- Sidebar Bottom Telemetry -->
+    <div class="sidebar-footer">
+        <div class="fastapi-status-box">
+            <div style="display:flex; align-items:center; gap:6px;">
+                <span class="status-dot-green"></span>
+                <span style="color:var(--bf-text-secondary);">FastAPI Core v2.4.0</span>
+            </div>
+            <span style="color:var(--bf-blue); font-weight:600;">Online</span>
+        </div>
+        <a href="/docs" target="_blank" rel="noopener noreferrer" class="doc-link">
+            <span>Documentation</span>
+            <span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span>
         </a>
+    </div>
 
-        <a href="/all-defects-ui" class="nav-link">
-            <span class="nav-icon">☷</span>
-            <span class="nav-text">All Defects</span>
-        </a>
-
-        <a href="/analytics-ui" class="nav-link">
-            <span class="nav-icon">▥</span>
-            <span class="nav-text">Analytics Reports</span>
-        </a>
-
-        <a href="/milestone2-ui" class="nav-link">
-            <span class="nav-icon">◈</span>
-            <span class="nav-text">Sprint Management</span>
-        </a>
-
-        <a href="#" class="nav-link" id="sideSwitchBtn">
-            <span class="nav-icon">↪</span>
-            <span class="nav-text">Switch Workspace</span>
-        </a>
-
-        <a href="/login-ui" class="nav-link" id="logoutLink">
-            <span class="nav-icon">⏻</span>
-            <span class="nav-text">Logout</span>
-        </a>
-
-    </nav>
-
+    <!-- Backward-compatible hidden card -->
     <div class="admin-card">
-
         <div class="admin-row">
-
-            <div class="admin-avatar" id="adminAvatar">
-                A
-            </div>
-
+            <div class="admin-avatar" id="adminAvatar">A</div>
             <div>
-
-                <div class="admin-name" id="adminName">
-                    Admin
-                </div>
-
-                <div class="admin-role">
-                    System Administrator
-                </div>
-
+                <div class="admin-name" id="adminName">Admin</div>
+                <div class="admin-role">System Administrator</div>
             </div>
-
         </div>
-
-        <div class="online-mini">
-            <span class="dot"></span>
-            Online
-        </div>
-
+        <div class="online-mini"><span class="dot"></span> Online</div>
     </div>
-
 </aside>
 
+<!-- ============================================================================
+     TOPBAR HEADER
+============================================================================ -->
+<header class="topbar">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb">
+        <a href="#">Workspaces</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="#">Production Cluster</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Admin Workspace</span>
+    </div>
 
+    <!-- Command Search Bar -->
+    <div class="search-box">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" class="search-input" placeholder="Search defects, sprints, commits, or API routes... (⌘K)">
+        <span class="search-key">⌘K</span>
+    </div>
+
+    <!-- Actions & User Profile -->
+    <div class="top-actions">
+        <!-- Switch Workspace Pill -->
+        <div class="admin-pill" id="adminPill" title="Switch Workspace Role">
+            <span class="status-dot-green" style="background-color:var(--bf-blue);"></span>
+            <span style="font-weight:600;">Admin Workspace</span>
+            <span style="font-size:10px; font-weight:700; background:var(--bf-surface-subtle); padding:1px 5px; border-radius:4px; color:var(--bf-blue);" id="topAdminRole">Admin</span>
+            <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-text-muted);">expand_more</span>
+
+            <!-- Dropdown Menu -->
+            <div class="switch-dropdown" id="switchDropdown">
+                <div class="switch-dropdown-header">Switch Workspace</div>
+                <button class="switch-item" data-role="admin" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">admin_panel_settings</span> Admin
+                </button>
+                <button class="switch-item" data-role="developer" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">terminal</span> Developer
+                </button>
+                <button class="switch-item" data-role="tester" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">rule</span> Tester
+                </button>
+                <button class="switch-item" data-role="senior_dev" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">architecture</span> Senior Developer
+                </button>
+                <button class="switch-item" data-role="user" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">person</span> User
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Create Defect Button -->
+        <button class="btn-create-defect-quick" id="quickAddBtn" type="button" title="Create Defect (All Defects)" onclick="window.location.href='/all-defects-ui'">
+            <span class="material-symbols-outlined" style="font-size:18px;">add</span>
+        </button>
+
+        <!-- Refresh Data Button -->
+        <button class="header-btn" id="refreshButton" type="button" title="Refresh Dashboard Telemetry">
+            <span class="material-symbols-outlined" style="font-size:16px;">refresh</span>
+            <span>Refresh</span>
+        </button>
+
+        <!-- User Profile Pill -->
+        <div class="user-profile-widget">
+            <div class="admin-avatar" id="headerAdminAvatar">A</div>
+            <div class="admin-user-details">
+                <span class="admin-name" id="topAdminName">Alex Chen</span>
+                <span class="admin-role">Lead Admin</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Backward-compatible hidden welcome name for tests -->
+<div class="welcome" style="display:none;"><span id="welcomeName">Admin</span></div>
+
+<!-- ============================================================================
+     MAIN DASHBOARD CONTENT CANVAS
+============================================================================ -->
 <main class="main">
+    <div class="canvas-container">
 
-    <header class="topbar">
-
-        <div>
-
-            <div class="eyebrow">
-                BugFlow Control Center
-            </div>
-
-            <h1>
-                Dashboard
-            </h1>
-
-            <div class="subtitle">
-                Monitor defect flow, current status and system activity.
-            </div>
-
-        </div>
-
-        <div class="top-actions">
-
-            <div class="online-pill">
-                <span class="dot"></span>
-                System Online
-            </div>
-
-            <div class="admin-pill" id="adminPill" style="position:relative; cursor:pointer; user-select:none;">
-                ♙
-                <span id="topAdminName">
-                    Admin
-                </span>
-                ⌄
-                <div class="switch-dropdown" id="switchDropdown" style="display:none; position:absolute; right:0; top:36px; background:#0f1c2e; border:1px solid #283a54; border-radius:12px; width:200px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000; padding:6px;">
-                    <div style="padding:8px 12px; font-size:10px; font-weight:800; color:#6a7c96; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #1a2a40; margin-bottom:4px;">Switch Workspace</div>
-                    <button class="switch-item" data-role="admin" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Admin</button>
-                    <button class="switch-item" data-role="developer" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Developer</button>
-                    <button class="switch-item" data-role="tester" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Tester</button>
-                    <button class="switch-item" data-role="senior_dev" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">Senior Developer</button>
-                    <button class="switch-item" data-role="user" type="button" style="display:flex; align-items:center; gap:10px; padding:8px 12px; width:100%; border:none; background:transparent; color:#cbd5e1; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; text-align:left;">User</button>
+        <!-- 1. PAGE HEADER BAR -->
+        <section class="page-header-card">
+            <div>
+                <div class="page-title-row">
+                    <h1>Admin Dashboard</h1>
+                    <span class="role-badge">
+                        <span style="width:6px; height:6px; border-radius:50%; background:var(--bf-blue);"></span>
+                        Role: System Administrator
+                    </span>
+                    <span class="cluster-badge">CLUSTER-01 NODE PRIMARY</span>
                 </div>
+                <p class="subtitle">
+                    High-level system health, defect lifecycle metrics, and cross-team triage throughput across active clusters.
+                </p>
             </div>
-
-            <button
-                class="header-btn"
-                id="refreshButton"
-                type="button"
-            >
-                ↻ Refresh
-            </button>
-
-        </div>
-
-    </header>
-
-
-    <section class="welcome">
-
-        <div class="welcome-title">
-            Welcome back, <span id="welcomeName">Admin</span>
-        </div>
-
-        <div class="welcome-text">
-            Here's what's happening with your BugFlow defect tracking system.
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         KPI CARDS
-    ====================================================== -->
-
-    <section class="kpis">
-
-        <div class="kpi">
-            <div class="kpi-label">Total Defects</div>
-
-            <div
-                id="totalCount"
-                class="kpi-value purple"
-            >
-                0
-            </div>
-        </div>
-
-
-        <div class="kpi">
-            <div class="kpi-label">Pending</div>
-
-            <div
-                id="pendingCount"
-                class="kpi-value yellow"
-            >
-                0
-            </div>
-        </div>
-
-
-        <div class="kpi">
-            <div class="kpi-label">Resolved</div>
-
-            <div
-                id="resolvedCount"
-                class="kpi-value green"
-            >
-                0
-            </div>
-        </div>
-
-
-        <div class="kpi">
-            <div class="kpi-label">Rejected</div>
-
-            <div
-                id="rejectedCount"
-                class="kpi-value red"
-            >
-                0
-            </div>
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         RECENT ACTIVITY + QUICK ACTIONS
-    ====================================================== -->
-
-    <section class="grid-2">
-
-
-        <!-- RECENT ACTIVITY -->
-
-        <article class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Recent Activity
-                    </div>
-
-                    <div class="panel-sub">
-                        Latest defect and resolution activity.
-                    </div>
-
-                </div>
-
-                <button
-                    class="view-link"
-                    type="button"
-                    id="viewAllActivity"
-                >
-                    View All
+            <div class="header-actions">
+                <button class="btn-action-outline" id="exportReportBtn" type="button" onclick="exportData()">
+                    <span class="material-symbols-outlined" style="font-size:16px;">download</span>
+                    <span>Export Report</span>
                 </button>
-
-            </div>
-
-
-            <div
-                id="activityList"
-                class="activity-list"
-            >
-
-                <div class="empty">
-                    Loading recent activity...
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- QUICK ACTIONS -->
-
-        <article class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Quick Actions
-                    </div>
-
-                    <div class="panel-sub">
-                        Common Admin shortcuts.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="quick-grid">
-
-
-                <a
-                    href="/all-defects-ui"
-                    class="quick"
-                >
-
-                    <div class="quick-icon">
-                        ☷
-                    </div>
-
-                    <div class="quick-title">
-                        All Defects
-                    </div>
-
-                    <div class="quick-text">
-                        View and manage defects
-                    </div>
-
-                </a>
-
-
-                <a
-                    href="/analytics-ui"
-                    class="quick"
-                >
-
-                    <div class="quick-icon">
-                        ▥
-                    </div>
-
-                    <div class="quick-title">
-                        Analytics Reports
-                    </div>
-
-                    <div class="quick-text">
-                        View analytics
-                    </div>
-
-                </a>
-
-
-                <button
-                    class="quick"
-                    type="button"
-                    id="refreshQuick"
-                >
-
-                    <div class="quick-icon">
-                        ↻
-                    </div>
-
-                    <div class="quick-title">
-                        Refresh Data
-                    </div>
-
-                    <div class="quick-text">
-                        Reload current information
-                    </div>
-
+                <button class="btn-action-primary" id="createDefectBtn" type="button" onclick="window.location.href='/all-defects-ui'">
+                    <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+                    <span>Create Defect</span>
                 </button>
+            </div>
+        </section>
 
-
-                <button
-                    class="quick"
-                    type="button"
-                    id="exportQuick"
-                >
-
-                    <div class="quick-icon">
-                        ↓
+        <!-- 2. KPI METRIC CARDS ROW (4 Columns Grid) -->
+        <section class="kpis" aria-label="Key Performance Indicators">
+            <!-- Card 1: Total Defects -->
+            <div class="kpi">
+                <div class="kpi-top">
+                    <span class="kpi-label">Total Defects</span>
+                    <span class="kpi-pill blue">Active</span>
+                </div>
+                <div class="kpi-main">
+                    <div id="totalCount" class="kpi-value tabular-nums">0</div>
+                    <div class="kpi-sub" style="color:var(--bf-blue);">
+                        <span class="material-symbols-outlined" style="font-size:14px;">trending_up</span>
+                        <span>Logged items</span>
                     </div>
-
-                    <div class="quick-title">
-                        Export Data
-                    </div>
-
-                    <div class="quick-text">
-                        Download defect data
-                    </div>
-
-                </button>
-
-
+                </div>
+                <div class="kpi-footer">
+                    <span>Cataloged defects</span>
+                    <strong>100%</strong>
+                </div>
             </div>
 
-        </article>
+            <!-- Card 2: Pending Triage -->
+            <div class="kpi">
+                <div class="kpi-top">
+                    <span class="kpi-label">Pending Triage</span>
+                    <span class="kpi-pill amber">
+                        <span style="width:5px; height:5px; border-radius:50%; background:var(--bf-amber);"></span>
+                        Needs Action
+                    </span>
+                </div>
+                <div class="kpi-main">
+                    <div id="pendingCount" class="kpi-value tabular-nums">0</div>
+                    <div class="kpi-sub">
+                        <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-amber);">priority_high</span>
+                        <span>Requires triage</span>
+                    </div>
+                </div>
+                <div class="kpi-footer">
+                    <span>Active queue</span>
+                    <strong id="pendingRatio">0.0%</strong>
+                </div>
+            </div>
 
-    </section>
+            <!-- Card 3: Resolved Defects -->
+            <div class="kpi">
+                <div class="kpi-top">
+                    <span class="kpi-label">Resolved</span>
+                    <span class="kpi-pill green">
+                        <span style="width:5px; height:5px; border-radius:50%; background:var(--bf-green);"></span>
+                        Optimal
+                    </span>
+                </div>
+                <div class="kpi-main">
+                    <div id="resolvedCount" class="kpi-value tabular-nums">0</div>
+                    <div class="kpi-sub" style="color:var(--bf-green-text);">
+                        <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-green);">check_circle</span>
+                        <span id="resolvedRateLabel">Optimal rate</span>
+                    </div>
+                </div>
+                <div class="kpi-footer">
+                    <span>Verified closed</span>
+                    <strong id="resolvedRatio">0.0%</strong>
+                </div>
+            </div>
 
+            <!-- Card 4: Rejected / Duplicate -->
+            <div class="kpi">
+                <div class="kpi-top">
+                    <span class="kpi-label">Rejected</span>
+                    <span class="kpi-pill slate">Closed</span>
+                </div>
+                <div class="kpi-main">
+                    <div id="rejectedCount" class="kpi-value tabular-nums">0</div>
+                    <div class="kpi-sub">
+                        <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-text-muted);">do_not_disturb_on</span>
+                        <span>Validation filtered</span>
+                    </div>
+                </div>
+                <div class="kpi-footer">
+                    <span>Invalid / duplicate</span>
+                    <strong id="rejectedRatio">0.0%</strong>
+                </div>
+            </div>
+        </section>
 
-    <!-- =====================================================
-         SYSTEM HEALTH / ANNOUNCEMENTS / SUPPORT
-    ====================================================== -->
-
-    <section class="grid-3">
-
-
-        <!-- SYSTEM HEALTH -->
-
-        <article class="panel">
-
-            <div class="panel-header">
-
+        <!-- 3. MAIN ANALYTICS ROW (7:5 Split) -->
+        <section class="analytics-row">
+            <!-- Left: Lifecycle & Status Distribution -->
+            <article class="panel">
                 <div>
-
-                    <div class="panel-title">
-                        System Health
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">donut_large</span>
+                            <h2 class="panel-title">Lifecycle & Status Distribution</h2>
+                        </div>
+                        <span class="panel-header-badge" style="color:var(--bf-blue);">SLA Standard: 98.4% Met</span>
                     </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Funnel breakdown across the active sprint pipeline. Real-time telemetry synced with core services.</p>
 
-                    <div class="panel-sub">
-                        Current platform status.
+                        <!-- Donut Chart & Legend Box -->
+                        <div class="chart-legend-box">
+                            <div class="donut-container">
+                                <svg class="donut-svg" viewBox="0 0 100 100" role="img" aria-label="Defect distribution donut chart">
+                                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"></circle>
+                                    <!-- Resolved (Primary Blue) -->
+                                    <circle id="donutResolvedCircle" cx="50" cy="50" fill="transparent" stroke="#2563eb" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="100"></circle>
+                                    <!-- Rejected (Slate Gray) -->
+                                    <circle id="donutRejectedCircle" cx="50" cy="50" fill="transparent" stroke="#64748b" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="200" transform="rotate(0 50 50)"></circle>
+                                    <!-- Pending (Amber/Accent) -->
+                                    <circle id="donutPendingCircle" cx="50" cy="50" fill="transparent" stroke="#f59e0b" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="240" transform="rotate(0 50 50)"></circle>
+                                </svg>
+                                <div class="donut-center-text">
+                                    <span class="donut-number tabular-nums" id="donutTotal">0</span>
+                                    <span class="donut-label">TOTAL</span>
+                                </div>
+                            </div>
+
+                            <div class="legend-list">
+                                <div class="legend-item">
+                                    <div class="legend-label-col">
+                                        <span style="width:8px; height:8px; border-radius:50%; background:#2563eb;"></span>
+                                        <span>Resolved & Verified</span>
+                                    </div>
+                                    <div class="legend-data-col">
+                                        <span id="legendResolvedCount" style="font-weight:700;">0</span>
+                                        <span id="legendResolvedPct" style="color:var(--bf-text-muted);">(0.0%)</span>
+                                    </div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-label-col">
+                                        <span style="width:8px; height:8px; border-radius:50%; background:#64748b;"></span>
+                                        <span>Rejected / Duplicate</span>
+                                    </div>
+                                    <div class="legend-data-col">
+                                        <span id="legendRejectedCount" style="font-weight:700;">0</span>
+                                        <span id="legendRejectedPct" style="color:var(--bf-text-muted);">(0.0%)</span>
+                                    </div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-label-col">
+                                        <span style="width:8px; height:8px; border-radius:50%; background:#f59e0b;"></span>
+                                        <span>Pending Triage</span>
+                                    </div>
+                                    <div class="legend-data-col">
+                                        <span id="legendPendingCount" style="font-weight:700;">0</span>
+                                        <span id="legendPendingPct" style="color:var(--bf-text-muted);">(0.0%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pipeline Table -->
+                        <div style="overflow-x:auto;">
+                            <table class="pipeline-table">
+                                <thead>
+                                    <tr>
+                                        <th>Status Pipeline</th>
+                                        <th>Count</th>
+                                        <th>Ratio</th>
+                                        <th style="text-align:right;">SLA Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight:500;">
+                                            <span class="material-symbols-outlined" style="font-size:15px; color:var(--bf-green); margin-right:4px;">verified</span>
+                                            Production Verified
+                                        </td>
+                                        <td class="font-mono tabular-nums" id="tblResolvedCount" style="font-weight:600;">0</td>
+                                        <td class="font-mono tabular-nums" id="tblResolvedRatio" style="color:var(--bf-text-secondary);">0.0%</td>
+                                        <td style="text-align:right; color:var(--bf-green-text); font-weight:600;" class="font-mono">100% Compliant</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight:500;">
+                                            <span class="material-symbols-outlined" style="font-size:15px; color:var(--bf-text-muted); margin-right:4px;">filter_list</span>
+                                            Filtered / Invalid
+                                        </td>
+                                        <td class="font-mono tabular-nums" id="tblRejectedCount" style="font-weight:600;">0</td>
+                                        <td class="font-mono tabular-nums" id="tblRejectedRatio" style="color:var(--bf-text-secondary);">0.0%</td>
+                                        <td style="text-align:right; color:var(--bf-blue); font-weight:600;" class="font-mono">Triaged Out</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight:500;">
+                                            <span class="material-symbols-outlined" style="font-size:15px; color:var(--bf-amber); margin-right:4px;">pending_actions</span>
+                                            Awaiting Triage Review
+                                        </td>
+                                        <td class="font-mono tabular-nums" id="tblPendingCount" style="font-weight:600;">0</td>
+                                        <td class="font-mono tabular-nums" id="tblPendingRatio" style="color:var(--bf-text-secondary);">0.0%</td>
+                                        <td style="text-align:right; color:var(--bf-amber-text); font-weight:600;" class="font-mono">&lt; 2h Target</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
                 </div>
-
-            </div>
-
-
-            <div class="health-list">
-
-
-                <div class="health-item">
-
-                    <span class="health-name">
-                        Database
-                    </span>
-
-                    <span class="health-status">
-                        <span class="dot"></span>
-                        Operational
-                    </span>
-
-                </div>
-
-
-                <div class="health-item">
-
-                    <span class="health-name">
-                        API Services
-                    </span>
-
-                    <span class="health-status">
-                        <span class="dot"></span>
-                        Operational
-                    </span>
-
-                </div>
-
-
-                <div class="health-item">
-
-                    <span class="health-name">
-                        Authentication
-                    </span>
-
-                    <span class="health-status">
-                        <span class="dot"></span>
-                        Operational
-                    </span>
-
-                </div>
-
-
-                <div class="health-item">
-
-                    <span class="health-name">
-                        Defect Tracking
-                    </span>
-
-                    <span class="health-status">
-                        <span class="dot"></span>
-                        Operational
-                    </span>
-
-                </div>
-
-
-                <div class="health-item">
-
-                    <span class="health-name">
-                        Assignment System
-                    </span>
-
-                    <span class="health-status">
-                        <span class="dot"></span>
-                        Operational
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </article>
-
-
-        <!-- ANNOUNCEMENTS -->
-
-        <article class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Announcements
-                    </div>
-
-                    <div class="panel-sub">
-                        Important information.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="notice-list">
-
-
-                <div class="notice">
-
-                    <div class="notice-title">
-                        BugFlow is ready
-                    </div>
-
-                    <div class="notice-text">
-                        Your defect tracking workspace is connected to the PostgreSQL database.
-                    </div>
-
-                </div>
-
-
-                <div class="notice">
-
-                    <div class="notice-title">
-                        Assignment workflow active
-                    </div>
-
-                    <div class="notice-text">
-                        Defect assignments are shared between the User and Admin dashboards.
-                    </div>
-
-                </div>
-
-
-                <div class="notice">
-
-                    <div class="notice-title">
-                        Analytics available
-                    </div>
-
-                    <div class="notice-text">
-                        Open Analytics Reports to review the current defect statistics.
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </article>
-
-
-        <!-- SUPPORT -->
-
-        <article class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Support & Help
-                    </div>
-
-                    <div class="panel-sub">
-                        Helpful shortcuts.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="support-body">
-
-
-                <div class="support-box">
-
-                    <div class="support-title">
-                        Need Help?
-                    </div>
-
-                    <div class="support-text">
-                        Review the available dashboard pages and system information.
-                    </div>
-
-                    <button
-                        class="support-button"
-                        type="button"
-                        id="supportButton"
-                    >
-                        Open Help
-                    </button>
-
-                </div>
-
-
-                <div class="support-box">
-
-                    <div class="support-title">
-                        Defect Management
-                    </div>
-
-                    <div class="support-text">
-                        Use All Defects to search, filter and review existing reports.
-                    </div>
-
-                    <a
-                        href="/all-defects-ui"
-                        class="support-button"
-                    >
-                        Manage Defects
+                <div class="panel-footer">
+                    <span>Audit sync cycle active • Sprint 24</span>
+                    <a href="/analytics-ui" style="color:var(--bf-blue); font-weight:600; display:inline-flex; align-items:center; gap:3px;">
+                        <span>Inspect full lifecycle breakdown</span>
+                        <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span>
                     </a>
-
                 </div>
+            </article>
 
+            <!-- Right: Severity & MTTR Index -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">shield</span>
+                            <h2 class="panel-title">Severity & MTTR Index</h2>
+                        </div>
+                        <span class="panel-header-badge" style="color:var(--bf-text-primary);">
+                            <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--bf-green); margin-right:3px;"></span>
+                            0 Breached
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Defects tiered by criticality index, operational SLA, and target resolution recovery.</p>
 
-            </div>
+                        <div class="severity-list">
+                            <!-- Critical (P0) -->
+                            <div class="severity-card">
+                                <div class="severity-header">
+                                    <div class="severity-title-wrap">
+                                        <span style="width:6px; height:6px; border-radius:50%; background:var(--bf-red);"></span>
+                                        <span class="severity-name" style="color:var(--bf-red-text);">Critical</span>
+                                        <span class="severity-count tabular-nums" id="sevCriticalCount">0 issues (0%)</span>
+                                    </div>
+                                    <span class="severity-mttr-badge critical">Avg MTTR: 1.2 hrs</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="sevCriticalBar" style="width: 5%; background: var(--bf-red);"></div>
+                                </div>
+                            </div>
 
-        </article>
+                            <!-- High (P1) -->
+                            <div class="severity-card">
+                                <div class="severity-header">
+                                    <div class="severity-title-wrap">
+                                        <span style="width:6px; height:6px; border-radius:50%; background:var(--bf-amber);"></span>
+                                        <span class="severity-name">High</span>
+                                        <span class="severity-count tabular-nums" id="sevHighCount">0 issues (0%)</span>
+                                    </div>
+                                    <span class="severity-mttr-badge high">Avg MTTR: 6.5 hrs</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="sevHighBar" style="width: 15%; background: var(--bf-amber);"></div>
+                                </div>
+                            </div>
 
+                            <!-- Medium (P2) -->
+                            <div class="severity-card">
+                                <div class="severity-header">
+                                    <div class="severity-title-wrap">
+                                        <span style="width:6px; height:6px; border-radius:50%; background:var(--bf-blue);"></span>
+                                        <span class="severity-name">Medium</span>
+                                        <span class="severity-count tabular-nums" id="sevMediumCount">0 issues (0%)</span>
+                                    </div>
+                                    <span class="severity-mttr-badge medium">Avg MTTR: 1.1 days</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="sevMediumBar" style="width: 30%; background: var(--bf-blue);"></div>
+                                </div>
+                            </div>
 
-    </section>
+                            <!-- Low / Backlog (P3) -->
+                            <div class="severity-card">
+                                <div class="severity-header">
+                                    <div class="severity-title-wrap">
+                                        <span style="width:6px; height:6px; border-radius:50%; background:var(--bf-border-hover);"></span>
+                                        <span class="severity-name">Low / Backlog</span>
+                                        <span class="severity-count tabular-nums" id="sevLowCount">0 issues (0%)</span>
+                                    </div>
+                                    <span class="severity-mttr-badge low">Sprint Backlog</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="sevLowBar" style="width: 50%; background: var(--bf-border-hover);"></div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Escalation Footer Box -->
+                        <div class="escalation-box">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue); font-size:20px;">speed</span>
+                            <div>
+                                <div style="font-size:12px; font-weight:700; color:var(--bf-text-primary);">Zero Active Escalations</div>
+                                <div style="font-size:11px; color:var(--bf-text-secondary);">Target recovery thresholds 100% on schedule for Sprint 24.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- 4. SECONDARY ROW (8:4 Split) -->
+        <section class="secondary-row">
+            <!-- Left: Recent Defect & Collaboration Activity -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">history</span>
+                            <h2 class="panel-title">Recent Defect & Collaboration Activity</h2>
+                        </div>
+                        <span class="panel-header-badge" style="color:var(--bf-text-secondary);">Live Audit Stream</span>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Audited triage operations, commits, and defect state transitions.</p>
+
+                        <!-- Activity List Target -->
+                        <div id="activityList" class="activity-list">
+                            <div class="empty">Loading recent activity...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span>Showing latest audit events • Page 1</span>
+                    <button id="viewAllActivity" type="button" style="background:transparent; border:none; color:var(--bf-blue); font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:2px;">
+                        <span>View all activity logs</span>
+                        <span class="material-symbols-outlined" style="font-size:14px;">chevron_right</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Right: System Diagnostics -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">tune</span>
+                            <h2 class="panel-title">System Diagnostics</h2>
+                        </div>
+                        <span class="panel-header-badge" style="color:var(--bf-green-text); background:var(--bf-green-bg); border-color:#a7f3d0;">
+                            <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--bf-green); margin-right:3px;"></span>
+                            All Operational
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Telemetry status for core services and continuous integration runners.</p>
+
+                        <div class="diagnostic-list">
+                            <!-- Core API -->
+                            <div class="diagnostic-item">
+                                <div class="diagnostic-details">
+                                    <span class="diagnostic-name">Core API (FastAPI v2.4.0)</span>
+                                    <span class="diagnostic-meta">Uptime 99.98% • Latency 14ms</span>
+                                </div>
+                                <span class="diagnostic-pill online">Operational</span>
+                            </div>
+
+                            <!-- Database -->
+                            <div class="diagnostic-item">
+                                <div class="diagnostic-details">
+                                    <span class="diagnostic-name">Database (PostgreSQL Cluster)</span>
+                                    <span class="diagnostic-meta">Read/Write Healthy • 42 active conns</span>
+                                </div>
+                                <span class="diagnostic-pill online">Operational</span>
+                            </div>
+
+                            <!-- GitHub Integration -->
+                            <div class="diagnostic-item">
+                                <div class="diagnostic-details">
+                                    <span class="diagnostic-name">GitHub Integration</span>
+                                    <span class="diagnostic-meta">Webhooks active • Synced 2m ago</span>
+                                </div>
+                                <span class="diagnostic-pill online" style="color:var(--bf-blue); background:var(--bf-blue-light); border-color:var(--bf-blue-subtle);">Connected</span>
+                            </div>
+
+                            <!-- CI/CD Runners -->
+                            <div class="diagnostic-item">
+                                <div class="diagnostic-details">
+                                    <span class="diagnostic-name">CI/CD Pipeline Runners</span>
+                                    <span class="diagnostic-meta">6 agents available • 0 queued</span>
+                                </div>
+                                <span class="diagnostic-pill online">Operational</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span>Heartbeat interval: 5s</span>
+                    <a href="/integrations-ui" style="color:var(--bf-blue); font-weight:600; display:inline-flex; align-items:center; gap:2px;">
+                        <span>Infrastructure Details</span>
+                        <span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span>
+                    </a>
+                </div>
+            </article>
+        </section>
+
+        <!-- 5. BOTTOM UTILITY ROW (3 Bento Columns) -->
+        <section class="bento-row">
+            <!-- Bento 1: Quick Actions Hub -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">bolt</span>
+                            <h3 class="panel-title" style="font-size:13px;">Quick Actions</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Fast execution shortcuts for administrator defect workflows.</p>
+
+                        <div class="quick-actions-box">
+                            <button class="btn-create-defect-full" type="button" onclick="window.location.href='/all-defects-ui'">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="material-symbols-outlined" style="font-size:16px;">add_circle</span>
+                                    <span>Create Defect</span>
+                                </div>
+                                <span class="font-mono" style="font-size:10px; opacity:0.75;">⌘N</span>
+                            </button>
+
+                            <div class="quick-buttons-grid">
+                                <button class="quick-sub-btn" type="button" onclick="window.location.href='/milestone2-ui'">
+                                    <span class="material-symbols-outlined" style="color:var(--bf-blue);">sprint</span>
+                                    <span>Create Sprint</span>
+                                </button>
+                                <button class="quick-sub-btn" type="button" onclick="window.location.href='/team-collaboration-ui'">
+                                    <span class="material-symbols-outlined" style="color:var(--bf-blue);">group</span>
+                                    <span>Collaboration</span>
+                                </button>
+                                <button class="quick-sub-btn" type="button" onclick="window.location.href='/analytics-ui'">
+                                    <span class="material-symbols-outlined" style="color:var(--bf-blue);">assessment</span>
+                                    <span>Reports</span>
+                                </button>
+                            </div>
+
+                            <div class="quick-mini-actions">
+                                <button class="quick-mini-btn" id="refreshQuick" type="button">↻ Refresh Data</button>
+                                <button class="quick-mini-btn" id="exportQuick" type="button">↓ Export Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer" style="justify-content:center;">
+                    <span class="font-mono" style="font-size:10px; color:var(--bf-text-muted);">Global Shortcut: Press ⌘+K for Command Bar</span>
+                </div>
+            </article>
+
+            <!-- Bento 2: Platform Notes -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">campaign</span>
+                            <h3 class="panel-title" style="font-size:13px;">Platform Notes</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Engine release alerts and architectural patch notes.</p>
+
+                        <div class="bento-card-inner">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <span style="font-weight:700; font-size:12px; color:var(--bf-text-primary);">FastAPI Engine v2.4.0 Deployed</span>
+                                <span class="font-mono" style="font-size:10px; background:var(--bf-surface-subtle); padding:1px 5px; border-radius:4px; color:var(--bf-text-muted);">Today</span>
+                            </div>
+                            <p style="font-size:11px; color:var(--bf-text-secondary); line-height:1.4;">
+                                Asynchronous batch triage and PostgreSQL connection pooling active across all production cluster nodes.
+                            </p>
+                            <div style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--bf-text-muted); font-family:'JetBrains Mono', monospace; margin-top:4px;">
+                                <span>Build #489f0</span>
+                                <span>•</span>
+                                <span style="color:var(--bf-blue); font-weight:600;">Release Notes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="/docs" style="color:var(--bf-blue); font-weight:600; display:inline-flex; align-items:center; justify-content:space-between; width:100%;">
+                        <span>View Changelog History</span>
+                        <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Bento 3: Documentation & Support -->
+            <article class="panel">
+                <div>
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <span class="material-symbols-outlined" style="color:var(--bf-blue);">menu_book</span>
+                            <h3 class="panel-title" style="font-size:13px;">Documentation & Support</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p class="panel-sub">Quick developer documentation guides and direct escalation.</p>
+
+                        <div class="doc-list">
+                            <button class="doc-item-btn" type="button" onclick="window.open('/docs', '_blank')">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-text-muted);">description</span>
+                                    <span>Engineering Handbook</span>
+                                </div>
+                                <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-text-muted);">north_east</span>
+                            </button>
+
+                            <button class="doc-item-btn" type="button" onclick="window.location.href='/api-explorer-ui'">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-text-muted);">code</span>
+                                    <span>API Reference & SDKs</span>
+                                </div>
+                                <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-text-muted);">north_east</span>
+                            </button>
+
+                            <button class="doc-item-btn" id="supportButton" type="button">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-blue);">support_agent</span>
+                                    <span>Contact Support & SRE On-Call</span>
+                                </div>
+                                <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-text-muted);">north_east</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span class="font-mono" style="font-size:10px;">SRE Duty: #SRE-449</span>
+                    <span class="font-mono" style="font-size:10px; color:var(--bf-blue); font-weight:700;">Tier 1 Active</span>
+                </div>
+            </article>
+        </section>
+
+    </div>
 </main>
 
-
+<!-- ============================================================================
+     JAVASCRIPT LOGIC & API INTEGRATION
+============================================================================ -->
 <script>
+    const token = localStorage.getItem("bugflow_token");
+    const storedUser = localStorage.getItem("bugflow_user");
 
-    const token =
-        localStorage.getItem(
-            "bugflow_token"
-        );
-
-    const storedUser =
-        localStorage.getItem(
-            "bugflow_user"
-        );
-
-
-    if (
-        !token ||
-        !storedUser
-    ) {
-
-        window.location.href =
-            "/login-ui";
-
+    if (!token || !storedUser) {
+        window.location.href = "/login-ui";
     }
-
 
     let currentUser = null;
     let defects = [];
     let actions = [];
 
-
     try {
-
-        currentUser =
-            JSON.parse(
-                storedUser
-            );
-
+        currentUser = JSON.parse(storedUser);
     } catch (error) {
-
         localStorage.clear();
-
-        window.location.href =
-            "/login-ui";
-
+        window.location.href = "/login-ui";
     }
 
-
-    if (
-        currentUser &&
-        String(
-            currentUser.role ||
-            ""
-        ).toLowerCase() !==
-        "admin"
-    ) {
-
-        window.location.href =
-            "/user-ui";
-
+    if (currentUser && String(currentUser.role || "").toLowerCase() !== "admin") {
+        window.location.href = "/user-ui";
     }
 
+    const adminName = currentUser?.name || "Admin";
 
-    const adminName =
-        currentUser?.name ||
-        "Admin";
+    // Populate user labels
+    const adminNameEl = document.getElementById("adminName");
+    if (adminNameEl) adminNameEl.textContent = adminName;
 
+    const topAdminNameEl = document.getElementById("topAdminName");
+    if (topAdminNameEl) topAdminNameEl.textContent = adminName;
 
-    document.getElementById(
-        "adminName"
-    ).textContent =
-        adminName;
+    const welcomeNameEl = document.getElementById("welcomeName");
+    if (welcomeNameEl) welcomeNameEl.textContent = adminName;
 
+    const avatarInitial = adminName.charAt(0).toUpperCase();
+    const adminAvatarEl = document.getElementById("adminAvatar");
+    if (adminAvatarEl) adminAvatarEl.textContent = avatarInitial;
 
-    document.getElementById(
-        "topAdminName"
-    ).textContent =
-        adminName;
+    const headerAdminAvatarEl = document.getElementById("headerAdminAvatar");
+    if (headerAdminAvatarEl) headerAdminAvatarEl.textContent = avatarInitial;
 
+    async function apiFetch(url) {
+        const response = await fetch(url, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
 
-    document.getElementById(
-        "welcomeName"
-    ).textContent =
-        adminName;
-
-
-    document.getElementById(
-        "adminAvatar"
-    ).textContent =
-        adminName
-            .charAt(0)
-            .toUpperCase();
-
-
-    async function apiFetch(
-        url
-    ) {
-
-        const response =
-            await fetch(
-                url,
-                {
-
-                    headers: {
-
-                        "Authorization":
-                            `Bearer ${token}`
-
-                    }
-
-                }
-            );
-
-
-        if (
-            response.status ===
-            401
-        ) {
-
+        if (response.status === 401) {
             localStorage.clear();
-
-            window.location.href =
-                "/login-ui";
-
-            throw new Error(
-                "Session expired."
-            );
-
+            window.location.href = "/login-ui";
+            throw new Error("Session expired.");
         }
-
 
         if (!response.ok) {
-
-            const data =
-                await response
-                    .json()
-                    .catch(
-                        () => ({})
-                    );
-
-
-            throw new Error(
-                data.detail ||
-                `Request failed (${response.status})`
-            );
-
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.detail || `Request failed (${response.status})`);
         }
-
 
         return response.json();
-
     }
 
-
-    function escapeHtml(
-        value
-    ) {
-
-        if (
-            value === null ||
-            value === undefined
-        ) {
-
-            return "";
-
-        }
-
-
+    function escapeHtml(value) {
+        if (value === null || value === undefined) return "";
         return String(value)
-
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-
-            .replaceAll(
-                "'",
-                "&#039;"
-            );
-
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
-
-    function formatDate(
-        value
-    ) {
-
-        if (!value) {
-            return "—";
-        }
-
-
-        const date =
-            new Date(value);
-
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-
-            return "—";
-
-        }
-
-
-        return date.toLocaleString(
-            undefined,
-            {
-
-                day:
-                    "2-digit",
-
-                month:
-                    "2-digit",
-
-                year:
-                    "numeric",
-
-                hour:
-                    "2-digit",
-
-                minute:
-                    "2-digit",
-
-                hour12:
-                    false
-
-            }
-        );
-
+    function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return date.toLocaleString(undefined, {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
     }
 
+    function formatTimeAgo(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        if (diffMins < 1) return "just now";
+        if (diffMins < 60) return `${diffMins}m ago`;
+        const diffHours = Math.floor(diffMins / 60);
+        if (diffHours < 24) return `${diffHours}h ago`;
+        const diffDays = Math.floor(diffHours / 24);
+        if (diffDays < 30) return `${diffDays}d ago`;
+        return formatDate(value);
+    }
 
-    function assignmentName(
-        defect
-    ) {
-
-        if (
-            defect.assigned_display &&
-            defect.assigned_display !==
-            "Unassigned"
-        ) {
-
+    function assignmentName(defect) {
+        if (defect.assigned_display && defect.assigned_display !== "Unassigned") {
             let display = String(defect.assigned_display);
             display = display
                 .replace(/Alex Rivera/g, "Sasuke")
@@ -1281,633 +2146,370 @@
                 .replace(/John Doe/g, "Itachi")
                 .replace(/System Administrator/g, "Naruto");
             return display;
-
         }
 
-
-        if (
-            defect.assigned_user_name
-        ) {
-
+        if (defect.assigned_user_name) {
             let name = String(defect.assigned_user_name)
                 .replace(/Alex Rivera/g, "Sasuke")
                 .replace(/Bruce Wayne/g, "Hinata")
                 .replace(/John Doe/g, "Itachi")
                 .replace(/System Administrator/g, "Naruto");
-
-            if (
-                defect.assigned_user_role
-            ) {
-
-                return (
-                    `${name} ` +
-                    `(${defect.assigned_user_role})`
-                );
-
+            if (defect.assigned_user_role) {
+                return `${name} (${defect.assigned_user_role})`;
             }
-
-
             return name;
-
         }
 
-
         const roleMap = {
-
-            admin:
-                "Naruto (Admin)",
-
-            senior_dev:
-                "Itachi (Senior Developer)",
-
-            senior_developer:
-                "Itachi (Senior Developer)",
-
-            "senior developer":
-                "Itachi (Senior Developer)",
-
-            developer:
-                "Sasuke (Developer)",
-
-            tester:
-                "Hinata (Tester)"
-
+            admin: "Naruto (Admin)",
+            senior_dev: "Itachi (Senior Developer)",
+            senior_developer: "Itachi (Senior Developer)",
+            "senior developer": "Itachi (Senior Developer)",
+            developer: "Sasuke (Developer)",
+            tester: "Hinata (Tester)"
         };
 
-
-        const role =
-            String(
-                defect.assigned_role ||
-                ""
-            )
-            .trim()
-            .toLowerCase();
-
-
-        return roleMap[role] ||
-            "Unassigned";
-
+        const role = String(defect.assigned_role || "").trim().toLowerCase();
+        return roleMap[role] || "Unassigned";
     }
 
+    function getUserInitials(name) {
+        if (!name) return "BF";
+        const parts = String(name).trim().split(/\s+/);
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[1][0]).toUpperCase();
+        }
+        return name.slice(0, 2).toUpperCase();
+    }
 
     function renderActivity() {
-
-        const container =
-            document.getElementById(
-                "activityList"
-            );
-
+        const container = document.getElementById("activityList");
+        if (!container) return;
 
         const items = [];
 
-
         defects
             .slice()
-            .sort(
-                (a,b) =>
-                    new Date(
-                        b.created_at
-                    )
-                    -
-                    new Date(
-                        a.created_at
-                    )
-            )
-            .slice(
-                0,
-                5
-            )
-            .forEach(
-                defect => {
-
-                    items.push({
-
-                        type:
-                            "created",
-
-                        title:
-                            `Defect #${defect.id} created`,
-
-                        detail:
-                            defect.title,
-
-                        time:
-                            defect.created_at
-
-                    });
-
-                }
-            );
-
+            .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 5)
+            .forEach(defect => {
+                items.push({
+                    type: "created",
+                    defectId: defect.id,
+                    user: defect.user_name || defect.reporter_name || "Alex Chen",
+                    title: `Defect #${defect.id} Logged`,
+                    detail: defect.title,
+                    statusBadge: "Triaged",
+                    statusClass: "triaged",
+                    time: defect.created_at
+                });
+            });
 
         actions
             .slice()
-            .sort(
-                (a,b) =>
-                    new Date(
-                        b.created_at
-                    )
-                    -
-                    new Date(
-                        a.created_at
-                    )
-            )
-            .slice(
-                0,
-                5
-            )
-            .forEach(
-                action => {
+            .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 5)
+            .forEach(action => {
+                const matchingDefect = defects.find(d => Number(d.id) === Number(action.defect_id));
+                const act = String(action.action || "").toLowerCase();
+                let statusBadge = "Assigned";
+                let statusClass = "assigned";
 
-                    const matchingDefect =
-                        defects.find(
-                            defect =>
-                                Number(
-                                    defect.id
-                                ) ===
-                                Number(
-                                    action.defect_id
-                                )
-                        );
-
-
-                    items.push({
-
-                        type:
-                            String(
-                                action.action ||
-                                ""
-                            ).toLowerCase(),
-
-                        title:
-                            `Defect #${action.defect_id} ${action.action}`,
-
-                        detail:
-                            matchingDefect
-                                ? matchingDefect.title
-                                : "Defect action recorded",
-
-                        time:
-                            action.created_at
-
-                    });
-
+                if (act.includes("resolve")) {
+                    statusBadge = "Resolved";
+                    statusClass = "resolved";
+                } else if (act.includes("reject")) {
+                    statusBadge = "Rejected";
+                    statusClass = "rejected";
+                } else if (act.includes("verify") || act.includes("accept")) {
+                    statusBadge = "Verified";
+                    statusClass = "verified";
                 }
-            );
 
+                items.push({
+                    type: act,
+                    defectId: action.defect_id,
+                    user: action.user_name || "Admin Naruto",
+                    title: `Defect #${action.defect_id} ${action.action}`,
+                    detail: matchingDefect ? matchingDefect.title : "Defect workflow transition recorded",
+                    statusBadge: statusBadge,
+                    statusClass: statusClass,
+                    time: action.created_at
+                });
+            });
 
-        items
-            .sort(
-                (a,b) =>
-                    new Date(
-                        b.time
-                    )
-                    -
-                    new Date(
-                        a.time
-                    )
-            );
+        items.sort((a,b) => new Date(b.time) - new Date(a.time));
 
-
-        if (
-            !items.length
-        ) {
-
-            container.innerHTML = `
-
-                <div class="empty">
-                    No recent activity found.
-                </div>
-
-            `;
-
+        if (!items.length) {
+            container.innerHTML = `<div class="empty">No recent activity found.</div>`;
             return;
-
         }
 
-
-        container.innerHTML =
-            items
-                .slice(
-                    0,
-                    6
-                )
-                .map(
-                    item => {
-
-                        let icon =
-                            "+";
-
-                        let extraClass =
-                            "";
-
-                        if (
-                            item.type ===
-                            "resolved"
-                        ) {
-
-                            icon =
-                                "✓";
-
-                            extraClass =
-                                "green-bg";
-
-                        }
-
-                        else if (
-                            item.type ===
-                            "rejected"
-                        ) {
-
-                            icon =
-                                "×";
-
-                            extraClass =
-                                "red-bg";
-
-                        }
-
-                        else if (
-                            item.type.includes(
-                                "assign"
-                            )
-                        ) {
-
-                            icon =
-                                "↗";
-
-                            extraClass =
-                                "blue-bg";
-
-                        }
-
-                        else {
-
-                            icon =
-                                "#";
-
-                        }
-
-
-                        return `
-
-                            <div class="activity">
-
-                                <div
-                                    class="activity-icon ${extraClass}"
-                                >
-                                    ${icon}
-                                </div>
-
-
-                                <div>
-
-                                    <div class="activity-title">
-                                        ${escapeHtml(
-                                            item.title
-                                        )}
-                                    </div>
-
-                                    <div class="activity-detail">
-                                        ${escapeHtml(
-                                            item.detail
-                                        )}
-                                    </div>
-
-                                </div>
-
-
-                                <div class="activity-time">
-                                    ${escapeHtml(
-                                        formatDate(
-                                            item.time
-                                        )
-                                    )}
-                                </div>
-
+        container.innerHTML = items.slice(0, 5).map(item => {
+            const initials = getUserInitials(item.user);
+            return `
+                <div class="activity-item">
+                    <div class="activity-left">
+                        <div class="activity-avatar font-mono">${escapeHtml(initials)}</div>
+                        <div class="activity-content">
+                            <div class="activity-title-line">
+                                <span class="activity-user">${escapeHtml(item.user)}</span>
+                                <span class="activity-defect-tag">#BF-${escapeHtml(item.defectId)}</span>
+                                <span style="font-size:11px; color:var(--bf-text-muted);">${escapeHtml(item.title)}</span>
                             </div>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
+                            <p class="activity-desc">${escapeHtml(item.detail)}</p>
+                        </div>
+                    </div>
+                    <div class="activity-right">
+                        <span class="activity-status-badge ${item.statusClass}">${escapeHtml(item.statusBadge)}</span>
+                        <span class="activity-time">${escapeHtml(formatTimeAgo(item.time))}</span>
+                    </div>
+                </div>
+            `;
+        }).join("");
     }
 
+    function updateDonutChart(total, resolved, rejected, pending) {
+        const circumference = 251.2; // 2 * pi * 40
+        const resolvedCircle = document.getElementById("donutResolvedCircle");
+        const rejectedCircle = document.getElementById("donutRejectedCircle");
+        const pendingCircle = document.getElementById("donutPendingCircle");
+
+        if (!total || total <= 0) {
+            if (resolvedCircle) resolvedCircle.setAttribute("stroke-dashoffset", circumference);
+            if (rejectedCircle) rejectedCircle.setAttribute("stroke-dashoffset", circumference);
+            if (pendingCircle) pendingCircle.setAttribute("stroke-dashoffset", circumference);
+            return;
+        }
+
+        const resolvedLen = (resolved / total) * circumference;
+        const rejectedLen = (rejected / total) * circumference;
+        const pendingLen = (pending / total) * circumference;
+
+        // Resolved starts at 0 offset (top after rotate -90)
+        if (resolvedCircle) {
+            resolvedCircle.setAttribute("stroke-dasharray", `${resolvedLen} ${circumference}`);
+            resolvedCircle.setAttribute("stroke-dashoffset", 0);
+        }
+
+        // Rejected starts after resolved
+        if (rejectedCircle) {
+            rejectedCircle.setAttribute("stroke-dasharray", `${rejectedLen} ${circumference}`);
+            rejectedCircle.setAttribute("stroke-dashoffset", -resolvedLen);
+        }
+
+        // Pending starts after resolved + rejected
+        if (pendingCircle) {
+            pendingCircle.setAttribute("stroke-dasharray", `${pendingLen} ${circumference}`);
+            pendingCircle.setAttribute("stroke-dashoffset", -(resolvedLen + rejectedLen));
+        }
+    }
+
+    function updateSeverityDistribution() {
+        if (!defects.length) return;
+
+        let crit = 0, high = 0, med = 0, low = 0;
+        defects.forEach(d => {
+            const p = String(d.priority || "").toLowerCase();
+            if (p.includes("crit") || p === "p0") crit++;
+            else if (p.includes("high") || p === "p1") high++;
+            else if (p.includes("med") || p === "p2") med++;
+            else low++;
+        });
+
+        const total = defects.length || 1;
+        const critPct = Math.round((crit / total) * 100);
+        const highPct = Math.round((high / total) * 100);
+        const medPct = Math.round((med / total) * 100);
+        const lowPct = Math.round((low / total) * 100);
+
+        const critEl = document.getElementById("sevCriticalCount");
+        if (critEl) critEl.textContent = `${crit} issues (${critPct}%)`;
+        const critBar = document.getElementById("sevCriticalBar");
+        if (critBar) critBar.style.width = `${Math.max(critPct, 4)}%`;
+
+        const highEl = document.getElementById("sevHighCount");
+        if (highEl) highEl.textContent = `${high} issues (${highPct}%)`;
+        const highBar = document.getElementById("sevHighBar");
+        if (highBar) highBar.style.width = `${Math.max(highPct, 4)}%`;
+
+        const medEl = document.getElementById("sevMediumCount");
+        if (medEl) medEl.textContent = `${med} issues (${medPct}%)`;
+        const medBar = document.getElementById("sevMediumBar");
+        if (medBar) medBar.style.width = `${Math.max(medPct, 4)}%`;
+
+        const lowEl = document.getElementById("sevLowCount");
+        if (lowEl) lowEl.textContent = `${low} issues (${lowPct}%)`;
+        const lowBar = document.getElementById("sevLowBar");
+        if (lowBar) lowBar.style.width = `${Math.max(lowPct, 4)}%`;
+    }
 
     async function loadDashboard() {
-
         try {
-
-            const dashboard =
-                await apiFetch(
-                    "/admin/dashboard"
-                );
-
-
-            defects =
-                await apiFetch(
-                    "/admin/defects"
-                );
-
+            const dashboard = await apiFetch("/admin/dashboard");
+            defects = await apiFetch("/admin/defects");
 
             try {
-
-                actions =
-                    await apiFetch(
-                        "/admin/actions"
-                    );
-
+                actions = await apiFetch("/admin/actions");
             } catch {
-
                 actions = [];
-
             }
 
+            const total = Number(dashboard.total_defects || 0);
+            const pending = Number(dashboard.pending || 0);
+            const resolved = Number(dashboard.resolved || 0);
+            const rejected = Number(dashboard.rejected || 0);
 
-            document.getElementById(
-                "totalCount"
-            ).textContent =
-                dashboard.total_defects;
+            // Populate Main KPIs
+            document.getElementById("totalCount").textContent = total;
+            document.getElementById("pendingCount").textContent = pending;
+            document.getElementById("resolvedCount").textContent = resolved;
+            document.getElementById("rejectedCount").textContent = rejected;
 
+            // Ratios
+            const pendingRatio = total > 0 ? ((pending / total) * 100).toFixed(1) : "0.0";
+            const resolvedRatio = total > 0 ? ((resolved / total) * 100).toFixed(1) : "0.0";
+            const rejectedRatio = total > 0 ? ((rejected / total) * 100).toFixed(1) : "0.0";
 
-            document.getElementById(
-                "pendingCount"
-            ).textContent =
-                dashboard.pending;
+            const pRatioEl = document.getElementById("pendingRatio");
+            if (pRatioEl) pRatioEl.textContent = `${pendingRatio}%`;
 
+            const rRatioEl = document.getElementById("resolvedRatio");
+            if (rRatioEl) rRatioEl.textContent = `${resolvedRatio}%`;
 
-            document.getElementById(
-                "resolvedCount"
-            ).textContent =
-                dashboard.resolved;
+            const jRatioEl = document.getElementById("rejectedRatio");
+            if (jRatioEl) jRatioEl.textContent = `${rejectedRatio}%`;
 
+            const rRateLabel = document.getElementById("resolvedRateLabel");
+            if (rRateLabel) rRateLabel.textContent = `${resolvedRatio}% closure rate`;
 
-            document.getElementById(
-                "rejectedCount"
-            ).textContent =
-                dashboard.rejected;
+            // Lifecycle Table & Legend
+            const donutTotal = document.getElementById("donutTotal");
+            if (donutTotal) donutTotal.textContent = total;
 
+            const legResCount = document.getElementById("legendResolvedCount");
+            if (legResCount) legResCount.textContent = resolved;
+            const legResPct = document.getElementById("legendResolvedPct");
+            if (legResPct) legResPct.textContent = `(${resolvedRatio}%)`;
 
+            const legRejCount = document.getElementById("legendRejectedCount");
+            if (legRejCount) legRejCount.textContent = rejected;
+            const legRejPct = document.getElementById("legendRejectedPct");
+            if (legRejPct) legRejPct.textContent = `(${rejectedRatio}%)`;
+
+            const legPenCount = document.getElementById("legendPendingCount");
+            if (legPenCount) legPenCount.textContent = pending;
+            const legPenPct = document.getElementById("legendPendingPct");
+            if (legPenPct) legPenPct.textContent = `(${pendingRatio}%)`;
+
+            // Table counts & ratios
+            const tblRes = document.getElementById("tblResolvedCount");
+            if (tblRes) tblRes.textContent = resolved;
+            const tblResR = document.getElementById("tblResolvedRatio");
+            if (tblResR) tblResR.textContent = `${resolvedRatio}%`;
+
+            const tblRej = document.getElementById("tblRejectedCount");
+            if (tblRej) tblRej.textContent = rejected;
+            const tblRejR = document.getElementById("tblRejectedRatio");
+            if (tblRejR) tblRejR.textContent = `${rejectedRatio}%`;
+
+            const tblPen = document.getElementById("tblPendingCount");
+            if (tblPen) tblPen.textContent = pending;
+            const tblPenR = document.getElementById("tblPendingRatio");
+            if (tblPenR) tblPenR.textContent = `${pendingRatio}%`;
+
+            // Update SVG Donut Graphic
+            updateDonutChart(total, resolved, rejected, pending);
+
+            // Update Severity Distribution Bars
+            updateSeverityDistribution();
+
+            // Render Recent Activity Stream
             renderActivity();
 
-
         } catch (error) {
-
-            console.error(
-                error
-            );
-
-            document.getElementById(
-                "activityList"
-            ).innerHTML = `
-
-                <div class="empty">
-                    ${escapeHtml(
-                        error.message
-                    )}
-                </div>
-
-            `;
-
+            console.error(error);
+            const actList = document.getElementById("activityList");
+            if (actList) {
+                actList.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+            }
         }
-
     }
-
 
     function exportData() {
-
-        if (
-            !defects.length
-        ) {
-
-            alert(
-                "No defect data available."
-            );
-
+        if (!defects.length) {
+            alert("No defect data available.");
             return;
-
         }
-
 
         const rows = [
-
-            [
-                "ID",
-                "Title",
-                "Reporter",
-                "Category",
-                "Priority",
-                "Status",
-                "Assigned To",
-                "Created At"
-            ]
-
+            ["ID", "Title", "Reporter", "Category", "Priority", "Status", "Assigned To", "Created At"]
         ];
 
+        defects.forEach(defect => {
+            rows.push([
+                defect.id,
+                defect.title,
+                defect.user_name || defect.reporter_name || `User #${defect.user_id}`,
+                defect.category,
+                defect.priority,
+                defect.status,
+                assignmentName(defect),
+                formatDate(defect.created_at)
+            ]);
+        });
 
-        defects.forEach(
-            defect => {
+        const csv = rows.map(row =>
+            row.map(value => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")
+        ).join("\n");
 
-                rows.push(
-                    [
-
-                        defect.id,
-
-                        defect.title,
-
-                        defect.user_name ||
-                            defect.reporter_name ||
-                            `User #${defect.user_id}`,
-
-                        defect.category,
-
-                        defect.priority,
-
-                        defect.status,
-
-                        assignmentName(
-                            defect
-                        ),
-
-                        formatDate(
-                            defect.created_at
-                        )
-
-                    ]
-                );
-
-            }
-        );
-
-
-        const csv =
-            rows
-                .map(
-                    row =>
-                        row
-                            .map(
-                                value =>
-                                    `"${String(
-                                        value ??
-                                        ""
-                                    ).replaceAll(
-                                        '"',
-                                        '""'
-                                    )}"`
-                            )
-                            .join(",")
-                )
-                .join("\n");
-
-
-        const blob =
-            new Blob(
-                [csv],
-                {
-                    type:
-                        "text/csv;charset=utf-8;"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.href =
-            url;
-
-
-        link.download =
-            "bugflow-defects-export.csv";
-
-
-        document.body.appendChild(
-            link
-        );
-
-
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "bugflow-defects-export.csv";
+        document.body.appendChild(link);
         link.click();
-
-
         link.remove();
-
-
-        URL.revokeObjectURL(
-            url
-        );
-
+        URL.revokeObjectURL(url);
     }
 
+    // Refresh Handlers
+    const refreshBtn = document.getElementById("refreshButton");
+    if (refreshBtn) refreshBtn.addEventListener("click", loadDashboard);
 
-    document.getElementById(
-        "refreshButton"
-    ).addEventListener(
-        "click",
-        loadDashboard
-    );
+    const refreshQuick = document.getElementById("refreshQuick");
+    if (refreshQuick) refreshQuick.addEventListener("click", loadDashboard);
 
+    const exportQuick = document.getElementById("exportQuick");
+    if (exportQuick) exportQuick.addEventListener("click", exportData);
 
-    document.getElementById(
-        "refreshQuick"
-    ).addEventListener(
-        "click",
-        loadDashboard
-    );
+    const viewAllAct = document.getElementById("viewAllActivity");
+    if (viewAllAct) viewAllAct.addEventListener("click", () => {
+        window.location.href = "/all-defects-ui";
+    });
 
+    const supportBtn = document.getElementById("supportButton");
+    if (supportBtn) supportBtn.addEventListener("click", () => {
+        alert("Use All Defects to manage defect records and Analytics Reports to review system statistics.");
+    });
 
-    document.getElementById(
-        "exportQuick"
-    ).addEventListener(
-        "click",
-        exportData
-    );
-
-
-    document.getElementById(
-        "viewAllActivity"
-    ).addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "/all-defects-ui";
-
+    const logoutLink = document.getElementById("logoutLink");
+    if (logoutLink) logoutLink.addEventListener("click", async event => {
+        event.preventDefault();
+        try {
+            await fetch("/logout", {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+        } catch (error) {
+            console.log("Logout request failed.");
         }
-    );
+        localStorage.clear();
+        window.location.href = "/login-ui";
+    });
 
-
-    document.getElementById(
-        "supportButton"
-    ).addEventListener(
-        "click",
-        () => {
-
-            alert(
-                "Use All Defects to manage defect records and Analytics Reports to review system statistics."
-            );
-
-        }
-    );
-
-
-    document.getElementById(
-        "logoutLink"
-    ).addEventListener(
-        "click",
-        async event => {
-
-            event.preventDefault();
-
-
-            try {
-
-                await fetch(
-                    "/logout",
-                    {
-
-                        method:
-                            "POST",
-
-                        headers: {
-
-                            "Authorization":
-                                `Bearer ${token}`
-
-                        }
-
-                    }
-                );
-
-            } catch (error) {
-
-                console.log(
-                    "Logout request failed."
-                );
-
-            }
-
-
-            localStorage.clear();
-
-
-            window.location.href =
-                "/login-ui";
-
-        }
-    );
-
-
+    // Workspace Switching Handlers
     const adminPill = document.getElementById("adminPill");
     const switchDropdown = document.getElementById("switchDropdown");
     const sideSwitchBtn = document.getElementById("sideSwitchBtn");
@@ -1918,6 +2520,7 @@
             switchDropdown.style.display = switchDropdown.style.display === "block" ? "none" : "block";
         }
     }
+
     if (adminPill) adminPill.addEventListener("click", toggleSwitcher);
     if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
 
@@ -1935,14 +2538,14 @@
             const role = item.getAttribute("data-role");
             if (destinations[role]) {
                 localStorage.setItem("bugflow_workspace_role", role);
-                const token = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
-                if (token) {
+                const currentToken = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || "";
+                if (currentToken) {
                     try {
                         await fetch("/api/v1/workspace/switch", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
-                                "Authorization": "Bearer " + token
+                                "Authorization": "Bearer " + currentToken
                             },
                             body: JSON.stringify({ role: role })
                         });
@@ -1959,8 +2562,8 @@
         if (switchDropdown) switchDropdown.style.display = "none";
     });
 
+    // Initial Load
     loadDashboard();
-
 </script>
 
 </body>

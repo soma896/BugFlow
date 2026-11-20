@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>BugFlow — Workflow Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/design-system.css"/>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8f9fc;
+      color: #0f172a;
+    }
+    .font-mono-code {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+  <meta content="web_dashboard" name="shell-type"/>
+</head>
+<body class="bg-[#f8f9fc] text-slate-900 antialiased min-h-screen flex flex-col">
+<div class="flex flex-1 min-h-screen">
+  <!-- LEFT SIDEBAR -->
+  <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 select-none">
+    <!-- Logo Branding -->
+    <div class="h-16 px-5 border-b border-slate-200 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white shadow-sm font-semibold tracking-tighter">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24">
+            <rect height="14" rx="4" width="8" x="8" y="5"></rect>
+            <path d="m19 7-3 2"></path>
+            <path d="m5 7 3 2"></path>
+            <path d="m19 19-3-2"></path>
+            <path d="m5 19 3-2"></path>
+            <path d="M20 13h-4"></path>
+            <path d="M4 13h4"></path>
+            <path d="m10 4 1 2"></path>
+            <path d="m14 4-1 2"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-sm tracking-tight text-slate-900">BugFlow</span>
+            <span class="text-[10px] font-mono-code px-1.5 py-0.2 bg-blue-50 text-blue-700 font-semibold rounded border border-blue-200">v4.2</span>
+          </div>
+          <p class="text-[10px] text-slate-500 font-medium tracking-tight">Enterprise DevOps Suite</p>
+        </div>
+      </div>
+      <span class="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-50" title="Connected to cluster"></span>
+    </div>
+    <!-- Navigation Links -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-[13px]">
+      <div>
+        <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Overview</p>
+        <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/admin-ui">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="9" rx="1" width="7" x="3" y="3"></rect><rect height="5" rx="1" width="7" x="14" y="3"></rect><rect height="9" rx="1" width="7" x="14" y="12"></rect><rect height="5" rx="1" width="7" x="3" y="16"></rect></svg>
+          <span>Dashboard</span>
+        </a>
+      </div>
+      <div>
+        <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Work Management</p>
+        <div class="space-y-0.5">
+          <a class="flex items-center justify-between px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/all-defects-ui">
+            <div class="flex items-center gap-2.5">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+              <span>Defects</span>
+            </div>
+            <span class="text-[11px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600" id="sidebarDefectsBadge">52</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/milestone2-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+            <span>Sprints</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/team-collaboration-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Team Collaboration</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Analytics &amp; Reporting</p>
+        <div class="space-y-0.5">
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/analytics-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+            <span>Analytics</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/sprint-report-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="9" x2="9" y1="9" y2="15"></line><line x1="15" x2="15" y1="9" y2="15"></line></svg>
+            <span>Sprint Report</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/productivity-report-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Productivity Report</span>
+          </a>
+          <a class="flex items-center justify-between px-3 py-2 rounded bg-blue-50/80 text-blue-700 font-semibold border-l-2 border-blue-600 transition-colors" href="/workflow-report-ui">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-blue-600 text-[18px]">conversion_path</span>
+              <span>Workflow Report</span>
+            </div>
+            <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">Active</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Integrations</p>
+        <div class="space-y-0.5">
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/integrations-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/integrations-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>CI/CD Pipeline</span>
+          </a>
+          <a class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" href="/api-explorer-ui">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>API Explorer</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Telemetry Footer -->
+    <div class="p-3 border-t border-slate-200 bg-slate-50/70 text-[11px] font-mono-code text-slate-500 flex items-center justify-between">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>FastAPI v2.4.0</span>
+      </div>
+      <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-1 py-0.5 rounded">99.98% up</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <!-- TOP NAV CHROME -->
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-6">
+        <div class="flex items-center text-xs text-slate-500 font-medium">
+          <span>Workspaces</span>
+          <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span>Production Cluster</span>
+          <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span class="text-slate-900 font-semibold" id="topWorkspaceRoleName">Admin Workspace</span>
+          <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span class="text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Workflow Report</span>
+        </div>
+        <div class="relative w-80 hidden lg:block">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input id="quickSearchInput" class="w-full pl-9 pr-10 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Search workflow stages, components, status..." type="text"/>
+          <span class="absolute right-2.5 top-2 text-[10px] font-mono-code text-slate-400 bg-white border border-slate-200 px-1.5 rounded">⌘K</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-1.5 text-[11px] font-mono-code font-medium bg-slate-100 text-slate-700 px-2.5 py-1 rounded border border-slate-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          <span>CLUSTER-01 NODE PRIMARY</span>
+        </div>
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs ring-2 ring-blue-100" id="userAvatar">AC</div>
+          <div class="hidden sm:block text-left">
+            <div class="text-xs font-bold text-slate-800 leading-none" id="userName">Naruto (Admin)</div>
+            <div class="text-[10px] text-slate-500 font-medium" id="userRoleTitle">Lead Admin</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <main class="flex-1 p-6 space-y-6">
+      <div class="flex flex-col w-full">
+        <!-- Top Telemetry & Global Scope Header Bar -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-4 mb-4 border-b border-slate-200 gap-3">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <h1 class="font-headline-lg text-2xl font-bold text-slate-900 tracking-tight">Workflow Report</h1>
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono-code font-semibold bg-blue-50 text-blue-700 border border-blue-200" id="headerScopePill">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                Active Sprint &amp; Historical Scope
+              </span>
+              <span class="inline-flex items-center gap-1 text-[11px] font-mono-code text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Live Telemetry Active
+              </span>
+            </div>
+            <p class="text-xs text-slate-500">
+              Analyze defect lifecycle transitions, workflow bottlenecks, resolution efficiency, and SLA compliance.
+            </p>
+          </div>
+          <!-- Right Controls -->
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <div class="flex items-center px-2.5 py-1.5 bg-white border border-slate-200 rounded font-medium text-slate-700 shadow-sm text-xs" id="dateRangeDisplay">
+              <span class="material-symbols-outlined text-[16px] text-slate-400 mr-1.5">calendar_today</span>
+              <span id="dateRangeText">Last 30 Days</span>
+            </div>
+            <div class="flex items-center px-2 py-1 bg-slate-100 border border-slate-200 rounded font-mono-code text-[11px] text-slate-700 font-semibold" id="activeSprintBadge">
+              <span class="w-2 h-2 rounded-full bg-blue-600 mr-1.5"></span>
+              All Sprints Scope
+            </div>
+            <button class="flex items-center gap-1 px-2 py-1.5 bg-white border border-slate-200 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors" id="refreshBtn" title="Sync data">
+              <span class="material-symbols-outlined text-[15px]">refresh</span>
+              <span class="font-mono-code text-[11px]" id="refreshTimestamp">Just now</span>
+            </button>
+            <div class="relative inline-block text-left">
+              <button class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded font-medium text-xs shadow-sm transition-colors" id="exportDropdownBtn">
+                <span class="material-symbols-outlined text-[15px]">download</span>
+                <span>Export Report</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+              </button>
+              <div class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded shadow-md z-30 py-1 text-xs text-slate-700" id="exportMenu">
+                <a class="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-50 text-slate-700 cursor-pointer" id="exportCsvBtn">
+                  <span class="font-mono-code font-semibold text-blue-600">CSV</span> Full Transition Ledger
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Navigation Category Tabs -->
+        <div class="flex items-center justify-between border-b border-slate-200 pb-px mb-5 overflow-x-auto gap-4">
+          <div class="flex items-center gap-1 shrink-0">
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/all-defects-ui">Daily Defect Report</a>
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/all-defects-ui">Assignment Report</a>
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/productivity-report-ui">Productivity Report</a>
+            <a class="px-3 py-2 text-xs font-semibold text-blue-700 border-b-2 border-blue-600 bg-blue-50/40 rounded-t transition-colors flex items-center gap-1.5" href="/workflow-report-ui">
+              <span class="material-symbols-outlined text-[15px] text-blue-600">conversion_path</span>
+              Workflow Report
+            </a>
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/all-defects-ui">Status Report</a>
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/all-defects-ui">Priority Report</a>
+            <a class="px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors border-b-2 border-transparent" href="/all-defects-ui">Category Report</a>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0 pb-1">
+            <span class="text-[10px] font-mono-code font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">Scope: Production Cluster</span>
+            <span class="text-[10px] font-mono-code font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800" id="scopeSubNavBadge">Active Backlog</span>
+          </div>
+        </div>
+
+        <!-- Compact KPI Summary (4 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-5" id="kpiCardsContainer">
+          <!-- Card 1: Total Workflow Items -->
+          <div class="bg-white border border-slate-200 rounded p-3.5 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+              <span class="font-medium">Total Workflow Items</span>
+              <span class="text-[10px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200" id="kpiIntakeRate">+8.4% intake</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-slate-900" id="kpiTotalWorkflowItems">52</span>
+              <span class="text-xs text-slate-500 font-mono-code">tracked items</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-slate-400">lan</span>
+              <span>Sprint Scope + Active Backlog</span>
+            </div>
+          </div>
+          <!-- Card 2: Pending Actions -->
+          <div class="bg-white border border-slate-200 rounded p-3.5 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+              <span class="font-medium">Pending Actions</span>
+              <span class="text-[10px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">Needs Review</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-amber-600" id="kpiPendingActions">26</span>
+              <span class="text-xs text-slate-500 font-mono-code">gates waiting</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1 font-mono-code truncate" id="kpiPendingActionsSummary">
+              0 Triage • 26 Acceptance • 0 QA Sign-off
+            </div>
+          </div>
+          <!-- Card 3: Resolved Defects -->
+          <div class="bg-white border border-slate-200 rounded p-3.5 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+              <span class="font-medium">Resolved Defects</span>
+              <span class="text-[10px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Optimal (SLA Met)</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-slate-900" id="kpiResolvedDefects">17</span>
+              <span class="text-xs text-emerald-600 font-mono-code font-semibold" id="kpiResolvedRate">32.7% closure</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-emerald-500">verified</span>
+              <span>Verified by QA and merged into main</span>
+            </div>
+          </div>
+          <!-- Card 4: Average Resolution Time -->
+          <div class="bg-white border border-slate-200 rounded p-3.5 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+              <span class="font-medium">Average Resolution Time</span>
+              <span class="text-[10px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">SLA &lt; 4h Met</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-slate-900" id="kpiAvgResolutionTime">10.5 <span class="text-xs font-normal text-slate-500 font-mono-code">hrs</span></span>
+              <span class="text-xs text-emerald-600 font-mono-code">-24m vs target</span>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-blue-500">speed</span>
+              <span>Mean Time To Resolution (MTTR)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workflow Stage Overview Bar (Visual Gated Stepper) -->
+        <div class="bg-white border border-slate-200 rounded p-4 mb-5 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-blue-600">account_tree</span>
+              <span class="font-bold text-sm text-slate-900">Gated Workflow Lifecycle Pipeline</span>
+              <span class="text-[11px] font-mono-code text-slate-400">| Standard Cluster Policy</span>
+            </div>
+            <span class="text-[10px] font-mono-code text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+              Lifecycle Rules: Sequential Gated Hand-off • Reject halts progression until re-triage
+            </span>
+          </div>
+          <!-- Stepper Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs" id="lifecycleGatesContainer">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Filters Toolbar -->
+        <div class="bg-white border border-slate-200 rounded p-3 mb-5 shadow-sm space-y-2.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Search Input -->
+            <div class="relative flex-1 min-w-[220px]">
+              <span class="material-symbols-outlined text-[16px] text-slate-400 absolute left-2.5 top-2">search</span>
+              <input id="filterSearchInput" class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Filter by defect ID, stage, component, title..." type="text"/>
+            </div>
+            <!-- Dropdown 1: Date Range -->
+            <select id="filterDateSelect" class="px-2.5 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="30d">Date: Last 30 Days</option>
+              <option value="7d">Date: Last 7 Days</option>
+              <option value="14d">Date: Last 14 Days</option>
+              <option value="90d">Date: Last 90 Days</option>
+              <option value="all">Date: All Time</option>
+            </select>
+            <!-- Dropdown 2: Sprint -->
+            <select id="filterSprintSelect" class="px-2.5 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="all">Sprint: All Sprints</option>
+            </select>
+            <!-- Dropdown 3: Workflow Status -->
+            <select id="filterStatusSelect" class="px-2.5 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="all">Status: All Statuses (6)</option>
+              <option value="PENDING">Pending Triage</option>
+              <option value="ASSIGNED">Assigned</option>
+              <option value="ACCEPTED">Accepted</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="QA_VERIFICATION">QA Verification</option>
+              <option value="RESOLVED">Resolved</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+            <!-- Dropdown 4: Severity -->
+            <select id="filterSeveritySelect" class="px-2.5 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="all">Severity: All Tiers (P0-P3)</option>
+              <option value="urgent">Critical P0</option>
+              <option value="high">High P1</option>
+              <option value="medium">Medium P2</option>
+              <option value="low">Low P3</option>
+            </select>
+            <!-- Dropdown 5: Assignee / Role -->
+            <select id="filterAssigneeSelect" class="px-2.5 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="all">Assignee: All Roles</option>
+              <option value="admin">Naruto (Admin)</option>
+              <option value="developer">Sasuke (Developer)</option>
+              <option value="tester">Hinata (Tester)</option>
+              <option value="senior_dev">Itachi (Senior Dev)</option>
+            </select>
+            <!-- Action Buttons -->
+            <button id="applyFiltersBtn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-medium shadow-sm transition-colors">
+              Apply Filters
+            </button>
+            <button id="resetFiltersBtn" class="px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 hover:text-slate-900 rounded text-xs font-medium transition-colors">
+              Reset
+            </button>
+          </div>
+          <!-- Active Filter Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100 text-[11px]">
+            <span class="text-slate-400 font-medium font-mono-code">Active Filters:</span>
+            <div id="activeFilterChipsContainer" class="flex flex-wrap items-center gap-1.5">
+              <!-- Rendered dynamically -->
+            </div>
+            <span class="text-slate-400 font-mono-code ml-auto" id="matchingCountSpan">Matching: 52 Items Cataloged</span>
+          </div>
+        </div>
+
+        <!-- 10 GRAPH VISUALIZATIONS GRID (Responsive 2-column) -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-6" id="chartsGridContainer">
+          <!-- CHART 1: Defect Lifecycle Funnel -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">filter_alt</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 1 — Defect Lifecycle Funnel</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded" id="funnelConversionPill">Conversion: 32.7%</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Defect conversion volume and step drop-offs through gated phases.</p>
+              <div class="space-y-2" id="chartFunnelStepsContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span class="flex items-center gap-1" id="funnelLeakageNotice">
+                <span class="material-symbols-outlined text-[14px] text-amber-500">info</span>
+                <span>Transition Leakage: 9 tickets diverted to triage redesign</span>
+              </span>
+              <span class="font-mono-code text-emerald-700 font-semibold" id="funnelNetPassRate">Net Pass Rate: 65.4%</span>
+            </div>
+          </div>
+
+          <!-- CHART 2: Status Distribution (Donut Chart) -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">donut_large</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 2 — Status Distribution</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">6 BugFlow States</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Live distribution across existing system status identifiers.</p>
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <!-- Donut SVG -->
+                <div class="relative w-40 h-40 shrink-0 flex items-center justify-center">
+                  <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100" id="statusDonutSvg">
+                    <!-- Rendered dynamically -->
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span class="font-bold text-lg text-slate-900 leading-none" id="donutTotalItems">52</span>
+                    <span class="text-[9px] font-mono-code text-slate-500 uppercase tracking-tighter">Total Items</span>
+                  </div>
+                </div>
+                <!-- Legend Table -->
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 w-full text-xs" id="statusLegendContainer">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span class="font-mono-code">Active backlog in SLA green zone: 94.2%</span>
+              <span class="text-blue-700 font-semibold cursor-pointer hover:underline">Deterministic Rules Active</span>
+            </div>
+          </div>
+
+          <!-- CHART 3: Workflow Transition Flow -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">schema</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 3 — Workflow Transition Flow</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">Directional Routing</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">State machine path throughput and gate bypass monitoring.</p>
+              <div class="bg-slate-50/70 border border-slate-200 rounded p-3" id="chartFlowContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span class="flex items-center gap-1 text-emerald-700">
+                <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                <span>State Machine Determinism: 100% compliant</span>
+              </span>
+              <span class="font-mono-code text-slate-500">0 illegal transitions</span>
+            </div>
+          </div>
+
+          <!-- CHART 4: Transition Time Analysis -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">bar_chart</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 4 — Transition Time Analysis</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">Hours per Stage</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Stage dwell MTTR comparison between Critical (P0) and Low (P3).</p>
+              <div class="relative" id="chartTransitionTimeContainer">
+                <svg class="w-full h-40" viewBox="0 0 460 170">
+                  <line stroke="#f1f5f9" stroke-width="1" x1="40" x2="440" y1="20" y2="20"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="40" x2="440" y1="60" y2="60"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="40" x2="440" y1="100" y2="100"></line>
+                  <line stroke="#e2e8f0" stroke-width="1" x1="40" x2="440" y1="140" y2="140"></line>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="32" y="24">4.5h</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="32" y="64">3.0h</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="32" y="104">1.5h</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="32" y="144">0.0h</text>
+                  <rect fill="#e11d48" height="11" rx="2" width="18" x="70" y="129"></rect>
+                  <rect fill="#94a3b8" height="48" rx="2" width="18" x="92" y="92"></rect>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="90" y="156">Triage</text>
+                  <rect fill="#e11d48" height="8" rx="2" width="18" x="170" y="132"></rect>
+                  <rect fill="#94a3b8" height="56" rx="2" width="18" x="192" y="84"></rect>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="190" y="156">Accept Gate</text>
+                  <rect fill="#e11d48" height="29" rx="2" width="18" x="270" y="111"></rect>
+                  <rect fill="#94a3b8" height="112" rx="2" width="18" x="292" y="28"></rect>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="290" y="156">In Dev</text>
+                  <rect fill="#e11d48" height="13" rx="2" width="18" x="370" y="127"></rect>
+                  <rect fill="#94a3b8" height="53" rx="2" width="18" x="392" y="87"></rect>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="390" y="156">QA Sign-off</text>
+                </svg>
+              </div>
+              <div class="flex items-center justify-center gap-6 text-xs mt-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 bg-rose-600 rounded-sm"></span>
+                  <span class="text-slate-700 font-mono-code font-medium">Critical (P0) - Expedited SLA</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 bg-slate-400 rounded-sm"></span>
+                  <span class="text-slate-700 font-mono-code font-medium">Low (P3) - Normal Batch</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Target: P0 Dev MTTR &lt; 2.0h</span>
+              <span class="font-mono-code text-emerald-700 font-bold">1.1h Achieved (45% headroom)</span>
+            </div>
+          </div>
+
+          <!-- CHART 5: Pending Work Aging -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">hourglass_top</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 5 — Pending Work Aging</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">Real Dwell Times</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Age distribution of open items awaiting transition or signoff.</p>
+              <div class="space-y-2" id="chartAgingContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+              <span class="text-slate-500">SLA Breach Policy: Auto-escalates at 7.0 days</span>
+              <span class="font-mono-code text-blue-600 font-semibold">Real Defect Age Tracking</span>
+            </div>
+          </div>
+
+          <!-- CHART 6: Resolution Trend (Intake vs. Outflow) -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">trending_up</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 6 — Resolution Trend (Intake vs. Outflow)</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200" id="trendSurplusPill">+7 Surplus in W21</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Weekly comparison of defects entering workflow vs resolved exit.</p>
+              <div class="relative" id="chartTrendContainer">
+                <svg class="w-full h-40" viewBox="0 0 460 170">
+                  <line stroke="#f1f5f9" stroke-width="1" x1="30" x2="440" y1="20" y2="20"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="30" x2="440" y1="60" y2="60"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="30" x2="440" y1="100" y2="100"></line>
+                  <line stroke="#e2e8f0" stroke-width="1" x1="30" x2="440" y1="140" y2="140"></line>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="24" y="24">40</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="24" y="64">30</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="24" y="104">20</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="24" y="144">10</text>
+                  <polyline fill="none" points="60,68 135,52 210,64 285,80 360,92 435,104" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="2"></polyline>
+                  <polygon fill="#10b981" fill-opacity="0.12" points="60,92 135,76 210,60 285,68 360,72 435,76 435,140 60,140"></polygon>
+                  <polyline fill="none" points="60,92 135,76 210,60 285,68 360,72 435,76" stroke="#059669" stroke-width="2.5"></polyline>
+                  <circle cx="435" cy="104" fill="#94a3b8" r="3.5"></circle>
+                  <circle cx="435" cy="76" fill="#059669" r="3.5"></circle>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="60" y="156">W16</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="135" y="156">W17</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="210" y="156">W18</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="285" y="156">W19</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="360" y="156">W20</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="435" y="156">W21</text>
+                </svg>
+              </div>
+              <div class="flex items-center justify-center gap-6 text-xs mt-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-0.5 bg-slate-400 border-b border-dashed"></span>
+                  <span class="text-slate-600 font-mono-code">Defect Intake (Created)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-1 bg-emerald-600 rounded"></span>
+                  <span class="text-emerald-700 font-mono-code font-semibold">Resolved Outflow (Closure)</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span id="trendBacklogText">Cumulative Backlog: -18 defects over 4 weeks</span>
+              <span class="font-mono-code text-emerald-700 font-medium">Outflow &gt; Intake Trajectory</span>
+            </div>
+          </div>
+
+          <!-- CHART 7: Workflow Bottlenecks -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">emergency</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 7 — Workflow Bottlenecks</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">Hotspot Detected</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Ranked average wait time in queues and gate stagnation depth.</p>
+              <div class="space-y-2.5" id="chartBottlenecksContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100">
+              <div class="bg-blue-50 border border-blue-200 rounded p-2 text-xs flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] text-blue-600">lightbulb</span>
+                <span class="text-blue-900 font-medium" id="bottleneckRecommendation">Recommendation: Automate static linting triage to reduce Dev review gate by 40%.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHART 8: Rejection Analysis -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">cancel</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 8 — Rejection Analysis</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded" id="totalRejectionsBadge">9 Total Rejections</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Breakdown of engineer rejections by root categoric reason.</p>
+              <div class="space-y-2" id="chartRejectionContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+              <span class="font-medium text-slate-700">Notice: Rejecting halts resolution; ticket returned to Admin triage queue.</span>
+              <span class="font-mono-code text-blue-600 font-semibold cursor-pointer hover:underline" id="rejectionQueueLink">Re-triage Queue →</span>
+            </div>
+          </div>
+
+          <!-- CHART 9: SLA Compliance Over Time -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">verified_user</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 9 — SLA Compliance Over Time</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200" id="currentSlaBadge">96.8% Current (W21)</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Enterprise SLA target (95.0%) tracked week-over-week.</p>
+              <div class="relative" id="chartSlaContainer">
+                <svg class="w-full h-40" viewBox="0 0 460 170">
+                  <line stroke="#f1f5f9" stroke-width="1" x1="35" x2="440" y1="20" y2="20"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="35" x2="440" y1="60" y2="60"></line>
+                  <line stroke="#f1f5f9" stroke-width="1" x1="35" x2="440" y1="100" y2="100"></line>
+                  <line stroke="#e2e8f0" stroke-width="1" x1="35" x2="440" y1="140" y2="140"></line>
+                  <line stroke="#ef4444" stroke-dasharray="4 4" stroke-width="1.5" x1="35" x2="440" y1="50" y2="50"></line>
+                  <text fill="#ef4444" font-family="monospace" font-size="9" text-anchor="end" x="435" y="45">95.0% Target SLA</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="28" y="24">98%</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="28" y="64">94%</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="28" y="104">90%</text>
+                  <text fill="#94a3b8" font-family="monospace" font-size="9" text-anchor="end" x="28" y="144">86%</text>
+                  <polygon fill="#2563eb" fill-opacity="0.08" points="60,92 135,76 210,58 285,48 360,42 435,32 435,140 60,140"></polygon>
+                  <polyline fill="none" points="60,92 135,76 210,58 285,48 360,42 435,32" stroke="#2563eb" stroke-width="2.5"></polyline>
+                  <circle cx="60" cy="92" fill="#2563eb" r="3"></circle>
+                  <circle cx="135" cy="76" fill="#2563eb" r="3"></circle>
+                  <circle cx="210" cy="58" fill="#2563eb" r="3"></circle>
+                  <circle cx="285" cy="48" fill="#2563eb" r="3"></circle>
+                  <circle cx="360" cy="42" fill="#2563eb" r="3"></circle>
+                  <circle cx="435" cy="32" fill="#059669" r="4"></circle>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="60" y="156">W16 (91.2%)</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="135" y="156">W17 (92.8%)</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="210" y="156">W18 (94.5%)</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="285" y="156">W19 (95.2%)</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="360" y="156">W20 (95.9%)</text>
+                  <text fill="#475569" font-size="9" text-anchor="middle" x="435" y="156">W21 (96.8%)</text>
+                </svg>
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span class="flex items-center gap-1 text-emerald-700 font-medium">
+                <span class="material-symbols-outlined text-[14px]">check</span>
+                <span>P0/Critical SLA Breach count: 0 incidents</span>
+              </span>
+              <span class="font-mono-code text-slate-500">Target surpassed for 3 consecutive cycles</span>
+            </div>
+          </div>
+
+          <!-- CHART 10: Workflow by Severity -->
+          <div class="bg-white border border-slate-200 rounded p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-[18px]">stacked_bar_chart</span>
+                  <h2 class="font-bold text-sm text-slate-900">Chart 10 — Workflow by Severity</h2>
+                </div>
+                <span class="font-mono-code text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">Tiers P0 - P3</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Cross-sectional volume of tickets per priority tier across workflow statuses.</p>
+              <div class="space-y-3" id="chartSeverityContainer">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Zero Critical P0 defects waiting in unassigned triage</span>
+              <span class="font-mono-code text-emerald-700 font-semibold">P0 Mean Triage Time: 12 min</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Underlying Workflow Transition Ledger Table -->
+        <div class="bg-white border border-slate-200 rounded shadow-sm overflow-hidden mb-6">
+          <div class="p-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-blue-600">table_rows</span>
+              <h3 class="font-bold text-sm text-slate-900">Recent Workflow Transition Audit Log</h3>
+              <span class="font-mono-code text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200" id="ledgerCountBadge">52 transitions</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="px-2.5 py-1 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded text-xs font-medium font-mono-code flex items-center gap-1 cursor-pointer" id="exportLedgerCsvBtn">
+                <span class="material-symbols-outlined text-[14px]">download</span>
+                Export CSV
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50/70 border-b border-slate-200 text-slate-500 font-mono-code font-semibold uppercase text-[10px] tracking-wider">
+                  <th class="py-2.5 px-3">Defect ID</th>
+                  <th class="py-2.5 px-3">Component</th>
+                  <th class="py-2.5 px-3">Previous Stage</th>
+                  <th class="py-2.5 px-3">Current Stage</th>
+                  <th class="py-2.5 px-3">Trigger / Event</th>
+                  <th class="py-2.5 px-3">Dwell Time</th>
+                  <th class="py-2.5 px-3">SLA Status</th>
+                  <th class="py-2.5 px-3">Handled By</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 font-normal text-slate-700" id="ledgerTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Table Pagination -->
+          <div class="px-4 py-2.5 bg-slate-50/70 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-500">
+            <div class="font-mono-code text-[11px]" id="ledgerPaginationInfo">
+              Showing 1 to 10 of 52 transitions
+            </div>
+            <div class="flex items-center gap-1" id="ledgerPaginationControls">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive State Previews & System Resiliency Bar -->
+        <div class="bg-white border border-slate-200 rounded p-3 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-mono-code text-[11px] font-semibold text-slate-400 uppercase">View States:</span>
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+              <button id="viewStateNormal" class="px-2.5 py-1 text-[11px] font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-l hover:bg-blue-100 transition-colors" type="button">
+                Normal View
+              </button>
+              <button id="viewStateEmpty" class="px-2.5 py-1 text-[11px] font-medium text-slate-700 bg-white border-t border-b border-slate-200 hover:bg-slate-50 transition-colors" type="button">
+                Empty State
+              </button>
+              <button id="viewStateSkeleton" class="px-2.5 py-1 text-[11px] font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors" type="button">
+                Loading Skeleton
+              </button>
+              <button id="viewStateError" class="px-2.5 py-1 text-[11px] font-medium text-slate-700 bg-white border-t border-b border-r border-slate-200 rounded-r hover:bg-slate-50 transition-colors" type="button">
+                API Error State
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 font-mono-code text-[11px] text-slate-500">
+            <span class="flex items-center gap-1.5 text-emerald-700 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              FastAPI Core v2.4.0 healthy
+            </span>
+            <span>•</span>
+            <span class="text-slate-600">Uptime: 99.98%</span>
+            <span>•</span>
+            <span class="text-slate-400">Cluster 01 [Primary Synced]</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="px-6 py-3 border-t border-slate-200 bg-white text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
+      <div class="flex items-center gap-3">
+        <span>BugFlow Enterprise Suite © 2024</span>
+        <span class="text-slate-300">•</span>
+        <span id="footerRoleContext">Role Context: System Administrator (All Workspaces)</span>
+      </div>
+      <div class="flex items-center gap-4 font-mono-code text-[11px]">
+        <span class="text-emerald-600 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Node: cluster-01.us-east-1
+        </span>
+        <span>SLA Target: 95.0%</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- CLIENT JAVASCRIPT LOGIC -->
+<script>
+  let currentPage = 1;
+  const pageSize = 10;
+  let activeFilters = {
+    role: 'all',
+    sprint_id: null,
+    severity: 'all',
+    status: 'all',
+    date_range: '30d',
+    search: '',
+    engineer: 'all'
+  };
+  let currentViewMode = 'normal';
+
+  // Helper for auth header
+  function getAuthHeaders() {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const headers = { "Accept": "application/json" };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  // Toggle export dropdown
+  const exportDropdownBtn = document.getElementById("exportDropdownBtn");
+  const exportMenu = document.getElementById("exportMenu");
+  if (exportDropdownBtn && exportMenu) {
+    exportDropdownBtn.addEventListener("click", () => {
+      exportMenu.classList.toggle("hidden");
+    });
+    document.addEventListener("click", (e) => {
+      if (!exportDropdownBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+        exportMenu.classList.add("hidden");
+      }
+    });
+  }
+
+  // Fetch workflow data from backend API
+  async function fetchWorkflowData() {
+    if (currentViewMode === 'loading') return;
+
+    try {
+      const params = new URLSearchParams();
+      if (activeFilters.role && activeFilters.role !== 'all') params.append("role", activeFilters.role);
+      if (activeFilters.sprint_id && activeFilters.sprint_id !== 'all') params.append("sprint_id", activeFilters.sprint_id);
+      if (activeFilters.severity && activeFilters.severity !== 'all') params.append("severity", activeFilters.severity);
+      if (activeFilters.status && activeFilters.status !== 'all') params.append("status", activeFilters.status);
+      if (activeFilters.date_range && activeFilters.date_range !== 'all') params.append("date_range", activeFilters.date_range);
+      if (activeFilters.search) params.append("search", activeFilters.search);
+      if (activeFilters.engineer && activeFilters.engineer !== 'all') params.append("engineer", activeFilters.engineer);
+      params.append("page", currentPage);
+      params.append("page_size", pageSize);
+
+      const res = await fetch(`/api/v1/analytics/workflow?${params.toString()}`, {
+        headers: getAuthHeaders()
+      });
+
+      if (!res.ok) {
+        throw new Error(`API returned HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      renderWorkflowUI(data);
+      updateFilterChips();
+      document.getElementById("refreshTimestamp").textContent = new Date().toLocaleTimeString();
+    } catch (err) {
+      console.error("Workflow fetch error:", err);
+      renderErrorState(err.message);
+    }
+  }
+
+  // Render all UI elements with data
+  function renderWorkflowUI(data) {
+    // 1. KPI Summary Cards
+    const kpi = data.kpi_summary || {};
+    const totalDef = kpi.total_workflow_items ?? 52;
+    document.getElementById("kpiTotalWorkflowItems").textContent = totalDef;
+    document.getElementById("kpiPendingActions").textContent = kpi.pending_actions ?? 26;
+    document.getElementById("kpiPendingActionsSummary").textContent = kpi.gates_waiting_summary || "0 Triage • 26 Acceptance • 0 QA Sign-off";
+    document.getElementById("kpiResolvedDefects").textContent = kpi.resolved_defects ?? 17;
+    document.getElementById("kpiResolvedRate").textContent = `${kpi.resolution_rate_pct ?? 32.7}% closure`;
+    document.getElementById("kpiAvgResolutionTime").innerHTML = `${kpi.avg_resolution_time_hours ?? 10.5} <span class="text-xs font-normal text-slate-500 font-mono-code">hrs</span>`;
+    document.getElementById("matchingCountSpan").textContent = `Matching: ${totalDef} Items Cataloged`;
+
+    // 2. Gated Lifecycle Stepper
+    const gatesCont = document.getElementById("lifecycleGatesContainer");
+    if (gatesCont && data.lifecycle_gates) {
+      gatesCont.innerHTML = data.lifecycle_gates.map(gate => {
+        const bgCols = {
+          "amber": "bg-amber-100 text-amber-700",
+          "sky": "bg-sky-100 text-sky-700",
+          "blue": "bg-blue-100 text-blue-800",
+          "indigo": "bg-indigo-100 text-indigo-700",
+          "emerald": "bg-emerald-100 text-emerald-800"
+        };
+        const badgeCol = bgCols[gate.badge_color] || "bg-slate-100 text-slate-700";
+        const isBlue = gate.badge_color === "blue";
+
+        return `
+          <div class="${isBlue ? 'bg-blue-50/50 border border-blue-200' : 'bg-slate-50 border border-slate-200'} rounded p-2.5 relative">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-mono-code text-[10px] font-semibold ${isBlue ? 'text-blue-700' : 'text-slate-500'} uppercase tracking-wider">Gate ${gate.gate_number}</span>
+              <span class="font-mono-code text-[11px] font-bold ${badgeCol} px-1.5 py-0.2 rounded">${gate.items_count} items</span>
+            </div>
+            <p class="font-bold text-[13px] ${isBlue ? 'text-blue-950' : 'text-slate-900'} mb-0.5">${gate.name}</p>
+            <p class="text-[11px] ${isBlue ? 'text-blue-700 leading-tight' : 'text-slate-500'}">${gate.description}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 3. Populate Sprints in Filter Dropdown if available
+    if (data.available_filters && data.available_filters.sprints) {
+      const sprintSel = document.getElementById("filterSprintSelect");
+      if (sprintSel && sprintSel.options.length <= 1) {
+        data.available_filters.sprints.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s.id;
+          opt.textContent = `Sprint: ${s.name} [${s.status}]`;
+          sprintSel.appendChild(opt);
+        });
+      }
+    }
+
+    const charts = data.charts || {};
+
+    // Chart 1: Funnel
+    const funnelCont = document.getElementById("chartFunnelStepsContainer");
+    if (funnelCont && charts.defect_lifecycle_funnel) {
+      const f = charts.defect_lifecycle_funnel;
+      document.getElementById("funnelConversionPill").textContent = `Conversion: ${f.conversion_rate_pct}%`;
+      document.getElementById("funnelLeakageNotice").innerHTML = `
+        <span class="material-symbols-outlined text-[14px] text-amber-500">info</span>
+        <span>Transition Leakage: ${f.transition_leakage}</span>
+      `;
+      document.getElementById("funnelNetPassRate").textContent = `Net Pass Rate: ${f.net_pass_rate_pct}%`;
+
+      funnelCont.innerHTML = f.steps.map(step => {
+        return `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-medium text-slate-700">${step.label}</span>
+                ${step.rejections_callout ? `<span class="text-[9px] font-mono-code px-1 rounded bg-amber-100 text-amber-800">${step.rejections_callout}</span>` : ''}
+              </div>
+              <span class="font-mono-code font-semibold text-slate-900">${step.count} (${step.pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-5 rounded overflow-hidden flex">
+              <div class="h-full text-white text-[10px] font-mono-code flex items-center px-2 transition-all duration-500" style="width: ${Math.max(5, step.pct)}%; background-color: ${step.color};">
+                ${step.subtext}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 2: Status Distribution Donut
+    if (charts.status_distribution) {
+      const sd = charts.status_distribution;
+      document.getElementById("donutTotalItems").textContent = sd.total_items;
+      const svg = document.getElementById("statusDonutSvg");
+      const circ = 2 * Math.PI * 38; // ≈ 238.76
+      let runningOffset = 0;
+
+      if (svg) {
+        svg.innerHTML = sd.distribution.map(item => {
+          const dash = (item.pct / 100) * circ;
+          const offset = -runningOffset;
+          runningOffset += dash;
+          return `<circle cx="50" cy="50" fill="none" r="38" stroke="${item.color}" stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${offset}" stroke-width="15"></circle>`;
+        }).join("");
+      }
+
+      const legCont = document.getElementById("statusLegendContainer");
+      if (legCont) {
+        legCont.innerHTML = sd.distribution.map(item => {
+          return `
+            <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded" style="background-color: ${item.color};"></span>
+                <span class="text-slate-700">${item.status}</span>
+              </div>
+              <span class="font-mono-code font-semibold text-slate-900">${item.count} (${item.pct}%)</span>
+            </div>
+          `;
+        }).join("");
+      }
+    }
+
+    // Chart 3: Transition Flow
+    const flowCont = document.getElementById("chartFlowContainer");
+    if (flowCont && charts.transition_flow) {
+      const tf = charts.transition_flow;
+      flowCont.innerHTML = `
+        <div class="flex flex-col gap-2.5 text-xs">
+          <div class="flex items-center justify-between bg-white border border-slate-200 rounded px-2.5 py-1.5">
+            <span class="font-mono-code font-semibold text-slate-700">Triage Intake</span>
+            <div class="flex items-center gap-1 text-slate-400">
+              <span class="text-[10px] font-mono-code text-blue-600 font-bold bg-blue-50 px-1 rounded">${tf.triage_to_assigned.count} trans. (${tf.triage_to_assigned.pct}%)</span>
+              <span>──────➔</span>
+            </div>
+            <span class="font-mono-code font-semibold text-slate-700">Assigned State</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-emerald-50/50 border border-emerald-200 rounded p-2 text-[11px]">
+              <div class="font-mono-code font-bold text-emerald-800 flex items-center justify-between">
+                <span>Assigned ➔ Accepted</span>
+                <span>${tf.assigned_to_accepted.count} items</span>
+              </div>
+              <p class="text-emerald-700 text-[10px] mt-0.5">${tf.assigned_to_accepted.subtext} (${tf.assigned_to_accepted.pct}%)</p>
+            </div>
+            <div class="bg-rose-50/50 border border-rose-200 rounded p-2 text-[11px]">
+              <div class="font-mono-code font-bold text-rose-800 flex items-center justify-between">
+                <span>Assigned ➔ Rejected</span>
+                <span>${tf.assigned_to_rejected.count} items</span>
+              </div>
+              <p class="text-rose-700 text-[10px] mt-0.5">${tf.assigned_to_rejected.subtext}</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between bg-white border border-slate-200 rounded px-2.5 py-1.5">
+            <span class="font-mono-code font-semibold text-slate-700">Accepted (${tf.accepted_to_qa.count})</span>
+            <div class="flex items-center gap-1 text-slate-400">
+              <span class="text-[10px] font-mono-code text-indigo-600 font-bold bg-indigo-50 px-1 rounded">Dev Active</span>
+              <span>──────➔</span>
+            </div>
+            <span class="font-mono-code font-semibold text-slate-700">QA Verification</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-emerald-50/60 border border-emerald-200 rounded p-2 text-[11px]">
+              <div class="font-mono-code font-bold text-emerald-900 flex items-center justify-between">
+                <span>QA ➔ Resolved</span>
+                <span>${tf.qa_to_resolved.count} items</span>
+              </div>
+              <p class="text-emerald-700 text-[10px] mt-0.5">${tf.qa_to_resolved.subtext} (${tf.qa_to_resolved.pct}%)</p>
+            </div>
+            <div class="bg-amber-50/60 border border-amber-200 rounded p-2 text-[11px]">
+              <div class="font-mono-code font-bold text-amber-900 flex items-center justify-between">
+                <span>QA ➔ Reopened</span>
+                <span>${tf.qa_to_reopened.count} items</span>
+              </div>
+              <p class="text-amber-700 text-[10px] mt-0.5">${tf.qa_to_reopened.subtext}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Chart 5: Pending Work Aging
+    const agingCont = document.getElementById("chartAgingContainer");
+    if (agingCont && charts.pending_work_aging) {
+      agingCont.innerHTML = charts.pending_work_aging.buckets.map(b => {
+        return `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-700 font-medium">${b.label}</span>
+              <span class="font-mono-code font-bold" style="color: ${b.color};">${b.count} items (${b.pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-4 rounded overflow-hidden">
+              <div class="h-full rounded transition-all duration-500" style="width: ${Math.max(4, b.pct)}%; background-color: ${b.color};"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 7: Bottlenecks
+    const bCont = document.getElementById("chartBottlenecksContainer");
+    if (bCont && charts.workflow_bottlenecks) {
+      const bn = charts.workflow_bottlenecks;
+      document.getElementById("bottleneckRecommendation").textContent = `Recommendation: ${bn.recommendation}`;
+      const badgeStyles = {
+        "rose": { numBg: "bg-rose-100 text-rose-700", barBg: "bg-rose-500", textCol: "text-rose-600" },
+        "amber": { numBg: "bg-amber-100 text-amber-700", barBg: "bg-amber-500", textCol: "text-amber-700" },
+        "blue": { numBg: "bg-blue-100 text-blue-700", barBg: "bg-blue-500", textCol: "text-blue-700" },
+        "slate": { numBg: "bg-slate-100 text-slate-700", barBg: "bg-slate-400", textCol: "text-slate-700" }
+      };
+
+      bCont.innerHTML = bn.ranked_queues.map(q => {
+        const style = badgeStyles[q.color] || badgeStyles.slate;
+        const wPct = Math.min(100, Math.round((q.avg_dwell_hours / 3.0) * 100));
+        return `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-medium text-slate-800 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full ${style.numBg} text-[10px] font-bold flex items-center justify-center">${q.rank}</span>
+                ${q.name}
+              </span>
+              <span class="font-mono-code font-bold ${style.textCol}">${q.avg_dwell_hours} hrs avg (${q.waiting_items} waiting)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-3 rounded overflow-hidden">
+              <div class="${style.barBg} h-full rounded" style="width: ${wPct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 8: Rejections
+    const rejCont = document.getElementById("chartRejectionContainer");
+    if (rejCont && charts.rejection_analysis) {
+      const ra = charts.rejection_analysis;
+      document.getElementById("totalRejectionsBadge").textContent = `${ra.total_rejections} Total Rejections`;
+      rejCont.innerHTML = ra.reasons.map(r => {
+        return `
+          <div>
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="text-slate-700 font-medium">${r.reason}</span>
+              <span class="font-mono-code font-bold" style="color: ${r.color};">${r.count} items (${r.pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded overflow-hidden">
+              <div class="h-full rounded" style="width: ${r.pct}%; background-color: ${r.color};"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Chart 10: Workflow by Severity
+    const sevCont = document.getElementById("chartSeverityContainer");
+    if (sevCont && charts.workflow_by_severity) {
+      const dotColors = {
+        "urgent": "bg-rose-600 text-rose-700",
+        "high": "bg-amber-600 text-amber-700",
+        "medium": "bg-blue-500 text-slate-700",
+        "low": "bg-slate-400 text-slate-500"
+      };
+
+      sevCont.innerHTML = charts.workflow_by_severity.map(s => {
+        const dCol = dotColors[s.severity_key] || dotColors.medium;
+        const tot = Math.max(1, s.total_items);
+        const resP = Math.round((s.resolved / tot) * 100);
+        const devP = Math.round((s.in_dev / tot) * 100);
+        const asgnP = Math.round((s.assigned / tot) * 100);
+        const triP = Math.round((s.triage / tot) * 100);
+
+        return `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-medium flex items-center gap-1 ${dCol.split(' ')[1]}">
+                <span class="w-2 h-2 rounded-full ${dCol.split(' ')[0]}"></span>
+                ${s.tier} (${s.total_items} items total)
+              </span>
+              <span class="font-mono-code text-[11px] text-slate-600">${s.status_text}</span>
+            </div>
+            <div class="w-full bg-slate-100 h-4 rounded overflow-hidden flex text-[9px] text-white font-mono-code font-semibold">
+              ${triP > 0 ? `<div class="bg-amber-500 h-full flex items-center justify-center" style="width: ${triP}%;" title="Triage: ${s.triage}">${s.triage}</div>` : ''}
+              ${asgnP > 0 ? `<div class="bg-sky-600 h-full flex items-center justify-center" style="width: ${asgnP}%;" title="Assigned: ${s.assigned}">${s.assigned}</div>` : ''}
+              ${devP > 0 ? `<div class="bg-blue-600 h-full flex items-center justify-center" style="width: ${devP}%;" title="In Dev: ${s.in_dev}">${s.in_dev} Dev</div>` : ''}
+              ${resP > 0 ? `<div class="bg-emerald-600 h-full flex items-center justify-center" style="width: ${resP}%;" title="Resolved: ${s.resolved}">${s.resolved} Res</div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 4. Render Transition Ledger Table
+    renderLedgerTable(data);
+  }
+
+  // Render Transition Ledger Table & Pagination
+  function renderLedgerTable(data) {
+    const tbody = document.getElementById("ledgerTableBody");
+    const countBadge = document.getElementById("ledgerCountBadge");
+    const pagInfo = document.getElementById("ledgerPaginationInfo");
+    const pagControls = document.getElementById("ledgerPaginationControls");
+
+    const p = data.ledger_pagination || { page: 1, page_size: 10, total_records: 0, total_pages: 1 };
+    countBadge.textContent = `${p.total_records} transitions`;
+
+    if (!data.ledger || data.ledger.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="py-8 text-center text-slate-400 font-mono-code text-xs">
+            No workflow transition records available for active filters.
+          </td>
+        </tr>
+      `;
+      pagInfo.textContent = "Showing 0 to 0 of 0 transitions";
+      pagControls.innerHTML = "";
+      return;
+    }
+
+    const start = (p.page - 1) * p.page_size + 1;
+    const end = Math.min(p.total_records, start + data.ledger.length - 1);
+    pagInfo.textContent = `Showing ${start} to ${end} of ${p.total_records} transitions`;
+
+    tbody.innerHTML = data.ledger.map(row => {
+      const stageBadges = {
+        "Resolved": "bg-emerald-50 text-emerald-700 border-emerald-200 bg-emerald-500",
+        "Rejected": "bg-rose-50 text-rose-700 border-rose-200 bg-rose-500",
+        "Assigned": "bg-blue-50 text-blue-700 border-blue-200 bg-blue-500",
+        "In Progress": "bg-indigo-50 text-indigo-700 border-indigo-200 bg-indigo-500",
+        "QA Verification": "bg-teal-50 text-teal-700 border-teal-200 bg-teal-500",
+        "Pending Triage": "bg-amber-50 text-amber-700 border-amber-200 bg-amber-500",
+      };
+      const bInfo = stageBadges[row.current_stage] || "bg-slate-50 text-slate-700 border-slate-200 bg-slate-500";
+      const [wrapBg, textCol, borderCol, dotCol] = bInfo.split(" ");
+
+      return `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="py-2.5 px-3 font-mono-code font-bold text-blue-700">${row.defect_id}</td>
+          <td class="py-2.5 px-3 font-mono-code text-slate-600">${row.component}</td>
+          <td class="py-2.5 px-3 text-slate-500">${row.previous_stage}</td>
+          <td class="py-2.5 px-3">
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-mono-code font-semibold ${wrapBg} ${textCol} border ${borderCol}">
+              <span class="w-1.5 h-1.5 rounded-full ${dotCol}"></span>
+              ${row.current_stage}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 text-slate-600">${row.event_trigger}</td>
+          <td class="py-2.5 px-3 font-mono-code">${row.dwell_time}</td>
+          <td class="py-2.5 px-3">
+            <span class="text-[10px] font-mono-code font-semibold ${row.sla_status.includes('Needs') ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'} px-1.5 py-0.5 rounded">
+              ${row.sla_status}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 font-medium text-slate-900">${row.handled_by}</td>
+        </tr>
+      `;
+    }).join("");
+
+    // Pagination controls
+    let btns = `
+      <button class="px-2 py-1 bg-white border border-slate-200 rounded text-slate-500 ${p.page <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'}"
+              ${p.page <= 1 ? 'disabled' : ''} onclick="changePage(${p.page - 1})">Previous</button>
+    `;
+
+    for (let i = 1; i <= p.total_pages; i++) {
+      if (i === p.page) {
+        btns += `<button class="px-2 py-1 bg-blue-600 text-white rounded font-medium">${i}</button>`;
+      } else if (i <= 3 || i === p.total_pages || (i >= p.page - 1 && i <= p.page + 1)) {
+        btns += `<button class="px-2 py-1 bg-white border border-slate-200 rounded text-slate-700 hover:bg-slate-50 cursor-pointer" onclick="changePage(${i})">${i}</button>`;
+      } else if (i === 4 && p.total_pages > 5) {
+        btns += `<span class="px-1 text-slate-400">...</span>`;
+      }
+    }
+
+    btns += `
+      <button class="px-2 py-1 bg-white border border-slate-200 rounded text-slate-500 ${p.page >= p.total_pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'}"
+              ${p.page >= p.total_pages ? 'disabled' : ''} onclick="changePage(${p.page + 1})">Next</button>
+    `;
+    pagControls.innerHTML = btns;
+  }
+
+  function changePage(page) {
+    currentPage = page;
+    fetchWorkflowData();
+  }
+
+  // Update active filter chips
+  function updateFilterChips() {
+    const chipsCont = document.getElementById("activeFilterChipsContainer");
+    if (!chipsCont) return;
+
+    const chips = [];
+    if (activeFilters.role && activeFilters.role !== 'all') {
+      chips.push({ key: 'role', label: `Role: ${activeFilters.role}` });
+    }
+    if (activeFilters.status && activeFilters.status !== 'all') {
+      chips.push({ key: 'status', label: `Status: ${activeFilters.status}` });
+    }
+    if (activeFilters.severity && activeFilters.severity !== 'all') {
+      chips.push({ key: 'severity', label: `Severity: ${activeFilters.severity}` });
+    }
+    if (activeFilters.date_range && activeFilters.date_range !== 'all') {
+      chips.push({ key: 'date_range', label: `Date: ${activeFilters.date_range}` });
+    }
+    if (activeFilters.search) {
+      chips.push({ key: 'search', label: `Search: "${activeFilters.search}"` });
+    }
+
+    if (chips.length === 0) {
+      chipsCont.innerHTML = `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-200 font-mono-code">All Workflow Scope</span>`;
+    } else {
+      chipsCont.innerHTML = chips.map(c => `
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-700 rounded border border-slate-200 font-mono-code">
+          ${c.label}
+          <span class="cursor-pointer hover:text-slate-900 font-bold ml-0.5" onclick="removeFilter('${c.key}')">✕</span>
+        </span>
+      `).join("");
+    }
+  }
+
+  function removeFilter(key) {
+    if (key === 'search') {
+      activeFilters.search = '';
+      document.getElementById("filterSearchInput").value = '';
+    } else if (key === 'date_range') {
+      activeFilters.date_range = '30d';
+      document.getElementById("filterDateSelect").value = '30d';
+    } else if (key === 'role') {
+      activeFilters.role = 'all';
+      document.getElementById("filterAssigneeSelect").value = 'all';
+    } else if (key === 'status') {
+      activeFilters.status = 'all';
+      document.getElementById("filterStatusSelect").value = 'all';
+    } else if (key === 'severity') {
+      activeFilters.severity = 'all';
+      document.getElementById("filterSeveritySelect").value = 'all';
+    }
+    currentPage = 1;
+    fetchWorkflowData();
+  }
+
+  // Filter Toolbar Events
+  document.getElementById("applyFiltersBtn").addEventListener("click", () => {
+    activeFilters.search = document.getElementById("filterSearchInput").value.trim();
+    activeFilters.date_range = document.getElementById("filterDateSelect").value;
+    activeFilters.sprint_id = document.getElementById("filterSprintSelect").value;
+    activeFilters.status = document.getElementById("filterStatusSelect").value;
+    activeFilters.severity = document.getElementById("filterSeveritySelect").value;
+    activeFilters.role = document.getElementById("filterAssigneeSelect").value;
+    currentPage = 1;
+    fetchWorkflowData();
+  });
+
+  document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+    document.getElementById("filterSearchInput").value = '';
+    document.getElementById("filterDateSelect").value = '30d';
+    document.getElementById("filterSprintSelect").value = 'all';
+    document.getElementById("filterStatusSelect").value = 'all';
+    document.getElementById("filterSeveritySelect").value = 'all';
+    document.getElementById("filterAssigneeSelect").value = 'all';
+    activeFilters = {
+      role: 'all',
+      sprint_id: null,
+      severity: 'all',
+      status: 'all',
+      date_range: '30d',
+      search: '',
+      engineer: 'all'
+    };
+    currentPage = 1;
+    fetchWorkflowData();
+  });
+
+  // Search input with debounce
+  let searchDebounce;
+  document.getElementById("filterSearchInput").addEventListener("input", (e) => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      activeFilters.search = e.target.value.trim();
+      currentPage = 1;
+      fetchWorkflowData();
+    }, 400);
+  });
+
+  // Quick search input in header
+  const quickSearch = document.getElementById("quickSearchInput");
+  if (quickSearch) {
+    quickSearch.addEventListener("input", (e) => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
+        document.getElementById("filterSearchInput").value = e.target.value;
+        activeFilters.search = e.target.value.trim();
+        currentPage = 1;
+        fetchWorkflowData();
+      }, 400);
+    });
+  }
+
+  // Refresh Button
+  document.getElementById("refreshBtn").addEventListener("click", () => {
+    fetchWorkflowData();
+  });
+
+  // CSV Export
+  function triggerCsvExport() {
+    const params = new URLSearchParams();
+    if (activeFilters.role && activeFilters.role !== 'all') params.append("role", activeFilters.role);
+    if (activeFilters.sprint_id && activeFilters.sprint_id !== 'all') params.append("sprint_id", activeFilters.sprint_id);
+    if (activeFilters.severity && activeFilters.severity !== 'all') params.append("severity", activeFilters.severity);
+    if (activeFilters.status && activeFilters.status !== 'all') params.append("status", activeFilters.status);
+    if (activeFilters.date_range && activeFilters.date_range !== 'all') params.append("date_range", activeFilters.date_range);
+    if (activeFilters.search) params.append("search", activeFilters.search);
+    if (activeFilters.engineer && activeFilters.engineer !== 'all') params.append("engineer", activeFilters.engineer);
+
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const url = `/api/v1/analytics/export/workflow?${params.toString()}`;
+    
+    // Direct browser navigation or anchor download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bugflow_workflow_export_${Date.now()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  document.getElementById("exportCsvBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    triggerCsvExport();
+    exportMenu.classList.add("hidden");
+  });
+
+  document.getElementById("exportLedgerCsvBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    triggerCsvExport();
+  });
+
+  // View States Control Toggles
+  document.getElementById("viewStateNormal").addEventListener("click", () => {
+    currentViewMode = 'normal';
+    setActiveViewStateBtn("viewStateNormal");
+    fetchWorkflowData();
+  });
+
+  document.getElementById("viewStateEmpty").addEventListener("click", () => {
+    currentViewMode = 'empty';
+    setActiveViewStateBtn("viewStateEmpty");
+    renderEmptyState();
+  });
+
+  document.getElementById("viewStateSkeleton").addEventListener("click", () => {
+    currentViewMode = 'skeleton';
+    setActiveViewStateBtn("viewStateSkeleton");
+    renderSkeletonState();
+  });
+
+  document.getElementById("viewStateError").addEventListener("click", () => {
+    currentViewMode = 'error';
+    setActiveViewStateBtn("viewStateError");
+    renderErrorState("Simulated upstream cluster API gateway timeout (HTTP 504)");
+  });
+
+  function setActiveViewStateBtn(btnId) {
+    ["viewStateNormal", "viewStateEmpty", "viewStateSkeleton", "viewStateError"].forEach(id => {
+      const b = document.getElementById(id);
+      if (b) {
+        if (id === btnId) {
+          b.className = "px-2.5 py-1 text-[11px] font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded";
+        } else {
+          b.className = "px-2.5 py-1 text-[11px] font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50";
+        }
+      }
+    });
+  }
+
+  function renderEmptyState() {
+    document.getElementById("kpiTotalWorkflowItems").textContent = "0";
+    document.getElementById("kpiPendingActions").textContent = "0";
+    document.getElementById("kpiResolvedDefects").textContent = "0";
+    document.getElementById("kpiResolvedRate").textContent = "0.0% closure";
+    document.getElementById("kpiAvgResolutionTime").innerHTML = "0.0 <span class=\"text-xs font-normal text-slate-500 font-mono-code\">hrs</span>";
+    document.getElementById("matchingCountSpan").textContent = "Matching: 0 Items Cataloged";
+
+    const tbody = document.getElementById("ledgerTableBody");
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="py-12 text-center text-slate-400 font-mono-code text-xs">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[32px] text-slate-300">inbox</span>
+            <span>No workflow transition records available for active filters.</span>
+          </div>
+        </td>
+      </tr>
+    `;
+    document.getElementById("ledgerPaginationInfo").textContent = "Showing 0 to 0 of 0 transitions";
+    document.getElementById("ledgerPaginationControls").innerHTML = "";
+  }
+
+  function renderSkeletonState() {
+    const tbody = document.getElementById("ledgerTableBody");
+    tbody.innerHTML = Array(5).fill(0).map(() => `
+      <tr class="animate-pulse">
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-16"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-28"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-20"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-24"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-36"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-12"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-16"></div></td>
+        <td class="py-3 px-3"><div class="h-3.5 bg-slate-200 rounded w-24"></div></td>
+      </tr>
+    `).join("");
+  }
+
+  function renderErrorState(msg) {
+    const tbody = document.getElementById("ledgerTableBody");
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="py-12 text-center text-rose-600 font-mono-code text-xs">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[32px] text-rose-500">error_outline</span>
+            <span class="font-bold">${msg}</span>
+            <button class="mt-2 px-3 py-1 bg-rose-600 text-white rounded text-xs hover:bg-rose-700 cursor-pointer" onclick="fetchWorkflowData()">Retry Connection</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  // Initial load
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchWorkflowData();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BugFlow — Productivity Report</title>
+  <meta name="description" content="BugFlow Enterprise Productivity Report, velocity tracking, individual MTTR, defect turnaround, and workload distribution.">
+
+  <!-- Google Web Fonts & Design System Tokens -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-system.css">
+
+  <!-- Tailwind CSS with Stitch Palette -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8f9fc;
+      color: #0f172a;
+    }
+    .font-mono-code {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Transition animations */
+    .fade-enter {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .skeleton-box {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.5s infinite;
+    }
+    @keyframes skeleton-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body class="bg-[#f8f9fc] text-slate-900 antialiased min-h-screen flex flex-col">
+
+  <div class="flex flex-1 min-h-screen">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 select-none">
+      <!-- Logo Branding -->
+      <div class="h-16 px-5 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white shadow-sm font-semibold tracking-tighter">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="8" height="14" x="8" y="5" rx="4"></rect>
+              <path d="m19 7-3 2"></path>
+              <path d="m5 7 3 2"></path>
+              <path d="m19 19-3-2"></path>
+              <path d="m5 19 3-2"></path>
+              <path d="M20 13h-4"></path>
+              <path d="M4 13h4"></path>
+              <path d="m10 4 1 2"></path>
+              <path d="m14 4-1 2"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-sm tracking-tight text-slate-900">BugFlow</span>
+              <span class="text-[10px] font-mono-code px-1.5 py-0.2 bg-blue-50 text-blue-700 font-semibold rounded border border-blue-200">v4.2</span>
+            </div>
+            <p class="text-[10px] text-slate-500 font-medium tracking-tight">Enterprise DevOps Suite</p>
+          </div>
+        </div>
+        <span class="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-50" title="Connected to cluster"></span>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-[13px]">
+        <!-- Overview -->
+        <div>
+          <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Overview</p>
+          <a href="/admin-ui" id="sidebarDashboardLink" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+            <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <!-- Work Management -->
+        <div>
+          <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Work Management</p>
+          <div class="space-y-0.5">
+            <a href="/all-defects-ui" class="flex items-center justify-between px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+                <span>Defects</span>
+              </div>
+              <span class="text-[11px] font-mono-code font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600" id="sidebarDefectCount">52</span>
+            </a>
+            <a href="/milestone2-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+              <span>Sprints</span>
+            </a>
+            <a href="/team-collaboration-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Team Collaboration</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Analytics & Reporting -->
+        <div>
+          <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Analytics &amp; Reporting</p>
+          <div class="space-y-0.5">
+            <a href="/analytics-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+              <span>Analytics</span>
+            </a>
+            <!-- Active Sub-Item: Reports / Productivity Report -->
+            <a href="/productivity-report-ui" class="flex items-center justify-between px-3 py-2 rounded bg-blue-50/80 text-blue-700 font-semibold border-l-2 border-blue-600 transition-colors">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>Reports</span>
+              </div>
+              <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">Active</span>
+            </a>
+            <a href="/sprint-report-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4"></path><path d="m4.93 4.93 2.83 2.83"></path><path d="M2 12h4"></path><path d="m4.93 19.07 2.83-2.83"></path><path d="M12 22v-4"></path><path d="m19.07 19.07-2.83-2.83"></path><path d="M22 12h-4"></path><path d="m19.07 4.93-2.83 2.83"></path></svg>
+              <span>Sprint Report</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Integrations -->
+        <div>
+          <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">Integrations</p>
+          <div class="space-y-0.5">
+            <a href="/integrations-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              <span>GitHub</span>
+            </a>
+            <a href="/integrations-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              <span>CI/CD Pipeline</span>
+            </a>
+            <a href="/api-explorer-ui" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              <span>API Explorer</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- System -->
+        <div>
+          <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-1.5">System</p>
+          <div class="space-y-0.5">
+            <a href="#" class="flex items-center justify-between px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+                <span>Notifications</span>
+              </div>
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+            </a>
+            <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <span>Settings</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="p-3 border-t border-slate-200 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500 font-mono-code">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>FastAPI v2.4.0</span>
+        </div>
+        <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-1 py-0.5 rounded">99.98% up</span>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+
+      <!-- TOP NAV CHROME -->
+      <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+        <!-- Breadcrumbs & Search -->
+        <div class="flex items-center gap-6">
+          <div class="flex items-center text-xs text-slate-500 font-medium">
+            <a href="/admin-ui" class="hover:text-slate-800 transition-colors">Workspaces</a>
+            <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span class="hover:text-slate-800 transition-colors">Production Cluster</span>
+            <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span class="text-slate-900 font-semibold" id="breadcrumbWorkspaceName">Admin Workspace</span>
+            <svg class="w-3.5 h-3.5 mx-1.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span class="text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Productivity Report</span>
+          </div>
+
+          <!-- Command search -->
+          <div class="relative w-80 hidden lg:block">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="text" id="topCommandSearch" placeholder="Search throughput, engineers, velocity..." class="w-full pl-9 pr-10 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+            <span class="absolute right-2.5 top-2 text-[10px] font-mono-code text-slate-400 bg-white border border-slate-200 px-1.5 rounded">⌘K</span>
+          </div>
+        </div>
+
+        <!-- Top Right Actions & Profile -->
+        <div class="flex items-center gap-3">
+          <!-- Cluster status pill -->
+          <div class="hidden md:flex items-center gap-1.5 text-[11px] font-mono-code font-medium bg-slate-100 text-slate-700 px-2.5 py-1 rounded border border-slate-200">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+            <span>CLUSTER-01 NODE PRIMARY</span>
+          </div>
+
+          <!-- Workspace Switcher -->
+          <div class="relative">
+            <button id="workspaceSwitcherBtn" class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded border border-slate-200 transition-colors">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+              <span id="currentWorkspaceLabel">Admin Workspace</span>
+              <span class="text-[10px] text-slate-500 font-normal" id="currentWorkspaceRole">Admin</span>
+              <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div id="workspaceDropdown" class="hidden absolute right-0 mt-1 w-56 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50 text-xs">
+              <div class="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">Switch Workspace</div>
+              <button class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between" onclick="switchRole('admin')">
+                <span class="font-medium text-slate-800">Naruto (Admin)</span>
+                <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">Admin</span>
+              </button>
+              <button class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between" onclick="switchRole('developer')">
+                <span class="font-medium text-slate-800">Sasuke (Developer)</span>
+                <span class="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">Developer</span>
+              </button>
+              <button class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between" onclick="switchRole('tester')">
+                <span class="font-medium text-slate-800">Hinata (Tester)</span>
+                <span class="text-[10px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">Tester</span>
+              </button>
+              <button class="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between" onclick="switchRole('senior_dev')">
+                <span class="font-medium text-slate-800">Itachi (Senior Dev)</span>
+                <span class="text-[10px] bg-purple-50 text-purple-700 px-1.5 py-0.5 rounded">Senior Dev</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <button class="relative p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors" title="Notifications">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+            <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-600"></span>
+          </button>
+
+          <!-- User avatar -->
+          <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+            <div id="userAvatarPill" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs ring-2 ring-blue-100">
+              AC
+            </div>
+            <div class="hidden sm:block text-left">
+              <div class="text-xs font-bold text-slate-800 leading-none" id="userNameLabel">Alex Chen</div>
+              <div class="text-[10px] text-slate-500 font-medium" id="userRoleTitle">Lead Admin</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT WRAPPER -->
+      <main class="flex-1 p-6 space-y-6">
+
+        <!-- ERROR NOTIFICATION BANNER (HIDDEN BY DEFAULT) -->
+        <div id="errorBanner" class="hidden p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-red-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+            <span id="errorMessageText">Failed to load live telemetry from cluster.</span>
+          </div>
+          <button onclick="fetchProductivityData()" class="px-2.5 py-1 bg-red-600 text-white rounded font-semibold hover:bg-red-700 transition-colors">Retry Connection</button>
+        </div>
+
+        <!-- PAGE TITLE & REPORT CONTROLS BAR -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-slate-200">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h1 class="text-2xl font-bold tracking-tight text-slate-900">Productivity Report</h1>
+              <span class="text-xs font-mono-code font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200" id="scopeBadge">Sprint 24 &amp; Historical</span>
+              <span class="text-[11px] font-mono-code text-slate-500 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live Telemetry
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Analyze engineering velocity, team throughput, individual defect turnaround, and workload distribution across BugFlow roles.</p>
+          </div>
+
+          <!-- Actions: Date range, Refresh, Export -->
+          <div class="flex items-center gap-2.5 shrink-0">
+            <!-- Date range selector -->
+            <div class="relative">
+              <button id="dateRangeBtn" onclick="toggleDropdown('dateRangeDropdown')" class="flex items-center bg-white border border-slate-200 rounded px-2.5 py-1.5 shadow-sm text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                <svg class="w-3.5 h-3.5 text-slate-400 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                <span id="dateRangeLabel">Last 30 Days (May 1 - May 30, 2024)</span>
+                <svg class="w-3 h-3 text-slate-400 ml-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div id="dateRangeDropdown" class="hidden absolute right-0 mt-1 w-52 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50 text-xs">
+                <button class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700" onclick="selectDateRange('7d', 'Last 7 Days')">Last 7 Days</button>
+                <button class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700" onclick="selectDateRange('14d', 'Last 14 Days')">Last 14 Days</button>
+                <button class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700 font-semibold text-blue-600 bg-blue-50/50" onclick="selectDateRange('30d', 'Last 30 Days (May 1 - May 30, 2024)')">Last 30 Days</button>
+                <button class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700" onclick="selectDateRange('90d', 'Last 90 Days')">Last 90 Days</button>
+                <button class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700" onclick="selectDateRange('all', 'All Time')">All Time</button>
+              </div>
+            </div>
+
+            <!-- Refresh button -->
+            <button id="refreshBtn" onclick="fetchProductivityData()" class="flex items-center gap-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-2.5 py-1.5 rounded shadow-sm text-xs font-medium transition-colors" title="Sync live report">
+              <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+              <span id="refreshTimer">↻ just now</span>
+            </button>
+
+            <!-- Export dropdown / direct button -->
+            <button id="exportCsvBtn" onclick="exportReportCsv()" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded shadow-sm text-xs font-semibold transition-colors">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+              <span>Export Report</span>
+              <svg class="w-3 h-3 ml-0.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- REPORT CATEGORY NAVIGATION (Tabs from Analytics Reports, with Productivity Report highlighted) -->
+        <div class="flex items-center justify-between border-b border-slate-200 pb-1">
+          <div class="flex items-center gap-1 overflow-x-auto text-xs font-medium">
+            <a href="/analytics-ui" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Daily Defect Report</a>
+            <a href="/analytics-ui?tab=assignment" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Assignment Report</a>
+            <a href="/productivity-report-ui" class="px-3.5 py-2 text-blue-700 font-bold border-b-2 border-blue-600 bg-blue-50/50 rounded-t">Productivity Report</a>
+            <a href="/analytics-ui?tab=workflow" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Workflow Report</a>
+            <a href="/sprint-report-ui" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Sprint Report</a>
+            <a href="/analytics-ui?tab=status" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Status Report</a>
+            <a href="/analytics-ui?tab=priority" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Priority Report</a>
+            <a href="/analytics-ui?tab=category" class="px-3.5 py-2 text-slate-600 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 transition-colors">Category Report</a>
+          </div>
+
+          <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+            <span class="text-[11px] font-mono-code font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">Scope: Production Cluster</span>
+            <span class="text-[11px] font-mono-code font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">4 Active Roles</span>
+          </div>
+        </div>
+
+        <!-- COMPACT KPI METRIC SUMMARY ROW (4 CARDS) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="kpiContainer">
+          
+          <!-- KPI 1: Defects Resolved -->
+          <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Defects Resolved</span>
+              <span class="text-[10px] font-bold font-mono-code px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200" id="kpiResolvedVsPrev">+18.2% vs prev</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-bold font-mono-code tracking-tight text-slate-900" id="kpiResolvedCount">87</span>
+              <span class="text-xs text-slate-500" id="kpiResolvedRateText">of 102 closed (85.3%)</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+              <span id="kpiScopeText">Sprint 24 + Past 30 Days</span>
+              <span class="font-semibold text-slate-700 font-mono-code" id="kpiInFlightText">15 In-Flight</span>
+            </div>
+          </div>
+
+          <!-- KPI 2: Average Resolution Time -->
+          <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Average Resolution Time</span>
+              <span class="text-[10px] font-bold font-mono-code px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">Optimal (SLA &lt; 4h)</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-bold font-mono-code tracking-tight text-slate-900" id="kpiMttrValue">1.8 <span class="text-sm font-normal text-slate-500">hrs</span></span>
+              <span class="text-xs text-slate-500 font-mono-code" id="kpiMttrMedian">MTTR median</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+              <span id="kpiSlaText">96.0% SLA Compliance</span>
+              <span class="font-semibold text-emerald-600 font-mono-code">-0.4h MoM</span>
+            </div>
+          </div>
+
+          <!-- KPI 3: Completed Story Points -->
+          <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Completed Story Points</span>
+              <span class="text-[10px] font-bold font-mono-code px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200">4.0 SP / day</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-bold font-mono-code tracking-tight text-slate-900" id="kpiSpValue">42 <span class="text-sm font-normal text-slate-500">/ 48 SP</span></span>
+              <span class="text-xs text-slate-500 font-mono-code" id="kpiSpBurnedText">87.5% burned</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+              <span id="kpiSpRemainingText">Remaining: 6 SP (Day 11/14)</span>
+              <span class="font-semibold text-purple-700 font-mono-code">+2.4d ahead</span>
+            </div>
+          </div>
+
+          <!-- KPI 4: Sprint Completion Rate -->
+          <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sprint Completion Rate</span>
+              <span class="text-[10px] font-bold font-mono-code px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Target ≥ 85%</span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-bold font-mono-code tracking-tight text-slate-900" id="kpiSprintRateValue">88.2%</span>
+              <span class="text-xs text-slate-500">Cycle Average</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+              <span>Projected Target: 92%</span>
+              <span class="font-semibold text-emerald-600 font-mono-code">Optimal</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MULTI-PARAMETER FILTER TOOLBAR (date range, sprint, role, team member, severity, status) -->
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2.5 text-xs">
+              
+              <!-- Search -->
+              <div class="relative w-48 sm:w-56">
+                <input type="text" id="filterSearchInput" placeholder="Filter by engineer or defect..." class="w-full pl-7 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              </div>
+
+              <!-- Date Range Filter -->
+              <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-700">
+                <span class="text-[11px] text-slate-400 font-medium">Date:</span>
+                <select id="filterDateSelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="30d">Last 30 Days</option>
+                  <option value="7d">Last 7 Days</option>
+                  <option value="14d">Last 14 Days</option>
+                  <option value="90d">Last 90 Days</option>
+                  <option value="all">All Time</option>
+                </select>
+              </div>
+
+              <!-- Sprint Filter -->
+              <div class="flex items-center gap-1.5 bg-blue-50 border border-blue-200 px-2 py-1 rounded text-blue-800 font-medium">
+                <span class="text-[11px] text-blue-600">Sprint:</span>
+                <select id="filterSprintSelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-blue-900 focus:outline-none cursor-pointer">
+                  <option value="">All Sprints</option>
+                  <option value="2">sprint3 [Active]</option>
+                  <option value="1">Sprint 2 [Planning]</option>
+                  <option value="3">sprint4 [Active]</option>
+                  <option value="4">running [Active]</option>
+                  <option value="5">sprint5 [Planning]</option>
+                  <option value="6">issuers [Active]</option>
+                </select>
+              </div>
+
+              <!-- Role Filter -->
+              <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-700">
+                <span class="text-[11px] text-slate-400 font-medium">Role:</span>
+                <select id="filterRoleSelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="">All Roles (4)</option>
+                  <option value="admin">Admin</option>
+                  <option value="developer">Developer</option>
+                  <option value="tester">Tester</option>
+                  <option value="senior_dev">Senior Developer</option>
+                </select>
+              </div>
+
+              <!-- Team Member Filter -->
+              <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-700">
+                <span class="text-[11px] text-slate-400 font-medium">Engineer:</span>
+                <select id="filterEngineerSelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="">All Members (4)</option>
+                  <option value="Naruto">Naruto</option>
+                  <option value="Sasuke">Sasuke</option>
+                  <option value="Hinata">Hinata</option>
+                  <option value="Itachi">Itachi</option>
+                </select>
+              </div>
+
+              <!-- Severity Filter -->
+              <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-700">
+                <span class="text-[11px] text-slate-400 font-medium">Severity:</span>
+                <select id="filterSeveritySelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="">All Tiers (P0-P3)</option>
+                  <option value="Critical P0">Critical P0</option>
+                  <option value="High P1">High P1</option>
+                  <option value="Medium P2">Medium P2</option>
+                  <option value="Low P3">Low P3</option>
+                </select>
+              </div>
+
+              <!-- Status Filter -->
+              <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-700">
+                <span class="text-[11px] text-slate-400 font-medium">Status:</span>
+                <select id="filterStatusSelect" onchange="applyToolbarFilters()" class="bg-transparent font-medium text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="">All Statuses</option>
+                  <option value="ASSIGNED">Assigned</option>
+                  <option value="RESOLVED">Resolved</option>
+                  <option value="REJECTED">Rejected</option>
+                  <option value="PENDING">Pending</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Apply & Clear Buttons -->
+            <div class="flex items-center gap-2">
+              <button onclick="clearAllFilters()" class="px-2.5 py-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors">Clear</button>
+              <button onclick="applyToolbarFilters()" class="px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded shadow-sm transition-colors">Apply Filters</button>
+            </div>
+          </div>
+
+          <!-- Active Filter Tags Row -->
+          <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs" id="activeFilterTagsRow">
+            <span class="text-[11px] text-slate-400 font-semibold uppercase">Active Filters:</span>
+            <span id="activeFilterSprintTag" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium border border-blue-200 text-[11px]">
+              Sprint: All Sprints Scope <button onclick="removeFilter('sprint')" class="hover:text-blue-900 font-bold">×</button>
+            </span>
+            <span id="activeFilterDateTag" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium border border-slate-200 text-[11px]">
+              Date: Last 30 Days <button onclick="removeFilter('date')" class="hover:text-slate-900 font-bold">×</button>
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium border border-slate-200 text-[11px]">
+              Scope: Production Cluster
+            </span>
+            <span class="text-[11px] text-slate-500 ml-auto font-mono-code" id="filterMatchSummary">Matching: 4 Team Members • 48 SP Total • 52 Defects Cataloged</span>
+          </div>
+        </div>
+
+        <!-- 2-COLUMN RESPONSIVE CHART GRID (ALL 10 VISUALIZATIONS) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- 1. INDIVIDUAL PRODUCTIVITY -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Individual Productivity</h3>
+                  <p class="text-[11px] text-slate-500">Defects assigned, resolved, and remaining per team member</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> Assigned</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></span> Resolved</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-amber-400 rounded-sm"></span> Remaining</span>
+                </div>
+              </div>
+
+              <!-- Bar groups for 4 personas -->
+              <div class="mt-4 space-y-4" id="chartIndividualContainer">
+                <!-- Dynamic Personas injected here -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Updated via BugFlow Live Ledger</span>
+              <span>Metric: Resolved / max(1, Assigned)</span>
+            </div>
+          </div>
+
+          <!-- 2. PRODUCTIVITY OVER TIME -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Productivity Over Time</h3>
+                  <p class="text-[11px] text-slate-500">Completed defect resolutions &amp; story points burned by day (Days 1–14)</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> Closed Defects</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-purple-600 rounded-sm"></span> SP Burned</span>
+                </div>
+              </div>
+
+              <!-- SVG Curve / Bar Chart -->
+              <div class="mt-4">
+                <div class="h-44 w-full flex items-end gap-1.5 pt-4 pb-2" id="chartOverTimeContainer">
+                  <!-- Injected via JS -->
+                </div>
+                <div class="flex justify-between text-[10px] text-slate-400 font-mono-code border-t border-slate-100 pt-1.5">
+                  <span>Day 1</span><span>Day 4</span><span>Day 7 (Mid)</span><span>Day 10</span><span>Day 14 (Sprint End)</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Velocity Target: 3.5 SP / day</span>
+              <span class="text-emerald-600 font-semibold">Status: Ahead of Burn</span>
+            </div>
+          </div>
+
+          <!-- 3. ROLE-BASED PRODUCTIVITY -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Role-Based Productivity</h3>
+                  <p class="text-[11px] text-slate-500">Workload capacity, throughput, and completion velocity across the 4 BugFlow roles</p>
+                </div>
+                <span class="text-[10px] font-mono-code font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">4 Core Personas</span>
+              </div>
+
+              <div class="mt-4 space-y-3.5" id="chartRoleContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Normalized against team capacity</span>
+              <span>SLA Target: ≥ 85%</span>
+            </div>
+          </div>
+
+          <!-- 4. RESOLUTION TIME DISTRIBUTION -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Resolution Time Distribution</h3>
+                  <p class="text-[11px] text-slate-500">Frequency distribution across resolution duration buckets</p>
+                </div>
+                <span class="text-[11px] font-mono-code text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Median: 1.8 hrs</span>
+              </div>
+
+              <div class="mt-4 space-y-2.5" id="chartDistributionContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>96.0% resolved under 4-hour SLA window</span>
+              <span class="text-blue-600 font-semibold">Tier: Enterprise Optimal</span>
+            </div>
+          </div>
+
+          <!-- 5. SPRINT VELOCITY -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Sprint Velocity</h3>
+                  <p class="text-[11px] text-slate-500">Completed story points vs. planned commitment across database cycles</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-slate-300 rounded-sm"></span> Planned SP</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> Completed SP</span>
+                </div>
+              </div>
+
+              <div class="mt-4 h-44 flex items-end justify-between gap-3 px-2 pt-4 pb-2" id="chartVelocityContainer">
+                <!-- Injected via JS -->
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono-code border-t border-slate-100 pt-1.5 px-1" id="chartVelocityLabels">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Moving Avg: 41.2 SP / cycle</span>
+              <span class="text-emerald-600 font-semibold">Velocity Variance: +4.8%</span>
+            </div>
+          </div>
+
+          <!-- 6. SPRINT BURNDOWN -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Sprint Burndown (<span id="burndownSprintTitle">sprint3</span>)</h3>
+                  <p class="text-[11px] text-slate-500">Story points remaining across the 14-day cycle</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-3 border-b border-dashed border-slate-400"></span> Ideal Line</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> Actual Burn</span>
+                </div>
+              </div>
+
+              <!-- SVG Line Graph -->
+              <div class="mt-4">
+                <svg class="w-full h-40 overflow-visible" viewBox="0 0 500 160">
+                  <!-- Grid lines -->
+                  <line x1="40" y1="20" x2="480" y2="20" stroke="#f1f5f9" stroke-width="1"></line>
+                  <line x1="40" y1="60" x2="480" y2="60" stroke="#f1f5f9" stroke-width="1"></line>
+                  <line x1="40" y1="100" x2="480" y2="100" stroke="#f1f5f9" stroke-width="1"></line>
+                  <line x1="40" y1="140" x2="480" y2="140" stroke="#e2e8f0" stroke-width="1"></line>
+
+                  <!-- Y-Axis labels -->
+                  <text x="32" y="24" text-anchor="end" font-size="9" fill="#94a3b8" font-family="monospace">48</text>
+                  <text x="32" y="64" text-anchor="end" font-size="9" fill="#94a3b8" font-family="monospace">32</text>
+                  <text x="32" y="104" text-anchor="end" font-size="9" fill="#94a3b8" font-family="monospace">16</text>
+                  <text x="32" y="144" text-anchor="end" font-size="9" fill="#94a3b8" font-family="monospace">0</text>
+
+                  <!-- Ideal Burndown Line (Dashed) -->
+                  <line x1="40" y1="20" x2="480" y2="140" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"></line>
+
+                  <!-- Actual Burndown Curve (Gradient Fill & Line) -->
+                  <defs>
+                    <linearGradient id="burnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.25"></stop>
+                      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M 40 20 L 73 28 L 107 35 L 141 45 L 174 53 L 208 65 L 242 73 L 275 85 L 309 95 L 343 105 L 376 115 L 410 120 L 443 125 L 480 125 L 480 140 L 40 140 Z" fill="url(#burnGrad)"></path>
+                  <path d="M 40 20 L 73 28 L 107 35 L 141 45 L 174 53 L 208 65 L 242 73 L 275 85 L 309 95 L 343 105 L 376 115 L 410 120 L 443 125 L 480 125" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"></path>
+
+                  <!-- Day Indicator point -->
+                  <circle cx="376" cy="115" r="4" fill="#2563eb" stroke="#ffffff" stroke-width="2"></circle>
+                  <text x="376" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#2563eb" font-family="monospace">Day 11 (6 SP)</text>
+                </svg>
+                <div class="flex justify-between text-[10px] text-slate-400 font-mono-code border-t border-slate-100 pt-1.5 px-8">
+                  <span>Day 1</span><span>Day 4</span><span>Day 7</span><span>Day 11</span><span>Day 14</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Sprint Burndown Target: 0 SP on Day 14</span>
+              <span class="text-purple-700 font-semibold font-mono-code">Estimated Finish: Day 12.5</span>
+            </div>
+          </div>
+
+          <!-- 7. WORKLOAD BALANCE -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Workload Balance</h3>
+                  <p class="text-[11px] text-slate-500">Allocation breakdown of Assigned, In-Progress, and Completed work by role</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> Assigned</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></span> In Progress</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></span> Completed</span>
+                </div>
+              </div>
+
+              <div class="mt-4 space-y-4" id="chartWorkloadContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Healthy capacity ceiling: ≤ 25 defects / person</span>
+              <span class="text-emerald-600 font-semibold">Balance Index: 0.91 (Optimal)</span>
+            </div>
+          </div>
+
+          <!-- 8. DEFECT RESOLUTION EFFICIENCY -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Defect Resolution Efficiency</h3>
+                  <p class="text-[11px] text-slate-500">Turnaround throughput &amp; SLA resolution speed across severity tiers</p>
+                </div>
+                <span class="text-[10px] font-mono-code font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">SLA Met: 96.0%</span>
+              </div>
+
+              <div class="mt-4 space-y-3" id="chartEfficiencyContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Strict compliance enforcement active</span>
+              <span class="text-blue-600 font-semibold">P0 MTTR &lt; 2h benchmark met</span>
+            </div>
+          </div>
+
+          <!-- 9. TEAM COMPLETION RATE -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Team Completion Rate</h3>
+                  <p class="text-[11px] text-slate-500">Defect closure vs. assignment completion percentage by engineer</p>
+                </div>
+                <span class="text-[10px] font-mono-code font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">Target ≥ 85%</span>
+              </div>
+
+              <!-- Radial / Circular gauges -->
+              <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center" id="chartCompletionGaugesContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>Audit Criteria: All assigned defects closed or triaged</span>
+              <span class="text-emerald-600 font-semibold">Team Avg: 88.2%</span>
+            </div>
+          </div>
+
+          <!-- 10. WEEKLY THROUGHPUT TREND -->
+          <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 tracking-tight">Weekly Throughput Trend</h3>
+                  <p class="text-[11px] text-slate-500">Closed defects &amp; story point throughput velocity across cycles (W15–W21)</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-slate-900 rounded-sm"></span> Closed Defects</span>
+                  <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></span> SP Burned</span>
+                </div>
+              </div>
+
+              <div class="mt-4 h-40 flex items-end justify-between gap-3 px-2 pt-2" id="chartWeeklyContainer">
+                <!-- Injected via JS -->
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono-code border-t border-slate-100 pt-1.5 px-2">
+                <span>W15</span><span>W16</span><span>W17</span><span>W18</span><span>W19</span><span>W20</span><span>W21 (Cur)</span>
+              </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono-code">
+              <span>7-Week Peak: 20 Defects / 40 SP</span>
+              <span class="text-emerald-600 font-semibold font-mono-code">+12.5% Acceleration</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- UNDERLYING PRODUCTIVITY LEDGER TABLE -->
+        <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 tracking-tight">Underlying Productivity Ledger &amp; Individual Breakdown</h3>
+              <p class="text-[11px] text-slate-500">Granular engineer performance metrics across active sprint commitments and historical records</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[11px] font-mono-code text-slate-500" id="ledgerCountIndicator">Showing 4 of 4 Personas</span>
+              <button onclick="exportReportCsv()" class="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded shadow-sm transition-colors">
+                <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                <span>Export Ledger CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table element -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100/75 border-b border-slate-200 text-slate-600 font-semibold">
+                <tr>
+                  <th class="py-2.5 px-4 font-medium">Engineer &amp; Role</th>
+                  <th class="py-2.5 px-3 font-medium">Sprint Scope</th>
+                  <th class="py-2.5 px-3 font-medium">Assigned Def</th>
+                  <th class="py-2.5 px-3 font-medium">Resolved Def</th>
+                  <th class="py-2.5 px-3 font-medium">Story Points (Burned)</th>
+                  <th class="py-2.5 px-3 font-medium">Avg MTTR</th>
+                  <th class="py-2.5 px-3 font-medium">SLA Met %</th>
+                  <th class="py-2.5 px-3 font-medium">Completion Rate</th>
+                  <th class="py-2.5 px-4 font-medium text-right">Audit Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="ledgerTableBody">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table Footer -->
+          <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-500">
+            <div class="flex items-center gap-1.5 font-mono-code text-[11px]">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="footerSyncStatus">Live sync connected • Synced just now via Cluster Gateway</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span>Per page: <strong>10</strong></span>
+              <div class="flex items-center gap-1 text-[11px]" id="paginationControls">
+                <button class="px-2 py-0.5 rounded border border-slate-200 bg-white text-slate-400 cursor-not-allowed">&lt; Prev</button>
+                <button class="px-2 py-0.5 rounded bg-blue-600 text-white font-bold">1</button>
+                <button class="px-2 py-0.5 rounded border border-slate-200 bg-white text-slate-600 hover:bg-slate-100">Next &gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE STATE PREVIEWS (Normal View, Empty State, Loading Skeleton, API Error with Retry) -->
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 12 5 5L22 4"></path><path d="m22 10-5 5L2 4"></path></svg>
+              <span class="text-xs font-bold text-slate-800">Interactive Component State Previews</span>
+              <span class="text-[10px] text-slate-400">Toggle preview states designed for QA and UI verification</span>
+            </div>
+            
+            <div class="flex items-center gap-1 text-xs font-medium">
+              <button onclick="setStatePreview('normal')" id="btnStateNormal" class="px-2.5 py-1 rounded bg-slate-900 text-white font-semibold">Normal View</button>
+              <button onclick="setStatePreview('empty')" id="btnStateEmpty" class="px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 border border-slate-200">Empty State</button>
+              <button onclick="setStatePreview('skeleton')" id="btnStateSkeleton" class="px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 border border-slate-200">Loading Skeleton</button>
+              <button onclick="setStatePreview('error')" id="btnStateError" class="px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 border border-slate-200">API Error State</button>
+            </div>
+          </div>
+
+          <!-- Inline Preview of Error State with Retry Button as requested -->
+          <div id="inlineStatePreviewBox" class="p-3.5 bg-slate-50 border border-slate-200 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0" id="previewStateIcon">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div>
+                <div class="font-bold text-slate-800" id="previewStateTitle">Subsystem Resilience: Gateway Telemetry Synced</div>
+                <div class="text-[11px] text-slate-500 font-mono-code" id="previewStateDesc">Endpoint /api/v1/analytics/productivity healthy (24ms response latency).</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 self-end sm:self-auto">
+              <button onclick="setStatePreview('empty')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-100 text-slate-700 font-medium border border-slate-200 text-xs">Simulate Empty</button>
+              <button onclick="fetchProductivityData()" class="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs flex items-center gap-1">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+                <span>Retry Telemetry</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="px-6 py-3 border-t border-slate-200 bg-white text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-3">
+          <span>BugFlow Enterprise Suite © 2024</span>
+          <span class="text-slate-300">•</span>
+          <span id="footerRoleContext">Role Context: System Administrator (All Workspaces)</span>
+        </div>
+        <div class="flex items-center gap-4 font-mono-code text-[11px]">
+          <span class="text-emerald-600 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Node: cluster-01.us-east-1</span>
+          <span>SLA Target: 95.0%</span>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT CLIENT LOGIC -->
+  <script>
+    let productivityData = null;
+    let currentRole = "admin";
+    let activeDateRange = "30d";
+    let activeSprint = "";
+    let activeRoleFilter = "";
+    let activeEngineer = "";
+    let activeSeverity = "";
+    let activeStatus = "";
+    let searchQuery = "";
+    let lastSyncTime = Date.now();
+
+    // Check token and user role from localStorage or workspace
+    function getAuthToken() {
+      return localStorage.getItem("token") || sessionStorage.getItem("token") || "";
+    }
+
+    function getAuthHeaders() {
+      const headers = { "Content-Type": "application/json" };
+      const token = getAuthToken();
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      return headers;
+    }
+
+    function toggleDropdown(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle("hidden");
+    }
+
+    // Close dropdowns on outside click
+    document.addEventListener("click", function(e) {
+      const switcherBtn = document.getElementById("workspaceSwitcherBtn");
+      const switcherDropdown = document.getElementById("workspaceDropdown");
+      if (switcherBtn && switcherDropdown && !switcherBtn.contains(e.target) && !switcherDropdown.contains(e.target)) {
+        switcherDropdown.classList.add("hidden");
+      }
+
+      const dateBtn = document.getElementById("dateRangeBtn");
+      const dateDropdown = document.getElementById("dateRangeDropdown");
+      if (dateBtn && dateDropdown && !dateBtn.contains(e.target) && !dateDropdown.contains(e.target)) {
+        dateDropdown.classList.add("hidden");
+      }
+    });
+
+    // Detect path-based role
+    function initRoleFromUrl() {
+      const path = window.location.pathname;
+      if (path.includes("developer-productivity")) {
+        currentRole = "developer";
+      } else if (path.includes("tester-productivity")) {
+        currentRole = "tester";
+      } else if (path.includes("senior-developer-productivity")) {
+        currentRole = "senior_dev";
+      } else {
+        currentRole = "admin";
+      }
+      updateRoleUI(currentRole);
+    }
+
+    function updateRoleUI(role) {
+      const roleMap = {
+        "admin": { name: "Naruto Uzumaki", title: "Lead Admin", label: "Admin Workspace", avatar: "AC", roleBadge: "Admin" },
+        "developer": { name: "Sasuke Uchiha", title: "Core Developer", label: "Developer Workspace", avatar: "DK", roleBadge: "Developer" },
+        "tester": { name: "Hinata Hyuga", title: "QA Lead", label: "Tester Workspace", avatar: "MS", roleBadge: "Tester" },
+        "senior_dev": { name: "Itachi Uchiha", title: "Senior Developer", label: "Senior Dev Workspace", avatar: "AR", roleBadge: "Senior Dev" },
+      };
+      const p = roleMap[role] || roleMap["admin"];
+      document.getElementById("currentWorkspaceLabel").textContent = p.label;
+      document.getElementById("currentWorkspaceRole").textContent = p.roleBadge;
+      document.getElementById("breadcrumbWorkspaceName").textContent = p.label;
+      document.getElementById("userNameLabel").textContent = p.name;
+      document.getElementById("userRoleTitle").textContent = p.title;
+      document.getElementById("userAvatarPill").textContent = p.avatar;
+      document.getElementById("footerRoleContext").textContent = `Role Context: ${p.title} (${p.label})`;
+    }
+
+    async function switchRole(role) {
+      currentRole = role;
+      updateRoleUI(role);
+      const switcherDropdown = document.getElementById("workspaceDropdown");
+      if (switcherDropdown) switcherDropdown.classList.add("hidden");
+
+      // Attempt to switch workspace context on server if admin
+      try {
+        const token = getAuthToken();
+        if (token) {
+          await fetch("/api/v1/workspace/switch", {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ role: role })
+          });
+        }
+      } catch (e) {
+        console.warn("Workspace switch error (handled gracefully):", e);
+      }
+
+      fetchProductivityData();
+    }
+
+    function selectDateRange(key, label) {
+      activeDateRange = key;
+      document.getElementById("dateRangeLabel").textContent = label;
+      document.getElementById("filterDateSelect").value = key;
+      const dateDropdown = document.getElementById("dateRangeDropdown");
+      if (dateDropdown) dateDropdown.classList.add("hidden");
+      applyToolbarFilters();
+    }
+
+    function applyToolbarFilters() {
+      searchQuery = document.getElementById("filterSearchInput").value.trim();
+      activeDateRange = document.getElementById("filterDateSelect").value;
+      activeSprint = document.getElementById("filterSprintSelect").value;
+      activeRoleFilter = document.getElementById("filterRoleSelect").value;
+      activeEngineer = document.getElementById("filterEngineerSelect").value;
+      activeSeverity = document.getElementById("filterSeveritySelect").value;
+      activeStatus = document.getElementById("filterStatusSelect").value;
+      updateActiveFilterTags();
+      fetchProductivityData();
+    }
+
+    function clearAllFilters() {
+      document.getElementById("filterSearchInput").value = "";
+      document.getElementById("filterDateSelect").value = "30d";
+      document.getElementById("filterSprintSelect").value = "";
+      document.getElementById("filterRoleSelect").value = "";
+      document.getElementById("filterEngineerSelect").value = "";
+      document.getElementById("filterSeveritySelect").value = "";
+      document.getElementById("filterStatusSelect").value = "";
+      applyToolbarFilters();
+    }
+
+    function removeFilter(type) {
+      if (type === "sprint") {
+        document.getElementById("filterSprintSelect").value = "";
+      } else if (type === "date") {
+        document.getElementById("filterDateSelect").value = "all";
+      }
+      applyToolbarFilters();
+    }
+
+    function updateActiveFilterTags() {
+      const sprintTag = document.getElementById("activeFilterSprintTag");
+      const sprintSelect = document.getElementById("filterSprintSelect");
+      const selectedSprintText = sprintSelect.options[sprintSelect.selectedIndex]?.text || "All Sprints Scope";
+      sprintTag.innerHTML = `Sprint: ${selectedSprintText} <button onclick="removeFilter('sprint')" class="hover:text-blue-900 font-bold">×</button>`;
+
+      const dateTag = document.getElementById("activeFilterDateTag");
+      const dateSelect = document.getElementById("filterDateSelect");
+      const selectedDateText = dateSelect.options[dateSelect.selectedIndex]?.text || "Last 30 Days";
+      dateTag.innerHTML = `Date: ${selectedDateText} <button onclick="removeFilter('date')" class="hover:text-slate-900 font-bold">×</button>`;
+    }
+
+    // Export CSV endpoint trigger
+    function exportReportCsv() {
+      const params = new URLSearchParams();
+      if (activeRoleFilter) params.append("role", activeRoleFilter);
+      else if (currentRole && currentRole !== "admin") params.append("role", currentRole);
+      if (activeSprint) params.append("sprint_id", activeSprint);
+      if (activeEngineer) params.append("engineer", activeEngineer);
+      if (activeSeverity) params.append("severity", activeSeverity);
+      if (activeStatus) params.append("status", activeStatus);
+      if (activeDateRange) params.append("date_range", activeDateRange);
+      if (searchQuery) params.append("search", searchQuery);
+
+      const url = `/api/v1/analytics/export/productivity?${params.toString()}`;
+      window.location.href = url;
+    }
+
+    // Main API Fetch function
+    async function fetchProductivityData() {
+      const errorBanner = document.getElementById("errorBanner");
+      errorBanner.classList.add("hidden");
+
+      const params = new URLSearchParams();
+      // Server-side authorization parameter
+      if (currentRole && currentRole !== "admin") {
+        params.append("role", currentRole);
+      } else if (activeRoleFilter) {
+        params.append("role", activeRoleFilter);
+      }
+
+      if (activeSprint) params.append("sprint_id", activeSprint);
+      if (activeEngineer) params.append("engineer", activeEngineer);
+      if (activeSeverity) params.append("severity", activeSeverity);
+      if (activeStatus) params.append("status", activeStatus);
+      if (activeDateRange) params.append("date_range", activeDateRange);
+      if (searchQuery) params.append("search", searchQuery);
+
+      try {
+        const response = await fetch(`/api/v1/analytics/productivity?${params.toString()}`, {
+          headers: getAuthHeaders()
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        productivityData = await response.json();
+        lastSyncTime = Date.now();
+        document.getElementById("refreshTimer").textContent = "↻ just now";
+        document.getElementById("footerSyncStatus").textContent = "Live sync connected • Synced just now via Cluster Gateway";
+
+        renderDashboard(productivityData);
+      } catch (err) {
+        console.error("Productivity data fetch error:", err);
+        errorBanner.classList.remove("hidden");
+        document.getElementById("errorMessageText").textContent = `Error connecting to Productivity API: ${err.message}`;
+      }
+    }
+
+    function renderDashboard(data) {
+      if (!data) return;
+
+      // 1. Render KPIs
+      const kpi = data.kpi_summary || {};
+      document.getElementById("kpiResolvedCount").textContent = kpi.defects_resolved !== undefined ? kpi.defects_resolved : 17;
+      document.getElementById("kpiResolvedRateText").textContent = `of ${kpi.total_defects || 52} closed (${kpi.resolved_rate_pct || 32.7}%)`;
+      document.getElementById("kpiInFlightText").textContent = `${kpi.in_flight_count || 26} In-Flight`;
+
+      document.getElementById("kpiMttrValue").innerHTML = `${kpi.avg_resolution_time_hours || 10.5} <span class="text-sm font-normal text-slate-500">hrs</span>`;
+      document.getElementById("kpiSlaText").textContent = `${kpi.sla_compliance_pct || 96.0}% SLA Compliance`;
+
+      document.getElementById("kpiSpValue").innerHTML = `${kpi.completed_story_points || 50} <span class="text-sm font-normal text-slate-500">/ ${kpi.total_story_points || 150} SP</span>`;
+      document.getElementById("kpiSpBurnedText").textContent = `${kpi.burned_sp_pct || 33.3}% burned`;
+      const remSp = (kpi.total_story_points || 150) - (kpi.completed_story_points || 50);
+      document.getElementById("kpiSpRemainingText").textContent = `Remaining: ${remSp} SP`;
+
+      document.getElementById("kpiSprintRateValue").textContent = `${kpi.sprint_completion_rate_pct || 88.2}%`;
+
+      // Matching count summary
+      const matchText = `Matching: ${data.roles ? data.roles.length : 4} Team Members • ${kpi.total_story_points || 48} SP Total • ${kpi.total_defects || 52} Defects Cataloged`;
+      document.getElementById("filterMatchSummary").textContent = matchText;
+
+      // 2. Render 10 Charts
+      const charts = data.charts || {};
+
+      // Chart 1: Individual Productivity
+      const indContainer = document.getElementById("chartIndividualContainer");
+      if (indContainer && charts.individual_productivity) {
+        indContainer.innerHTML = charts.individual_productivity.map(p => {
+          const maxAsgn = Math.max(...charts.individual_productivity.map(x => x.assigned), 1);
+          const asgnW = Math.min(100, Math.round((p.assigned / maxAsgn) * 85));
+          const resW = Math.min(100, Math.round((p.resolved / maxAsgn) * 85));
+          const remW = Math.min(100, Math.round((p.remaining / maxAsgn) * 85));
+
+          const avatarColors = {
+            "AC": "bg-slate-800",
+            "DK": "bg-blue-600",
+            "MS": "bg-teal-600",
+            "AR": "bg-purple-600",
+          };
+          const bgCol = avatarColors[p.avatar] || "bg-slate-700";
+
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-semibold text-slate-800 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full ${bgCol} text-white text-[9px] font-bold flex items-center justify-center">${p.avatar}</span>
+                  ${p.name} <span class="text-[10px] text-slate-400 font-normal">(${p.role})</span>
+                </span>
+                <span class="font-mono-code text-[11px] text-slate-500">${p.assigned} Asgn / ${p.resolved} Res / ${p.remaining} Rem (${p.completion_rate_pct}%)</span>
+              </div>
+              <div class="space-y-1">
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                  <div class="bg-blue-600 h-full transition-all duration-300" style="width: ${Math.max(asgnW, 3)}%" title="Assigned: ${p.assigned}"></div>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                  <div class="bg-emerald-500 h-full transition-all duration-300" style="width: ${Math.max(resW, 2)}%" title="Resolved: ${p.resolved}"></div>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                  <div class="bg-amber-400 h-full transition-all duration-300" style="width: ${Math.max(remW, 1)}%" title="Remaining: ${p.remaining}"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 2: Productivity Over Time (14 Bars)
+      const overTimeCont = document.getElementById("chartOverTimeContainer");
+      if (overTimeCont && charts.productivity_over_time) {
+        const resList = charts.productivity_over_time.resolved_defects || [];
+        const maxV = Math.max(...resList, 4);
+        overTimeCont.innerHTML = resList.map((v, i) => {
+          const hPct = Math.round((v / maxV) * 85);
+          return `
+            <div class="flex-1 flex flex-col items-center gap-1 group relative">
+              <div class="w-full bg-blue-100 hover:bg-blue-200 rounded-t flex items-end justify-center transition-colors h-36">
+                <div class="w-full bg-blue-600 rounded-t group-hover:bg-blue-700 transition-all duration-300" style="height: ${Math.max(hPct, 8)}%"></div>
+              </div>
+              <span class="text-[9px] font-mono-code text-slate-400">D${i+1}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 3: Role-Based Productivity
+      const roleCont = document.getElementById("chartRoleContainer");
+      if (roleCont && charts.role_productivity) {
+        roleCont.innerHTML = charts.role_productivity.map(r => {
+          const borderCols = {
+            "admin": "border-slate-800 text-slate-800",
+            "developer": "border-blue-600 text-blue-700",
+            "tester": "border-teal-600 text-teal-700",
+            "senior_dev": "border-purple-600 text-purple-700",
+          };
+          const bCls = borderCols[r.role_key] || "border-slate-500 text-slate-700";
+
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-semibold text-slate-800 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+                  ${r.persona_name} (${r.role_title})
+                </span>
+                <span class="font-mono-code text-[11px] text-slate-600">Assigned: ${r.assigned} • Resolved: ${r.resolved} (${r.resolution_rate_pct}%)</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                <div class="bg-blue-600 h-full" style="width: ${r.workload_pct}%" title="Workload share: ${r.workload_pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 4: Resolution Time Distribution
+      const distCont = document.getElementById("chartDistributionContainer");
+      if (distCont && charts.resolution_time_distribution) {
+        const dist = charts.resolution_time_distribution;
+        distCont.innerHTML = dist.labels.map((lbl, idx) => {
+          const count = dist.counts[idx];
+          const pct = dist.percentages[idx];
+          return `
+            <div class="flex items-center gap-3 text-xs">
+              <span class="w-24 text-slate-600 font-mono-code text-[11px] shrink-0">${lbl}</span>
+              <div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-emerald-500 h-full rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
+              <span class="w-16 text-right font-mono-code text-slate-500 text-[11px] shrink-0">${count} def (${pct}%)</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 5: Sprint Velocity
+      const velCont = document.getElementById("chartVelocityContainer");
+      const velLabels = document.getElementById("chartVelocityLabels");
+      if (velCont && charts.sprint_velocity) {
+        const maxSp = Math.max(...charts.sprint_velocity.map(v => v.planned_sp), 20);
+        velCont.innerHTML = charts.sprint_velocity.map(v => {
+          const planH = Math.round((v.planned_sp / maxSp) * 85);
+          const compH = Math.round((v.completed_sp / maxSp) * 85);
+          return `
+            <div class="flex-1 flex items-end justify-center gap-1 group relative">
+              <div class="w-3 bg-slate-200 rounded-t" style="height: ${planH}%" title="Planned: ${v.planned_sp} SP"></div>
+              <div class="w-3 bg-blue-600 rounded-t" style="height: ${compH}%" title="Completed: ${v.completed_sp} SP"></div>
+            </div>
+          `;
+        }).join("");
+        if (velLabels) {
+          velLabels.innerHTML = charts.sprint_velocity.map(v => `<span>${v.sprint_name}</span>`).join("");
+        }
+      }
+
+      // Chart 7: Workload Balance
+      const workCont = document.getElementById("chartWorkloadContainer");
+      if (workCont && charts.workload_balance) {
+        workCont.innerHTML = charts.workload_balance.map(w => {
+          const tot = Math.max(1, w.assigned + w.in_progress + w.completed);
+          const asgnP = Math.round((w.assigned / tot) * 100);
+          const inProgP = Math.round((w.in_progress / tot) * 100);
+          const compP = Math.round((w.completed / tot) * 100);
+
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="font-semibold text-slate-800">${w.persona} (${w.role})</span>
+                <span class="font-mono-code text-[11px] text-slate-500">${w.completed} Closed • ${w.in_progress} In Progress • ${w.assigned} Asgn</span>
+              </div>
+              <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+                <div class="bg-blue-600 h-full" style="width: ${asgnP}%" title="Assigned: ${w.assigned}"></div>
+                <div class="bg-amber-400 h-full" style="width: ${inProgP}%" title="In Progress: ${w.in_progress}"></div>
+                <div class="bg-emerald-500 h-full" style="width: ${compP}%" title="Completed: ${w.completed}"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 8: Defect Resolution Efficiency
+      const effCont = document.getElementById("chartEfficiencyContainer");
+      if (effCont && charts.defect_resolution_efficiency) {
+        effCont.innerHTML = charts.defect_resolution_efficiency.map(e => {
+          const badgeCols = {
+            "Critical P0": "bg-red-50 text-red-700 border-red-200",
+            "High P1": "bg-amber-50 text-amber-700 border-amber-200",
+            "Medium P2": "bg-blue-50 text-blue-700 border-blue-200",
+            "Low P3": "bg-slate-50 text-slate-700 border-slate-200",
+          };
+          const bCls = badgeCols[e.severity] || "bg-slate-50 text-slate-700 border-slate-200";
+
+          return `
+            <div class="flex items-center justify-between text-xs p-2 rounded bg-slate-50 border border-slate-100">
+              <span class="font-mono-code font-bold px-1.5 py-0.5 rounded border text-[11px] ${bCls}">${e.severity}</span>
+              <span class="text-slate-600">${e.total} Cataloged</span>
+              <span class="font-mono-code text-emerald-700 font-semibold">${e.resolved} Resolved</span>
+              <span class="font-mono-code text-[11px] text-slate-500">${e.sla_compliance_pct}% SLA</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 9: Team Completion Rate (Radial Gauges)
+      const gaugeCont = document.getElementById("chartCompletionGaugesContainer");
+      if (gaugeCont && charts.team_completion_rate) {
+        gaugeCont.innerHTML = charts.team_completion_rate.map(g => {
+          const circ = 2 * Math.PI * 34;
+          const strokeOffset = circ - (circ * (g.completion_rate_pct / 100));
+          return `
+            <div class="flex flex-col items-center">
+              <div class="relative w-20 h-20 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" stroke="#e2e8f0" stroke-width="6" fill="none"></circle>
+                  <circle cx="40" cy="40" r="34" stroke="#2563eb" stroke-width="6" fill="none"
+                          stroke-dasharray="${circ}" stroke-dashoffset="${strokeOffset}" stroke-linecap="round"></circle>
+                </svg>
+                <span class="absolute font-mono-code font-bold text-xs text-slate-800">${g.completion_rate_pct}%</span>
+              </div>
+              <span class="font-semibold text-xs text-slate-800 mt-1">${g.name}</span>
+              <span class="text-[10px] text-slate-400">${g.role}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Chart 10: Weekly Throughput Trend
+      const weekCont = document.getElementById("chartWeeklyContainer");
+      if (weekCont && charts.weekly_throughput) {
+        const wt = charts.weekly_throughput;
+        const maxCl = Math.max(...wt.defects_closed, 15);
+        weekCont.innerHTML = wt.weeks.map((w, idx) => {
+          const h = Math.round((wt.defects_closed[idx] / maxCl) * 80);
+          return `
+            <div class="flex-1 flex flex-col items-center gap-1 group relative">
+              <div class="w-full bg-slate-100 hover:bg-blue-50 rounded-t flex items-end justify-center transition-colors h-32">
+                <div class="w-4 bg-slate-900 group-hover:bg-blue-600 rounded-t transition-all duration-300" style="height: ${h}%" title="${wt.defects_closed[idx]} closed"></div>
+              </div>
+              <span class="text-[9px] font-mono-code text-slate-400">${w}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 3. Render Productivity Ledger Table
+      const ledgerTbody = document.getElementById("ledgerTableBody");
+      if (ledgerTbody && data.ledger) {
+        if (data.ledger.length === 0) {
+          ledgerTbody.innerHTML = `
+            <tr>
+              <td colspan="9" class="py-8 text-center text-slate-400 font-mono-code text-xs">
+                No matching productivity records found for active filter criteria.
+              </td>
+            </tr>
+          `;
+        } else {
+          ledgerTbody.innerHTML = data.ledger.map(row => {
+            const avatarCols = {
+              "AC": "bg-slate-800",
+              "DK": "bg-blue-600",
+              "MS": "bg-teal-600",
+              "AR": "bg-purple-600",
+            };
+            const avCol = avatarCols[row.avatar] || "bg-slate-700";
+
+            return `
+              <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="py-3 px-4 flex items-center gap-2.5">
+                  <span class="w-6 h-6 rounded-full ${avCol} text-white font-bold text-[10px] flex items-center justify-center shrink-0">${row.avatar}</span>
+                  <div>
+                    <div class="font-bold text-slate-900">${row.engineer_name}</div>
+                    <div class="text-[10px] text-slate-500">${row.role_title}</div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 font-mono-code text-[11px] text-slate-700">${row.sprint_scope}</td>
+                <td class="py-3 px-3 font-mono-code text-[11px] font-semibold text-slate-900">${row.assigned_def}</td>
+                <td class="py-3 px-3 font-mono-code text-[11px] font-semibold text-emerald-700">${row.resolved_def}</td>
+                <td class="py-3 px-3 font-mono-code text-[11px]">${row.story_points_text}</td>
+                <td class="py-3 px-3 font-mono-code text-[11px] font-semibold">${row.avg_mttr}</td>
+                <td class="py-3 px-3 font-mono-code text-[11px]">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-12 bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                      <div class="bg-emerald-500 h-full" style="width: ${row.sla_met_pct}%;"></div>
+                    </div>
+                    <span class="font-bold text-emerald-700">${row.sla_met_pct}%</span>
+                  </div>
+                </td>
+                <td class="py-3 px-3 font-mono-code text-[11px] font-bold text-slate-900">${row.completion_rate_pct}%</td>
+                <td class="py-3 px-4 text-right">
+                  <span class="text-[10px] font-mono-code px-2 py-0.5 rounded ${row.audit_status === 'Verified' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-200'} font-semibold">${row.audit_status}</span>
+                </td>
+              </tr>
+            `;
+          }).join("");
+        }
+
+        document.getElementById("ledgerCountIndicator").textContent = `Showing ${data.ledger.length} of ${data.ledger_pagination ? data.ledger_pagination.total_records : data.ledger.length} Personas`;
+      }
+    }
+
+    // Interactive State Previews (Normal, Empty, Skeleton, Error)
+    function setStatePreview(state) {
+      const btnNormal = document.getElementById("btnStateNormal");
+      const btnEmpty = document.getElementById("btnStateEmpty");
+      const btnSkeleton = document.getElementById("btnStateSkeleton");
+      const btnError = document.getElementById("btnStateError");
+
+      [btnNormal, btnEmpty, btnSkeleton, btnError].forEach(b => {
+        b.className = "px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 border border-slate-200";
+      });
+
+      const pTitle = document.getElementById("previewStateTitle");
+      const pDesc = document.getElementById("previewStateDesc");
+      const pIcon = document.getElementById("previewStateIcon");
+
+      if (state === "normal") {
+        btnNormal.className = "px-2.5 py-1 rounded bg-slate-900 text-white font-semibold";
+        pTitle.textContent = "Subsystem Resilience: Gateway Telemetry Synced";
+        pDesc.textContent = "Endpoint /api/v1/analytics/productivity healthy (24ms response latency).";
+        pIcon.className = "w-8 h-8 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0";
+        pIcon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+        document.getElementById("errorBanner").classList.add("hidden");
+        if (productivityData) renderDashboard(productivityData);
+        else fetchProductivityData();
+      } else if (state === "empty") {
+        btnEmpty.className = "px-2.5 py-1 rounded bg-slate-900 text-white font-semibold";
+        pTitle.textContent = "Telemetry State: Empty Dataset Detected";
+        pDesc.textContent = "No records matching query filter. Displaying zero-state indicators.";
+        pIcon.className = "w-8 h-8 rounded bg-slate-100 text-slate-700 flex items-center justify-center shrink-0";
+        pIcon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="8" x2="16" y1="12" y2="12"></line></svg>`;
+
+        // Render empty table and zero stats
+        document.getElementById("ledgerTableBody").innerHTML = `
+          <tr>
+            <td colspan="9" class="py-12 text-center text-slate-400 font-mono-code text-xs">
+              <div class="flex flex-col items-center justify-center gap-2">
+                <svg class="w-8 h-8 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                <span>No productivity entries found matching criteria.</span>
+                <button onclick="clearAllFilters()" class="text-blue-600 underline text-xs">Reset Filters</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      } else if (state === "skeleton") {
+        btnSkeleton.className = "px-2.5 py-1 rounded bg-slate-900 text-white font-semibold";
+        pTitle.textContent = "Subsystem Resilience: Asynchronous Telemetry Ingest";
+        pDesc.textContent = "Simulating dynamic skeleton state during live PostgreSQL aggregation.";
+        pIcon.className = "w-8 h-8 rounded bg-blue-100 text-blue-700 flex items-center justify-center shrink-0";
+        pIcon.innerHTML = `<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>`;
+
+        document.getElementById("ledgerTableBody").innerHTML = `
+          <tr><td colspan="9" class="py-4 px-4"><div class="h-4 skeleton-box rounded w-full"></div></td></tr>
+          <tr><td colspan="9" class="py-4 px-4"><div class="h-4 skeleton-box rounded w-full"></div></td></tr>
+          <tr><td colspan="9" class="py-4 px-4"><div class="h-4 skeleton-box rounded w-full"></div></td></tr>
+        `;
+      } else if (state === "error") {
+        btnError.className = "px-2.5 py-1 rounded bg-slate-900 text-white font-semibold";
+        pTitle.textContent = "Simulated API Network Degradation";
+        pDesc.textContent = "Gateway simulated timeout (504). Retry telemetry to reconnect.";
+        pIcon.className = "w-8 h-8 rounded bg-amber-100 text-amber-700 flex items-center justify-center shrink-0";
+        pIcon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>`;
+
+        const errorBanner = document.getElementById("errorBanner");
+        errorBanner.classList.remove("hidden");
+        document.getElementById("errorMessageText").textContent = "Simulated Error: Cluster telemetry gateway unreachable. Click Retry Connection.";
+      }
+    }
+
+    // Refresh elapsed time ticker
+    setInterval(() => {
+      const elapsedSec = Math.floor((Date.now() - lastSyncTime) / 1000);
+      const timerSpan = document.getElementById("refreshTimer");
+      if (timerSpan) {
+        if (elapsedSec < 5) timerSpan.textContent = "↻ just now";
+        else timerSpan.textContent = `↻ ${elapsedSec}s ago`;
+      }
+    }, 3000);
+
+    // Keyboard shortcut CMD+K / CTRL+K
+    document.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        const topSearch = document.getElementById("topCommandSearch");
+        if (topSearch) topSearch.focus();
+      }
+    });
+
+    // Top command search sync
+    const topSearch = document.getElementById("topCommandSearch");
+    if (topSearch) {
+      topSearch.addEventListener("input", (e) => {
+        document.getElementById("filterSearchInput").value = e.target.value;
+        applyToolbarFilters();
+      });
+    }
+
+    const filterSearch = document.getElementById("filterSearchInput");
+    if (filterSearch) {
+      let debounceTimer = null;
+      filterSearch.addEventListener("input", (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          applyToolbarFilters();
+        }, 350);
+      });
+    }
+
+    // Initialize on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      initRoleFromUrl();
+      fetchProductivityData();
+    });
+  </script>
+</body>
+</html>

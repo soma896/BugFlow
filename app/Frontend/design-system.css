@@ -1,0 +1,1676 @@
+/**
+ * ============================================================================
+ * BUGFLOW ENTERPRISE DESIGN SYSTEM — CORE CSS & DESIGN TOKENS
+ * Version: 2.4.0
+ * Theme: Precise Engineering Intelligence
+ * Specifications: Stitch Master Enterprise Design System (Project ID: 13399325493422835922)
+ * WCAG 2.1 AA / AAA Compliant
+ * ============================================================================
+ */
+
+/* ----------------------------------------------------------------------------
+   GOOGLE WEB FONTS IMPORT
+   Inter (Sans-Serif UI) + JetBrains Mono (Telemetry, Defect IDs, Code)
+---------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ============================================================================
+   1. ROOT DESIGN TOKENS (CSS CUSTOM PROPERTIES)
+============================================================================ */
+:root {
+  /* --- Primary Brand & Interactive Tokens --- */
+  --bf-brand-primary: #2563eb;           /* Professional Tech Blue (blue-600) */
+  --bf-brand-primary-hover: #1d4ed8;     /* Button hover state (blue-700) */
+  --bf-brand-primary-active: #1e40af;    /* Pressed state (blue-800) */
+  --bf-brand-primary-light: #eff6ff;     /* Tint light (blue-50) for chips, rows */
+  --bf-brand-primary-subtle: #dbeafe;    /* Border/ring tint (blue-100) */
+  --bf-brand-secondary: #0051d5;         /* Deep Accent Blue */
+  --bf-brand-tertiary: #4f46e5;          /* Subtle Indigo for AI/Analytics */
+
+  /* --- Neutral & Surface Tokens (Precise Utilitarian Hierarchy) --- */
+  --bf-color-canvas: #f8fafc;            /* Canvas Base (Cool Off-White slate-50) */
+  --bf-color-surface: #ffffff;           /* Elevation 01: Cards, Panels, Rows */
+  --bf-color-surface-subtle: #f1f5f9;     /* Elevation 02: Table Headers, Substrates (slate-100) */
+  --bf-color-surface-hover: #f8fafc;      /* Elevation 03: Row Hover Wash */
+  --bf-color-surface-dark: #0f172a;       /* Deep Slate Navy (slate-900) - Chrome & Sidebar */
+  --bf-color-surface-dark-subtle: #1e293b;/* Slate Dark Subtle (slate-800) */
+  --bf-color-surface-dark-border: #334155;/* Slate Dark Border (slate-700) */
+
+  /* --- Structural Border & Outline Tokens --- */
+  --bf-border-default: #e2e8f0;          /* Hairline structural perimeter line (slate-200) */
+  --bf-border-subtle: #f1f5f9;           /* Secondary row divider line (slate-100) */
+  --bf-border-hover: #cbd5e1;            /* Active hover/focus bounding line (slate-300) */
+  --bf-border-strong: #94a3b8;           /* Elevated input boundary (slate-400) */
+
+  /* --- Typography Color Tokens --- */
+  --bf-text-primary: #0f172a;            /* Primary Titles & Data (slate-900) */
+  --bf-text-secondary: #475569;          /* Secondary Labels & Body (slate-600) */
+  --bf-text-muted: #94a3b8;              /* Placeholders & Metadata (slate-400) */
+  --bf-text-subtle: #64748b;             /* Tertiary indicators (slate-500) */
+  --bf-text-inverse: #ffffff;            /* White text on dark elements */
+  --bf-text-inverse-muted: #94a3b8;      /* Inverse muted for dark sidebar */
+
+  /* --- Defect Severity Semantic Tokens (P0 — P3) --- */
+  /* P0 Critical: System Outages, Data Corruption, Blockers */
+  --bf-p0-bg: #fef2f2;
+  --bf-p0-text: #b91c1c;
+  --bf-p0-border: #fecaca;
+  --bf-p0-badge: #dc2626;
+  --bf-p0-dot: #ef4444;
+
+  /* P1 High: Major Feature Degradation, High Priority */
+  --bf-p1-bg: #fff7ed;
+  --bf-p1-text: #c2410c;
+  --bf-p1-border: #ffedd5;
+  --bf-p1-badge: #ea580c;
+  --bf-p1-dot: #f59e0b;
+
+  /* P2 Medium: Standard Functional Bugs, Normal Queue */
+  --bf-p2-bg: #eff6ff;
+  --bf-p2-text: #1d4ed8;
+  --bf-p2-border: #dbeafe;
+  --bf-p2-badge: #2563eb;
+  --bf-p2-dot: #3b82f6;
+
+  /* P3 Low: Cosmetic, Minor Edge-cases, Documentation */
+  --bf-p3-bg: #f1f5f9;
+  --bf-p3-text: #475569;
+  --bf-p3-border: #e2e8f0;
+  --bf-p3-badge: #64748b;
+  --bf-p3-dot: #94a3b8;
+
+  /* --- Defect Lifecycle Status Semantic Tokens (6 Standard States) --- */
+  /* 1. Pending Triage */
+  --bf-status-pending-bg: #fffbeb;
+  --bf-status-pending-text: #92400e;
+  --bf-status-pending-border: #fde68a;
+  --bf-status-pending-dot: #f59e0b;
+
+  /* 2. Assigned */
+  --bf-status-assigned-bg: #eff6ff;
+  --bf-status-assigned-text: #1e40af;
+  --bf-status-assigned-border: #bfdbfe;
+  --bf-status-assigned-dot: #3b82f6;
+
+  /* 3. Accepted */
+  --bf-status-accepted-bg: #eef2ff;
+  --bf-status-accepted-text: #3730a3;
+  --bf-status-accepted-border: #c7d2fe;
+  --bf-status-accepted-dot: #6366f1;
+
+  /* 4. In Progress */
+  --bf-status-inprogress-bg: #f5f3ff;
+  --bf-status-inprogress-text: #5b21b6;
+  --bf-status-inprogress-border: #ddd6fe;
+  --bf-status-inprogress-dot: #8b5cf6;
+
+  /* 5. Resolved */
+  --bf-status-resolved-bg: #ecfdf5;
+  --bf-status-resolved-text: #065f46;
+  --bf-status-resolved-border: #a7f3d0;
+  --bf-status-resolved-dot: #10b981;
+
+  /* 6. Rejected */
+  --bf-status-rejected-bg: #fff1f2;
+  --bf-status-rejected-text: #9f1239;
+  --bf-status-rejected-border: #fecdd3;
+  --bf-status-rejected-dot: #f43f5e;
+
+  /* --- Typography Families & Scaling --- */
+  --bf-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --bf-font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, Monaco, monospace;
+
+  /* Type Scale */
+  --bf-font-size-display: 32px;
+  --bf-line-height-display: 40px;
+  --bf-font-size-h1: 20px;
+  --bf-line-height-h1: 28px;
+  --bf-font-size-h2: 16px;
+  --bf-line-height-h2: 24px;
+  --bf-font-size-h3: 13px;
+  --bf-line-height-h3: 18px;
+  --bf-font-size-metric-xl: 28px;
+  --bf-font-size-metric: 24px;
+  --bf-line-height-metric: 32px;
+  --bf-font-size-body: 12px;
+  --bf-line-height-body: 16px;
+  --bf-font-size-body-lg: 14px;
+  --bf-line-height-body-lg: 20px;
+  --bf-font-size-mono: 11px;
+  --bf-line-height-mono: 14px;
+  --bf-font-size-micro: 10px;
+  --bf-line-height-micro: 12px;
+
+  /* --- Spacing Scale (4px Geometric Scaling Rhythm) --- */
+  --bf-space-1: 4px;      /* space-xs: pill gap, micro offset */
+  --bf-space-2: 8px;      /* space-sm: button padding, chip margin, gutter-dense */
+  --bf-space-3: 12px;     /* space-md: table cell py, inner gap */
+  --bf-space-4: 16px;     /* space-lg: card padding standard, main gutter */
+  --bf-space-5: 20px;     /* intermediate container gap */
+  --bf-space-6: 24px;     /* space-xl: section gap, grid gap */
+  --bf-space-8: 32px;     /* outer section margin */
+  --bf-space-10: 40px;    /* deep viewport pad */
+
+  /* --- Corner Radii Assignments --- */
+  --bf-radius-xs: 2px;
+  --bf-radius-sm: 4px;    /* Micro-indicators, commit chips, status pills */
+  --bf-radius-md: 6px;    /* Core controls: inputs, buttons, badges (0.375rem) */
+  --bf-radius-lg: 8px;    /* Containers, panels, table frame, cards (0.5rem) */
+  --bf-radius-xl: 12px;   /* Modal viewport, flyout dialogs */
+  --bf-radius-full: 9999px; /* Status circles, pill badges, user avatars */
+
+  /* --- Elevation & Depth (Strict Hairline Boundaries, Minimal Diffuse Shadows) --- */
+  --bf-shadow-none: none;
+  --bf-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --bf-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --bf-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
+  --bf-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.06);
+  --bf-shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+
+  /* --- Accessible Focus Rings --- */
+  --bf-focus-ring: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  --bf-focus-ring-offset: 2px;
+  --bf-focus-border: #2563eb;
+
+  /* --- App Shell Dimensions --- */
+  --bf-sidebar-width: 240px;
+  --bf-sidebar-collapsed-width: 56px;
+  --bf-header-height: 48px;
+  --bf-footer-height: 44px;
+}
+
+/* ============================================================================
+   2. GLOBAL BASE RESETS & TYPOGRAPHY
+============================================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body.bf-body,
+.bf-root {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-body);
+  line-height: var(--bf-line-height-body);
+  color: var(--bf-text-primary);
+  background-color: var(--bf-color-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for telemetry, metrics, and timestamps */
+.bf-tabular,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Monospace Utilities */
+.bf-mono,
+.font-mono,
+code,
+pre {
+  font-family: var(--bf-font-mono);
+}
+
+/* Standard Typography Classes */
+.bf-title-display {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-display);
+  line-height: var(--bf-line-height-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--bf-text-primary);
+}
+
+.bf-title-h1 {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-h1);
+  line-height: var(--bf-line-height-h1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--bf-text-primary);
+}
+
+.bf-title-h2 {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-h2);
+  line-height: var(--bf-line-height-h2);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--bf-text-primary);
+}
+
+.bf-title-h3 {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-h3);
+  line-height: var(--bf-line-height-h3);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--bf-text-primary);
+}
+
+.bf-text-body {
+  font-size: var(--bf-font-size-body);
+  line-height: var(--bf-line-height-body);
+  color: var(--bf-text-secondary);
+}
+
+.bf-text-body-lg {
+  font-size: var(--bf-font-size-body-lg);
+  line-height: var(--bf-line-height-body-lg);
+  color: var(--bf-text-secondary);
+}
+
+.bf-text-muted {
+  color: var(--bf-text-muted);
+}
+
+.bf-text-secondary {
+  color: var(--bf-text-secondary);
+}
+
+.bf-code-id {
+  font-family: var(--bf-font-mono);
+  font-size: var(--bf-font-size-mono);
+  line-height: var(--bf-line-height-mono);
+  font-weight: 500;
+  color: var(--bf-brand-primary);
+}
+
+.bf-micro-label {
+  font-family: var(--bf-font-sans);
+  font-size: var(--bf-font-size-micro);
+  line-height: var(--bf-line-height-micro);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bf-text-subtle);
+}
+
+/* Custom Slim Scrollbars */
+.bf-scroll::-webkit-scrollbar,
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.bf-scroll::-webkit-scrollbar-track,
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.bf-scroll::-webkit-scrollbar-thumb,
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--bf-border-hover);
+  border-radius: var(--bf-radius-xs);
+}
+.bf-scroll::-webkit-scrollbar-thumb:hover,
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--bf-border-strong);
+}
+
+/* ============================================================================
+   3. APP SHELL & NAVIGATION ARCHITECTURE
+============================================================================ */
+.bf-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bf-color-canvas);
+}
+
+/* Left Sidebar */
+.bf-sidebar {
+  width: var(--bf-sidebar-width);
+  min-width: var(--bf-sidebar-width);
+  background-color: var(--bf-color-surface-dark);
+  color: var(--bf-text-inverse);
+  border-right: 1px solid var(--bf-color-surface-dark-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  transition: width 0.2s ease-in-out;
+}
+
+.bf-sidebar-brand {
+  height: var(--bf-header-height);
+  padding: 0 var(--bf-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--bf-space-3);
+  border-bottom: 1px solid var(--bf-color-surface-dark-border);
+}
+
+.bf-sidebar-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--bf-radius-md);
+  background: linear-gradient(135deg, var(--bf-brand-primary), var(--bf-brand-primary-hover));
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
+.bf-sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.bf-sidebar-version {
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--bf-text-inverse-muted);
+  margin-left: 2px;
+}
+
+.bf-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--bf-space-4) var(--bf-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--bf-space-4);
+}
+
+.bf-sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bf-text-inverse-muted);
+  padding: 0 var(--bf-space-2) var(--bf-space-1);
+}
+
+.bf-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bf-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bf-space-2);
+  padding: 7px 10px;
+  border-radius: var(--bf-radius-md);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.bf-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.bf-nav-link.active,
+.bf-nav-link.is-active {
+  background-color: var(--bf-brand-primary);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
+.bf-nav-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.bf-nav-link.active .bf-nav-icon,
+.bf-nav-link:hover .bf-nav-icon {
+  opacity: 1;
+}
+
+.bf-nav-counter {
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--bf-radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.bf-nav-link.active .bf-nav-counter {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.bf-sidebar-footer {
+  padding: var(--bf-space-3);
+  border-top: 1px solid var(--bf-color-surface-dark-border);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.bf-user-card {
+  display: flex;
+  align-items: center;
+  gap: var(--bf-space-2);
+  padding: var(--bf-space-2);
+  border-radius: var(--bf-radius-md);
+  background: var(--bf-color-surface-dark-subtle);
+  border: 1px solid var(--bf-color-surface-dark-border);
+}
+
+.bf-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--bf-radius-full);
+  background: linear-gradient(135deg, #334155, #1e293b);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.bf-avatar-primary {
+  background: linear-gradient(135deg, var(--bf-brand-primary), var(--bf-brand-primary-hover));
+}
+
+.bf-user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bf-user-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bf-user-role {
+  font-size: 9px;
+  color: var(--bf-text-inverse-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* App Main Content Area */
+.bf-main {
+  margin-left: var(--bf-sidebar-width);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.bf-content {
+  padding: var(--bf-space-6);
+  flex: 1;
+}
+
+/* ============================================================================
+   4. APP TOPBAR, BREADCRUMB & COMMAND SEARCH
+============================================================================ */
+.bf-topbar {
+  height: var(--bf-header-height);
+  padding: 0 var(--bf-space-6);
+  background-color: var(--bf-color-surface);
+  border-bottom: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bf-space-4);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+/* Breadcrumbs */
+.bf-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--bf-space-2);
+  font-size: 12px;
+  color: var(--bf-text-muted);
+}
+
+.bf-breadcrumb-item {
+  color: var(--bf-text-secondary);
+  text-decoration: none;
+}
+
+.bf-breadcrumb-item:hover {
+  color: var(--bf-brand-primary);
+}
+
+.bf-breadcrumb-separator {
+  color: var(--bf-border-hover);
+  font-weight: 300;
+}
+
+.bf-breadcrumb-current {
+  font-weight: 600;
+  color: var(--bf-text-primary);
+}
+
+/* Header Action Group */
+.bf-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--bf-space-3);
+}
+
+/* Search Command Bar (⌘K / Press / to focus) */
+.bf-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bf-search-input {
+  height: 32px;
+  width: 240px;
+  padding: 0 54px 0 32px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  color: var(--bf-text-primary);
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.bf-search-input:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+  width: 280px;
+}
+
+.bf-search-input::placeholder {
+  color: var(--bf-text-muted);
+}
+
+.bf-search-icon {
+  position: absolute;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  color: var(--bf-text-muted);
+  pointer-events: none;
+}
+
+.bf-search-shortcut {
+  position: absolute;
+  right: 8px;
+  padding: 2px 6px;
+  border-radius: var(--bf-radius-xs);
+  background: var(--bf-color-surface-subtle);
+  border: 1px solid var(--bf-border-default);
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+  color: var(--bf-text-secondary);
+  pointer-events: none;
+}
+
+/* Cluster Status Node Badge */
+.bf-node-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: var(--bf-radius-sm);
+  background-color: var(--bf-brand-primary-light);
+  border: 1px solid var(--bf-brand-primary-subtle);
+  color: var(--bf-brand-primary-active);
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.bf-node-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--bf-radius-full);
+  background-color: var(--bf-brand-primary);
+}
+
+/* Workspace Selector Dropdown */
+.bf-workspace-select {
+  height: 32px;
+  padding: 0 28px 0 10px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  color: var(--bf-text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.bf-workspace-select:hover {
+  border-color: var(--bf-border-hover);
+  background-color: var(--bf-color-surface-hover);
+}
+
+.bf-workspace-select:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+}
+
+/* ============================================================================
+   5. BUTTONS & INTERACTIVE ACTION CONTROLS
+============================================================================ */
+.bf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--bf-radius-md);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.bf-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--bf-focus-ring);
+}
+
+/* Primary Button */
+.bf-btn-primary {
+  background-color: var(--bf-brand-primary);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: var(--bf-shadow-xs);
+}
+.bf-btn-primary:hover {
+  background-color: var(--bf-brand-primary-hover);
+}
+.bf-btn-primary:active {
+  background-color: var(--bf-brand-primary-active);
+}
+
+/* Dark Core Slate Button (Stitch Spec Primary Dark) */
+.bf-btn-slate {
+  background-color: var(--bf-color-surface-dark);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: var(--bf-shadow-xs);
+}
+.bf-btn-slate:hover {
+  background-color: var(--bf-color-surface-dark-subtle);
+}
+.bf-btn-slate:active {
+  background-color: var(--bf-color-surface-dark-border);
+}
+
+/* Secondary / Outline Button */
+.bf-btn-secondary,
+.bf-btn-outline {
+  background-color: var(--bf-color-surface);
+  color: var(--bf-text-primary);
+  border-color: var(--bf-border-default);
+  box-shadow: var(--bf-shadow-xs);
+}
+.bf-btn-secondary:hover,
+.bf-btn-outline:hover {
+  background-color: var(--bf-color-surface-hover);
+  border-color: var(--bf-border-hover);
+}
+.bf-btn-secondary:active,
+.bf-btn-outline:active {
+  background-color: var(--bf-color-surface-subtle);
+}
+
+/* Ghost Button */
+.bf-btn-ghost {
+  background-color: transparent;
+  color: var(--bf-text-secondary);
+  border-color: transparent;
+}
+.bf-btn-ghost:hover {
+  background-color: var(--bf-color-surface-subtle);
+  color: var(--bf-text-primary);
+}
+.bf-btn-ghost:active {
+  background-color: var(--bf-border-default);
+}
+
+/* Destructive / Danger Button */
+.bf-btn-danger,
+.bf-btn-destructive {
+  background-color: var(--bf-p0-badge);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: var(--bf-shadow-xs);
+}
+.bf-btn-danger:hover,
+.bf-btn-destructive:hover {
+  background-color: var(--bf-p0-text);
+}
+
+/* Button Sizes */
+.bf-btn-xs {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 10px;
+  border-radius: var(--bf-radius-sm);
+}
+
+.bf-btn-sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.bf-btn-lg {
+  height: 38px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bf-btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+.bf-btn-icon.bf-btn-sm {
+  width: 28px;
+  height: 28px;
+}
+
+/* Disabled Button State */
+.bf-btn:disabled,
+.bf-btn.is-disabled {
+  background-color: var(--bf-border-default);
+  color: var(--bf-text-muted);
+  border-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+/* ============================================================================
+   6. BADGES, CHIPS & STATUS PILLS
+============================================================================ */
+.bf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--bf-radius-sm);
+  font-family: var(--bf-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.bf-badge-pill {
+  border-radius: var(--bf-radius-full);
+}
+
+.bf-badge-mono {
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+}
+
+/* Status Indicator Dot */
+.bf-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--bf-radius-full);
+  flex-shrink: 0;
+}
+
+/* --- Defect Severity Badges (P0 — P3) --- */
+.bf-badge-p0,
+.bf-badge-severity-critical {
+  background-color: var(--bf-p0-bg);
+  color: var(--bf-p0-text);
+  border-color: var(--bf-p0-border);
+}
+.bf-badge-p0 .bf-dot,
+.bf-badge-severity-critical .bf-dot {
+  background-color: var(--bf-p0-dot);
+}
+
+.bf-badge-p1,
+.bf-badge-severity-high {
+  background-color: var(--bf-p1-bg);
+  color: var(--bf-p1-text);
+  border-color: var(--bf-p1-border);
+}
+.bf-badge-p1 .bf-dot,
+.bf-badge-severity-high .bf-dot {
+  background-color: var(--bf-p1-dot);
+}
+
+.bf-badge-p2,
+.bf-badge-severity-medium {
+  background-color: var(--bf-p2-bg);
+  color: var(--bf-p2-text);
+  border-color: var(--bf-p2-border);
+}
+.bf-badge-p2 .bf-dot,
+.bf-badge-severity-medium .bf-dot {
+  background-color: var(--bf-p2-dot);
+}
+
+.bf-badge-p3,
+.bf-badge-severity-low {
+  background-color: var(--bf-p3-bg);
+  color: var(--bf-p3-text);
+  border-color: var(--bf-p3-border);
+}
+.bf-badge-p3 .bf-dot,
+.bf-badge-severity-low .bf-dot {
+  background-color: var(--bf-p3-dot);
+}
+
+/* Solid Severity Badges */
+.bf-badge-solid-p0 {
+  background-color: var(--bf-p0-badge);
+  color: #ffffff;
+}
+.bf-badge-solid-p1 {
+  background-color: var(--bf-p1-badge);
+  color: #ffffff;
+}
+.bf-badge-solid-p2 {
+  background-color: var(--bf-p2-badge);
+  color: #ffffff;
+}
+.bf-badge-solid-p3 {
+  background-color: var(--bf-p3-badge);
+  color: #ffffff;
+}
+
+/* --- Defect Lifecycle Status Badges (All 6 States) --- */
+.bf-status-pending,
+.bf-badge-status-pending {
+  background-color: var(--bf-status-pending-bg);
+  color: var(--bf-status-pending-text);
+  border-color: var(--bf-status-pending-border);
+}
+.bf-status-pending .bf-dot,
+.bf-badge-status-pending .bf-dot {
+  background-color: var(--bf-status-pending-dot);
+}
+
+.bf-status-assigned,
+.bf-badge-status-assigned {
+  background-color: var(--bf-status-assigned-bg);
+  color: var(--bf-status-assigned-text);
+  border-color: var(--bf-status-assigned-border);
+}
+.bf-status-assigned .bf-dot,
+.bf-badge-status-assigned .bf-dot {
+  background-color: var(--bf-status-assigned-dot);
+}
+
+.bf-status-accepted,
+.bf-badge-status-accepted {
+  background-color: var(--bf-status-accepted-bg);
+  color: var(--bf-status-accepted-text);
+  border-color: var(--bf-status-accepted-border);
+}
+.bf-status-accepted .bf-dot,
+.bf-badge-status-accepted .bf-dot {
+  background-color: var(--bf-status-accepted-dot);
+}
+
+.bf-status-inprogress,
+.bf-badge-status-inprogress {
+  background-color: var(--bf-status-inprogress-bg);
+  color: var(--bf-status-inprogress-text);
+  border-color: var(--bf-status-inprogress-border);
+}
+.bf-status-inprogress .bf-dot,
+.bf-badge-status-inprogress .bf-dot {
+  background-color: var(--bf-status-inprogress-dot);
+}
+
+.bf-status-resolved,
+.bf-badge-status-resolved {
+  background-color: var(--bf-status-resolved-bg);
+  color: var(--bf-status-resolved-text);
+  border-color: var(--bf-status-resolved-border);
+}
+.bf-status-resolved .bf-dot,
+.bf-badge-status-resolved .bf-dot {
+  background-color: var(--bf-status-resolved-dot);
+}
+
+.bf-status-rejected,
+.bf-badge-status-rejected {
+  background-color: var(--bf-status-rejected-bg);
+  color: var(--bf-status-rejected-text);
+  border-color: var(--bf-status-rejected-border);
+}
+.bf-status-rejected .bf-dot,
+.bf-badge-status-rejected .bf-dot {
+  background-color: var(--bf-status-rejected-dot);
+}
+
+/* Git Commit Chip */
+.bf-commit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: var(--bf-radius-sm);
+  background-color: var(--bf-color-surface-subtle);
+  border: 1px solid var(--bf-border-default);
+  font-family: var(--bf-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--bf-text-secondary);
+  text-decoration: none;
+}
+.bf-commit-chip:hover {
+  background-color: var(--bf-border-default);
+  color: var(--bf-text-primary);
+}
+
+/* ============================================================================
+   7. KPI SUMMARY METRIC CARDS
+============================================================================ */
+.bf-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--bf-space-4);
+  margin-bottom: var(--bf-space-6);
+}
+
+.bf-kpi-card {
+  padding: var(--bf-space-4);
+  background-color: var(--bf-color-surface);
+  border: 1px solid var(--bf-border-default);
+  border-radius: var(--bf-radius-lg);
+  box-shadow: var(--bf-shadow-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 104px;
+  transition: all 0.15s ease-in-out;
+}
+
+.bf-kpi-card:hover {
+  border-color: var(--bf-border-hover);
+  box-shadow: var(--bf-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.bf-kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bf-space-2);
+}
+
+.bf-kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bf-text-secondary);
+}
+
+.bf-kpi-pill {
+  font-family: var(--bf-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--bf-radius-sm);
+  background: var(--bf-brand-primary-light);
+  color: var(--bf-brand-primary);
+}
+
+.bf-kpi-pill.success {
+  background: var(--bf-status-resolved-bg);
+  color: var(--bf-status-resolved-text);
+}
+.bf-kpi-pill.warning {
+  background: var(--bf-p1-bg);
+  color: var(--bf-p1-text);
+}
+.bf-kpi-pill.danger {
+  background: var(--bf-p0-bg);
+  color: var(--bf-p0-text);
+}
+.bf-kpi-pill.purple {
+  background: var(--bf-status-inprogress-bg);
+  color: var(--bf-status-inprogress-text);
+}
+
+.bf-kpi-body {
+  margin: var(--bf-space-2) 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--bf-space-2);
+}
+
+.bf-kpi-value {
+  font-size: var(--bf-font-size-metric);
+  line-height: var(--bf-line-height-metric);
+  font-weight: 800;
+  color: var(--bf-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.bf-kpi-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--bf-text-muted);
+}
+
+.bf-kpi-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--bf-text-secondary);
+}
+
+.bf-kpi-trend {
+  font-family: var(--bf-font-mono);
+  font-weight: 600;
+}
+.bf-kpi-trend.positive { color: var(--bf-status-resolved-dot); }
+.bf-kpi-trend.negative { color: var(--bf-p0-badge); }
+.bf-kpi-trend.neutral  { color: var(--bf-brand-primary); }
+
+/* ============================================================================
+   8. FILTER TOOLBAR & FORM UTILITIES
+============================================================================ */
+.bf-filter-toolbar {
+  padding: var(--bf-space-3);
+  background-color: var(--bf-color-surface-subtle);
+  border: 1px solid var(--bf-border-default);
+  border-radius: var(--bf-radius-lg);
+  margin-bottom: var(--bf-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--bf-space-2);
+}
+
+.bf-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bf-space-2);
+}
+
+.bf-filter-input {
+  flex: 1;
+  min-width: 220px;
+  height: 32px;
+  padding: 0 10px 0 32px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  color: var(--bf-text-primary);
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+.bf-filter-input:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+}
+
+.bf-filter-select,
+.bf-select {
+  height: 32px;
+  padding: 0 28px 0 10px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--bf-text-secondary);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: all 0.15s ease-in-out;
+}
+.bf-filter-select:hover,
+.bf-select:hover {
+  border-color: var(--bf-border-hover);
+}
+.bf-filter-select:focus,
+.bf-select:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+}
+
+/* Active Filter Chips Row */
+.bf-active-filters-row {
+  display: flex;
+  align-items: center;
+  gap: var(--bf-space-2);
+  padding-top: var(--bf-space-1);
+  font-size: 11px;
+  color: var(--bf-text-secondary);
+}
+
+.bf-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--bf-radius-sm);
+  background-color: rgba(203, 213, 225, 0.45);
+  border: 1px solid var(--bf-border-hover);
+  font-family: var(--bf-font-mono);
+  font-size: 11px;
+  color: var(--bf-text-primary);
+}
+
+.bf-filter-chip-remove {
+  cursor: pointer;
+  color: var(--bf-text-muted);
+  font-size: 10px;
+}
+.bf-filter-chip-remove:hover {
+  color: var(--bf-p0-text);
+}
+
+/* Generic Form Inputs */
+.bf-input {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  color: var(--bf-text-primary);
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+.bf-input:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+}
+
+.bf-textarea {
+  padding: 8px 10px;
+  border-radius: var(--bf-radius-md);
+  border: 1px solid var(--bf-border-default);
+  background-color: var(--bf-color-surface);
+  font-family: var(--bf-font-sans);
+  font-size: 12px;
+  color: var(--bf-text-primary);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition: all 0.15s ease-in-out;
+}
+.bf-textarea:focus {
+  border-color: var(--bf-brand-primary);
+  box-shadow: var(--bf-focus-ring);
+}
+
+/* Custom Checkbox */
+.bf-checkbox {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid var(--bf-border-hover);
+  background-color: var(--bf-color-surface);
+  cursor: pointer;
+  accent-color: var(--bf-brand-primary);
+}
+
+/* ============================================================================
+   9. PRODUCTION DATA TABLES & LEDGERS
+============================================================================ */
+.bf-table-container {
+  background-color: var(--bf-color-surface);
+  border: 1px solid var(--bf-border-default);
+  border-radius: var(--bf-radius-lg);
+  box-shadow: var(--bf-shadow-xs);
+  overflow: hidden;
+  margin-bottom: var(--bf-space-6);
+}
+
+.bf-table-header {
+  padding: var(--bf-space-3) var(--bf-space-4);
+  border-bottom: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bf-color-surface);
+}
+
+.bf-table-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bf-text-primary);
+}
+
+.bf-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.bf-table thead th {
+  background-color: var(--bf-color-surface-subtle);
+  border-bottom: 1px solid var(--bf-border-default);
+  padding: 10px var(--bf-space-3);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bf-text-secondary);
+  white-space: nowrap;
+}
+
+.bf-table tbody td {
+  padding: 10px var(--bf-space-3);
+  border-bottom: 1px solid var(--bf-border-subtle);
+  color: var(--bf-text-primary);
+  vertical-align: middle;
+}
+
+.bf-table tbody tr {
+  transition: background-color 0.12s ease-in-out;
+}
+
+.bf-table tbody tr:hover {
+  background-color: var(--bf-color-surface-hover);
+}
+
+.bf-table tbody tr.is-selected {
+  background-color: var(--bf-brand-primary-light);
+  border-left: 2px solid var(--bf-brand-primary);
+}
+
+.bf-table-footer {
+  padding: var(--bf-space-3) var(--bf-space-4);
+  background-color: var(--bf-color-surface-subtle);
+  border-top: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--bf-text-secondary);
+}
+
+/* ============================================================================
+   10. MODALS, SCRIMS & SLIDE-OVER DRAWERS
+============================================================================ */
+.bf-modal-scrim,
+.bf-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bf-space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.bf-modal-scrim.is-open,
+.bf-modal-backdrop.is-open,
+.bf-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bf-modal-dialog {
+  width: 100%;
+  max-width: 560px;
+  background-color: var(--bf-color-surface);
+  border: 1px solid var(--bf-border-hover);
+  border-radius: var(--bf-radius-xl);
+  box-shadow: var(--bf-shadow-xl);
+  overflow: hidden;
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.2s ease-in-out;
+}
+
+.bf-modal-scrim.is-open .bf-modal-dialog,
+.bf-modal-backdrop.is-open .bf-modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.bf-modal-header {
+  padding: var(--bf-space-4) var(--bf-space-6);
+  border-bottom: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bf-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--bf-text-primary);
+}
+
+.bf-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--bf-text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+}
+.bf-modal-close:hover {
+  color: var(--bf-text-primary);
+}
+
+.bf-modal-body {
+  padding: var(--bf-space-6);
+  max-height: calc(85vh - 120px);
+  overflow-y: auto;
+}
+
+.bf-modal-footer {
+  padding: var(--bf-space-3) var(--bf-space-6);
+  background-color: var(--bf-color-surface-subtle);
+  border-top: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--bf-space-2);
+}
+
+/* ============================================================================
+   11. UI STATES: SKELETONS, EMPTY STATES & RESILIENCE
+============================================================================ */
+/* 1. Loading Skeleton */
+.bf-skeleton {
+  background-color: var(--bf-border-default);
+  border-radius: var(--bf-radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.bf-skeleton-pulse,
+.animate-pulse {
+  animation: bf-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bf-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* 2. Empty State Box */
+.bf-empty-state {
+  padding: var(--bf-space-8) var(--bf-space-4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bf-color-surface);
+  border: 1px dashed var(--bf-border-default);
+  border-radius: var(--bf-radius-lg);
+}
+
+.bf-empty-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--bf-radius-full);
+  background-color: var(--bf-color-surface-subtle);
+  color: var(--bf-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--bf-space-2);
+}
+
+.bf-empty-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bf-text-primary);
+  margin-bottom: 2px;
+}
+
+.bf-empty-description {
+  font-size: 11px;
+  color: var(--bf-text-secondary);
+  max-width: 320px;
+  margin-bottom: var(--bf-space-3);
+}
+
+/* 3. Alert Banners */
+.bf-alert {
+  padding: var(--bf-space-3) var(--bf-space-4);
+  border-radius: var(--bf-radius-md);
+  border: 1px solid transparent;
+  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bf-space-2);
+  margin-bottom: var(--bf-space-4);
+}
+
+.bf-alert-danger,
+.bf-alert-error {
+  background-color: var(--bf-p0-bg);
+  border-color: var(--bf-p0-border);
+  color: var(--bf-p0-text);
+}
+
+.bf-alert-warning {
+  background-color: var(--bf-p1-bg);
+  border-color: var(--bf-p1-border);
+  color: var(--bf-p1-text);
+}
+
+.bf-alert-info {
+  background-color: var(--bf-brand-primary-light);
+  border-color: var(--bf-brand-primary-subtle);
+  color: var(--bf-brand-primary-active);
+}
+
+.bf-alert-success {
+  background-color: var(--bf-status-resolved-bg);
+  border-color: var(--bf-status-resolved-border);
+  color: var(--bf-status-resolved-text);
+}
+
+/* Developer Ops Stack Trace Box */
+.bf-terminal-box {
+  background-color: #0b0f19;
+  color: #f8fafc;
+  font-family: var(--bf-font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: var(--bf-space-3);
+  border-radius: var(--bf-radius-md);
+  border: 1px solid #1e293b;
+  overflow-x: auto;
+}
+
+/* ============================================================================
+   12. RESPONSIVE GRID & LAYOUT UTILITIES
+============================================================================ */
+.bf-grid {
+  display: grid;
+}
+
+.bf-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--bf-space-6);
+}
+
+.bf-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--bf-space-6);
+}
+
+.bf-panel {
+  background-color: var(--bf-color-surface);
+  border: 1px solid var(--bf-border-default);
+  border-radius: var(--bf-radius-lg);
+  box-shadow: var(--bf-shadow-xs);
+  overflow: hidden;
+}
+
+.bf-panel-header {
+  padding: var(--bf-space-3) var(--bf-space-4);
+  border-bottom: 1px solid var(--bf-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bf-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bf-text-primary);
+}
+
+.bf-panel-body {
+  padding: var(--bf-space-4);
+}
+
+/* ============================================================================
+   13. ACCESSIBILITY & FOCUS INVARIANTS
+============================================================================ */
+:focus-visible {
+  outline: 2px solid var(--bf-brand-primary);
+  outline-offset: 2px;
+}
+
+.bf-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================================
+   14. RESPONSIVE MEDIA QUERIES
+============================================================================ */
+/* Tablet Breakpoint (768px – 1279px) */
+@media (max-width: 1279px) {
+  .bf-sidebar {
+    width: var(--bf-sidebar-collapsed-width);
+  }
+  .bf-sidebar .bf-sidebar-title,
+  .bf-sidebar .bf-sidebar-version,
+  .bf-sidebar .bf-sidebar-section-label,
+  .bf-sidebar .bf-user-info,
+  .bf-sidebar .bf-nav-counter,
+  .bf-sidebar .bf-nav-text {
+    display: none;
+  }
+  .bf-sidebar-brand {
+    justify-content: center;
+    padding: 0;
+  }
+  .bf-sidebar-footer {
+    padding: var(--bf-space-2);
+  }
+  .bf-user-card {
+    justify-content: center;
+    padding: 4px;
+  }
+  .bf-nav-link {
+    justify-content: center;
+    padding: 10px 0;
+  }
+  .bf-main {
+    margin-left: var(--bf-sidebar-collapsed-width);
+  }
+  .bf-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bf-grid-2,
+  .bf-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile Breakpoint (<768px) */
+@media (max-width: 767px) {
+  .bf-sidebar {
+    transform: translateX(-100%);
+    width: var(--bf-sidebar-width);
+  }
+  .bf-sidebar.is-mobile-open {
+    transform: translateX(0);
+  }
+  .bf-main {
+    margin-left: 0;
+    width: 100%;
+  }
+  .bf-topbar {
+    padding: 0 var(--bf-space-4);
+  }
+  .bf-search-box {
+    display: none;
+  }
+  .bf-content {
+    padding: var(--bf-space-4);
+  }
+  .bf-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .bf-table-container {
+    overflow-x: auto;
+  }
+}

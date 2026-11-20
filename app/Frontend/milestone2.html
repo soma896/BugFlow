@@ -1,126 +1,3448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BugFlow - Sprint Management</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#273449}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.side{width:250px;position:fixed;inset:0 auto 0 0;background:linear-gradient(180deg,#111e33,#0d1726);border-right:1px solid #1c2d44;padding:22px 14px}.brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:18px;margin:0 8px 38px;color:#ffffff}.brand-b{width:34px;height:34px;border-radius:9px;background:#3b66d9;color:#fff;display:grid;place-items:center}.section{font-size:10px;color:#7d8fa9;letter-spacing:.8px;margin:0 8px 10px}.nav{display:flex;flex-direction:column;gap:5px}.nav a{color:#9cadc0;text-decoration:none;padding:12px;border-radius:8px;font-size:13px}.nav a.active{background:#3b66d9;color:#fff;box-shadow:0 4px 12px rgba(59,102,217,.28)}.nav a:hover{background:rgba(255,255,255,.06);color:#fff}.main{margin-left:250px;width:calc(100% - 250px);padding:28px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.head h1{margin:0;font-size:28px;color:#172033}.head p{margin:5px 0;color:#5f6b7a;font-size:12px}.actions{display:flex;gap:9px}.btn{border:1px solid #d9e1ec;background:#ffffff;color:#273449;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;box-shadow:0 1px 2px rgba(24,32,51,.03);transition:all .15s ease}.btn:hover{background:#f0f4ff;border-color:#3b66d9;color:#3b66d9}.primary{background:#3b66d9;border-color:#3b66d9;color:#fff}.primary:hover{background:#3158c5;border-color:#3158c5}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}.card,.panel{background:#ffffff;border:1px solid #d9e1ec;border-radius:10px;box-shadow:0 2px 8px rgba(24,32,51,.04)}.card{padding:16px}.label{font-size:10px;text-transform:uppercase;color:#5f6b7a;font-weight:700}.num{font-size:27px;font-weight:800;margin-top:6px;color:#172033}.sub{font-size:10px;color:#7a8798;margin-top:3px}.grid{display:grid;grid-template-columns:1.65fr .75fr;gap:15px}.panel-head{padding:14px 15px;border-bottom:1px solid #d9e1ec;display:flex;justify-content:space-between;align-items:center}.title{font-size:14px;font-weight:800;color:#172033}.sprints{padding:10px}.sprint{border:1px solid #d9e1ec;background:#ffffff;border-radius:9px;padding:15px;margin-bottom:9px;box-shadow:0 1px 3px rgba(24,32,51,.03)}.sprint.selected{border-color:#3b66d9;box-shadow:0 0 0 1px #3b66d933}.st{display:flex;justify-content:space-between;gap:10px}.sn{font-weight:800;font-size:14px;color:#172033}.goal{font-size:11px;color:#5f6b7a;margin-top:5px}.badge{padding:5px 9px;border-radius:20px;font-size:9px;font-weight:800}.active{background:#eaf9f1;color:#16a765}.planning{background:#eef3ff;color:#3b66d9}.completed{background:#f1f4f9;color:#5f6b7a}.meta{display:flex;gap:16px;flex-wrap:wrap;color:#5f6b7a;font-size:10px;margin:13px 0}.bar{height:6px;background:#d9e1ec;border-radius:20px;overflow:hidden}.fill{height:100%;background:#3b66d9;border-radius:20px}.prow{display:flex;justify-content:space-between;font-size:10px;margin-bottom:6px;color:#172033}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:#5f6b7a;font-size:10px}.mini{padding:7px 9px;font-size:10px;border:1px solid #3b66d9;background:#ffffff;color:#3b66d9;border-radius:6px;cursor:pointer;font-weight:700}.mini:hover{background:#f0f4ff}.assigned-btn{border-color:#16a765;color:#16a765;background:#eaf9f1}.chart{padding:18px}.selected{text-align:center}.selected h3{margin:0;font-size:14px;color:#172033}.selected p{font-size:10px;color:#5f6b7a}.chartbox{height:210px;position:relative}.chartbox canvas{max-height:210px}.center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}.center b{font-size:24px;color:#172033}.center span{font-size:8px;color:#5f6b7a}.center small{font-size:8px;color:#7a8798;margin-top:2px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{border:1px solid #d9e1ec;border-radius:8px;padding:10px;display:flex;justify-content:space-between;background:#f8fafc}.stat b{font-size:16px;color:#172033}.stat span{display:block;font-size:9px;color:#5f6b7a;margin-top:3px}.backlog{margin-top:15px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;border-bottom:1px solid #d9e1ec;padding:12px 14px;font-size:10px}th{font-size:9px;color:#ffffff;text-transform:uppercase;background:#111e33;font-weight:700}td{color:#273449}tbody tr:hover{background:#f0f4ff}.key{color:#3b66d9;font-weight:800}.priority{padding:4px 7px;border-radius:15px;font-size:8px;font-weight:800}.low{background:#eef3ff;color:#3b66d9}.medium{background:#eaf2ff;color:#2563eb}.high{background:#fff7e6;color:#d98b00}.urgent{background:#feeceb;color:#df5a5a}.empty{text-align:center;color:#5f6b7a;padding:35px;font-size:11px;line-height:1.7}.overlay{position:fixed;inset:0;background:rgba(24,32,51,.45);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.overlay.show{display:flex}.modal{width:520px;max-width:100%;max-height:92vh;overflow:auto;background:#ffffff;border:1px solid #d9e1ec;border-radius:11px;box-shadow:0 12px 36px rgba(24,32,51,.15)}.mh{padding:18px 20px;border-bottom:1px solid #d9e1ec;display:flex;justify-content:space-between}.mh h2{margin:0;font-size:18px;color:#172033}.mh p{margin:5px 0 0;color:#5f6b7a;font-size:10px}.close{border:0;background:transparent;color:#5f6b7a;font-size:20px;cursor:pointer}.mb{padding:18px 20px}.mf{padding:13px 20px;border-top:1px solid #d9e1ec;display:flex;justify-content:flex-end;gap:8px}.group{margin-bottom:13px}.group label{display:block;color:#172033;font-size:10px;font-weight:700;margin-bottom:6px}input,textarea,select{width:100%;border:1px solid #d9e1ec;background:#ffffff;color:#172033;border-radius:7px;padding:9px;font-size:11px;outline:none}input:focus,textarea:focus,select:focus{border-color:#3b66d9;box-shadow:0 0 0 3px rgba(59,102,217,.12)}input,select{height:38px}textarea{min-height:70px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.role{padding:16px 7px;border:1px solid #d9e1ec;background:#f8fafc;border-radius:8px;text-align:center;color:#172033;font-size:10px;font-weight:700;cursor:pointer}.role.selected{border-color:#3b66d9;background:#eef3ff;color:#3b66d9}.details{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}.detail{padding:10px;border:1px solid #d9e1ec;background:#f8fafc;border-radius:7px}.detail small{color:#5f6b7a;font-size:8px;text-transform:uppercase}.detail b{display:block;font-size:10px;margin-top:4px;color:#172033}.issue{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #d9e1ec}.issue:last-child{border:0}.issue .key{font-size:10px;color:#3b66d9}.issue .it{font-size:10px;margin-top:3px;color:#172033}.drawer{position:fixed;top:0;right:0;height:100vh;width:460px;max-width:92vw;background:#ffffff;border-left:1px solid #d9e1ec;z-index:30;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:-18px 0 40px rgba(24,32,51,.12)}.drawer.show{transform:none}.drawer-head{padding:18px 20px;border-bottom:1px solid #d9e1ec;display:flex;justify-content:space-between;align-items:center}.drawer-head h2{margin:0;font-size:18px;color:#172033}.drawer-head p{margin:5px 0 0;color:#5f6b7a;font-size:10px}.drawer-body{padding:15px 20px;overflow:auto;flex:1}.drawer-search{margin-bottom:12px}.pick-list{display:flex;flex-direction:column;gap:8px}.pick-item{border:1px solid #d9e1ec;background:#ffffff;border-radius:8px;padding:12px;box-shadow:0 1px 3px rgba(24,32,51,.03)}.pick-top{display:flex;justify-content:space-between;gap:10px}.pick-key{color:#3b66d9;font-size:10px;font-weight:800}.pick-title{font-size:11px;color:#172033;margin-top:5px}.pick-meta{display:flex;gap:10px;flex-wrap:wrap;color:#5f6b7a;font-size:9px;margin-top:8px}.drawer-foot{padding:13px 20px;border-top:1px solid #d9e1ec;display:flex;justify-content:flex-end;gap:8px}.drawer-backdrop{position:fixed;inset:0;background:rgba(24,32,51,.45);z-index:29;display:none}.drawer-backdrop.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:40;background:#ffffff;border:1px solid #d9e1ec;padding:12px 15px;border-radius:8px;font-size:10px;opacity:0;transform:translateY(20px);transition:.25s;color:#172033;box-shadow:0 12px 30px rgba(24,32,51,.12)}.toast.show{opacity:1;transform:none}.toast.err{color:#df5a5a;border-color:#fcc}.toast.ok{color:#16a765;border-color:#c4f1d9}@media(max-width:1050px){.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}@media(max-width:700px){.side{width:68px}.brand span,.section,.nav a span{display:none}.nav a{text-align:center}.main{margin-left:68px;width:calc(100% - 68px);padding:17px}.head{align-items:flex-start;gap:12px;flex-direction:column}.cards,.two,.details{grid-template-columns:1fr}.roles{grid-template-columns:1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugFlow | Sprint Management &amp; Detail</title>
+
+    <!-- Google Web Fonts: Inter, JetBrains Mono, Material Symbols Outlined -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <!-- Core Enterprise Design System CSS -->
+    <link rel="stylesheet" href="design-system.css">
+
+    <style>
+        /* Base Reset & Design Tokens */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bf-canvas: #f8fafc;
+            --bf-surface: #ffffff;
+            --bf-surface-subtle: #f1f5f9;
+            --bf-surface-hover: #f8fafc;
+            --bf-border: #e2e8f0;
+            --bf-border-subtle: #f1f5f9;
+            --bf-border-hover: #cbd5e1;
+            --bf-text-primary: #0b1c30;
+            --bf-text-secondary: #475569;
+            --bf-text-muted: #94a3b8;
+            --bf-blue: #0051d5;
+            --bf-blue-primary: #2563eb;
+            --bf-blue-hover: #1d4ed8;
+            --bf-blue-light: #eff6ff;
+            --bf-blue-subtle: #dbeafe;
+            --bf-green: #10b981;
+            --bf-green-bg: #ecfdf5;
+            --bf-green-text: #065f46;
+            --bf-amber: #f59e0b;
+            --bf-amber-bg: #fffbeb;
+            --bf-amber-text: #92400e;
+            --bf-red: #ef4444;
+            --bf-red-bg: #fef2f2;
+            --bf-red-text: #b91c1c;
+            --bf-purple: #6366f1;
+            --bf-purple-bg: #eef2ff;
+            --bf-purple-text: #3730a3;
+            --bf-sidebar-width: 256px;
+            --bf-header-height: 56px;
+        }
+
+        html, body {
+            min-height: 100%;
+            background-color: var(--bf-canvas);
+            color: var(--bf-text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input, select, textarea { font: inherit; }
+
+        .font-mono, code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .material-symbols-outlined {
+            font-size: 18px;
+            line-height: 1;
+            vertical-align: middle;
+            user-select: none;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--bf-sidebar-width);
+            background-color: var(--bf-surface);
+            border-right: 1px solid var(--bf-border);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .brand {
+            height: var(--bf-header-height);
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--bf-border);
+        }
+
+        .brand-logo-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(37,99,235,0.25);
+        }
+
+        .brand-text-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--bf-text-muted);
+            margin-top: 2px;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 8px;
+        }
+
+        .nav-group {
+            margin-bottom: 14px;
+        }
+
+        .nav-label {
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--bf-text-muted);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            color: var(--bf-text-secondary);
+            font-weight: 500;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+
+        .nav-link:hover {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--bf-blue-light);
+            color: var(--bf-blue);
+            font-weight: 600;
+            border-left: 3px solid var(--bf-blue);
+            padding-left: 7px;
+        }
+
+        .nav-link .nav-icon {
+            margin-right: 8px;
+            font-size: 16px;
+            opacity: 0.85;
+        }
+
+        .nav-counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+        }
+
+        .nav-link.active .nav-counter {
+            background-color: var(--bf-blue-subtle);
+            color: var(--bf-blue);
+        }
+
+        .sidebar-bottom {
+            padding: 12px 14px;
+            border-top: 1px solid var(--bf-border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: #fafbfc;
+        }
+
+        .telemetry-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .status-dot-green {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--bf-green);
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        /* --- TOP HEADER --- */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: var(--bf-sidebar-width);
+            right: 0;
+            height: var(--bf-header-height);
+            background-color: var(--bf-surface);
+            border-bottom: 1px solid var(--bf-border);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--bf-text-secondary);
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--bf-blue);
+        }
+
+        .breadcrumbs-sep {
+            color: var(--bf-text-muted);
+            font-size: 11px;
+        }
+
+        .header-search {
+            position: relative;
+            width: 320px;
+        }
+
+        .header-search input {
+            width: 100%;
+            height: 32px;
+            padding: 0 44px 0 32px;
+            background-color: var(--bf-canvas);
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--bf-text-primary);
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .header-search input:focus {
+            border-color: var(--bf-blue);
+            background-color: var(--bf-surface);
+            box-shadow: 0 0 0 2px var(--bf-blue-subtle);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bf-text-muted);
+            pointer-events: none;
+            font-size: 16px;
+        }
+
+        .search-kbd {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            border-radius: 4px;
+            padding: 1px 4px;
+            font-size: 10px;
+            color: var(--bf-text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cluster-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            background-color: var(--bf-surface-subtle);
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            line-height: 1.2;
+        }
+
+        .admin-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .admin-pill:hover {
+            border-color: var(--bf-border-hover);
+            background-color: var(--bf-surface-subtle);
+        }
+
+        .switch-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            width: 210px;
+            z-index: 100;
+            display: none;
+            padding: 6px 0;
+        }
+
+        .switch-dropdown-header {
+            padding: 6px 14px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--bf-text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .switch-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--bf-text-primary);
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+
+        .switch-item:hover {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-blue);
+        }
+
+        .user-avatar-top {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* --- MAIN VIEWPORT CONTAINER --- */
+        .main-content {
+            margin-left: var(--bf-sidebar-width);
+            padding: calc(var(--bf-header-height) + 20px) 24px 40px;
+            min-height: 100vh;
+            max-width: 1680px;
+            margin-right: auto;
+        }
+
+        /* 1. SPRINT SELECTOR & HERO CARD */
+        .sprint-hero-card {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sprint-hero-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+            padding-bottom: 14px;
+        }
+
+        .sprint-title-area {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .sprint-title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sprint-title-row h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+            letter-spacing: -0.015em;
+        }
+
+        .sprint-select {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            background-color: var(--bf-surface);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--bf-text-primary);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.15s;
+        }
+
+        .sprint-select:focus {
+            border-color: var(--bf-blue);
+            box-shadow: 0 0 0 2px var(--bf-blue-subtle);
+        }
+
+        .target-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background-color: var(--bf-blue-subtle);
+            color: var(--bf-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--bf-blue);
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+
+        .cycle-chip {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .sprint-goal-desc {
+            font-size: 13px;
+            color: var(--bf-text-secondary);
+            max-width: 900px;
+            line-height: 1.45;
+        }
+
+        .sprint-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            shrink: 0;
+        }
+
+        .btn-action-outline {
+            height: 32px;
+            padding: 0 12px;
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            background-color: var(--bf-surface);
+            color: var(--bf-text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-action-outline:hover {
+            background-color: var(--bf-surface-subtle);
+            border-color: var(--bf-border-hover);
+        }
+
+        .btn-action-primary {
+            height: 32px;
+            padding: 0 14px;
+            border: 1px solid var(--bf-blue);
+            border-radius: 6px;
+            background-color: var(--bf-blue);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(37,99,235,0.15);
+            transition: all 0.15s ease;
+        }
+
+        .btn-action-primary:hover {
+            background-color: var(--bf-blue-hover);
+            border-color: var(--bf-blue-hover);
+        }
+
+        .sprint-meta-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background-color: rgba(241, 245, 249, 0.5);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--bf-text-secondary);
+        }
+
+        .sprint-meta-left {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sprint-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .sprint-meta-item strong {
+            color: var(--bf-text-primary);
+            font-weight: 600;
+        }
+
+        /* 2. SUMMARY KPI ROW (5 Cards) */
+        .kpi-row-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .kpi-card-stitch {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 104px;
+        }
+
+        .kpi-top-stitch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .kpi-label-stitch {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--bf-text-muted);
+        }
+
+        .kpi-chip-stitch {
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 600;
+        }
+
+        .kpi-chip-stitch.blue {
+            background-color: var(--bf-blue-light);
+            color: var(--bf-blue);
+        }
+
+        .kpi-chip-stitch.amber {
+            background-color: var(--bf-amber-bg);
+            color: var(--bf-amber-text);
+        }
+
+        .kpi-chip-stitch.green {
+            background-color: var(--bf-green-bg);
+            color: var(--bf-green-text);
+        }
+
+        .kpi-chip-stitch.slate {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+        }
+
+        .kpi-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .kpi-number-stitch {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+            line-height: 1.1;
+        }
+
+        .kpi-number-stitch.blue { color: var(--bf-blue); }
+        .kpi-number-stitch.amber { color: var(--bf-amber-text); }
+        .kpi-number-stitch.green { color: var(--bf-green-text); }
+
+        .kpi-unit-stitch {
+            font-size: 11px;
+            color: var(--bf-text-muted);
+        }
+
+        .kpi-footer-stitch {
+            font-size: 11.5px;
+            color: var(--bf-text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* 3. SPRINT PROGRESS & WORKLOAD (12 cols: 7 cols + 5 cols) */
+        .progress-workload-grid {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .progress-card {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-title-block h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-title-block p {
+            font-size: 11.5px;
+            color: var(--bf-text-muted);
+            margin-top: 2px;
+        }
+
+        .progress-pct-huge {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--bf-blue);
+            line-height: 1;
+            text-align: right;
+        }
+
+        .progress-pct-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--bf-text-muted);
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        /* Segmented Burn Bar */
+        .burn-bar-track {
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background-color: var(--bf-surface-subtle);
+            overflow: hidden;
+            display: flex;
+        }
+
+        .burn-seg {
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+
+        .burn-seg.resolved { background-color: var(--bf-blue); }
+        .burn-seg.inprogress { background-color: #38bdf8; }
+        .burn-seg.review { background-color: var(--bf-purple); }
+        .burn-seg.pending { background-color: #cbd5e1; }
+
+        .burn-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--bf-text-secondary);
+            padding-top: 4px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 2px;
+        }
+
+        .metrics-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding-top: 4px;
+        }
+
+        .metric-mini-chip {
+            padding: 8px 10px;
+            background-color: var(--bf-surface-subtle);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .metric-mini-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--bf-text-muted);
+            letter-spacing: 0.04em;
+        }
+
+        .metric-mini-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+
+        .metric-mini-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-secondary);
+        }
+
+        /* Capacity Card */
+        .capacity-card {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .capacity-track {
+            position: relative;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background-color: var(--bf-surface-subtle);
+            overflow: hidden;
+        }
+
+        .capacity-fill {
+            height: 100%;
+            border-radius: 6px;
+            background-color: var(--bf-text-primary);
+            transition: width 0.4s ease;
+        }
+
+        .velocity-spark-box {
+            padding: 10px 14px;
+            background-color: var(--bf-surface-subtle);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* 4. TWO-COLUMN MAIN BODY (8 cols + 4 cols) */
+        .two-column-main {
+            display: grid;
+            grid-template-columns: 8fr 4fr;
+            gap: 12px;
+            align-items: start;
+        }
+
+        /* Left: Sprint Issues Panel */
+        .sprint-issues-panel {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            overflow: hidden;
+        }
+
+        .panel-header-stitch {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--bf-border);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .panel-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title-group h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+        }
+
+        .tab-buttons-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .tab-btn-stitch {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--bf-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn-stitch:hover {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
+        }
+
+        .tab-btn-stitch.active {
+            background-color: var(--bf-text-primary);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .table-filter-bar {
+            display: grid;
+            grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 1.5fr auto;
+            gap: 8px;
+            padding: 0 18px 12px;
+        }
+
+        .table-filter-bar input,
+        .table-filter-bar select {
+            height: 30px;
+            padding: 0 8px;
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-size: 11.5px;
+            background-color: var(--bf-canvas);
+            color: var(--bf-text-primary);
+            outline: none;
+        }
+
+        .table-filter-bar input:focus,
+        .table-filter-bar select:focus {
+            border-color: var(--bf-blue);
+            background-color: var(--bf-surface);
+        }
+
+        /* Table styles */
+        .table-wrap-stitch {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .issues-table-stitch {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+            min-width: 760px;
+        }
+
+        .issues-table-stitch thead th {
+            padding: 10px 14px;
+            background-color: var(--bf-surface-subtle);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--bf-text-muted);
+            border-bottom: 1px solid var(--bf-border);
+            white-space: nowrap;
+        }
+
+        .issues-table-stitch tbody tr {
+            border-bottom: 1px solid var(--bf-border-subtle);
+            transition: background-color 0.12s;
+        }
+
+        .issues-table-stitch tbody tr:hover {
+            background-color: rgba(241, 245, 249, 0.4);
+        }
+
+        .issues-table-stitch tbody td {
+            padding: 10px 14px;
+            vertical-align: middle;
+        }
+
+        .issue-key-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-blue);
+            cursor: pointer;
+        }
+
+        .issue-key-link:hover {
+            text-decoration: underline;
+        }
+
+        .issue-title-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .issue-title-text {
+            font-weight: 500;
+            color: var(--bf-text-primary);
+            line-height: 1.35;
+        }
+
+        .issue-component-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bf-text-muted);
+            margin-top: 2px;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .badge-sev-critical {
+            background-color: var(--bf-red-bg);
+            color: var(--bf-red-text);
+        }
+        .badge-sev-critical .badge-dot { background-color: var(--bf-red); }
+
+        .badge-sev-high {
+            background-color: var(--bf-amber-bg);
+            color: var(--bf-amber-text);
+        }
+        .badge-sev-high .badge-dot { background-color: var(--bf-amber); }
+
+        .badge-sev-medium {
+            background-color: var(--bf-blue-light);
+            color: var(--bf-blue);
+        }
+        .badge-sev-medium .badge-dot { background-color: var(--bf-blue); }
+
+        .badge-sev-low {
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-secondary);
+        }
+        .badge-sev-low .badge-dot { background-color: var(--bf-text-muted); }
+
+        .p0-tag { background: #ef4444; color: #fff; font-weight: 700; padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+        .p1-tag { background: #f97316; color: #fff; font-weight: 700; padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+        .p2-tag { background: #3b82f6; color: #fff; font-weight: 700; padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+        .p3-tag { background: #64748b; color: #fff; font-weight: 700; padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+
+        .s-resolved { background-color: var(--bf-green-bg); color: var(--bf-green-text); }
+        .s-resolved .badge-dot { background-color: var(--bf-green); }
+        .s-inprogress { background-color: var(--bf-blue-light); color: var(--bf-blue); }
+        .s-inprogress .badge-dot { background-color: var(--bf-blue); }
+        .s-pending { background-color: var(--bf-amber-bg); color: var(--bf-amber-text); }
+        .s-pending .badge-dot { background-color: var(--bf-amber); }
+        .s-rejected { background-color: var(--bf-red-bg); color: var(--bf-red-text); }
+        .s-rejected .badge-dot { background-color: var(--bf-red); }
+
+        .user-chip-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            color: var(--bf-text-primary);
+        }
+
+        .user-avatar-tiny {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-blue);
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sp-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: var(--bf-surface-subtle);
+            color: var(--bf-text-primary);
+        }
+
+        /* Table Footer */
+        .table-footer-stitch {
+            padding: 12px 18px;
+            border-top: 1px solid var(--bf-border);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--bf-text-secondary);
+        }
+
+        .table-page-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .page-btn {
+            height: 28px;
+            min-width: 28px;
+            padding: 0 6px;
+            border: 1px solid var(--bf-border);
+            border-radius: 4px;
+            background-color: var(--bf-surface);
+            color: var(--bf-text-primary);
+            font-size: 11.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn.active {
+            background-color: var(--bf-text-primary);
+            color: #ffffff;
+            border-color: var(--bf-text-primary);
+            font-weight: 600;
+        }
+
+        /* Right Column Cards */
+        .right-cards-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-card-stitch {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+        }
+
+        .info-card-header h3 {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+        }
+
+        .info-data-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 2px 0;
+        }
+
+        .info-data-row .data-label {
+            color: var(--bf-text-muted);
+        }
+
+        .info-data-row .data-val {
+            font-weight: 500;
+            color: var(--bf-text-primary);
+            text-align: right;
+        }
+
+        /* Team Roster Item */
+        .roster-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .roster-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .roster-person {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roster-progress-track {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            background-color: var(--bf-surface-subtle);
+            overflow: hidden;
+        }
+
+        .roster-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background-color: var(--bf-blue);
+        }
+
+        /* Audit Timeline */
+        .timeline-stream {
+            position: relative;
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-stream::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background-color: var(--bf-border);
+        }
+
+        .timeline-item {
+            position: relative;
+            font-size: 11.5px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -18px;
+            top: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--bf-blue);
+            box-shadow: 0 0 0 2px var(--bf-surface);
+        }
+
+        .timeline-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+        }
+
+        .timeline-desc {
+            color: var(--bf-text-secondary);
+            margin-top: 2px;
+        }
+
+        /* 5. EDGE STATE VERIFICATION SWITCHER */
+        .edge-state-section {
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 8px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+            margin-top: 16px;
+        }
+
+        .edge-state-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--bf-border-subtle);
+        }
+
+        .edge-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .edge-btn {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 500;
+            border: 1px solid var(--bf-border);
+            background-color: var(--bf-surface);
+            color: var(--bf-text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .edge-btn:hover {
+            background-color: var(--bf-surface-subtle);
+        }
+
+        .edge-btn.active {
+            background-color: var(--bf-text-primary);
+            color: #ffffff;
+            border-color: var(--bf-text-primary);
+        }
+
+        .edge-btn.error-btn {
+            color: var(--bf-red);
+        }
+
+        .edge-canvas {
+            display: none;
+            padding: 16px;
+            background-color: var(--bf-canvas);
+            border-radius: 6px;
+            margin-top: 12px;
+        }
+
+        /* Modals & Drawers */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .overlay.show { display: flex; }
+
+        .modal-card {
+            width: 520px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+        .modal-head {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--bf-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-head h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--bf-text-muted);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--bf-text-secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px 10px;
+            border: 1px solid var(--bf-border);
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--bf-blue);
+            box-shadow: 0 0 0 2px var(--bf-blue-subtle);
+        }
+
+        .modal-foot {
+            padding: 12px 20px;
+            border-top: 1px solid var(--bf-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background-color: var(--bf-canvas);
+        }
+
+        /* Slide-over Drawer */
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.4);
+            z-index: 900;
+            display: none;
+        }
+
+        .drawer-backdrop.show { display: block; }
+
+        .drawer-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 480px;
+            max-width: 90vw;
+            background-color: var(--bf-surface);
+            border-left: 1px solid var(--bf-border);
+            z-index: 950;
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 25px rgba(0,0,0,0.1);
+        }
+
+        .drawer-panel.show { transform: translateX(0); }
+
+        .drawer-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--bf-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .drawer-body {
+            padding: 16px 20px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .drawer-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--bf-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background-color: var(--bf-canvas);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 2000;
+            background-color: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast.ok { border-left: 4px solid var(--bf-green); }
+        .toast.err { border-left: 4px solid var(--bf-red); }
+
+        /* Responsive */
+        @media (max-width: 1280px) {
+            .progress-workload-grid { grid-template-columns: 1fr; }
+            .two-column-main { grid-template-columns: 1fr; }
+            .kpi-row-5 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 840px) {
+            .sidebar { width: 64px; }
+            .brand-text-col, .nav-label, .nav-link span, .nav-counter, .sidebar-bottom { display: none; }
+            .top-header { left: 64px; }
+            .main-content { margin-left: 64px; padding: 70px 14px 30px; }
+            .kpi-row-5 { grid-template-columns: 1fr; }
+            .table-filter-bar { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-<aside class="side"><div class="brand"><div class="brand-b">B</div><span>BugFlow</span></div><div class="section">ADMINISTRATION</div><nav class="nav"><a href="/admin-ui">▣ <span>Dashboard</span></a><a href="/all-defects-ui">◆ <span>All Defects</span></a><a href="/analytics-ui">▥ <span>Analytics Reports</span></a><a class="active" href="/milestone2-ui">◇ <span>Sprint Management</span></a><a href="/team-collaboration-ui">◎ <span>Team Collaboration</span></a><a href="/integrations-ui">⚡ <span>Integrations & CI/CD</span></a><a href="/api-explorer-ui">⚙ <span>API Explorer</span></a><a href="/login-ui">↔ <span>Logout / Switch</span></a></nav></aside>
-<main class="main">
-<header class="head"><div><h1>Sprint Management</h1><p>Plan, assign and track Agile development sprints.</p></div><div class="actions"><button class="btn" onclick="loadData()">↻ Refresh</button><button class="btn primary" onclick="openCreate()">＋ Create New Sprint</button></div></header>
-<section class="cards"><div class="card"><div class="label">Active Sprints</div><div class="num" id="active">0</div><div class="sub">Currently running</div></div><div class="card"><div class="label">Total Issues</div><div class="num" id="total">0</div><div class="sub">Across all sprints</div></div><div class="card"><div class="label">Completed Issues</div><div class="num" id="done">0</div><div class="sub">Resolved or closed</div></div><div class="card"><div class="label">Backlog</div><div class="num" id="backlogCount">0</div><div class="sub">Waiting for a sprint</div></div></section>
-<section class="grid"><div class="panel"><div class="panel-head"><div class="title">Active &amp; Planned Sprints</div><button class="btn primary" onclick="openCreate()">＋ New Sprint</button></div><div class="sprints" id="sprintList"><div class="empty">Loading sprints...</div></div></div><div class="panel"><div class="panel-head"><div class="title">Sprint Progress</div></div><div class="chart"><div class="selected"><h3 id="selName">Select a sprint</h3><p id="selGoal">Progress overview</p></div><div class="chartbox"><canvas id="chart"></canvas><div class="center"><b id="pct">0%</b><span>completed</span><small id="chartTotal">0 total issues</small></div></div><div class="stats"><div class="stat"><div><b id="c1">0</b><span>Completed</span></div></div><div class="stat"><div><b id="c2">0</b><span>In Progress</span></div></div><div class="stat"><div><b id="c3">0</b><span>Not Started</span></div></div><div class="stat"><div><b id="c4">0</b><span>Blocked</span></div></div></div></div></div></section>
-<section class="panel backlog"><div class="panel-head"><div><div class="title">Sprint Backlog</div><div style="font-size:10px;color:#71859d;margin-top:4px">Issues currently assigned to the selected sprint</div></div><div class="actions"><button class="btn" onclick="openCreateIssue()">＋ New Issue</button><button class="btn primary" onclick="openAddIssues()">＋ Add Issues</button></div></div><div class="tablewrap"><table><thead><tr><th>Issue</th><th>Title</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody id="backlog"></tbody></table></div></section>
+
+<!-- SIDEBAR NAVIGATION (Matching BugFlow Master Design) -->
+<aside class="sidebar">
+    <div>
+        <div class="brand">
+            <div class="brand-logo-badge">B</div>
+            <div class="brand-text-col">
+                <span class="brand-title">BugFlow</span>
+                <span class="brand-subtitle">DevOps Defect Suite</span>
+            </div>
+        </div>
+
+        <div class="nav-wrapper">
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-label">OVERVIEW</div>
+                    <a href="/admin-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">dashboard</span><span>Dashboard</span></div>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">WORK MANAGEMENT</div>
+                    <a href="/all-defects-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">bug_report</span><span>Defects</span></div>
+                        <span class="nav-counter" id="sideDefectCount">52</span>
+                    </a>
+                    <a href="/milestone2-ui" class="nav-link active">
+                        <div><span class="material-symbols-outlined nav-icon">sprint</span><span>Sprints</span></div>
+                        <span class="nav-counter" id="sideSprintCount">6</span>
+                    </a>
+                    <a href="/team-collaboration-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">group_work</span><span>Team Collaboration</span></div>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">ANALYTICS</div>
+                    <a href="/analytics-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">bar_chart</span><span>Analytics</span></div>
+                    </a>
+                    <a href="/sprint-report-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">monitoring</span><span>Sprint Report</span></div>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">INTEGRATIONS</div>
+                    <a href="/integrations-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">code</span><span>GitHub</span></div>
+                    </a>
+                    <a href="/integrations-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">rocket_launch</span><span>CI/CD Pipeline</span></div>
+                    </a>
+                    <a href="/api-explorer-ui" class="nav-link">
+                        <div><span class="material-symbols-outlined nav-icon">terminal</span><span>API Explorer</span></div>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">SYSTEM</div>
+                    <a href="#" class="nav-link" onclick="toast('System notifications connected', true); return false;">
+                        <div><span class="material-symbols-outlined nav-icon">notifications</span><span>Notifications</span></div>
+                    </a>
+                    <a href="#" class="nav-link" onclick="toast('BugFlow Core settings active', true); return false;">
+                        <div><span class="material-symbols-outlined nav-icon">settings</span><span>Settings</span></div>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="sidebar-bottom">
+        <div class="telemetry-chip">
+            <div><span class="status-dot-green"></span>FastAPI Core v2.4.0</div>
+            <span style="color:var(--bf-blue); font-weight:600;">Online</span>
+        </div>
+        <button type="button" id="sideSwitchBtn" class="btn-action-outline" style="width:100%; justify-content:center; font-size:11px;">
+            <span class="material-symbols-outlined" style="font-size:14px;">sync_alt</span>
+            <span>Switch Workspace</span>
+        </button>
+    </div>
+</aside>
+
+<!-- TOP FIXED HEADER BAR -->
+<header class="top-header">
+    <div class="breadcrumbs">
+        <a href="/admin-ui">Workspaces</a>
+        <span class="breadcrumbs-sep">/</span>
+        <span>Production Cluster</span>
+        <span class="breadcrumbs-sep">/</span>
+        <span>Admin Workspace</span>
+        <span class="breadcrumbs-sep">/</span>
+        <span style="color:var(--bf-blue); font-weight:600;">Sprints</span>
+    </div>
+
+    <div class="header-search">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" id="globalSearchInput" placeholder="Search defects, sprints, commits, or API routes...">
+        <span class="search-kbd">⌘K</span>
+    </div>
+
+    <div class="header-right">
+        <div class="cluster-pill">
+            <span class="status-dot-green"></span>
+            <div>
+                <div style="font-weight:700; color:var(--bf-text-primary);">CLUSTER-01 NODE PRIMARY</div>
+                <div style="color:var(--bf-text-muted); font-size:9.5px;">ROLE: SYSTEM ADMINISTRATOR</div>
+            </div>
+        </div>
+
+        <!-- Workspace Switcher Dropdown -->
+        <div class="admin-pill" id="adminPill">
+            <span class="status-dot-green"></span>
+            <span id="topAdminName">Admin Workspace</span>
+            <span class="badge" style="background:var(--bf-surface-subtle); color:var(--bf-blue); font-size:10px;">Admin</span>
+            <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-text-muted);">expand_more</span>
+
+            <div class="switch-dropdown" id="switchDropdown">
+                <div class="switch-dropdown-header">Switch Workspace</div>
+                <button class="switch-item" data-role="admin" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">admin_panel_settings</span> Naruto (Admin)
+                </button>
+                <button class="switch-item" data-role="developer" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">terminal</span> Sasuke (Developer)
+                </button>
+                <button class="switch-item" data-role="tester" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">rule</span> Hinata (Tester)
+                </button>
+                <button class="switch-item" data-role="senior_dev" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">architecture</span> Itachi (Senior Dev)
+                </button>
+                <button class="switch-item" data-role="user" type="button">
+                    <span class="material-symbols-outlined" style="font-size:16px;">person</span> User Workspace
+                </button>
+            </div>
+        </div>
+
+        <button class="btn-action-outline" style="width:32px; height:32px; padding:0; justify-content:center;" title="Notifications" onclick="toast('Live WebSocket connection established', true)">
+            <span class="material-symbols-outlined" style="font-size:18px;">notifications</span>
+        </button>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+            <div class="user-avatar-top" id="adminAvatar">A</div>
+            <div style="display:flex; flex-direction:column;">
+                <span style="font-size:12px; font-weight:600; line-height:1.2;" id="adminName">Alex Chen</span>
+                <a href="/login-ui" id="logoutLink" style="font-size:10px; color:var(--bf-text-muted); text-decoration:none;">Sign out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN VIEWPORT -->
+<main class="main-content">
+
+    <!-- 1. SPRINT SELECTOR & HERO CARD -->
+    <section class="sprint-hero-card">
+        <div class="sprint-hero-top">
+            <div class="sprint-title-area">
+                <div class="sprint-title-row">
+                    <select class="sprint-select" id="sprintSelector" onchange="onSprintSelect(this.value)" aria-label="Select Sprint">
+                        <option value="">Loading sprints...</option>
+                    </select>
+                    <h1 id="sprintTitle">Sprint 24 [Active]</h1>
+                    <span class="target-chip">
+                        <span class="pulse-dot"></span>
+                        <span id="targetChipText">Target: v2.4.1 Production Hotfix</span>
+                    </span>
+                    <span class="badge" id="statusBadgeHeader" style="background:var(--bf-blue-light); color:var(--bf-blue);">
+                        ACTIVE
+                    </span>
+                    <span class="cycle-chip" id="cycleChipText">CY24-W20</span>
+                </div>
+                <p class="sprint-goal-desc" id="sprintGoal">
+                    Core Engine &amp; Redis Hotfix — High concurrency Celery worker starvation &amp; connection pool remediation.
+                </p>
+            </div>
+
+            <div class="sprint-hero-actions">
+                <a href="/sprint-report-ui" class="btn-action-outline" style="text-decoration:none;" title="Open Sprint Report">
+                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-blue);">monitoring</span>
+                    <span>Sprint Report</span>
+                </a>
+                <button class="btn-action-outline" type="button" onclick="openDetails(selected?.id)">
+                    <span class="material-symbols-outlined" style="font-size:16px;">visibility</span>
+                    <span>View Details</span>
+                </button>
+                <button class="btn-action-outline" type="button" onclick="openAssign(selected?.id)">
+                    <span class="material-symbols-outlined" style="font-size:16px;">person_add</span>
+                    <span id="assignBtnText">Assign Sprint</span>
+                </button>
+                <button class="btn-action-outline" type="button" onclick="openAddIssues()">
+                    <span class="material-symbols-outlined" style="font-size:16px;">layers</span>
+                    <span>Add Issues</span>
+                </button>
+                <button class="btn-action-outline" type="button" onclick="openCreateIssue()">
+                    <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+                    <span>+ New Issue</span>
+                </button>
+                <button class="btn-action-primary" type="button" onclick="openCreate()">
+                    <span class="material-symbols-outlined" style="font-size:16px;">add_circle</span>
+                    <span>+ Create Sprint</span>
+                </button>
+                <button class="btn-action-outline" type="button" onclick="loadData()" title="Refresh data">
+                    <span class="material-symbols-outlined" style="font-size:16px;">refresh</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Metadata Subline Strip -->
+        <div class="sprint-meta-strip">
+            <div class="sprint-meta-left">
+                <div class="sprint-meta-item">
+                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-text-muted);">calendar_today</span>
+                    <span id="sprintDateRange">May 12, 2024 – May 26, 2024</span>
+                </div>
+                <span>•</span>
+                <div class="sprint-meta-item" style="color:var(--bf-blue); font-weight:600;">
+                    <span class="material-symbols-outlined" style="font-size:16px;">timer</span>
+                    <span id="sprintDaysRemaining">4 Days Remaining</span>
+                </div>
+                <span>•</span>
+                <div class="sprint-meta-item">
+                    <span class="material-symbols-outlined" style="font-size:16px; color:var(--bf-text-muted);">account_circle</span>
+                    <span>Responsible Role: <strong id="sprintAssignedRole">Developer</strong></span>
+                </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:12px; font-family:'JetBrains Mono', monospace; font-size:11px;">
+                <span style="color:var(--bf-text-muted);">ENV:</span>
+                <span style="padding:1px 6px; background:var(--bf-surface); border:1px solid var(--bf-border); border-radius:4px; font-weight:600;">cluster-01.us-east-1</span>
+                <span style="color:var(--bf-text-muted);">FASTAPI CORE:</span>
+                <span style="color:var(--bf-blue); font-weight:700;">v2.4.0</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SUMMARY KPI ROW (5 CARDS) -->
+    <section class="kpi-row-5">
+        <!-- Card 1: Total Issues -->
+        <div class="kpi-card-stitch">
+            <div class="kpi-top-stitch">
+                <span class="kpi-label-stitch">Total Issues</span>
+                <span class="kpi-chip-stitch blue" id="kpiScopeTag">Sprint Scope</span>
+            </div>
+            <div class="kpi-value-row">
+                <span class="kpi-number-stitch tabular-nums" id="kpiTotalIssues">0</span>
+                <span class="kpi-unit-stitch">issues</span>
+            </div>
+            <div class="kpi-footer-stitch">
+                <span id="kpiTotalPoints">0 Total SP</span>
+                <span class="font-mono" style="color:var(--bf-text-muted);">100% committed</span>
+            </div>
+        </div>
+
+        <!-- Card 2: Resolved -->
+        <div class="kpi-card-stitch">
+            <div class="kpi-top-stitch">
+                <span class="kpi-label-stitch">Resolved</span>
+                <span class="kpi-chip-stitch green">Optimal</span>
+            </div>
+            <div class="kpi-value-row">
+                <span class="kpi-number-stitch green tabular-nums" id="kpiResolvedIssues">0</span>
+                <span class="kpi-unit-stitch" id="kpiResolvedRatio">/ 0</span>
+            </div>
+            <div class="kpi-footer-stitch">
+                <span id="kpiResolutionRate">0.0% resolution</span>
+                <span class="font-mono" style="font-weight:600; color:var(--bf-blue);" id="kpiResolvedPoints">0 SP</span>
+            </div>
+        </div>
+
+        <!-- Card 3: In Progress -->
+        <div class="kpi-card-stitch">
+            <div class="kpi-top-stitch">
+                <span class="kpi-label-stitch">In Progress</span>
+                <span class="kpi-chip-stitch blue">In Flight</span>
+            </div>
+            <div class="kpi-value-row">
+                <span class="kpi-number-stitch tabular-nums" id="kpiInProgressIssues">0</span>
+                <span class="kpi-unit-stitch">issues</span>
+            </div>
+            <div class="kpi-footer-stitch">
+                <span>Active Review &amp; QA</span>
+                <span class="font-mono" style="font-weight:600;" id="kpiInProgressPoints">0 SP</span>
+            </div>
+        </div>
+
+        <!-- Card 4: Pending Triage -->
+        <div class="kpi-card-stitch">
+            <div class="kpi-top-stitch">
+                <span class="kpi-label-stitch">Pending Triage</span>
+                <span class="kpi-chip-stitch amber">Needs Action</span>
+            </div>
+            <div class="kpi-value-row">
+                <span class="kpi-number-stitch amber tabular-nums" id="kpiPendingIssues">0</span>
+                <span class="kpi-unit-stitch">issues</span>
+            </div>
+            <div class="kpi-footer-stitch">
+                <span>Unresolved Gate</span>
+                <span class="font-mono" style="font-weight:600; color:var(--bf-amber-text);" id="kpiPendingPoints">0 SP</span>
+            </div>
+        </div>
+
+        <!-- Card 5: Backlog Pool -->
+        <div class="kpi-card-stitch">
+            <div class="kpi-top-stitch">
+                <span class="kpi-label-stitch">Backlog Pool</span>
+                <span class="kpi-chip-stitch slate">Available</span>
+            </div>
+            <div class="kpi-value-row">
+                <span class="kpi-number-stitch tabular-nums" id="kpiBacklogPool">0</span>
+                <span class="kpi-unit-stitch">ready</span>
+            </div>
+            <div class="kpi-footer-stitch">
+                <span>Awaiting Sprint Scope</span>
+                <button type="button" class="font-mono" style="color:var(--bf-blue); background:none; border:none; cursor:pointer; font-weight:600;" onclick="openAddIssues()">+ Add to Sprint</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SPRINT PROGRESS & WORKLOAD CARDS (7 cols + 5 cols) -->
+    <section class="progress-workload-grid">
+        <!-- Left: Sprint Burn & Delivery Progress (7 cols) -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <div class="progress-title-block">
+                    <h3>
+                        Sprint Burn &amp; Delivery Progress
+                        <span class="badge" style="background:var(--bf-surface-subtle); color:var(--bf-blue); font-size:11px;" id="sprintPaceDayChip">Active Window</span>
+                    </h3>
+                    <p>Calculated in real-time from Jira, GitHub PR merges, and BugFlow status transitions.</p>
+                </div>
+                <div>
+                    <div class="progress-pct-huge tabular-nums" id="burnPercentageText">0%</div>
+                    <div class="progress-pct-sub" id="burnedStoryPointsSub">0 / 0 SP Burned</div>
+                </div>
+            </div>
+
+            <!-- Segmented Burn Bar -->
+            <div>
+                <div class="burn-bar-track">
+                    <div class="burn-seg resolved" id="barResolved" style="width: 0%;" title="Resolved"></div>
+                    <div class="burn-seg inprogress" id="barInProgress" style="width: 0%;" title="In Progress"></div>
+                    <div class="burn-seg review" id="barReview" style="width: 0%;" title="In Review / QA"></div>
+                    <div class="burn-seg pending" id="barPending" style="width: 0%;" title="Pending"></div>
+                </div>
+
+                <div class="burn-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background-color:var(--bf-blue);"></span>
+                        <span id="legendResolvedText">Resolved (0 · 0 SP)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background-color:#38bdf8;"></span>
+                        <span id="legendInProgressText">In Progress (0 · 0 SP)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background-color:var(--bf-purple);"></span>
+                        <span id="legendReviewText">QA Verification (0 · 0 SP)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background-color:#cbd5e1;"></span>
+                        <span id="legendPendingText">Pending (0 · 0 SP)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics Chips Grid -->
+            <div class="metrics-chips-grid">
+                <div class="metric-mini-chip">
+                    <span class="metric-mini-label">TOTAL SCOPE</span>
+                    <span class="metric-mini-val" id="metricTotalScope">0 Items</span>
+                    <span class="metric-mini-sub" id="metricTotalScopeSub">0 Story Points</span>
+                </div>
+                <div class="metric-mini-chip">
+                    <span class="metric-mini-label">BURNED</span>
+                    <span class="metric-mini-val" style="color:var(--bf-blue);" id="metricBurned">0 Items</span>
+                    <span class="metric-mini-sub" id="metricBurnedSub">0 SP Completed</span>
+                </div>
+                <div class="metric-mini-chip">
+                    <span class="metric-mini-label">REMAINING</span>
+                    <span class="metric-mini-val" id="metricRemaining">0 Items</span>
+                    <span class="metric-mini-sub" id="metricRemainingSub">0 SP Open</span>
+                </div>
+                <div class="metric-mini-chip">
+                    <span class="metric-mini-label">MTTR PACE</span>
+                    <span class="metric-mini-val">1.8 hrs</span>
+                    <span class="metric-mini-sub" style="color:var(--bf-green-text);">Optimal Pace</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Workload & Capacity Distribution (5 cols) -->
+        <div class="capacity-card">
+            <div class="progress-header">
+                <div>
+                    <h3 style="font-size:14px; font-weight:600; color:var(--bf-text-primary);">Workload &amp; Capacity</h3>
+                    <p style="font-size:11.5px; color:var(--bf-text-muted); margin-top:2px;">Team allocation vs commitment velocity</p>
+                </div>
+                <span class="badge" style="background:var(--bf-surface-subtle); color:var(--bf-text-primary); font-size:11px;" id="capacityAllocPill">
+                    92.3% Allocated
+                </span>
+            </div>
+
+            <!-- Capacity Meter -->
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px;">
+                    <span style="color:var(--bf-text-secondary);">Sprint Commitment vs Target Capacity</span>
+                    <span class="font-mono" style="font-weight:700;" id="capacityRatioText">0 / 48 SP</span>
+                </div>
+                <div class="capacity-track">
+                    <div class="capacity-fill" id="capacityFill" style="width: 75%;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--bf-text-muted);">
+                    <span>0 SP</span>
+                    <span>Commitment Target</span>
+                    <span>Max Capacity</span>
+                </div>
+            </div>
+
+            <!-- Inline Sparkline / Velocity -->
+            <div class="velocity-spark-box">
+                <div>
+                    <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--bf-text-muted); display:block;">BURN VELOCITY</span>
+                    <span style="font-size:14px; font-weight:700; color:var(--bf-text-primary);" id="velocityRateText">4.0 SP / day</span>
+                    <span style="font-size:11px; color:var(--bf-blue); display:flex; align-items:center; gap:2px; margin-top:2px;">
+                        <span class="material-symbols-outlined" style="font-size:13px;">trending_up</span> On Track with Sprint Scope
+                    </span>
+                </div>
+
+                <!-- SVG Sparkline from Stitch -->
+                <div style="width:130px; height:38px;">
+                    <svg viewBox="0 0 140 40" style="width:100%; height:100%; overflow:visible;">
+                        <path d="M 0,35 L 20,32 L 40,28 L 60,20 L 80,18 L 100,10 L 120,6 L 140,4" fill="none" stroke="#0051d5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M 0,35 L 20,32 L 40,28 L 60,20 L 80,18 L 100,10 L 120,6 L 140,4 L 140,40 L 0,40 Z" fill="#0051d5" fill-opacity="0.08"/>
+                        <circle cx="140" cy="4" r="3.5" fill="#0051d5"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TWO-COLUMN MAIN BODY (8 cols + 4 cols) -->
+    <section class="two-column-main">
+        <!-- Left: Sprint Issues Panel (8 cols) -->
+        <div class="sprint-issues-panel">
+            <div class="panel-header-stitch">
+                <div class="panel-header-top">
+                    <div class="panel-title-group">
+                        <h2>Sprint Issues</h2>
+                        <span class="badge" style="background:var(--bf-surface-subtle); color:var(--bf-text-primary);" id="tableTotalRecordsBadge">0 Total Records</span>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="btn-action-outline" type="button" onclick="exportSprintIssuesCSV()">
+                            <span class="material-symbols-outlined" style="font-size:16px;">file_download</span>
+                            <span>Export CSV</span>
+                        </button>
+                        <button class="btn-action-outline" type="button" onclick="openCreateIssue()">
+                            <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+                            <span>Create Issue</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="tab-buttons-row" id="issueTabsRow">
+                    <button class="tab-btn-stitch active" data-tab="all" onclick="setIssueTab('all')">All (<span id="tabCountAll">0</span>)</button>
+                    <button class="tab-btn-stitch" data-tab="inprogress" onclick="setIssueTab('inprogress')">In Progress (<span id="tabCountInProgress">0</span>)</button>
+                    <button class="tab-btn-stitch" data-tab="pending" onclick="setIssueTab('pending')">Pending (<span id="tabCountPending">0</span>)</button>
+                    <button class="tab-btn-stitch" data-tab="resolved" onclick="setIssueTab('resolved')">Resolved (<span id="tabCountResolved">0</span>)</button>
+                </div>
+            </div>
+
+            <!-- Quick Filter Toolbar -->
+            <div class="table-filter-bar">
+                <div style="position:relative; display:flex; align-items:center;">
+                    <span class="material-symbols-outlined" style="position:absolute; left:8px; font-size:15px; color:var(--bf-text-muted);">search</span>
+                    <input type="text" id="issueSearchInput" placeholder="Filter issues (/ to focus)..." style="padding-left:28px;" oninput="onFilterChange()">
+                </div>
+                <select id="issueStatusFilter" onchange="onFilterChange()">
+                    <option value="">Status: All</option>
+                    <option value="REPORTED">Reported</option>
+                    <option value="TRIAGED">Triaged</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="QA_VERIFICATION">QA Verification</option>
+                    <option value="RESOLVED">Resolved</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select id="issuePriorityFilter" onchange="onFilterChange()">
+                    <option value="">Priority: All</option>
+                    <option value="URGENT">P0 Blocker</option>
+                    <option value="HIGH">P1 High</option>
+                    <option value="MEDIUM">P2 Medium</option>
+                    <option value="LOW">P3 Low</option>
+                </select>
+                <select id="issueSeverityFilter" onchange="onFilterChange()">
+                    <option value="">Severity: All</option>
+                    <option value="BLOCKER">Blocker</option>
+                    <option value="CRITICAL">Critical</option>
+                    <option value="MAJOR">Major / High</option>
+                    <option value="MINOR">Minor / Low</option>
+                </select>
+                <select id="issueAssigneeFilter" onchange="onFilterChange()">
+                    <option value="">Assignee: All</option>
+                    <option value="admin">Naruto (Admin)</option>
+                    <option value="developer">Sasuke (Developer)</option>
+                    <option value="tester">Hinata (Tester)</option>
+                    <option value="senior_dev">Itachi (Senior Dev)</option>
+                </select>
+                <button class="btn-action-outline" type="button" style="height:30px; padding:0 8px;" onclick="clearFilters()" title="Reset Filters">
+                    <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+                </button>
+            </div>
+
+            <!-- Table View -->
+            <div class="table-wrap-stitch">
+                <table class="issues-table-stitch">
+                    <thead>
+                        <tr>
+                            <th style="width:110px;">Issue ID</th>
+                            <th>Title &amp; Component</th>
+                            <th style="width:110px;">Severity</th>
+                            <th style="width:110px;">Priority</th>
+                            <th style="width:120px;">Status</th>
+                            <th style="width:140px;">Assignee</th>
+                            <th style="width:75px;">SP</th>
+                            <th style="width:90px; text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issuesTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align:center; padding:32px; color:var(--bf-text-muted);">
+                                Loading sprint issues...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Enterprise Table Footer -->
+            <div class="table-footer-stitch">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span id="showingText">Showing 1 to 0 of 0 issues</span>
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <span>Rows:</span>
+                        <select id="rowsPerPageSelect" style="height:26px; font-size:11px; border:1px solid var(--bf-border); border-radius:4px; padding:0 4px;" onchange="changePageSize(this.value)">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--bf-text-muted);">
+                        <span class="pulse-dot"></span>
+                        <span id="liveSyncText">Live sync connected • Synced just now</span>
+                    </div>
+
+                    <div class="table-page-nav" id="paginationNav">
+                        <button class="page-btn" id="prevPageBtn" onclick="prevPage()">‹</button>
+                        <span id="pageButtonsContainer"></span>
+                        <button class="page-btn" id="nextPageBtn" onclick="nextPage()">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column (~32% width: 4 columns) -->
+        <div class="right-cards-col">
+            <!-- Card A: Sprint Information -->
+            <div class="info-card-stitch">
+                <div class="info-card-header">
+                    <h3>Sprint Information</h3>
+                    <span class="badge" style="background:var(--bf-blue-light); color:var(--bf-blue);" id="cardAStatusBadge">In Flight</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                    <div class="info-data-row">
+                        <span class="data-label">Milestone Target</span>
+                        <span class="data-val" style="color:var(--bf-blue); font-family:'JetBrains Mono', monospace;" id="infoTarget">CY24-W20 (v2.4.1 Hotfix)</span>
+                    </div>
+                    <div class="info-data-row">
+                        <span class="data-label">Cycle Window</span>
+                        <span class="data-val" id="infoWindow">May 12 – May 26, 2024</span>
+                    </div>
+                    <div class="info-data-row">
+                        <span class="data-label">Created</span>
+                        <span class="data-val" id="infoCreated">May 10, 2024</span>
+                    </div>
+                    <div class="info-data-row">
+                        <span class="data-label">Cluster Node</span>
+                        <span class="data-val font-mono">cluster-01.us-east-1</span>
+                    </div>
+                </div>
+                <div style="border-top:1px solid var(--bf-border-subtle); padding-top:10px;">
+                    <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--bf-text-muted); display:block; margin-bottom:4px;">SPRINT OBJECTIVE</span>
+                    <p style="font-size:11.5px; color:var(--bf-text-secondary); line-height:1.45; background:var(--bf-surface-subtle); padding:8px 10px; border-radius:6px;" id="infoGoal">
+                        Production hardening sprint targeting core engine socket pool exhaustion under peak Celery worker concurrency. Includes Redis circuit breaker backoff and velocity calculator fixes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card B: Assigned Engineering Team Roster -->
+            <div class="info-card-stitch">
+                <div class="info-card-header">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <h3>Assigned Engineering Team</h3>
+                        <span class="badge" style="background:var(--bf-surface-subtle); color:var(--bf-text-primary);">4 Active</span>
+                    </div>
+                    <button type="button" style="background:none; border:none; color:var(--bf-blue); font-weight:600; font-size:11.5px; cursor:pointer;" onclick="openAssign(selected?.id)">Manage</button>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:2px;" id="teamRosterList">
+                    <!-- Member 1: Naruto (Admin) -->
+                    <div class="roster-item">
+                        <div class="roster-top">
+                            <div class="roster-person">
+                                <div class="user-avatar-tiny" style="background:#1e293b; color:#fff;">NA</div>
+                                <div>
+                                    <span style="font-weight:600; color:var(--bf-text-primary); display:block; line-height:1.2;">Naruto (Admin)</span>
+                                    <span style="font-size:10px; color:var(--bf-text-muted);">Lead Admin / SRE Lead</span>
+                                </div>
+                            </div>
+                            <span class="font-mono" style="font-size:11px; font-weight:600;">12 / 16 SP</span>
+                        </div>
+                        <div class="roster-progress-track">
+                            <div class="roster-progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Member 2: Sasuke (Developer) -->
+                    <div class="roster-item">
+                        <div class="roster-top">
+                            <div class="roster-person">
+                                <div class="user-avatar-tiny" style="background:#dbeafe; color:#1d4ed8;">SD</div>
+                                <div>
+                                    <span style="font-weight:600; color:var(--bf-text-primary); display:block; line-height:1.2;">Sasuke (Developer)</span>
+                                    <span style="font-size:10px; color:var(--bf-text-muted);">Developer</span>
+                                </div>
+                            </div>
+                            <span class="font-mono" style="font-size:11px; font-weight:600;">11 / 14 SP</span>
+                        </div>
+                        <div class="roster-progress-track">
+                            <div class="roster-progress-fill" style="width: 78.5%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Member 3: Hinata (Tester) -->
+                    <div class="roster-item">
+                        <div class="roster-top">
+                            <div class="roster-person">
+                                <div class="user-avatar-tiny" style="background:#ecfdf5; color:#065f46;">HT</div>
+                                <div>
+                                    <span style="font-weight:600; color:var(--bf-text-primary); display:block; line-height:1.2;">Hinata (Tester)</span>
+                                    <span style="font-size:10px; color:var(--bf-text-muted);">QA Tester</span>
+                                </div>
+                            </div>
+                            <span class="font-mono" style="font-size:11px; font-weight:600;">10 / 10 SP</span>
+                        </div>
+                        <div class="roster-progress-track">
+                            <div class="roster-progress-fill" style="width: 100%; background:var(--bf-green);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Member 4: Itachi (Senior Developer) -->
+                    <div class="roster-item">
+                        <div class="roster-top">
+                            <div class="roster-person">
+                                <div class="user-avatar-tiny" style="background:#f3e8ff; color:#6b21a8;">IS</div>
+                                <div>
+                                    <span style="font-weight:600; color:var(--bf-text-primary); display:block; line-height:1.2;">Itachi (Senior Developer)</span>
+                                    <span style="font-size:10px; color:var(--bf-text-muted);">Senior Developer</span>
+                                </div>
+                            </div>
+                            <span class="font-mono" style="font-size:11px; font-weight:600;">7 / 8 SP</span>
+                        </div>
+                        <div class="roster-progress-track">
+                            <div class="roster-progress-fill" style="width: 87.5%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card C: Activity & Audit Trail -->
+            <div class="info-card-stitch">
+                <div class="info-card-header">
+                    <h3>Activity &amp; Audit Trail</h3>
+                    <span class="font-mono" style="font-size:10.5px; color:var(--bf-text-muted);">Realtime</span>
+                </div>
+
+                <div class="timeline-stream">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">11:42 UTC • Alex Chen</div>
+                        <div class="timeline-desc">Linked root cause commit <span class="font-mono" style="color:var(--bf-blue);">8f2a1b9</span> to active sprint</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background:#38bdf8;"></div>
+                        <div class="timeline-time">11:15 UTC • Sasuke (Developer)</div>
+                        <div class="timeline-desc">Merged PR #742 into branch <span class="font-mono">fix/redis-pool</span></div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background:var(--bf-green);"></div>
+                        <div class="timeline-time">10:30 UTC • Hinata (Tester)</div>
+                        <div class="timeline-desc">Completed verification test on sprint defect batch</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background:#cbd5e1;"></div>
+                        <div class="timeline-time">09:18 UTC • System Gate</div>
+                        <div class="timeline-desc">Agile sprint backlog synchronization validated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. COMPONENT EDGE STATE VERIFICATION (Section 5 from Stitch Spec) -->
+    <section class="edge-state-section">
+        <div class="edge-state-header">
+            <div>
+                <h3 style="font-size:14px; font-weight:700; color:var(--bf-text-primary);">Component Edge State Verification</h3>
+                <p style="font-size:11.5px; color:var(--bf-text-muted); margin-top:2px;">Simulate edge states for QA and developer validation of UI robustness.</p>
+            </div>
+
+            <div class="edge-btn-group" id="edgeBtnGroup">
+                <button class="edge-btn active" data-state="normal" onclick="setEdgeState('normal')">Normal View</button>
+                <button class="edge-btn" data-state="empty_issues" onclick="setEdgeState('empty_issues')">Empty Issues State</button>
+                <button class="edge-btn" data-state="empty_team" onclick="setEdgeState('empty_team')">Empty Activity / Team</button>
+                <button class="edge-btn" data-state="loading" onclick="setEdgeState('loading')">Loading Skeleton</button>
+                <button class="edge-btn error-btn" data-state="error" onclick="setEdgeState('error')">API Sync Error</button>
+            </div>
+        </div>
+
+        <div class="edge-canvas" id="edgeStateCanvas"></div>
+    </section>
+
 </main>
-<div class="overlay" id="createModal"><div class="modal"><div class="mh"><div><h2>Create New Sprint</h2><p>Create the sprint and optionally assign its responsible role.</p></div><button class="close" onclick="closeCreate()">×</button></div><form id="form"><div class="mb"><div class="group"><label>Sprint Name *</label><input id="name" required placeholder="Sprint 1"></div><div class="group"><label>Sprint Goal</label><textarea id="goal" placeholder="Resolve priority bugs and complete planned work"></textarea></div><div class="two"><div class="group"><label>Start Date</label><input id="start" type="date"></div><div class="group"><label>End Date</label><input id="end" type="date"></div></div><div class="two"><div class="group"><label>Status</label><select id="status"><option value="PLANNING">PLANNING</option><option value="ACTIVE">ACTIVE</option><option value="COMPLETED">COMPLETED</option></select></div><div class="group"><label>Assign Sprint To</label><select id="role"><option value="">Unassigned</option><option value="tester">Tester</option><option value="developer">Developer</option><option value="senior_dev">Senior Developer</option></select></div></div></div><div class="mf"><button type="button" class="btn" onclick="closeCreate()">Cancel</button><button class="btn primary" id="createBtn">Create Sprint</button></div></form></div></div>
-<div class="overlay" id="detailsModal"><div class="modal"><div class="mh"><div><h2 id="dName">Sprint Details</h2><p id="dGoal">-</p></div><button class="close" onclick="closeDetails()">×</button></div><div class="mb"><div class="details"><div class="detail"><small>Start Date</small><b id="dStart">-</b></div><div class="detail"><small>End Date</small><b id="dEnd">-</b></div><div class="detail"><small>Status</small><b id="dStatus">-</b></div><div class="detail"><small>Assigned To</small><b id="dRole">Unassigned</b></div></div><div class="group"><label>Progress</label><div class="bar"><div class="fill" id="dFill" style="width:0"></div></div><div style="font-size:10px;color:#8498af;margin-top:6px" id="dPct">0%</div></div><div class="group"><label>Sprint Issues</label><div class="panel" id="dIssues"></div></div></div><div class="mf"><button class="btn" onclick="closeDetails()">Close</button></div></div></div>
-<div class="overlay" id="assignModal"><div class="modal"><div class="mh"><div><h2>Assign Sprint</h2><p id="assignTitle">Select the responsible role.</p></div><button class="close" onclick="closeAssign()">×</button></div><div class="mb"><div class="roles"><div class="role" data-role="tester" onclick="pickRole('tester')">Tester</div><div class="role" data-role="developer" onclick="pickRole('developer')">Developer</div><div class="role" data-role="senior_dev" onclick="pickRole('senior_dev')">Senior Developer</div></div></div><div class="mf"><button class="btn" onclick="closeAssign()">Cancel</button><button class="btn primary" onclick="saveAssign()">Assign Sprint</button></div></div></div>
+
+<!-- MODAL: CREATE NEW SPRINT -->
+<div class="overlay" id="createModal">
+    <div class="modal-card">
+        <div class="modal-head">
+            <div>
+                <h2>Create New Sprint</h2>
+                <p style="font-size:11px; color:var(--bf-text-muted); margin-top:2px;">Plan a new Agile iteration and assign responsible roles.</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeCreate()">×</button>
+        </div>
+        <form id="createSprintForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Sprint Name *</label>
+                    <input id="newSprintName" required placeholder="e.g. Sprint 25 - Core Resiliency">
+                </div>
+                <div class="form-group">
+                    <label>Sprint Goal</label>
+                    <textarea id="newSprintGoal" rows="3" placeholder="Define the primary deliverable or defect resolution milestone..."></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input id="newSprintStart" type="date">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input id="newSprintEnd" type="date">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="newSprintStatus">
+                            <option value="PLANNING">PLANNING</option>
+                            <option value="ACTIVE" selected>ACTIVE</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Assign Sprint Role</label>
+                        <select id="newSprintRole">
+                            <option value="">Unassigned</option>
+                            <option value="tester">Tester (Hinata)</option>
+                            <option value="developer">Developer (Sasuke)</option>
+                            <option value="senior_dev">Senior Developer (Itachi)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-action-outline" onclick="closeCreate()">Cancel</button>
+                <button type="submit" class="btn-action-primary" id="submitCreateSprintBtn">Create Sprint</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: SPRINT DETAILS -->
+<div class="overlay" id="detailsModal">
+    <div class="modal-card">
+        <div class="modal-head">
+            <div>
+                <h2 id="dName">Sprint Details</h2>
+                <p id="dGoal" style="font-size:11px; color:var(--bf-text-muted); margin-top:2px;">Progress Overview</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeDetails()">×</button>
+        </div>
+        <div class="modal-body">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:var(--bf-surface-subtle); padding:12px; border-radius:6px;">
+                <div><span style="font-size:10px; color:var(--bf-text-muted); text-transform:uppercase;">START DATE</span><div id="dStart" style="font-weight:600; margin-top:2px;">-</div></div>
+                <div><span style="font-size:10px; color:var(--bf-text-muted); text-transform:uppercase;">END DATE</span><div id="dEnd" style="font-weight:600; margin-top:2px;">-</div></div>
+                <div><span style="font-size:10px; color:var(--bf-text-muted); text-transform:uppercase;">STATUS</span><div id="dStatus" style="font-weight:600; margin-top:2px;">-</div></div>
+                <div><span style="font-size:10px; color:var(--bf-text-muted); text-transform:uppercase;">ASSIGNED ROLE</span><div id="dRole" style="font-weight:600; margin-top:2px;">Unassigned</div></div>
+            </div>
+            <div class="form-group">
+                <div style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;">
+                    <label>Burn Completion</label>
+                    <span id="dPct" style="font-weight:600; color:var(--bf-blue);">0%</span>
+                </div>
+                <div class="capacity-track">
+                    <div class="capacity-fill" id="dFill" style="width:0; background:var(--bf-blue);"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Assigned Sprint Issues</label>
+                <div id="dIssues" style="max-height:180px; overflow-y:auto; border:1px solid var(--bf-border); border-radius:6px; padding:8px;"></div>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button type="button" class="btn-action-outline" onclick="closeDetails()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: ASSIGN SPRINT -->
+<div class="overlay" id="assignModal">
+    <div class="modal-card" style="width:440px;">
+        <div class="modal-head">
+            <div>
+                <h2>Assign Sprint</h2>
+                <p id="assignTitle" style="font-size:11px; color:var(--bf-text-muted); margin-top:2px;">Select the responsible engineering role.</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeAssign()">×</button>
+        </div>
+        <div class="modal-body">
+            <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+                <button type="button" class="btn-action-outline role-option-btn" data-role="developer" onclick="pickRole('developer')" style="justify-content:flex-start; height:44px; padding:0 14px;">
+                    <span class="material-symbols-outlined" style="color:var(--bf-blue);">terminal</span>
+                    <div style="text-align:left; margin-left:6px;">
+                        <span style="font-weight:600; display:block;">Sasuke (Developer)</span>
+                        <span style="font-size:10px; color:var(--bf-text-muted);">Core code fixes &amp; branch pull requests</span>
+                    </div>
+                </button>
+                <button type="button" class="btn-action-outline role-option-btn" data-role="tester" onclick="pickRole('tester')" style="justify-content:flex-start; height:44px; padding:0 14px;">
+                    <span class="material-symbols-outlined" style="color:var(--bf-green);">rule</span>
+                    <div style="text-align:left; margin-left:6px;">
+                        <span style="font-weight:600; display:block;">Hinata (Tester)</span>
+                        <span style="font-size:10px; color:var(--bf-text-muted);">QA verification &amp; reproduction triage</span>
+                    </div>
+                </button>
+                <button type="button" class="btn-action-outline role-option-btn" data-role="senior_dev" onclick="pickRole('senior_dev')" style="justify-content:flex-start; height:44px; padding:0 14px;">
+                    <span class="material-symbols-outlined" style="color:var(--bf-purple);">architecture</span>
+                    <div style="text-align:left; margin-left:6px;">
+                        <span style="font-weight:600; display:block;">Itachi (Senior Developer)</span>
+                        <span style="font-size:10px; color:var(--bf-text-muted);">Architecture oversight &amp; code review gating</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button type="button" class="btn-action-outline" onclick="closeAssign()">Cancel</button>
+            <button type="button" class="btn-action-primary" onclick="saveAssign()">Confirm Assignment</button>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE-OVER DRAWER: ADD ISSUES FROM BACKLOG -->
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeAddIssues()"></div>
-<div class="drawer" id="issueDrawer"><div class="drawer-head"><div><h2>Add Issues to Sprint</h2><p id="drawerTitle">Select a sprint first.</p></div><button class="close" onclick="closeAddIssues()">×</button></div><div class="drawer-body"><div class="drawer-search"><input id="issueSearch" placeholder="Search issue ID or title..." oninput="renderIssuePicker()"></div><div class="pick-list" id="issuePicker"></div></div><div class="drawer-foot"><button class="btn" onclick="closeAddIssues()">Close</button></div></div>
-<div class="overlay" id="issueCreateModal"><div class="modal"><div class="mh"><div><h2>Create New Issue</h2><p id="issueCreateSubtitle">Create an issue and add it directly to the selected sprint.</p></div><button class="close" onclick="closeCreateIssue()">×</button></div><form id="issueForm"><div class="mb"><div class="two"><div class="group"><label>Issue Key *</label><input id="issueKey" required maxlength="30" placeholder="BUG-101"></div><div class="group"><label>Project Key *</label><input id="projectKey" value="BUGFLOW" required maxlength="30"></div></div><div class="group"><label>Issue Title *</label><input id="issueTitle" required maxlength="200" placeholder="Fix login validation issue"></div><div class="group"><label>Description *</label><textarea id="issueDescription" required placeholder="Describe the issue..."></textarea></div><div class="two"><div class="group"><label>Issue Type</label><select id="issueType"><option value="BUG">BUG</option><option value="FEATURE_REQUEST">Feature Request</option><option value="ENHANCEMENT">Enhancement</option><option value="TECHNICAL_DEBT">Technical Debt</option><option value="SUPPORT_TICKET">Support Ticket</option></select></div><div class="group"><label>Severity</label><select id="issueSeverity"><option value="MINOR">Minor</option><option value="MAJOR" selected>Major</option><option value="CRITICAL">Critical</option><option value="BLOCKER">Blocker</option></select></div></div><div class="two"><div class="group"><label>Priority</label><select id="issuePriority"><option value="LOW">Low</option><option value="MEDIUM" selected>Medium</option><option value="HIGH">High</option><option value="URGENT">Urgent</option></select></div><div class="group"><label>Initial Status</label><select id="issueStatus"><option value="REPORTED" selected>Reported</option><option value="TRIAGED">Triaged</option><option value="IN_PROGRESS">In Progress</option><option value="ASSIGNED">Assigned</option></select></div></div><div class="group"><label>Affected Module</label><input id="issueModule" placeholder="Authentication, Dashboard, API..."></div><div class="group"><label>Environment</label><input id="issueEnvironment" placeholder="Production, Staging, Development..."></div><div class="group"><label>Reproduction Steps</label><textarea id="issueSteps" placeholder="1. Open...
-2. Click..."></textarea></div></div><div class="mf"><button type="button" class="btn" onclick="closeCreateIssue()">Cancel</button><button class="btn primary" id="issueCreateBtn">Create Issue</button></div></form></div></div><div class="toast" id="toast"></div>
+<div class="drawer-panel" id="issueDrawer">
+    <div class="drawer-header">
+        <div>
+            <h2 style="font-size:16px; font-weight:700; color:var(--bf-text-primary);">Add Issues to Sprint</h2>
+            <p id="drawerTitle" style="font-size:11px; color:var(--bf-text-muted); margin-top:2px;">Select backlog items to attach to this sprint.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAddIssues()">×</button>
+    </div>
+    <div class="drawer-body">
+        <div style="position:relative; display:flex; align-items:center;">
+            <span class="material-symbols-outlined" style="position:absolute; left:8px; font-size:16px; color:var(--bf-text-muted);">search</span>
+            <input type="text" id="drawerSearchInput" placeholder="Search backlog key or title..." style="width:100%; height:32px; padding:0 10px 0 30px; border:1px solid var(--bf-border); border-radius:6px; font-size:12px; outline:none;" oninput="renderIssuePicker()">
+        </div>
+        <div id="drawerPickerList" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+    <div class="drawer-footer">
+        <button type="button" class="btn-action-outline" onclick="closeAddIssues()">Close</button>
+    </div>
+</div>
+
+<!-- MODAL: CREATE ISSUE DIRECTLY IN SPRINT -->
+<div class="overlay" id="issueCreateModal">
+    <div class="modal-card">
+        <div class="modal-head">
+            <div>
+                <h2>Create New Issue in Sprint</h2>
+                <p id="issueCreateSubtitle" style="font-size:11px; color:var(--bf-text-muted); margin-top:2px;">Add a new ticket directly to sprint scope.</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeCreateIssue()">×</button>
+        </div>
+        <form id="createIssueForm">
+            <div class="modal-body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Issue Key *</label>
+                        <input id="newIssueKey" required placeholder="e.g. BUG-105" maxlength="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Key *</label>
+                        <input id="newProjectKey" value="BUGFLOW" required maxlength="30">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input id="newIssueTitle" required placeholder="Summary of defect or enhancement..." maxlength="200">
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="newIssueDescription" rows="3" required placeholder="Detailed steps and reproduction details..."></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Issue Type</label>
+                        <select id="newIssueType">
+                            <option value="BUG">BUG</option>
+                            <option value="FEATURE_REQUEST">Feature Request</option>
+                            <option value="ENHANCEMENT">Enhancement</option>
+                            <option value="TECHNICAL_DEBT">Technical Debt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Severity</label>
+                        <select id="newIssueSeverity">
+                            <option value="CRITICAL">Critical</option>
+                            <option value="MAJOR" selected>Major</option>
+                            <option value="MINOR">Minor</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="newIssuePriority">
+                            <option value="URGENT">Urgent (P0)</option>
+                            <option value="HIGH">High (P1)</option>
+                            <option value="MEDIUM" selected>Medium (P2)</option>
+                            <option value="LOW">Low (P3)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Initial Status</label>
+                        <select id="newIssueStatus">
+                            <option value="REPORTED" selected>Reported</option>
+                            <option value="TRIAGED">Triaged</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="RESOLVED">Resolved</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-action-outline" onclick="closeCreateIssue()">Cancel</button>
+                <button type="submit" class="btn-action-primary" id="submitCreateIssueBtn">Create &amp; Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast"></div>
+
+<!-- JAVASCRIPT CONTROLLER -->
 <script>
-const API='/api/v1';let sprints=[],backlog=[],selected=null,chart=null,assignId=null,picked=null;
-const $=id=>document.getElementById(id);
-async function json(r){const t=await r.text();try{return t?JSON.parse(t):{}}catch{return{detail:t}}}
-function toast(m,ok=true){const t=$('toast');t.textContent=m;t.className='toast show '+(ok?'ok':'err');clearTimeout(window.tt);window.tt=setTimeout(()=>t.className='toast',3500)}
-function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
-function date(v){return v?String(v).slice(0,10):'Not set'}
-function role(v){return ({tester:'Tester',developer:'Developer',senior_dev:'Senior Developer'})[String(v||'').toLowerCase()]||'Unassigned'}
-async function loadData(){try{let r=await fetch(API+'/sprints/');let d=await json(r);if(!r.ok)throw Error(d.detail||'Failed to load sprints');sprints=Array.isArray(d.sprints)?d.sprints:[];const previousId=selected?+selected.id:null;selected=previousId?sprints.find(x=>+x.id===previousId)||sprints[0]||null:sprints[0]||null;r=await fetch(API+'/sprints/backlog');d=await json(r);backlog=r.ok&&Array.isArray(d.backlog)?d.backlog:[];render();renderProgress()}catch(e){console.error(e);toast(e.message||'Failed to load data',false)}}
-function render(){const active=sprints.filter(x=>String(x.status).toUpperCase()==='ACTIVE').length;const total=sprints.reduce((a,x)=>a+ +(x.total_issues||0),0);const done=sprints.reduce((a,x)=>a+ +(x.completed_issues||0),0);$('active').textContent=active;$('total').textContent=total;$('done').textContent=done;$('backlogCount').textContent=backlog.length;const box=$('sprintList');if(!sprints.length){box.innerHTML='<div class="empty">No sprints created yet.<br><br>Click <b>Create New Sprint</b> to create your first sprint.</div>'}else box.innerHTML=sprints.map(s=>{const p=+(s.progress_percentage||0),st=String(s.status||'PLANNING').toLowerCase();return `<div class="sprint ${selected&&+selected.id===+s.id?'selected':''}" onclick="selectSprint(${s.id})"><div class="st"><div><div class="sn">${esc(s.sprint_name)}</div><div class="goal">${esc(s.goal||'No sprint goal defined')}</div></div><span class="badge ${st}">${st.toUpperCase()}</span></div><div class="meta"><span>◷ ${date(s.start_date)} → ${date(s.end_date)}</span><span>Issues: ${+(s.total_issues||0)}</span><span>Assigned: ${esc(role(s.assigned_role))}</span></div><div class="prow"><span>Progress</span><b>${p}%</b></div><div class="bar"><div class="fill" style="width:${Math.min(100,Math.max(0,p))}%"></div></div><div class="bottom"><span>${+(s.completed_issues||0)} completed / ${+(s.total_issues||0)} issues</span><span><button class="mini" onclick="event.stopPropagation();view(${s.id})">View Details</button> ${st!=='completed'?`<button class="mini ${s.assigned_role?'assigned-btn':''}" onclick="event.stopPropagation();openAssign(${s.id})">${s.assigned_role?'Assigned':'Assign'}</button>`:''}</span></div></div>`}).join('');renderBacklog()}
-function renderBacklog(){const b=$('backlog');if(!selected){b.innerHTML='<tr><td colspan="5"><div class="empty">Select a sprint to view its issues.</div></td></tr>';return}const items=Array.isArray(selected.issues)?selected.issues:[];if(!items.length){b.innerHTML='<tr><td colspan="5"><div class="empty">No issues in '+esc(selected.sprint_name)+' yet.<br><br>Use <b>＋ New Issue</b> to create one directly in this sprint, or <b>＋ Add Issues</b> to add an existing issue.</div></td></tr>';return}b.innerHTML=items.map(i=>{const p=String(i.priority||'LOW').toLowerCase();return `<tr><td><span class="key">${esc(i.issue_key||'BUG-'+i.id)}</span></td><td>${esc(i.title||'Untitled issue')}</td><td><span class="priority ${p}">${p.toUpperCase()}</span></td><td>${esc(i.status||'REPORTED')}</td><td><button class="mini" onclick="view(${selected.id})">View</button></td></tr>`}).join('')}
-function selectSprint(id){selected=sprints.find(x=>+x.id===+id)||null;render();renderProgress()}
-function progressValues(s){
-  const issues=Array.isArray(s.issues)?s.issues:[];
-  const total=Number.isFinite(Number(s.total_issues))?Number(s.total_issues):issues.length;
-  const completedFromApi=Number.isFinite(Number(s.completed_issues))?Number(s.completed_issues):0;
-  const completedByStatus=issues.filter(i=>['RESOLVED','CLOSED'].includes(String(i.status||'').toUpperCase())).length;
-  const done=Math.max(completedFromApi,completedByStatus);
-  const ip=issues.filter(i=>['IN_PROGRESS','IN_DEVELOPMENT','IN_REVIEW','IN_TESTING','QA_VERIFICATION'].includes(String(i.status||'').toUpperCase())).length;
-  const blocked=issues.filter(i=>String(i.status||'').toUpperCase().includes('BLOCK')).length;
-  const ns=Math.max(0,total-done-ip-blocked);
-  return [Math.min(done,total),Math.min(ip,Math.max(0,total-done)),Math.min(ns,total),Math.min(blocked,total)];
+const API = '/api/v1';
+let token = localStorage.getItem("bugflow_token") || "";
+let storedUser = localStorage.getItem("bugflow_user") || "";
+let currentUser = null;
+
+try {
+    if (storedUser) currentUser = JSON.parse(storedUser);
+} catch (e) {
+    console.error("Error parsing user profile", e);
 }
-function renderProgress(){
-  if(!selected){
-    $('selName').textContent='Select a sprint';
-    $('selGoal').textContent='Progress overview';
-    $('pct').textContent='0%';
-    $('chartTotal').textContent='0 total issues';
-    $('c1').textContent='0';$('c2').textContent='0';$('c3').textContent='0';$('c4').textContent='0';
-    draw([0,0,0,0]);
-    return;
-  }
-  const v=progressValues(selected);
-  const total=Number(selected.total_issues)||0;
-  const p=total?Math.round(v[0]/total*100):0;
-  $('selName').textContent=selected.sprint_name;
-  $('selGoal').textContent=selected.goal||'No sprint goal defined';
-  $('pct').textContent=p+'%';
-  $('chartTotal').textContent=total+' total issue'+(total===1?'':'s');
-  $('c1').textContent=v[0];$('c2').textContent=v[1];$('c3').textContent=v[2];$('c4').textContent=v[3];
-  draw(v);
+
+// User Branding
+const adminDisplayName = currentUser?.name || "Alex Chen";
+if (document.getElementById("adminName")) document.getElementById("adminName").textContent = adminDisplayName;
+if (document.getElementById("adminAvatar")) document.getElementById("adminAvatar").textContent = adminDisplayName.charAt(0).toUpperCase();
+
+// State Store
+let sprints = [];
+let backlog = [];
+let selected = null;
+let assignId = null;
+let pickedRole = null;
+let currentTab = 'all';
+let currentPage = 1;
+let pageSize = 20;
+
+const $ = id => document.getElementById(id);
+
+async function json(r) {
+    const t = await r.text();
+    try { return t ? JSON.parse(t) : {}; }
+    catch { return { detail: t }; }
 }
-function draw(v){
-  if(typeof Chart==='undefined'){
-    console.error('Chart.js failed to load');
-    return;
-  }
-  if(chart)chart.destroy();
-  const total=v.reduce((a,x)=>a+x,0);
-  const hasData=total>0;
-  const chartData=hasData?v:[1];
-  const chartColors=hasData?['#16a765','#3f66d8','#d98b00','#df5a5a']:['#e3e8f2'];
-  chart=new Chart($('chart'),{
-    type:'doughnut',
-    data:{
-      labels:hasData?['Completed','In Progress','Not Started','Blocked']:['No issues'],
-      datasets:[{
-        data:chartData,
-        backgroundColor:chartColors,
-        borderColor:'#ffffff',
-        borderWidth:2,
-        spacing:2,
-        hoverOffset:5
-      }]
-    },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      cutout:'72%',
-      animation:{duration:450},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          enabled:hasData,
-          callbacks:{label:function(ctx){return ' '+ctx.label+': '+ctx.raw+' issue'+(ctx.raw===1?'':'s')}}
-        }
-      }
+
+function toast(m, ok = true) {
+    const t = $('toast');
+    if (!t) return;
+    t.textContent = m;
+    t.className = 'toast show ' + (ok ? 'ok' : 'err');
+    clearTimeout(window.tt);
+    window.tt = setTimeout(() => t.className = 'toast', 3500);
+}
+
+function esc(v) {
+    return String(v ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+function dateFormatted(v) {
+    if (!v) return 'Scheduled window';
+    try {
+        const d = new Date(v);
+        if (Number.isNaN(d.getTime())) return String(v).slice(0, 10);
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch {
+        return String(v).slice(0, 10);
     }
-  });
 }
-function openCreateIssue(){if(!selected){toast('Select a sprint first',false);return}if(String(selected.status).toUpperCase()==='COMPLETED'){toast('Cannot add issues to a completed sprint',false);return}$('issueCreateSubtitle').textContent='Create an issue and add it directly to "'+selected.sprint_name+'".';$('issueCreateModal').classList.add('show');$('issueKey').focus()}
-function closeCreateIssue(){$('issueCreateModal').classList.remove('show')}
-$('issueForm').addEventListener('submit',async e=>{e.preventDefault();if(!selected)return toast('Select a sprint first',false);const btn=$('issueCreateBtn');btn.disabled=true;btn.textContent='Creating...';const payload={issue_key:$('issueKey').value.trim(),issue_type:$('issueType').value,title:$('issueTitle').value.trim(),description:$('issueDescription').value.trim(),severity:$('issueSeverity').value,priority:$('issuePriority').value,status:$('issueStatus').value,affected_module:$('issueModule').value.trim()||null,environment:$('issueEnvironment').value.trim()||null,reproduction_steps:$('issueSteps').value.trim()||null,project_key:$('projectKey').value.trim(),sprint_id:selected.id};try{let r=await fetch(API+'/sprints/'+selected.id+'/create-issue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let d=await json(r);if(!r.ok)throw Error(d.detail||'Failed to create issue');toast('Issue '+(d.issue_key||payload.issue_key)+' added to '+selected.sprint_name);$('issueForm').reset();$('projectKey').value='BUGFLOW';$('issueSeverity').value='MAJOR';$('issuePriority').value='MEDIUM';$('issueStatus').value='REPORTED';closeCreateIssue();await loadData()}catch(e){console.error(e);toast(e.message||'Failed to create issue',false)}finally{btn.disabled=false;btn.textContent='Create Issue'}})
-function openCreate(){$('createModal').classList.add('show');$('name').focus()}function closeCreate(){$('createModal').classList.remove('show')}
-$('form').addEventListener('submit',async e=>{e.preventDefault();const n=$('name').value.trim(),g=$('goal').value.trim(),sd=$('start').value||null,ed=$('end').value||null,st=$('status').value,ro=$('role').value;if(!n)return toast('Sprint name is required',false);if(sd&&ed&&ed<sd)return toast('End date cannot be before start date',false);const btn=$('createBtn');btn.disabled=true;btn.textContent='Creating...';try{let r=await fetch(API+'/sprints/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sprint_name:n,goal:g||null,start_date:sd,end_date:ed,status:st})});let d=await json(r);if(!r.ok)throw Error(d.detail||'Failed to create sprint');if(ro){r=await fetch(API+'/sprints/'+d.id+'/assign',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assigned_role:ro})});d=await json(r);if(!r.ok)throw Error(d.detail||'Sprint created but assignment failed')}toast('Sprint created successfully');$('form').reset();closeCreate();await loadData()}catch(e){console.error(e);toast(e.message||'Failed to create sprint',false)}finally{btn.disabled=false;btn.textContent='Create Sprint'}})
-function view(id){const s=sprints.find(x=>+x.id===+id);if(!s)return;selected=s;renderProgress();$('dName').textContent=s.sprint_name;$('dGoal').textContent=s.goal||'No sprint goal defined';$('dStart').textContent=date(s.start_date);$('dEnd').textContent=date(s.end_date);$('dStatus').textContent=s.status||'PLANNING';$('dRole').textContent=role(s.assigned_role);const p=+(s.progress_percentage||0);$('dFill').style.width=p+'%';$('dPct').textContent=p+'% completed';const is=s.issues||[];$('dIssues').innerHTML=is.length?is.map(i=>`<div class="issue"><div><div class="key">${esc(i.issue_key||'BUG-'+i.id)}</div><div class="it">${esc(i.title||'Untitled issue')}</div></div><span style="font-size:9px;color:#8ba0b7">${esc(i.status||'REPORTED')}</span></div>`).join(''):'<div class="empty">No issues assigned to this sprint.</div>';$('detailsModal').classList.add('show')}
-function closeDetails(){$('detailsModal').classList.remove('show')}
-function openAssign(id){const s=sprints.find(x=>+x.id===+id);if(!s)return;assignId=id;picked=s.assigned_role||null;$('assignTitle').textContent='Assign "'+s.sprint_name+'" to a role';document.querySelectorAll('.role').forEach(x=>x.classList.toggle('selected',x.dataset.role===picked));$('assignModal').classList.add('show')}
-function closeAssign(){$('assignModal').classList.remove('show');assignId=null;picked=null}
-function pickRole(r){picked=r;document.querySelectorAll('.role').forEach(x=>x.classList.toggle('selected',x.dataset.role===r))}
-async function saveAssign(){if(!assignId||!picked)return toast('Please select a role',false);try{let r=await fetch(API+'/sprints/'+assignId+'/assign',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assigned_role:picked})});let d=await json(r);if(!r.ok)throw Error(d.detail||'Assignment failed');toast('Sprint assigned successfully');closeAssign();await loadData()}catch(e){toast(e.message||'Assignment failed',false)}}
-async function addIssue(id){if(!selected)return toast('Select a sprint first',false);if(String(selected.status).toUpperCase()==='COMPLETED')return toast('Cannot add issues to a completed sprint',false);try{let r=await fetch(API+'/sprints/'+selected.id+'/add-issue/'+id,{method:'POST'});let d=await json(r);if(!r.ok)throw Error(d.detail||'Could not add issue');toast('Issue added to '+selected.sprint_name);await loadData();openAddIssues()}catch(e){console.error(e);toast(e.message||'Could not add issue',false)}}
-function openAddIssues(){if(!selected){toast('Select a sprint first',false);return}if(String(selected.status).toUpperCase()==='COMPLETED'){toast('Cannot add issues to a completed sprint',false);return}$('drawerTitle').textContent='Add available issues to "'+selected.sprint_name+'"';$('issueSearch').value='';renderIssuePicker();$('drawerBackdrop').classList.add('show');$('issueDrawer').classList.add('show');setTimeout(()=>$('issueSearch').focus(),100)}
-function closeAddIssues(){$('drawerBackdrop').classList.remove('show');$('issueDrawer').classList.remove('show')}
-function renderIssuePicker(){const box=$('issuePicker');if(!selected){box.innerHTML='<div class="empty">Select a sprint first.</div>';return}const q=String($('issueSearch').value||'').trim().toLowerCase();const items=backlog.filter(i=>!q||String(i.issue_key||'').toLowerCase().includes(q)||String(i.title||'').toLowerCase().includes(q));if(!items.length){box.innerHTML='<div class="empty">No available issues found.<br><br>All current issues may already belong to a sprint.</div>';return}box.innerHTML=items.map(i=>{const p=String(i.priority||'LOW').toLowerCase();return `<div class="pick-item"><div class="pick-top"><div><div class="pick-key">${esc(i.issue_key||'BUG-'+i.id)}</div><div class="pick-title">${esc(i.title||'Untitled issue')}</div></div><button class="mini" onclick="addIssue(${i.id})">＋ Add</button></div><div class="pick-meta"><span>Priority: ${p.toUpperCase()}</span><span>Status: ${esc(i.status||'REPORTED')}</span></div></div>`}).join('')}
-['createModal','detailsModal','assignModal','issueCreateModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('show')}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCreate();closeDetails();closeAssign();closeCreateIssue();closeAddIssues()}});loadData();
+
+function roleName(v) {
+    const map = {
+        tester: 'Hinata (Tester)',
+        developer: 'Sasuke (Developer)',
+        senior_dev: 'Itachi (Senior Developer)',
+        admin: 'Naruto (Admin)'
+    };
+    return map[String(v || '').toLowerCase()] || 'Unassigned';
+}
+
+function getIssueSP(issue) {
+    const p = String(issue.priority || '').toLowerCase();
+    if (p === 'urgent' || p === 'blocker') return 8;
+    if (p === 'high') return 5;
+    if (p === 'medium') return 3;
+    return 2;
+}
+
+// Load real sprint data
+async function loadData() {
+    try {
+        let r = await fetch(API + '/sprints/');
+        let d = await json(r);
+        if (!r.ok) throw Error(d.detail || 'Failed to load sprints');
+        sprints = Array.isArray(d.sprints) ? d.sprints : [];
+
+        // Update sidebar counter
+        const sideSprintEl = $('sideSprintCount');
+        if (sideSprintEl) sideSprintEl.textContent = sprints.length;
+
+        // Fetch backlog
+        r = await fetch(API + '/sprints/backlog');
+        d = await json(r);
+        backlog = r.ok && Array.isArray(d.backlog) ? d.backlog : [];
+
+        // Set selected sprint
+        const prevId = selected ? Number(selected.id) : null;
+        if (prevId) {
+            selected = sprints.find(x => Number(x.id) === prevId) || sprints[0] || null;
+        } else {
+            // Prefer an ACTIVE sprint first, otherwise first sprint
+            selected = sprints.find(x => String(x.status).toUpperCase() === 'ACTIVE') || sprints[0] || null;
+        }
+
+        renderSprintSelector();
+        renderActiveSprintView();
+        renderSprintIssuesTable();
+    } catch (e) {
+        console.error(e);
+        toast(e.message || 'Failed to load sprint records', false);
+    }
+}
+
+function renderSprintSelector() {
+    const sel = $('sprintSelector');
+    if (!sel) return;
+    if (!sprints.length) {
+        sel.innerHTML = '<option value="">No sprints found</option>';
+        return;
+    }
+
+    sel.innerHTML = sprints.map(s => `
+        <option value="${s.id}" ${selected && Number(selected.id) === Number(s.id) ? 'selected' : ''}>
+            ${esc(s.sprint_name)} [${String(s.status || 'PLANNING').toUpperCase()}]
+        </option>
+    `).join('');
+}
+
+function onSprintSelect(id) {
+    if (!id) return;
+    selected = sprints.find(s => Number(s.id) === Number(id)) || null;
+    currentPage = 1;
+    renderActiveSprintView();
+    renderSprintIssuesTable();
+}
+
+function renderActiveSprintView() {
+    if (!selected) {
+        $('sprintTitle').textContent = 'No Sprint Selected';
+        $('sprintGoal').textContent = 'Create or select a sprint to manage Agile workflow.';
+        return;
+    }
+
+    const st = String(selected.status || 'PLANNING').toUpperCase();
+    $('sprintTitle').textContent = `${selected.sprint_name} [${st}]`;
+    $('sprintGoal').textContent = selected.goal || 'Continuous delivery hotfix & defect remediation iteration.';
+
+    const badgeHeader = $('statusBadgeHeader');
+    if (badgeHeader) {
+        badgeHeader.textContent = st;
+        if (st === 'ACTIVE') {
+            badgeHeader.style.background = 'var(--bf-blue-light)';
+            badgeHeader.style.color = 'var(--bf-blue)';
+        } else if (st === 'COMPLETED') {
+            badgeHeader.style.background = 'var(--bf-green-bg)';
+            badgeHeader.style.color = 'var(--bf-green-text)';
+        } else {
+            badgeHeader.style.background = 'var(--bf-surface-subtle)';
+            badgeHeader.style.color = 'var(--bf-text-secondary)';
+        }
+    }
+
+    // Dates
+    const startStr = dateFormatted(selected.start_date);
+    const endStr = dateFormatted(selected.end_date);
+    $('sprintDateRange').textContent = `${startStr} – ${endStr}`;
+    $('sprintAssignedRole').textContent = roleName(selected.assigned_role);
+    $('assignBtnText').textContent = selected.assigned_role ? 'Reassign Role' : 'Assign Sprint';
+
+    // Target chip text
+    const targetEl = $('targetChipText');
+    if (targetEl) targetEl.textContent = `Target: ${st === 'ACTIVE' ? 'Production Hotfix v2.4.1' : 'Sprint Iteration'}`;
+
+    // Calculate issues & SP
+    const issues = Array.isArray(selected.issues) ? selected.issues : [];
+    const totalCount = Number.isFinite(Number(selected.total_issues)) ? Number(selected.total_issues) : issues.length;
+
+    let totalSP = 0;
+    let resolvedSP = 0;
+    let inProgressSP = 0;
+    let pendingSP = 0;
+    let resolvedCount = 0;
+    let inProgressCount = 0;
+    let pendingCount = 0;
+
+    issues.forEach(i => {
+        const sp = getIssueSP(i);
+        totalSP += sp;
+        const s = String(i.status || '').toUpperCase();
+        if (s === 'RESOLVED' || s === 'CLOSED') {
+            resolvedSP += sp;
+            resolvedCount++;
+        } else if (s === 'IN_PROGRESS' || s === 'QA_VERIFICATION' || s === 'TRIAGED') {
+            inProgressSP += sp;
+            inProgressCount++;
+        } else {
+            pendingSP += sp;
+            pendingCount++;
+        }
+    });
+
+    if (totalSP === 0 && totalCount > 0) totalSP = totalCount * 3;
+
+    const resPct = totalCount > 0 ? Math.round((resolvedCount / totalCount) * 100) : (selected.progress_percentage || 0);
+
+    // Update 5 KPI Cards
+    $('kpiTotalIssues').textContent = totalCount;
+    $('kpiTotalPoints').textContent = `${totalSP} Total SP`;
+    $('kpiResolvedIssues').textContent = resolvedCount;
+    $('kpiResolvedRatio').textContent = `/ ${totalCount}`;
+    $('kpiResolutionRate').textContent = `${resPct}% resolution`;
+    $('kpiResolvedPoints').textContent = `${resolvedSP} SP`;
+    $('kpiInProgressIssues').textContent = inProgressCount;
+    $('kpiInProgressPoints').textContent = `${inProgressSP} SP`;
+    $('kpiPendingIssues').textContent = pendingCount;
+    $('kpiPendingPoints').textContent = `${pendingSP} SP`;
+    $('kpiBacklogPool').textContent = backlog.length;
+
+    // Update Progress Section
+    $('burnPercentageText').textContent = `${resPct}%`;
+    $('burnedStoryPointsSub').textContent = `${resolvedSP} / ${totalSP} SP Burned`;
+
+    const rWidth = totalSP > 0 ? (resolvedSP / totalSP) * 100 : 0;
+    const ipWidth = totalSP > 0 ? (inProgressSP / totalSP) * 100 : 0;
+    const pWidth = totalSP > 0 ? (pendingSP / totalSP) * 100 : 0;
+
+    $('barResolved').style.width = `${rWidth}%`;
+    $('barInProgress').style.width = `${ipWidth}%`;
+    $('barReview').style.width = `0%`;
+    $('barPending').style.width = `${pWidth}%`;
+
+    $('legendResolvedText').textContent = `Resolved (${resolvedCount} · ${resolvedSP} SP)`;
+    $('legendInProgressText').textContent = `In Progress (${inProgressCount} · ${inProgressSP} SP)`;
+    $('legendReviewText').textContent = `Review / QA (0 · 0 SP)`;
+    $('legendPendingText').textContent = `Pending (${pendingCount} · ${pendingSP} SP)`;
+
+    $('metricTotalScope').textContent = `${totalCount} Items`;
+    $('metricTotalScopeSub').textContent = `${totalSP} Story Points`;
+    $('metricBurned').textContent = `${resolvedCount} Items`;
+    $('metricBurnedSub').textContent = `${resolvedSP} SP Completed`;
+    $('metricRemaining').textContent = `${Math.max(0, totalCount - resolvedCount)} Items`;
+    $('metricRemainingSub').textContent = `${Math.max(0, totalSP - resolvedSP)} SP Open`;
+
+    // Capacity Section
+    const capMax = Math.max(50, totalSP + 10);
+    const capPct = Math.min(100, Math.round((totalSP / capMax) * 100));
+    $('capacityRatioText').textContent = `${totalSP} / ${capMax} SP`;
+    $('capacityAllocPill').textContent = `${capPct}% Allocated`;
+    $('capacityFill').style.width = `${capPct}%`;
+
+    // Right Info Card A
+    $('infoTarget').textContent = `v2.4.1 [${selected.sprint_name}]`;
+    $('infoWindow').textContent = `${startStr} – ${endStr}`;
+    $('infoCreated').textContent = startStr;
+    $('infoGoal').textContent = selected.goal || 'Agile sprint iteration for defect resolution and workflow throughput.';
+    $('cardAStatusBadge').textContent = st;
+
+    // Tabs counters
+    $('tabCountAll').textContent = totalCount;
+    $('tabCountInProgress').textContent = inProgressCount;
+    $('tabCountPending').textContent = pendingCount;
+    $('tabCountResolved').textContent = resolvedCount;
+    $('tableTotalRecordsBadge').textContent = `${totalCount} Total Records`;
+}
+
+function setIssueTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn-stitch').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+    });
+    currentPage = 1;
+    renderSprintIssuesTable();
+}
+
+function onFilterChange() {
+    currentPage = 1;
+    renderSprintIssuesTable();
+}
+
+function clearFilters() {
+    $('issueSearchInput').value = '';
+    $('issueStatusFilter').value = '';
+    $('issuePriorityFilter').value = '';
+    $('issueSeverityFilter').value = '';
+    $('issueAssigneeFilter').value = '';
+    setIssueTab('all');
+}
+
+function getFilteredSprintIssues() {
+    if (!selected) return [];
+    const issues = Array.isArray(selected.issues) ? selected.issues : [];
+    const q = ($('issueSearchInput')?.value || '').trim().toLowerCase();
+    const stFilter = ($('issueStatusFilter')?.value || '').toUpperCase();
+    const pFilter = ($('issuePriorityFilter')?.value || '').toUpperCase();
+
+    return issues.filter(i => {
+        // Tab Filter
+        const s = String(i.status || '').toUpperCase();
+        if (currentTab === 'inprogress' && !['IN_PROGRESS', 'QA_VERIFICATION', 'TRIAGED'].includes(s)) return false;
+        if (currentTab === 'pending' && !['REPORTED', 'PENDING', 'ASSIGNED'].includes(s)) return false;
+        if (currentTab === 'resolved' && !['RESOLVED', 'CLOSED'].includes(s)) return false;
+
+        // Search Query
+        if (q) {
+            const str = `${i.issue_key || ''} ${i.title || ''} ${i.status || ''} ${i.priority || ''}`.toLowerCase();
+            if (!str.includes(q)) return false;
+        }
+
+        // Status Select
+        if (stFilter && s !== stFilter) return false;
+
+        // Priority Select
+        if (pFilter && String(i.priority || '').toUpperCase() !== pFilter) return false;
+
+        return true;
+    });
+}
+
+function renderSprintIssuesTable() {
+    const tbody = $('issuesTableBody');
+    if (!tbody) return;
+
+    if (!selected) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--bf-text-muted);">Select a sprint to view issues.</td></tr>';
+        return;
+    }
+
+    const filtered = getFilteredSprintIssues();
+    const total = filtered.length;
+
+    if (!total) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align:center; padding:36px; color:var(--bf-text-muted);">
+                    <div style="font-size:13px; font-weight:600; color:var(--bf-text-primary); margin-bottom:4px;">No matching issues found</div>
+                    <div style="font-size:11.5px;">No issues in ${esc(selected.sprint_name)} match the current filter criteria.</div>
+                    <button class="btn-action-primary" style="margin-top:12px;" onclick="openAddIssues()">+ Add Backlog Issues</button>
+                </td>
+            </tr>
+        `;
+        $('showingText').textContent = 'Showing 0 to 0 of 0 issues';
+        renderPagination(0);
+        return;
+    }
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, total);
+    const pageItems = filtered.slice(startIndex, endIndex);
+
+    tbody.innerHTML = pageItems.map(i => {
+        const p = String(i.priority || 'LOW').toUpperCase();
+        const s = String(i.status || 'REPORTED').toUpperCase();
+        const sp = getIssueSP(i);
+
+        let priorityBadge = `<span class="badge p3-tag">P3 Low</span>`;
+        if (p === 'URGENT' || p === 'BLOCKER') priorityBadge = `<span class="badge p0-tag">P0 Blocker</span>`;
+        else if (p === 'HIGH') priorityBadge = `<span class="badge p1-tag">P1 High</span>`;
+        else if (p === 'MEDIUM') priorityBadge = `<span class="badge p2-tag">P2 Medium</span>`;
+
+        let severityBadge = `<span class="badge badge-sev-low"><span class="badge-dot"></span>Low</span>`;
+        if (p === 'URGENT') severityBadge = `<span class="badge badge-sev-critical"><span class="badge-dot"></span>Critical</span>`;
+        else if (p === 'HIGH') severityBadge = `<span class="badge badge-sev-high"><span class="badge-dot"></span>High</span>`;
+        else if (p === 'MEDIUM') severityBadge = `<span class="badge badge-sev-medium"><span class="badge-dot"></span>Medium</span>`;
+
+        let statusBadge = `<span class="badge s-pending"><span class="badge-dot"></span>${esc(s)}</span>`;
+        if (s === 'RESOLVED' || s === 'CLOSED') statusBadge = `<span class="badge s-resolved"><span class="badge-dot"></span>Resolved</span>`;
+        else if (s === 'IN_PROGRESS' || s === 'QA_VERIFICATION') statusBadge = `<span class="badge s-inprogress"><span class="badge-dot"></span>In Progress</span>`;
+        else if (s === 'REJECTED') statusBadge = `<span class="badge s-rejected"><span class="badge-dot"></span>Rejected</span>`;
+
+        const roleText = selected.assigned_role ? roleName(selected.assigned_role) : 'Sasuke (Developer)';
+        const roleInitials = roleText.slice(0, 2).toUpperCase();
+
+        return `
+            <tr>
+                <td>
+                    <span class="issue-key-link" onclick="openDetails(${selected.id})">#${esc(i.issue_key || 'BUG-' + i.id)}</span>
+                </td>
+                <td>
+                    <div class="issue-title-cell">
+                        <span class="issue-title-text">${esc(i.title || 'Untitled issue')}</span>
+                        <span class="issue-component-sub">core/engine • PR linked</span>
+                    </div>
+                </td>
+                <td>${severityBadge}</td>
+                <td>${priorityBadge}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <div class="user-chip-sm">
+                        <div class="user-avatar-tiny">${roleInitials}</div>
+                        <span style="font-size:11px;">${esc(roleText.split(' ')[0])}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="sp-badge">${sp} SP</span>
+                </td>
+                <td style="text-align:right;">
+                    <button class="btn-action-outline" style="height:26px; padding:0 8px; font-size:11px;" onclick="openDetails(${selected.id})">
+                        View
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    $('showingText').textContent = `Showing ${startIndex + 1} to ${endIndex} of ${total} issues`;
+    renderPagination(total);
+}
+
+function renderPagination(total) {
+    const totalPages = Math.ceil(total / pageSize) || 1;
+    $('prevPageBtn').disabled = currentPage <= 1;
+    $('nextPageBtn').disabled = currentPage >= totalPages;
+
+    const box = $('pageButtonsContainer');
+    if (!box) return;
+    box.innerHTML = '';
+
+    for (let p = 1; p <= Math.min(5, totalPages); p++) {
+        const btn = document.createElement('button');
+        btn.className = `page-btn ${p === currentPage ? 'active' : ''}`;
+        btn.textContent = p;
+        btn.onclick = () => { currentPage = p; renderSprintIssuesTable(); };
+        box.appendChild(btn);
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        renderSprintIssuesTable();
+    }
+}
+
+function nextPage() {
+    const filtered = getFilteredSprintIssues();
+    const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderSprintIssuesTable();
+    }
+}
+
+function changePageSize(val) {
+    pageSize = Number(val) || 20;
+    currentPage = 1;
+    renderSprintIssuesTable();
+}
+
+// CSV Export using Blob
+function exportSprintIssuesCSV() {
+    if (!selected) {
+        toast('Select a sprint to export', false);
+        return;
+    }
+
+    const issues = getFilteredSprintIssues();
+    if (!issues.length) {
+        toast('No issues matching current filter to export', false);
+        return;
+    }
+
+    try {
+        const headers = ["Issue ID", "Title", "Severity", "Priority", "Status", "Assignee", "Story Points"];
+        const rows = issues.map(i => [
+            `"${esc(i.issue_key || 'BUG-' + i.id)}"`,
+            `"${String(i.title || '').replaceAll('"', '""')}"`,
+            `"${String(i.priority || 'LOW').toUpperCase()}"`,
+            `"${String(i.priority || 'LOW').toUpperCase()}"`,
+            `"${String(i.status || 'REPORTED').toUpperCase()}"`,
+            `"${String(selected.assigned_role || 'Unassigned')}"`,
+            `"${getIssueSP(i)} SP"`
+        ]);
+
+        const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `bugflow_${selected.sprint_name.toLowerCase().replace(/\\s+/g, '_')}_issues.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        toast(`Exported ${issues.length} sprint issues to CSV`);
+    } catch (e) {
+        console.error(e);
+        toast('Failed to export CSV', false);
+    }
+}
+
+// Modal Handlers
+function openCreate() {
+    $('createModal').classList.add('show');
+    $('newSprintName').focus();
+}
+
+function closeCreate() {
+    $('createModal').classList.remove('show');
+    $('createSprintForm').reset();
+}
+
+$('createSprintForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const n = $('newSprintName').value.trim();
+    const g = $('newSprintGoal').value.trim();
+    const sd = $('newSprintStart').value || null;
+    const ed = $('newSprintEnd').value || null;
+    const st = $('newSprintStatus').value;
+    const ro = $('newSprintRole').value;
+
+    if (!n) return toast('Sprint name is required', false);
+    if (sd && ed && ed < sd) return toast('End date cannot precede start date', false);
+
+    const btn = $('submitCreateSprintBtn');
+    btn.disabled = true;
+    btn.textContent = 'Creating...';
+
+    try {
+        let r = await fetch(API + '/sprints/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sprint_name: n, goal: g || null, start_date: sd, end_date: ed, status: st })
+        });
+        let d = await json(r);
+        if (!r.ok) throw Error(d.detail || 'Failed to create sprint');
+
+        if (ro) {
+            await fetch(API + '/sprints/' + d.id + '/assign', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ assigned_role: ro })
+            });
+        }
+
+        toast(`Sprint "${n}" created successfully`);
+        closeCreate();
+        await loadData();
+    } catch (err) {
+        console.error(err);
+        toast(err.message || 'Failed to create sprint', false);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Sprint';
+    }
+});
+
+function openDetails(id) {
+    const s = sprints.find(x => Number(x.id) === Number(id)) || selected;
+    if (!s) return;
+    $('dName').textContent = s.sprint_name;
+    $('dGoal').textContent = s.goal || 'Continuous delivery hotfix iteration.';
+    $('dStart').textContent = dateFormatted(s.start_date);
+    $('dEnd').textContent = dateFormatted(s.end_date);
+    $('dStatus').textContent = s.status || 'PLANNING';
+    $('dRole').textContent = roleName(s.assigned_role);
+
+    const p = Number(s.progress_percentage || 0);
+    $('dFill').style.width = p + '%';
+    $('dPct').textContent = p + '% Burned';
+
+    const items = Array.isArray(s.issues) ? s.issues : [];
+    $('dIssues').innerHTML = items.length ? items.map(i => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--bf-border-subtle); font-size:11.5px;">
+            <div>
+                <span class="font-mono" style="font-weight:600; color:var(--bf-blue);">${esc(i.issue_key || 'BUG-' + i.id)}</span>
+                <span style="margin-left:6px; color:var(--bf-text-primary);">${esc(i.title || 'Untitled')}</span>
+            </div>
+            <span class="badge" style="background:var(--bf-surface-subtle); font-size:10px;">${esc(i.status || 'REPORTED')}</span>
+        </div>
+    `).join('') : '<div style="color:var(--bf-text-muted); font-size:11px; padding:10px 0;">No issues in this sprint.</div>';
+
+    $('detailsModal').classList.add('show');
+}
+
+function closeDetails() {
+    $('detailsModal').classList.remove('show');
+}
+
+function openAssign(id) {
+    const s = sprints.find(x => Number(x.id) === Number(id)) || selected;
+    if (!s) return;
+    assignId = s.id;
+    pickedRole = s.assigned_role || null;
+    $('assignTitle').textContent = `Assign "${s.sprint_name}" to a role`;
+
+    document.querySelectorAll('.role-option-btn').forEach(btn => {
+        btn.style.borderColor = btn.dataset.role === pickedRole ? 'var(--bf-blue)' : 'var(--bf-border)';
+        btn.style.backgroundColor = btn.dataset.role === pickedRole ? 'var(--bf-blue-light)' : 'var(--bf-surface)';
+    });
+
+    $('assignModal').classList.add('show');
+}
+
+function closeAssign() {
+    $('assignModal').classList.remove('show');
+    assignId = null;
+    pickedRole = null;
+}
+
+function pickRole(r) {
+    pickedRole = r;
+    document.querySelectorAll('.role-option-btn').forEach(btn => {
+        btn.style.borderColor = btn.dataset.role === r ? 'var(--bf-blue)' : 'var(--bf-border)';
+        btn.style.backgroundColor = btn.dataset.role === r ? 'var(--bf-blue-light)' : 'var(--bf-surface)';
+    });
+}
+
+async function saveAssign() {
+    if (!assignId || !pickedRole) return toast('Please select an engineering role', false);
+    try {
+        let r = await fetch(API + '/sprints/' + assignId + '/assign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ assigned_role: pickedRole })
+        });
+        let d = await json(r);
+        if (!r.ok) throw Error(d.detail || 'Role assignment failed');
+        toast(`Sprint successfully assigned to ${roleName(pickedRole)}`);
+        closeAssign();
+        await loadData();
+    } catch (e) {
+        toast(e.message || 'Assignment failed', false);
+    }
+}
+
+// Drawer: Add Backlog Issues
+function openAddIssues() {
+    if (!selected) return toast('Select a sprint first', false);
+    if (String(selected.status).toUpperCase() === 'COMPLETED') {
+        return toast('Cannot add issues to a completed sprint', false);
+    }
+
+    $('drawerTitle').textContent = `Attach backlog issues to "${selected.sprint_name}"`;
+    $('drawerSearchInput').value = '';
+    renderIssuePicker();
+    $('drawerBackdrop').classList.add('show');
+    $('issueDrawer').classList.add('show');
+    setTimeout(() => $('drawerSearchInput').focus(), 100);
+}
+
+function closeAddIssues() {
+    $('drawerBackdrop').classList.remove('show');
+    $('issueDrawer').classList.remove('show');
+}
+
+function renderIssuePicker() {
+    const box = $('drawerPickerList');
+    if (!box) return;
+
+    const q = ($('drawerSearchInput')?.value || '').trim().toLowerCase();
+    const items = backlog.filter(i => {
+        if (!q) return true;
+        const str = `${i.issue_key || ''} ${i.title || ''} ${i.status || ''}`.toLowerCase();
+        return str.includes(q);
+    });
+
+    if (!items.length) {
+        box.innerHTML = `
+            <div style="text-align:center; padding:32px 12px; color:var(--bf-text-muted);">
+                <span class="material-symbols-outlined" style="font-size:32px; display:block; margin-bottom:6px;">inbox</span>
+                No available backlog issues found.
+            </div>
+        `;
+        return;
+    }
+
+    box.innerHTML = items.map(i => `
+        <div style="border:1px solid var(--bf-border); border-radius:6px; padding:10px 12px; background:var(--bf-surface); display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span class="font-mono" style="font-weight:700; color:var(--bf-blue); font-size:12px;">#${esc(i.issue_key || 'BUG-' + i.id)}</span>
+                <button class="btn-action-primary" style="height:26px; padding:0 8px; font-size:11px;" onclick="addIssueToSprint(${i.id})">
+                    + Add to Scope
+                </button>
+            </div>
+            <span style="font-size:12px; font-weight:500; color:var(--bf-text-primary); line-height:1.35;">${esc(i.title || 'Untitled')}</span>
+            <div style="display:flex; gap:8px; font-size:10.5px; color:var(--bf-text-muted);">
+                <span>Priority: <strong>${esc(i.priority || 'LOW')}</strong></span>
+                <span>•</span>
+                <span>Status: ${esc(i.status || 'REPORTED')}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function addIssueToSprint(issueId) {
+    if (!selected) return;
+    try {
+        let r = await fetch(API + '/sprints/' + selected.id + '/add-issue/' + issueId, { method: 'POST' });
+        let d = await json(r);
+        if (!r.ok) throw Error(d.detail || 'Could not add issue');
+        toast(`Issue added to ${selected.sprint_name}`);
+        await loadData();
+        renderIssuePicker();
+    } catch (e) {
+        console.error(e);
+        toast(e.message || 'Could not add issue to sprint', false);
+    }
+}
+
+// Create Issue in Sprint
+function openCreateIssue() {
+    if (!selected) return toast('Select a sprint first', false);
+    if (String(selected.status).toUpperCase() === 'COMPLETED') {
+        return toast('Cannot add issues to a completed sprint', false);
+    }
+    $('issueCreateSubtitle').textContent = `Create an issue and add directly to "${selected.sprint_name}".`;
+    $('issueCreateModal').classList.add('show');
+    $('newIssueKey').focus();
+}
+
+function closeCreateIssue() {
+    $('issueCreateModal').classList.remove('show');
+    $('createIssueForm').reset();
+    $('newProjectKey').value = 'BUGFLOW';
+    $('newIssueSeverity').value = 'MAJOR';
+    $('newIssuePriority').value = 'MEDIUM';
+    $('newIssueStatus').value = 'REPORTED';
+}
+
+$('createIssueForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!selected) return toast('Select a sprint first', false);
+
+    const btn = $('submitCreateIssueBtn');
+    btn.disabled = true;
+    btn.textContent = 'Creating...';
+
+    const payload = {
+        issue_key: $('newIssueKey').value.trim(),
+        project_key: $('newProjectKey').value.trim(),
+        title: $('newIssueTitle').value.trim(),
+        description: $('newIssueDescription').value.trim(),
+        issue_type: $('newIssueType').value,
+        severity: $('newIssueSeverity').value,
+        priority: $('newIssuePriority').value,
+        status: $('newIssueStatus').value,
+        sprint_id: selected.id
+    };
+
+    try {
+        let r = await fetch(API + '/sprints/' + selected.id + '/create-issue', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        let d = await json(r);
+        if (!r.ok) throw Error(d.detail || 'Failed to create issue');
+        toast(`Issue #${payload.issue_key} created and added to ${selected.sprint_name}`);
+        closeCreateIssue();
+        await loadData();
+    } catch (err) {
+        console.error(err);
+        toast(err.message || 'Failed to create issue', false);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create & Add';
+    }
+});
+
+// Edge State Verification (Section 5 from Stitch Spec)
+function setEdgeState(state) {
+    document.querySelectorAll('.edge-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.state === state);
+    });
+
+    const canvas = $('edgeStateCanvas');
+    if (!canvas) return;
+
+    if (state === 'normal') {
+        canvas.style.display = 'none';
+        canvas.innerHTML = '';
+        return;
+    }
+
+    canvas.style.display = 'block';
+
+    if (state === 'empty_issues') {
+        canvas.innerHTML = `
+            <div style="text-align:center; padding:32px; max-width:440px; margin:0 auto;">
+                <div style="width:48px; height:48px; border-radius:50%; background:var(--bf-surface-subtle); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; color:var(--bf-text-muted);">
+                    <span class="material-symbols-outlined" style="font-size:26px;">playlist_add</span>
+                </div>
+                <h4 style="font-size:14px; font-weight:700; color:var(--bf-text-primary); margin-bottom:4px;">No issues assigned to this sprint</h4>
+                <p style="font-size:12px; color:var(--bf-text-secondary); line-height:1.4; margin-bottom:14px;">There are currently no defect or engineering tickets linked to this sprint iteration. Assign items from the backlog to track velocity.</p>
+                <button class="btn-action-primary" onclick="openAddIssues()">+ Add Issues from Backlog</button>
+            </div>
+        `;
+    } else if (state === 'empty_team') {
+        canvas.innerHTML = `
+            <div style="text-align:center; padding:32px; max-width:440px; margin:0 auto;">
+                <div style="width:48px; height:48px; border-radius:50%; background:var(--bf-surface-subtle); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; color:var(--bf-text-muted);">
+                    <span class="material-symbols-outlined" style="font-size:26px;">group_off</span>
+                </div>
+                <h4 style="font-size:14px; font-weight:700; color:var(--bf-text-primary); margin-bottom:4px;">No Activity or Team Assigned</h4>
+                <p style="font-size:12px; color:var(--bf-text-secondary); line-height:1.4;">No engineering contributors have committed code or changed ticket states during this sprint window yet.</p>
+            </div>
+        `;
+    } else if (state === 'loading') {
+        canvas.innerHTML = `
+            <div style="display:flex; flex-direction:column; gap:8px; padding:12px;">
+                <div style="height:14px; width:25%; background:#e2e8f0; border-radius:4px; animation:pulse 1.5s infinite;"></div>
+                <div style="height:36px; background:#e2e8f0; border-radius:6px; animation:pulse 1.5s infinite;"></div>
+                <div style="height:36px; background:#e2e8f0; border-radius:6px; animation:pulse 1.5s infinite;"></div>
+                <div style="height:36px; background:#e2e8f0; border-radius:6px; animation:pulse 1.5s infinite;"></div>
+            </div>
+        `;
+    } else if (state === 'error') {
+        canvas.innerHTML = `
+            <div style="text-align:center; padding:28px; max-width:440px; margin:0 auto;">
+                <div style="width:48px; height:48px; border-radius:50%; background:var(--bf-red-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; color:var(--bf-red);">
+                    <span class="material-symbols-outlined" style="font-size:26px;">cloud_off</span>
+                </div>
+                <h4 style="font-size:14px; font-weight:700; color:var(--bf-red-text); margin-bottom:4px;">API Sync Failed</h4>
+                <p style="font-size:12px; color:var(--bf-text-secondary); line-height:1.4; margin-bottom:12px;">The telemetry link to Redis cluster socket <code class="font-mono">cluster-01.us-east-1</code> timed out after 3000ms.</p>
+                <button class="btn-action-primary" onclick="setEdgeState('normal'); loadData();">Retry Handshake</button>
+            </div>
+        `;
+    }
+}
+
+// Workspace Switching Handlers (Compatible with admin.html & all-defects.html)
+const adminPill = document.getElementById("adminPill");
+const switchDropdown = document.getElementById("switchDropdown");
+const sideSwitchBtn = document.getElementById("sideSwitchBtn");
+
+function toggleSwitcher(e) {
+    if (e) e.stopPropagation();
+    if (switchDropdown) {
+        switchDropdown.style.display = switchDropdown.style.display === "block" ? "none" : "block";
+    }
+}
+
+if (adminPill) adminPill.addEventListener("click", toggleSwitcher);
+if (sideSwitchBtn) sideSwitchBtn.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+
+const workspaceDestinations = {
+    admin: "/admin-ui",
+    developer: "/developer-ui",
+    tester: "/tester-ui",
+    senior_dev: "/senior-developer-ui",
+    user: "/user-ui"
+};
+
+document.querySelectorAll(".switch-item").forEach(item => {
+    item.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const role = item.getAttribute("data-role");
+        if (workspaceDestinations[role]) {
+            localStorage.setItem("bugflow_workspace_role", role);
+            const currentToken = localStorage.getItem("access_token") || localStorage.getItem("bugflow_token") || token || "";
+            if (currentToken) {
+                try {
+                    await fetch("/api/v1/workspace/switch", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + currentToken
+                        },
+                        body: JSON.stringify({ role: role })
+                    });
+                } catch (err) {
+                    console.error("Workspace switch failed:", err);
+                }
+            }
+            window.location.href = workspaceDestinations[role];
+        }
+    });
+});
+
+document.addEventListener("click", () => {
+    if (switchDropdown) switchDropdown.style.display = "none";
+});
+
+// Keyboard shortcuts: '/' to focus search, 'Escape' to close modals
+window.addEventListener("keydown", e => {
+    if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT") {
+        e.preventDefault();
+        const s = $('issueSearchInput');
+        if (s) { s.focus(); s.select(); }
+    } else if (e.key === "Escape") {
+        closeCreate();
+        closeDetails();
+        closeAssign();
+        closeCreateIssue();
+        closeAddIssues();
+        if (switchDropdown) switchDropdown.style.display = "none";
+    }
+});
+
+// Modal outside clicks
+['createModal', 'detailsModal', 'assignModal', 'issueCreateModal'].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
+});
+
+// Initial Data Load
+loadData();
 </script>
+
 </body>
 </html>

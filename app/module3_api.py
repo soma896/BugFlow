@@ -864,6 +864,156 @@ def get_sprint_metrics(db: Session = Depends(get_db)):
 
 
 # =========================================================
+# 4B. REST APIS: SPRINT REPORT (Stage 7 - Full Implementation)
+# =========================================================
+
+@router.get("/reports/sprint-list", summary="List sprints for Sprint Report dropdown selection")
+def list_report_sprints(db: Session = Depends(get_db)):
+    """Module 4 / Stage 7: Return all sprints with metadata and issue counts for UI selector."""
+    sprints = db.query(Sprint).order_by(Sprint.id.asc()).all()
+    results = []
+    for s in sprints:
+        links_count = db.query(SprintIssue).filter(SprintIssue.sprint_id == s.id).count()
+        results.append({
+            "id": s.id,
+            "sprint_name": s.sprint_name,
+            "status": s.status,
+            "goal": s.goal or "",
+            "start_date": s.start_date.isoformat() if s.start_date else None,
+            "end_date": s.end_date.isoformat() if s.end_date else None,
+            "start_date_display": s.start_date.strftime("%b %d, %Y") if s.start_date else "Not set",
+            "end_date_display": s.end_date.strftime("%b %d, %Y") if s.end_date else "Not set",
+            "total_issues": links_count,
+        })
+    return results
+
+
+@router.get("/reports/sprint/{sprint_id}", summary="Get comprehensive Sprint Report data")
+def get_sprint_report(
+    sprint_id: int,
+    status: str | None = Query(None, description="Filter issues by status"),
+    priority: str | None = Query(None, description="Filter issues by priority"),
+    severity: str | None = Query(None, description="Filter issues by severity"),
+    assignee: str | None = Query(None, description="Filter issues by assignee"),
+    search: str | None = Query(None, description="Search query in key, title, or module"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    db: Session = Depends(get_db),
+):
+    """Module 4 / Stage 7: Return KPIs, progress, breakdowns, workload, and filtered issue ledger for a sprint."""
+    if credentials and credentials.credentials:
+        from .main import sessions
+        user_id = sessions.get(credentials.credentials)
+        if not user_id:
+            from .models import AuthSession
+            session_rec = (
+                db.query(AuthSession)
+                .filter(AuthSession.token == credentials.credentials, AuthSession.expires_at > datetime.utcnow())
+                .first()
+            )
+            if not session_rec:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    engine = AnalyticsEngine(db)
+    data = engine.get_sprint_report_data(
+        sprint_id=sprint_id,
+        status=status,
+        priority=priority,
+        severity=severity,
+        assignee=assignee,
+        search=search,
+        page=page,
+        page_size=page_size,
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Sprint with ID {sprint_id} not found")
+    return data
+
+
+@router.get("/reports/sprint/{sprint_id}/export/csv", summary="Export sprint issues as CSV")
+def export_sprint_issues_csv(
+    sprint_id: int,
+    status: str | None = None,
+    priority: str | None = None,
+    severity: str | None = None,
+    assignee: str | None = None,
+    search: str | None = None,
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    db: Session = Depends(get_db),
+):
+    """Module 4 / Stage 7: Download CSV of all sprint issues matching active filters."""
+    if credentials and credentials.credentials:
+        from .main import sessions
+        user_id = sessions.get(credentials.credentials)
+        if not user_id:
+            from .models import AuthSession
+            session_rec = (
+                db.query(AuthSession)
+                .filter(AuthSession.token == credentials.credentials, AuthSession.expires_at > datetime.utcnow())
+                .first()
+            )
+            if not session_rec:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    sprint = db.query(Sprint).filter(Sprint.id == sprint_id).first()
+    if not sprint:
+        raise HTTPException(status_code=404, detail=f"Sprint with ID {sprint_id} not found")
+
+    engine = AnalyticsEngine(db)
+    data = engine.get_sprint_report_data(
+        sprint_id=sprint_id,
+        status=status,
+        priority=priority,
+        severity=severity,
+        assignee=assignee,
+        search=search,
+        page=1,
+        page_size=100000,
+    )
+    issues = data["issues"] if data else []
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Issue ID",
+        "Issue Key",
+        "Title",
+        "Component / Module",
+        "Severity",
+        "Priority",
+        "Status",
+        "Assignee",
+        "Reporter ID",
+        "Created At",
+        "Updated At",
+    ])
+
+    for iss in issues:
+        writer.writerow([
+            iss["id"],
+            iss["issue_key"],
+            iss["title"],
+            iss["affected_module"],
+            iss["severity"],
+            iss["priority"],
+            iss["status"],
+            iss["assignee_name"],
+            iss["reporter_id"],
+            iss["created_at"] or "",
+            iss["updated_at"] or "",
+        ])
+
+    output.seek(0)
+    filename = f"bugflow_sprint_{sprint_id}_issues_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+# =========================================================
 # 5. REST APIS: ANALYTICS RETRIEVAL OPERATIONS
 # =========================================================
 
@@ -909,10 +1059,64 @@ def get_analytics_dashboard(db: Session = Depends(get_db)):
 # 6. REPORTS & EXPORT OPERATIONS
 # =========================================================
 
-@router.get("/analytics/export/csv", summary="Export all defect records as CSV download")
-def export_defects_csv(db: Session = Depends(get_db)):
-    """Stream downloadable CSV file of all defects."""
-    defects = db.query(Defect).order_by(Defect.id.asc()).all()
+@router.get("/analytics/export/csv", summary="Export defect records as CSV download with optional filter criteria")
+def export_defects_csv(
+    status: str | None = None,
+    severity: str | None = None,
+    priority: str | None = None,
+    assigned_role: str | None = None,
+    sprint_id: int | None = None,
+    days: int | None = None,
+    search: str | None = None,
+    db: Session = Depends(get_db),
+):
+    """Stream downloadable CSV file of defects, respecting optional filters."""
+    query = db.query(Defect)
+
+    if status and status.upper() != "ALL":
+        query = query.filter(Defect.status.ilike(status))
+
+    if priority and priority.upper() != "ALL":
+        query = query.filter(Defect.priority.ilike(priority))
+
+    if severity and severity.upper() != "ALL":
+        sev_to_prio = {
+            "CRITICAL P0": "Urgent",
+            "HIGH P1": "High",
+            "MEDIUM P2": "Medium",
+            "LOW P3": "Low",
+        }
+        target_prio = sev_to_prio.get(severity.upper(), severity)
+        query = query.filter(Defect.priority.ilike(target_prio))
+
+    if assigned_role and assigned_role.upper() != "ALL":
+        norm_role = normalize_role(assigned_role)
+        if norm_role == "unassigned":
+            query = query.filter(or_(Defect.assigned_role == None, Defect.assigned_role == ""))
+        else:
+            query = query.filter(Defect.assigned_role.ilike(norm_role))
+
+    if days and days > 0:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        query = query.filter(Defect.created_at >= cutoff)
+
+    if sprint_id and sprint_id > 0:
+        sprint_issue_ids = [
+            si.issue_id for si in db.query(SprintIssue).filter(SprintIssue.sprint_id == sprint_id).all()
+        ]
+        query = query.filter(Defect.id.in_(sprint_issue_ids))
+
+    if search:
+        search_pattern = f"%{search.strip()}%"
+        query = query.filter(
+            or_(
+                Defect.title.ilike(search_pattern),
+                Defect.category.ilike(search_pattern),
+                Defect.description.ilike(search_pattern),
+            )
+        )
+
+    defects = query.order_by(Defect.id.asc()).all()
 
     output = io.StringIO()
     writer = csv.writer(output)
@@ -1038,30 +1242,292 @@ th {{ background: #f1f5f9; color: #334155; font-weight: 700; }}
 # MODULE 4: PRODUCTIVITY ANALYTICS & ADVANCED REPORTS
 # =========================================================
 
+def resolve_authenticated_user(request: Request, db: Session) -> tuple[User | None, str | None]:
+    """Helper to safely extract authenticated user and active workspace role."""
+    auth_header = request.headers.get("authorization") or request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return None, None
+    token = auth_header.split(" ", 1)[1].strip()
+    from app.main import sessions, workspace_sessions
+    user_id = sessions.get(token)
+    if not user_id:
+        from .models import AuthSession
+        auth_session = (
+            db.query(AuthSession)
+            .filter(
+                AuthSession.token == token,
+                AuthSession.expires_at > datetime.utcnow(),
+            )
+            .first()
+        )
+        if auth_session:
+            user_id = auth_session.user_id
+            sessions[token] = user_id
+    if not user_id:
+        return None, None
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        return None, None
+    active_role = workspace_sessions.get(token, user.role)
+    return user, active_role
+
+
 @router.get("/analytics/productivity", summary="Retrieve productivity analytics across canonical team personas")
-def get_productivity_analytics(db: Session = Depends(get_db)):
-    """Module 4: Computes factual productivity metrics for Naruto (Admin),
+def get_productivity_analytics(
+    request: Request,
+    role: str | None = Query(None),
+    sprint_id: int | None = Query(None),
+    engineer: str | None = Query(None),
+    severity: str | None = Query(None),
+    status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    search: str | None = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """Module 4 & Stage 8: Computes factual productivity metrics for Naruto (Admin),
     Sasuke (Developer), Hinata (Tester), and Itachi (Senior Developer)
-    from PostgreSQL records.
+    from PostgreSQL records. Supports filters, role permissions, and pagination.
     """
+    user, active_workspace_role = resolve_authenticated_user(request, db)
+
+    # Validate session token if Bearer header is supplied
+    auth_header = request.headers.get("authorization") or request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+        from app.main import sessions
+        if token not in sessions:
+            from .models import AuthSession
+            auth_session = (
+                db.query(AuthSession)
+                .filter(
+                    AuthSession.token == token,
+                    AuthSession.expires_at > datetime.utcnow(),
+                )
+                .first()
+            )
+            if auth_session:
+                sessions[token] = auth_session.user_id
+            else:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    user_role_context = None
+    if user:
+        if user.role != "admin":
+            canonical_role = normalize_role(user.role)
+            if canonical_role in ("user", "unassigned"):
+                u_name = (user.name or "").lower()
+                if "sasuke" in u_name or user.id == 2:
+                    canonical_role = "developer"
+                elif "hinata" in u_name or user.id == 3:
+                    canonical_role = "tester"
+                elif "itachi" in u_name:
+                    canonical_role = "senior_dev"
+                elif "naruto" in u_name:
+                    canonical_role = "admin"
+                else:
+                    canonical_role = "developer"
+
+            if role and role != "all" and normalize_role(role) != canonical_role:
+                raise HTTPException(
+                    status_code=403,
+                    detail=f"Access denied: Persona role '{canonical_role}' is not authorized to access '{role}' productivity data",
+                )
+            user_role_context = canonical_role
+            if not role:
+                role = canonical_role
+        else:
+            if active_workspace_role and active_workspace_role != "admin":
+                if role and role != "all" and normalize_role(role) != active_workspace_role:
+                    raise HTTPException(
+                        status_code=403,
+                        detail=f"Access denied: Active workspace '{active_workspace_role}' is not authorized to access '{role}' productivity data",
+                    )
+                user_role_context = active_workspace_role
+                if not role:
+                    role = active_workspace_role
+
     engine = AnalyticsEngine(db)
-    return engine.get_productivity_metrics()
+    return engine.get_productivity_metrics(
+        role=role,
+        sprint_id=sprint_id,
+        engineer=engineer,
+        severity=severity,
+        status=status,
+        date_range=date_range,
+        search=search,
+        page=page,
+        page_size=page_size,
+        user_role=user_role_context,
+    )
 
 
 @router.get("/analytics/workflow", summary="Retrieve workflow funnel and transition metrics")
-def get_workflow_analytics(db: Session = Depends(get_db)):
-    """Module 4: Computes workflow pipeline throughput, funnel distribution,
-    and status transition activity.
+def get_workflow_analytics(
+    request: Request,
+    role: str | None = Query(None),
+    sprint_id: int | None = Query(None),
+    severity: str | None = Query(None),
+    status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    search: str | None = Query(None),
+    engineer: str | None = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """Module 4 & Stage 9: Computes workflow pipeline throughput, gated lifecycle pipeline,
+    transition metrics, bottlenecks, rejection analysis, and SLA compliance.
+    Supports multi-parameter filters, role scoping, and pagination.
     """
+    user, active_workspace_role = resolve_authenticated_user(request, db)
+
+    # Validate session token if Bearer header is supplied
+    auth_header = request.headers.get("authorization") or request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+        from app.main import sessions
+        if token not in sessions:
+            from .models import AuthSession
+            auth_session = (
+                db.query(AuthSession)
+                .filter(
+                    AuthSession.token == token,
+                    AuthSession.expires_at > datetime.utcnow(),
+                )
+                .first()
+            )
+            if auth_session:
+                sessions[token] = auth_session.user_id
+            else:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    user_role_context = None
+    if user:
+        if user.role != "admin":
+            canonical_role = normalize_role(user.role)
+            if canonical_role in ("user", "unassigned"):
+                u_name = (user.name or "").lower()
+                if "sasuke" in u_name or user.id == 2:
+                    canonical_role = "developer"
+                elif "hinata" in u_name or user.id == 3:
+                    canonical_role = "tester"
+                elif "itachi" in u_name:
+                    canonical_role = "senior_dev"
+                elif "naruto" in u_name:
+                    canonical_role = "admin"
+                else:
+                    canonical_role = "developer"
+
+            if role and role != "all" and normalize_role(role) != canonical_role:
+                raise HTTPException(
+                    status_code=403,
+                    detail=f"Access denied: Persona role '{canonical_role}' is not authorized to access '{role}' workflow data",
+                )
+            user_role_context = canonical_role
+            if not role:
+                role = canonical_role
+        else:
+            if active_workspace_role and active_workspace_role != "admin":
+                if role and role != "all" and normalize_role(role) != active_workspace_role:
+                    raise HTTPException(
+                        status_code=403,
+                        detail=f"Access denied: Active workspace '{active_workspace_role}' is not authorized to access '{role}' workflow data",
+                    )
+                user_role_context = active_workspace_role
+                if not role:
+                    role = active_workspace_role
+
     engine = AnalyticsEngine(db)
-    return engine.get_workflow_metrics()
+    return engine.get_workflow_metrics(
+        role=role,
+        sprint_id=sprint_id,
+        severity=severity,
+        status=status,
+        date_range=date_range,
+        search=search,
+        engineer=engineer,
+        page=page,
+        page_size=page_size,
+        user_role=user_role_context,
+    )
 
 
 @router.get("/analytics/export/productivity", summary="Export team productivity analytics report as CSV")
-def export_productivity_csv(db: Session = Depends(get_db)):
-    """Module 4: Stream downloadable CSV file of team productivity metrics."""
+def export_productivity_csv(
+    request: Request,
+    role: str | None = Query(None),
+    sprint_id: int | None = Query(None),
+    engineer: str | None = Query(None),
+    severity: str | None = Query(None),
+    status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    search: str | None = Query(None),
+    db: Session = Depends(get_db),
+):
+    """Module 4 & Stage 8: Stream downloadable CSV file of team productivity metrics."""
+    user, active_workspace_role = resolve_authenticated_user(request, db)
+    auth_header = request.headers.get("authorization") or request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+        from app.main import sessions
+        if token not in sessions:
+            from .models import AuthSession
+            auth_session = (
+                db.query(AuthSession)
+                .filter(
+                    AuthSession.token == token,
+                    AuthSession.expires_at > datetime.utcnow(),
+                )
+                .first()
+            )
+            if auth_session:
+                sessions[token] = auth_session.user_id
+            else:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    user_role_context = None
+    if user and user.role != "admin":
+        canonical_role = normalize_role(user.role)
+        if canonical_role in ("user", "unassigned"):
+            u_name = (user.name or "").lower()
+            if "sasuke" in u_name or user.id == 2:
+                canonical_role = "developer"
+            elif "hinata" in u_name or user.id == 3:
+                canonical_role = "tester"
+            elif "itachi" in u_name:
+                canonical_role = "senior_dev"
+            elif "naruto" in u_name:
+                canonical_role = "admin"
+            else:
+                canonical_role = "developer"
+        if role and role != "all" and normalize_role(role) != canonical_role:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Access denied: Persona role '{canonical_role}' is not authorized to export '{role}' productivity data",
+            )
+        user_role_context = canonical_role
+        if not role:
+            role = canonical_role
+    elif user and user.role == "admin":
+        if active_workspace_role and active_workspace_role != "admin" and not role:
+            user_role_context = active_workspace_role
+            role = active_workspace_role
+
     engine = AnalyticsEngine(db)
-    prod = engine.get_productivity_metrics()
+    prod = engine.get_productivity_metrics(
+        role=role,
+        sprint_id=sprint_id,
+        engineer=engineer,
+        severity=severity,
+        status=status,
+        date_range=date_range,
+        search=search,
+        page=1,
+        page_size=1000,
+        user_role=user_role_context,
+    )
 
     output = io.StringIO()
     writer = csv.writer(output)
@@ -1069,43 +1535,83 @@ def export_productivity_csv(db: Session = Depends(get_db)):
         "Persona Name",
         "Role Title",
         "Role Key",
-        "Issues Assigned",
-        "Issues Accepted",
-        "Issues Rejected",
-        "Issues Resolved",
-        "Open Backlog",
-        "Resolution Rate (%)",
-        "Avg Resolution Time (hrs)",
-        "Transition Activity Count",
-        "Workload Share (%)",
-        "Assigned Sprints Count",
-        "Sprint Issues Count",
+        "Sprint Scope",
+        "Assigned Defects",
+        "Resolved Defects",
+        "Remaining Defects",
+        "Story Points Burned",
+        "Story Points Total",
+        "Story Points Burned (%)",
+        "Avg MTTR (hrs)",
+        "SLA Met (%)",
+        "Completion Rate (%)",
+        "Audit Status",
     ])
 
-    for r in prod.get("roles", []):
+    for entry in prod.get("ledger", []):
         writer.writerow([
-            r.get("persona_name"),
-            r.get("role_title"),
-            r.get("role_key"),
-            r.get("issues_assigned"),
-            r.get("issues_accepted"),
-            r.get("issues_rejected"),
-            r.get("issues_resolved"),
-            r.get("open_backlog"),
-            f"{r.get('resolution_rate_pct')}%",
-            f"{r.get('avg_resolution_time_hours')} hrs",
-            r.get("status_transition_activity"),
-            f"{r.get('work_distribution_pct')}%",
-            r.get("sprints_count"),
-            r.get("sprint_issues_count"),
+            entry.get("engineer_name"),
+            entry.get("role_title"),
+            entry.get("role_key"),
+            entry.get("sprint_scope"),
+            entry.get("assigned_def"),
+            entry.get("resolved_def"),
+            entry.get("assigned_def", 0) - entry.get("resolved_def", 0),
+            entry.get("story_points_burned"),
+            entry.get("story_points_total"),
+            f"{entry.get('story_points_pct')}%",
+            entry.get("avg_mttr"),
+            f"{entry.get('sla_met_pct')}%",
+            f"{entry.get('completion_rate_pct')}%",
+            entry.get("audit_status"),
         ])
+
+    # Granular filtered defect records
+    defect_records = prod.get("defect_records", [])
+    if defect_records:
+        writer.writerow([])
+        writer.writerow([
+            "Defect ID",
+            "Title",
+            "Category",
+            "Priority",
+            "Severity",
+            "Status",
+            "Assigned Role",
+            "Assigned Engineer",
+            "Reporter",
+            "Created Date",
+            "Resolution Time (hrs)",
+            "SLA Status",
+        ])
+        for d in defect_records:
+            writer.writerow([
+                d.get("defect_id"),
+                d.get("title"),
+                d.get("category"),
+                d.get("priority"),
+                d.get("severity"),
+                d.get("status"),
+                d.get("assigned_role"),
+                d.get("engineer_name"),
+                d.get("reporter_name"),
+                d.get("created_at"),
+                d.get("resolution_hours") if d.get("resolution_hours") is not None else "N/A",
+                d.get("sla_status"),
+            ])
+    else:
+        writer.writerow([])
+        writer.writerow(["No defect records available for active filters."])
 
     output.seek(0)
     filename = f"bugflow_productivity_export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
     return StreamingResponse(
         iter([output.getvalue()]),
         media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Content-Type": "text/csv; charset=utf-8",
+        },
     )
 
 
@@ -1149,29 +1655,139 @@ def export_sprint_report_csv(db: Session = Depends(get_db)):
 
 
 @router.get("/analytics/export/workflow", summary="Export workflow performance metrics as CSV")
-def export_workflow_report_csv(db: Session = Depends(get_db)):
-    """Module 4: Stream downloadable CSV file of workflow stage counts and transitions."""
+def export_workflow_report_csv(
+    request: Request,
+    role: str | None = Query(None),
+    sprint_id: int | None = Query(None),
+    severity: str | None = Query(None),
+    status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    search: str | None = Query(None),
+    engineer: str | None = Query(None),
+    db: Session = Depends(get_db),
+):
+    """Module 4 & Stage 9: Stream downloadable CSV file of workflow stage counts, transitions,
+    and detailed transition ledger records respecting active filters and role permissions.
+    """
+    user, active_workspace_role = resolve_authenticated_user(request, db)
+    auth_header = request.headers.get("authorization") or request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+        from app.main import sessions
+        if token not in sessions:
+            from .models import AuthSession
+            auth_session = (
+                db.query(AuthSession)
+                .filter(
+                    AuthSession.token == token,
+                    AuthSession.expires_at > datetime.utcnow(),
+                )
+                .first()
+            )
+            if auth_session:
+                sessions[token] = auth_session.user_id
+            else:
+                raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    user_role_context = None
+    if user and user.role != "admin":
+        canonical_role = normalize_role(user.role)
+        if canonical_role in ("user", "unassigned"):
+            u_name = (user.name or "").lower()
+            if "sasuke" in u_name or user.id == 2:
+                canonical_role = "developer"
+            elif "hinata" in u_name or user.id == 3:
+                canonical_role = "tester"
+            elif "itachi" in u_name:
+                canonical_role = "senior_dev"
+            elif "naruto" in u_name:
+                canonical_role = "admin"
+            else:
+                canonical_role = "developer"
+        if role and role != "all" and normalize_role(role) != canonical_role:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Access denied: Persona role '{canonical_role}' is not authorized to export '{role}' workflow data",
+            )
+        user_role_context = canonical_role
+        if not role:
+            role = canonical_role
+    elif user and user.role == "admin":
+        if active_workspace_role and active_workspace_role != "admin" and not role:
+            user_role_context = active_workspace_role
+            role = active_workspace_role
+
     engine = AnalyticsEngine(db)
-    wf = engine.get_workflow_metrics()
+    wf = engine.get_workflow_metrics(
+        role=role,
+        sprint_id=sprint_id,
+        severity=severity,
+        status=status,
+        date_range=date_range,
+        search=search,
+        engineer=engineer,
+        page=1,
+        page_size=1000,
+        user_role=user_role_context,
+    )
 
     output = io.StringIO()
     writer = csv.writer(output)
+
+    # Section 1: Workflow Stages Summary (Preserved Module 4 contract)
     writer.writerow(["Workflow Stage", "Defect Count", "Percentage of Total"])
     for stage, count in wf.get("funnel_counts", {}).items():
         pct = wf.get("funnel_percentages", {}).get(stage, 0.0)
         writer.writerow([stage, count, f"{pct}%"])
 
     writer.writerow([])
+    # Section 2: Top Transitions Summary (Preserved Module 4 contract)
     writer.writerow(["Top Transition Sequence", "Occurrences Count"])
     for t in wf.get("top_transitions", []):
         writer.writerow([t.get("transition"), t.get("count")])
+
+    writer.writerow([])
+    # Section 3: Detailed Transition Ledger Records (Stage 9 requirement)
+    writer.writerow([
+        "Defect ID",
+        "Canonical Defect ID",
+        "Component",
+        "Previous Stage",
+        "Current Stage",
+        "Trigger / Event",
+        "Dwell Time",
+        "SLA Status",
+        "Handled By",
+        "Timestamp",
+    ])
+
+    ledger_records = wf.get("all_ledger_records", wf.get("ledger", []))
+    if ledger_records:
+        for r in ledger_records:
+            writer.writerow([
+                r.get("defect_id"),
+                r.get("canonical_defect_id"),
+                r.get("component"),
+                r.get("previous_stage"),
+                r.get("current_stage"),
+                r.get("event_trigger"),
+                r.get("dwell_time"),
+                r.get("sla_status"),
+                r.get("handled_by"),
+                r.get("timestamp"),
+            ])
+    else:
+        writer.writerow(["No workflow transition records available for active filters."])
 
     output.seek(0)
     filename = f"bugflow_workflow_export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
     return StreamingResponse(
         iter([output.getvalue()]),
         media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Content-Type": "text/csv; charset=utf-8",
+        },
     )
 
 

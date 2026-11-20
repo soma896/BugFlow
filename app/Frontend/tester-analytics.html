@@ -362,6 +362,10 @@ h1{
             ▥ <span>Analytics Reports</span>
         </a>
 
+        <a href="/tester-sprint-report-ui" id="navTesterSprintReport">
+            ⚡ <span>Sprint Report</span>
+        </a>
+
         <a href="#" id="sideSwitchBtn">
             ↪ <span>Switch</span>
         </a>
@@ -389,32 +393,40 @@ h1{
 
     </div>
 
-    <div class="switcher-container">
-        <button
-            class="switch-btn"
-            id="switchDropdownBtn"
-            type="button"
-        >
-            <span>Switch Workspace</span> ▾
-        </button>
+    <div style="display:flex; align-items:center; gap:8px;">
+        <a href="/tester-sprint-report-ui" id="headerTesterSprintReport" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px; font-weight:600; font-size:12px; transition:all .15s ease;">
+            <span>⚡ Sprint Report</span> ↗
+        </a>
+        <a href="/tester-productivity-report-ui" id="headerTesterProductivityReport" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px; font-weight:600; font-size:12px; transition:all .15s ease;">
+            <span>📈 Productivity Report</span> ↗
+        </a>
+        <div class="switcher-container">
+            <button
+                class="switch-btn"
+                id="switchDropdownBtn"
+                type="button"
+            >
+                <span>Switch Workspace</span> ▾
+            </button>
 
-        <div class="switch-dropdown" id="switchDropdown">
-            <div class="switch-dropdown-header">Switch Workspace</div>
-            <button class="switch-item" data-role="admin">
-                <span class="role-badge">A</span> Naruto (Admin)
-            </button>
-            <button class="switch-item" data-role="tester">
-                <span class="role-badge">T</span> Hinata (Tester)
-            </button>
-            <button class="switch-item" data-role="developer">
-                <span class="role-badge">D</span> Sasuke (Developer)
-            </button>
-            <button class="switch-item" data-role="senior_dev">
-                <span class="role-badge">S</span> Itachi (Senior Developer)
-            </button>
-            <button class="switch-item" data-role="user">
-                <span class="role-badge">U</span> User
-            </button>
+            <div class="switch-dropdown" id="switchDropdown">
+                <div class="switch-dropdown-header">Switch Workspace</div>
+                <button class="switch-item" data-role="admin">
+                    <span class="role-badge">A</span> Naruto (Admin)
+                </button>
+                <button class="switch-item" data-role="tester">
+                    <span class="role-badge">T</span> Hinata (Tester)
+                </button>
+                <button class="switch-item" data-role="developer">
+                    <span class="role-badge">D</span> Sasuke (Developer)
+                </button>
+                <button class="switch-item" data-role="senior_dev">
+                    <span class="role-badge">S</span> Itachi (Senior Developer)
+                </button>
+                <button class="switch-item" data-role="user">
+                    <span class="role-badge">U</span> User
+                </button>
+            </div>
         </div>
     </div>
 
@@ -556,9 +568,9 @@ async function loadTesterAnalytics() {
         const defects = await res.json();
 
         const total = defects.length;
-        const pending = defects.filter(d => d.status === "Pending").length;
-        const resolved = defects.filter(d => d.status === "Resolved").length;
-        const rejected = defects.filter(d => d.status === "Rejected").length;
+        const pending = defects.filter(d => (d.status || "").toUpperCase() === "PENDING").length;
+        const resolved = defects.filter(d => (d.status || "").toUpperCase() === "RESOLVED").length;
+        const rejected = defects.filter(d => (d.status || "").toUpperCase() === "REJECTED").length;
 
         document.getElementById("totalCount").textContent = total;
         document.getElementById("pendingCount").textContent = pending;

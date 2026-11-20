@@ -511,6 +511,79 @@ def analytics_ui():
     return serve_page("analytics.html")
 
 
+@app.get("/sprint-report-ui")
+@app.get("/admin-sprint-report-ui")
+def sprint_report_ui():
+    return serve_page("sprint-report.html")
+
+
+@app.get("/developer-sprint-report-ui")
+def developer_sprint_report_ui():
+    return serve_page("sprint-report.html")
+
+
+@app.get("/tester-sprint-report-ui")
+def tester_sprint_report_ui():
+    return serve_page("sprint-report.html")
+
+
+@app.get("/senior-developer-sprint-report-ui")
+def senior_developer_sprint_report_ui():
+    return serve_page("sprint-report.html")
+
+
+@app.get("/productivity-report-ui")
+@app.get("/admin-productivity-report-ui")
+def productivity_report_ui():
+    return serve_page("productivity-report.html")
+
+
+@app.get("/developer-productivity-report-ui")
+def developer_productivity_report_ui():
+    return serve_page("productivity-report.html")
+
+
+@app.get("/tester-productivity-report-ui")
+def tester_productivity_report_ui():
+    return serve_page("productivity-report.html")
+
+
+@app.get("/senior-developer-productivity-report-ui")
+def senior_developer_productivity_report_ui():
+    return serve_page("productivity-report.html")
+
+
+@app.get("/workflow-report-ui")
+@app.get("/admin-workflow-report-ui")
+def workflow_report_ui():
+    return serve_page("workflow-report.html")
+
+
+@app.get("/developer-workflow-report-ui")
+def developer_workflow_report_ui():
+    return serve_page("workflow-report.html")
+
+
+@app.get("/tester-workflow-report-ui")
+def tester_workflow_report_ui():
+    return serve_page("workflow-report.html")
+
+
+@app.get("/senior-developer-workflow-report-ui")
+def senior_developer_workflow_report_ui():
+    return serve_page("workflow-report.html")
+
+
+@app.get("/design-system.css")
+@app.get("/Frontend/design-system.css")
+def get_design_system_css():
+    css_file = FRONTEND_DIR / "design-system.css"
+    if css_file.exists():
+        return FileResponse(css_file, media_type="text/css")
+    raise HTTPException(status_code=404, detail="design-system.css not found")
+
+
+
 @app.get("/tester-ui")
 def tester_ui():
     return serve_page("tester-dashboard.html")
