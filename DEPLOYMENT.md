@@ -215,4 +215,33 @@ Once your deployment status is **Live**:
 - Render free Web Services spin down after 15 minutes of inactivity. The first request after spin-down may take ~45 seconds to wake up. PostgreSQL free database data persists across spin-downs.
 
 ---
+
+## 9. Enabling Native Google Account Chooser Popup (Google Cloud Console)
+
+BugFlow supports **Google Identity Services (GIS)** to let any user sign in or sign up using the official Google Account Chooser popup:
+
+1. **Go to Google Cloud Console:**
+   - Visit [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials).
+   - Create a project or select an existing project.
+2. **Configure OAuth Consent Screen:**
+   - Under **APIs & Services** > **OAuth consent screen**, select **External**.
+   - Enter App Name (`BugFlow`), user support email, and developer contact email. Click **Save and Continue**.
+3. **Create OAuth Client ID:**
+   - Click **Credentials** > **Create Credentials** > **OAuth client ID**.
+   - Application type: **Web application**.
+   - Name: `BugFlow Web Client`.
+   - Under **Authorized JavaScript origins**, add:
+     - `https://bugflow-web.onrender.com` (your live site)
+     - `http://localhost:8000` (for local development)
+   - Click **Create** and copy your **Client ID** (ends with `.apps.googleusercontent.com`).
+4. **Add to Render Environment Variables:**
+   - In Render dashboard, go to your Web Service > **Environment**.
+   - Add:
+     - **Key:** `GOOGLE_CLIENT_ID`
+     - **Value:** `<your-client-id>.apps.googleusercontent.com`
+   - Click **Save Changes**. Render will automatically redeploy!
+
+Once set, clicking **Sign in with Google** will automatically show Google's native popup chooser with all Google accounts logged into the user's browser or phone!
+
+---
 *BugFlow is now ready for production! 🚀*

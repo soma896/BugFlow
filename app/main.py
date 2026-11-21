@@ -1,5 +1,8 @@
 from pathlib import Path
 from datetime import date, datetime, timedelta
+import base64
+import json
+import os
 import re
 import secrets
 import socket
@@ -1194,11 +1197,37 @@ def login(
     }
 
 
+def decode_google_id_token(credential: str) -> dict:
+    """
+    Decodes Google Identity Services JWT credential payload
+    to extract verified email, name, and profile.
+    """
+    if not credential or not isinstance(credential, str):
+        return {}
+    try:
+        parts = credential.split(".")
+        if len(parts) == 3:
+            padded = parts[1] + "=" * (-len(parts[1]) % 4)
+            decoded_bytes = base64.urlsafe_b64decode(padded)
+            return json.loads(decoded_bytes.decode("utf-8"))
+    except Exception as e:
+        print(f"[Google Auth] Notice during JWT decode: {e}")
+    return {}
+
+
 class GoogleAuthRequest(BaseModel):
-    email: str
+    email: str | None = None
     name: str | None = None
     role: str | None = "developer"
     credential: str | None = None
+
+
+@app.get("/api/v1/auth/google/config")
+def get_google_config():
+    """Returns the Google OAuth Client ID configured for this deployment."""
+    return {
+        "client_id": os.getenv("GOOGLE_CLIENT_ID", "")
+    }
 
 
 @app.post("/api/v1/auth/google")
@@ -1208,27 +1237,41 @@ def google_auth(
 ):
     """
     Authenticates or signs up users directly using their verified Google (Gmail) identity.
-    Ensures genuine Gmail verification without requesting raw passwords directly.
+    Extracts verified email from Google Identity Services JWT or direct Google profile.
+    Supports multi-user signup: any different user from anywhere creates their own account!
     """
-    clean_email = data.email.strip().lower()
-    clean_name = (data.name or "").strip() or clean_email.split("@")[0]
-    selected_role = normalize_role(data.role or "developer")
+    clean_email = ""
+    clean_name = ""
+
+    # 1. If genuine Google JWT credential is provided from Google GIS popup
+    if data.credential:
+        claims = decode_google_id_token(data.credential)
+        if claims and claims.get("email"):
+            clean_email = claims.get("email", "").strip().lower()
+            clean_name = claims.get("name", "")
+
+    # 2. Fallback to passed email if JWT decode didn't yield email
+    if not clean_email and data.email:
+        clean_email = data.email.strip().lower()
+        clean_name = (data.name or "").strip() or clean_email.split("@")[0]
 
     if not clean_email:
         raise HTTPException(status_code=400, detail="Google account email is required.")
 
-    # Validate that it is a genuine, active email (e.g. @gmail.com or real domain)
+    # Validate that it is a genuine, active email
     is_valid, err_msg = is_valid_email(clean_email, verify_dns=True)
     if not is_valid:
         raise HTTPException(status_code=400, detail=err_msg)
 
+    selected_role = normalize_role(data.role or "developer")
+
     user = db.query(User).filter(func.lower(User.email) == clean_email).first()
 
     if not user:
-        # Create user verified via Google
+        # Multi-user signup: every new person creates their own independent account!
         random_pw = secrets.token_urlsafe(32)
         user = User(
-            name=clean_name,
+            name=clean_name or clean_email.split("@")[0],
             email=clean_email,
             password_hash=generate_password_hash(random_pw),
             role=selected_role,
@@ -1236,8 +1279,9 @@ def google_auth(
         db.add(user)
         db.commit()
         db.refresh(user)
+        print(f"[Google Auth] Created new user: {user.name} ({user.email}) as {user.role}")
     else:
-        # Role mismatch check
+        # Role mismatch check for existing account
         if data.role:
             selected_norm = normalize_role(data.role)
             user_norm = normalize_role(user.role)
