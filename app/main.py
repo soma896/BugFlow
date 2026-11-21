@@ -6,9 +6,9 @@ from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
-from sqlalchemy import or_, text
+from sqlalchemy import func, or_, text
 from sqlalchemy.orm import Session
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from .database import get_db
 from .models import (
@@ -258,6 +258,13 @@ class IssueCreate(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+
+class RegisterRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+    role: str = "developer"
 
 
 class DefectCreate(BaseModel):
@@ -726,17 +733,105 @@ def api_explorer_ui():
 
 
 # =========================================================
-# LOGIN & LOGOUT
+# LOGIN, REGISTRATION & LOGOUT
 # =========================================================
+
+@app.post("/register")
+@app.post("/signup")
+@app.post("/api/v1/auth/register")
+def register(
+    data: RegisterRequest,
+    db: Session = Depends(get_db),
+):
+    email = data.email.strip().lower()
+    name = data.name.strip()
+    password = data.password.strip()
+
+    if not email or not password:
+        raise HTTPException(
+            status_code=400,
+            detail="Email and password are required",
+        )
+
+    if len(password) < 6:
+        raise HTTPException(
+            status_code=400,
+            detail="Password must be at least 6 characters",
+        )
+
+    existing = (
+        db.query(User)
+        .filter(func.lower(User.email) == email)
+        .first()
+    )
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="An account with this email already exists. Please sign in.",
+        )
+
+    # Normalize role to match BugFlow database roles
+    role_input = (data.role or "developer").strip().lower()
+    if role_input in ["admin", "system_administrator"]:
+        assigned_role = "admin"
+    elif role_input in ["senior_dev", "senior_developer", "senior dev", "sr. dev", "sr dev"]:
+        assigned_role = "senior_dev"
+    elif role_input in ["tester", "qa", "qa_tester", "qa tester"]:
+        assigned_role = "tester"
+    elif role_input in ["developer", "dev"]:
+        assigned_role = "developer"
+    elif role_input in ["user"]:
+        assigned_role = "user"
+    else:
+        assigned_role = "developer"
+
+    hashed_pw = generate_password_hash(password)
+
+    new_user = User(
+        name=name or email.split("@")[0],
+        email=email,
+        password_hash=hashed_pw,
+        role=assigned_role,
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    token = secrets.token_urlsafe(32)
+    sessions[token] = new_user.id
+    workspace_sessions[token] = "admin" if new_user.role == "admin" else new_user.role
+
+    try:
+        new_session = AuthSession(
+            token=token,
+            user_id=new_user.id,
+            expires_at=datetime.utcnow() + timedelta(days=7),
+        )
+        db.add(new_session)
+        db.commit()
+    except Exception:
+        db.rollback()
+
+    return {
+        "message": "Account created successfully",
+        "access_token": token,
+        "token_type": "bearer",
+        "user_id": new_user.id,
+        "name": new_user.name,
+        "email": new_user.email,
+        "role": new_user.role,
+    }
+
 
 @app.post("/login")
 def login(
     data: LoginRequest,
     db: Session = Depends(get_db),
 ):
+    cleaned_email = data.email.strip().lower()
     user = (
         db.query(User)
-        .filter(User.email == data.email)
+        .filter(func.lower(User.email) == cleaned_email)
         .first()
     )
 

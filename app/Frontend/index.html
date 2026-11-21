@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>BugFlow | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugFlow - Aroma | Create Your Workspace</title>
+    <!-- Google Web Fonts: Inter & JetBrains Mono -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    <!-- Google Material Symbols Outlined -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <link rel="stylesheet" href="/design-system.css">
 
     <style>
+        :root {
+            --bf-primary: #2563eb;
+            --bf-primary-hover: #1d4ed8;
+            --bf-primary-active: #1e40af;
+            --bf-primary-light: #eff6ff;
+            --bf-primary-subtle: #dbeafe;
+            --bf-bg: #f8fafc;
+            --bf-surface: #ffffff;
+            --bf-border: #e2e8f0;
+            --bf-border-subtle: #f1f5f9;
+            --bf-border-focus: #2563eb;
+            --bf-text-primary: #0f172a;
+            --bf-text-secondary: #475569;
+            --bf-text-muted: #94a3b8;
+            --bf-green: #10b981;
+            --bf-red: #ef4444;
+        }
 
         * {
             box-sizing: border-box;
@@ -21,1789 +36,972 @@
         }
 
         body {
-
             min-height: 100vh;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            color: #182033;
-            background: #f5f7fb;
-
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #eff6ff 100%);
+            color: var(--bf-text-primary);
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
-            padding: 24px;
-
-        }
-
-
-        /* =====================================================
-           MAIN CONTAINER
-        ====================================================== */
-
-        .page {
-
-            width:
-                min(
-                    1120px,
-                    100%
-                );
-
-            min-height: 700px;
-
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                1fr;
-
-            background: #ffffff;
-            border: 1px solid #e3e8f2;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(24, 32, 51, 0.08);
-
-        }
-
-
-        /* =====================================================
-           LEFT PANEL
-        ====================================================== */
-
-        .left-panel {
-
-            padding:
-                52px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content:
-                space-between;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #111e33,
-                    #0d1726
-                );
-            border-right: 1px solid #1c2d44;
-
-        }
-
-
-        .brand {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-        }
-
-
-        .logo {
-
-            width: 48px;
-
-            height: 48px;
-
-            border-radius: 13px;
-
-            display: grid;
-
-            place-items: center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #3f66d8,
-                    #5b82ea
-                );
-
-            color: white;
-            font-size: 21px;
-            font-weight: 800;
-            box-shadow: 0 8px 24px rgba(63, 102, 216, 0.28);
-
-        }
-
-
-        .brand-name {
-            font-size: 23px;
-            font-weight: 800;
-            color: #ffffff;
-        }
-
-
-        .hero {
-
-            max-width: 500px;
-
-        }
-
-
-        .eyebrow {
-
-            margin-bottom: 16px;
-
-            color: #7d8fa9;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.12em;
-
-        }
-
-
-        .hero h1 {
-            color: #ffffff;
-            margin-bottom: 20px;
-
-            font-size:
-                clamp(
-                    45px,
-                    5vw,
-                    63px
-                );
-
-            line-height: 1;
-
-            letter-spacing:
-                -0.04em;
-
-        }
-
-
-        .hero h1 span {
-            color: #5b82ea;
-        }
-
-
-        .hero p {
-            color: #9cadc0;
-
-            font-size: 15px;
-
-            line-height: 1.75;
-
-            max-width: 470px;
-
-        }
-
-
-        .features {
-
-            display: grid;
-
-            gap: 14px;
-
-            margin-top: 30px;
-
-        }
-
-
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #cbd5e1;
-
-            font-size: 13px;
-
-        }
-
-
-        .feature-icon {
-
-            width: 34px;
-
-            height: 34px;
-
-            border-radius: 9px;
-
-            display: grid;
-
-            place-items: center;
-
-            background: rgba(63, 102, 216, 0.15);
-            border: 1px solid rgba(63, 102, 216, 0.25);
-            color: #5b82ea;
-
-        }
-
-
-        .footer {
-            color: #7d8fa9;
-
-            font-size: 11px;
-
-        }
-
-
-        /* =====================================================
-           RIGHT PANEL
-        ====================================================== */
-
-        .right-panel {
-
-            padding:
-                42px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background: #ffffff;
-
-        }
-
-
-        .login-area {
-
-            width:
-                min(
-                    450px,
-                    100%
-                );
-
-        }
-
-
-        .login-heading {
-
-            margin-bottom: 24px;
-
-        }
-
-
-        .login-heading h2 {
-            color: #172033;
-            margin-bottom: 8px;
-
-            font-size: 31px;
-
-        }
-
-
-        .login-heading p {
-            color: #5F6B7A;
-
-            font-size: 14px;
-
-            line-height: 1.5;
-
-        }
-
-
-        /* =====================================================
-           ADMIN / USER OPTIONS
-        ====================================================== */
-
-        .access-label {
-            color: #5F6B7A;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.08em;
-
-            margin-bottom: 10px;
-
-        }
-
-
-        .access-options {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                1fr;
-
-            gap: 12px;
-
-            margin-bottom: 24px;
-
-        }
-
-
-        .access-card {
-
-            border: 1px solid #D9E1EC;
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 17px;
-            cursor: pointer;
-            text-align: left;
-            color: #273449;
-
-            transition:
-                border-color .2s,
-                background .2s,
-                transform .2s,
-                box-shadow .2s;
-
-        }
-
-
-        .access-card:hover {
-
-            border-color: #3B66D9; background: #F0F4FF;
-
-            transform:
-                translateY(-1px);
-
-        }
-
-
-        .access-card.active {
-
-            border-color: #3B66D9;
-            background: #F0F4FF;
-            box-shadow: 0 6px 20px rgba(59, 102, 217, 0.12);
-
-        }
-
-
-        .access-icon {
-
-            width: 38px;
-
-            height: 38px;
-
-            border-radius: 10px;
-
-            display: grid;
-
-            place-items: center;
-
-            background: #F0F4FF;
-            border: 1px solid #D9E1EC;
-            color: #3B66D9;
-
-            margin-bottom: 10px;
-
-            font-size: 18px;
-
-        }
-
-
-        .access-card.active
-        .access-icon {
-
-            background: #3B66D9;
-            color: #ffffff;
-            border-color: #3B66D9;
-
-        }
-
-
-        .access-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #172033;
-
-        }
-
-
-        .access-description {
-            font-size: 10px;
-            line-height: 1.4;
-            color: #5F6B7A;
-
-        }
-
-
-        .access-card.active
-        .access-description {
-
-            color: #5F6B7A;
-
-        }
-
-
-        /* =====================================================
-           SELECTED ACCESS
-        ====================================================== */
-
-        .selected-access {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            margin-bottom: 20px;
-
-            padding:
-                10px 12px;
-
-            border-radius: 10px;
-
-            background: #F0F4FF;
-            border: 1px solid #D9E1EC;
-            color: #3B66D9;
-
-            font-size: 11px;
-
-        }
-
-
-        .selected-access strong {
-            color: #172033;
-
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ====================================================== */
-
-        .message {
-
-            display: none;
-
-            padding:
-                11px 13px;
-
-            margin-bottom: 16px;
-
-            border-radius: 9px;
-
-            font-size: 12px;
-
-            line-height: 1.45;
-
-        }
-
-
-        .message.error {
-
-            display: block;
-
-            color: #df5a5a;
-
-            background:
-                #feeceb;
-
-            border:
-                1px solid
-                #fcc;
-
-        }
-
-
-        .message.success {
-
-            display: block;
-
-            color: #16a765;
-
-            background:
-                #eaf9f1;
-
-            border:
-                1px solid
-                #c4f1d9;
-
-        }
-
-
-        /* =====================================================
-           FORM
-        ====================================================== */
-
-        .form-group {
-
-            margin-bottom: 18px;
-
-        }
-
-
-        label {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #182033;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-        }
-
-
-        .input-wrapper {
-
+            padding: 24px 16px;
             position: relative;
-
+            overflow-x: hidden;
         }
 
+        /* Subtle background tech ambient decoration */
+        .ambient-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glow-1 {
+            top: -100px;
+            left: -100px;
+            background: #bfdbfe;
+        }
+        .glow-2 {
+            bottom: -120px;
+            right: -100px;
+            background: #c7d2fe;
+        }
 
-        input {
-
+        /* Center Modal / Card Container */
+        .auth-container {
+            position: relative;
+            z-index: 10;
             width: 100%;
-
-            height: 50px;
-
-            padding:
-                0 45px
-                0 14px;
-
-            border: 1px solid #D9E1EC;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #172033;
-
-            outline: none;
-
-            font-size: 14px;
-
-            transition:
-                border-color .2s,
-                box-shadow .2s;
-
+            max-width: 500px;
+            background: var(--bf-surface);
+            border: 1px solid var(--bf-border);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.12),
+                        0 0 1px 1px rgba(15, 23, 42, 0.05);
+            padding: 32px 32px 28px;
+            transition: all 0.25s ease;
         }
 
-
-        input::placeholder {
-            color: #7A8798;
-
+        @media (max-width: 540px) {
+            .auth-container {
+                padding: 24px 20px 22px;
+                border-radius: 16px;
+            }
         }
 
-
-        input:focus {
-
-            border-color: #3B66D9;
-            box-shadow: 0 0 0 3px rgba(59, 102, 217, 0.12);
-
-        }
-
-
-        .password-toggle {
-
-            position: absolute;
-
-            right: 7px;
-
-            top: 50%;
-
-            width: 34px;
-
-            height: 34px;
-
-            transform:
-                translateY(-50%);
-
-            border: 0;
-
-            border-radius: 8px;
-
-            background:
-                transparent;
-
-            color: #5F6B7A;
-
-            cursor: pointer;
-
-            font-size: 14px;
-
-        }
-
-
-        .password-toggle:hover {
-            color: #172033;
-            background: #F0F4FF;
-
-        }
-
-
-        /* =====================================================
-           BUTTON
-        ====================================================== */
-
-        .login-button {
-
-            width: 100%;
-
-            height: 50px;
-
-            margin-top: 5px;
-
-            border: 0;
-
-            border-radius: 10px;
-
-            background: #3B66D9;
-            color: #ffffff;
-            border-color: #3B66D9;
-
-            color: white;
-
-            font-size: 14px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition:
-                transform .2s,
-                box-shadow .2s,
-                opacity .2s;
-
-            box-shadow:
-                0 12px 25px
-                rgba(
-                    59,
-                    102,
-                    217,
-                    .18
-                );
-
-        }
-
-
-        .login-button:hover {
-
-            transform:
-                translateY(-1px);
-
-            background: #3158C5;
-            box-shadow: 0 6px 20px rgba(59, 102, 217, 0.32);
-
-        }
-
-
-        .login-button:disabled {
-
-            opacity: .65;
-
-            cursor:
-                not-allowed;
-
-            transform: none;
-
-        }
-
-
-        .button-content {
-
-            display: inline-flex;
-
+        /* Top Brand Header */
+        .auth-header {
+            display: flex;
             align-items: center;
-
-            justify-content: center;
-
-            gap: 8px;
-
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
+            flex-shrink: 0;
+        }
+
+        .brand-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1;
+        }
+
+        .brand-title {
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--bf-text-primary);
+        }
+
+        .brand-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            color: var(--bf-primary);
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--bf-text-muted);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            transition: all 0.15s ease;
+        }
+        .btn-close:hover {
+            background: #f1f5f9;
+            color: var(--bf-text-primary);
+        }
+
+        /* Headings */
+        .title-group {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .title-group h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--bf-text-primary);
+            margin-bottom: 6px;
+        }
+
+        .title-group p {
+            font-size: 13px;
+            color: var(--bf-text-secondary);
+            font-weight: 500;
+        }
+
+        /* Tabs Toggle (Sign In / Sign Up) */
+        .tab-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border: 1px solid var(--bf-border);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--bf-text-secondary);
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            color: var(--bf-text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--bf-surface);
+            color: var(--bf-primary);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+        }
+
+        /* Role Selection Section */
+        .role-section {
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--bf-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+        }
+
+        /* 4-Role Grid matching prompt requirements */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 420px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .role-card {
+            border: 1.5px solid var(--bf-border);
+            background: var(--bf-surface);
+            border-radius: 12px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            text-align: left;
+            user-select: none;
+        }
+
+        .role-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .role-card.selected {
+            border-color: var(--bf-primary);
+            background: var(--bf-primary-light);
+            box-shadow: 0 0 0 1px var(--bf-primary);
+        }
+
+        .role-card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: var(--bf-text-secondary);
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            transition: all 0.18s ease;
+        }
+
+        .role-card.selected .role-card-icon {
+            background: var(--bf-primary);
+            color: #ffffff;
+        }
+
+        .role-card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .role-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--bf-text-primary);
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .role-card.selected .role-card-title {
+            color: var(--bf-primary-active);
+        }
+
+        .role-card-sub {
+            font-size: 10.5px;
+            color: var(--bf-text-muted);
+            margin-top: 2px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .role-card.selected .role-card-sub {
+            color: var(--bf-primary);
+            font-weight: 500;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--bf-text-primary);
+            margin-bottom: 6px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 1.5px solid var(--bf-border);
+            border-radius: 10px;
+            background: var(--bf-surface);
+            padding: 0 12px;
+            height: 44px;
+            transition: all 0.18s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--bf-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .input-group.input-error {
+            border-color: var(--bf-red);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+        }
+
+        .input-icon {
+            color: var(--bf-text-muted);
+            font-size: 18px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .input-group:focus-within .input-icon {
+            color: var(--bf-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            color: var(--bf-text-primary);
+            font-family: inherit;
+        }
+
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .password-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--bf-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            display: grid;
+            place-items: center;
+            border-radius: 6px;
+            flex-shrink: 0;
+            transition: color 0.15s ease;
+        }
+        .password-toggle-btn:hover {
+            color: var(--bf-text-primary);
+        }
+
+        /* Quick Demo Personas Pills (for easy testing on live site) */
+        .demo-bar {
+            margin-top: -4px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .demo-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--bf-text-muted);
+        }
+
+        .demo-pill {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            background: #f1f5f9;
+            border: 1px solid var(--bf-border);
+            border-radius: 99px;
+            color: var(--bf-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .demo-pill:hover {
+            background: var(--bf-primary-light);
+            border-color: var(--bf-primary-subtle);
+            color: var(--bf-primary);
+        }
+
+        /* Submit Action Button */
+        .btn-submit {
+            width: 100%;
+            height: 46px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.42);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Switch View Link */
+        .auth-footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--bf-text-secondary);
+        }
+
+        .link-switch {
+            color: var(--bf-primary);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .link-switch:hover {
+            text-decoration: underline;
+        }
+
+        /* Alert / Feedback Notification */
+        .alert-box {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+        .alert-box.show {
+            display: flex;
+        }
+
+        .alert-box.alert-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .alert-box.alert-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
 
         .spinner {
-
-            display: none;
-
-            width: 15px;
-
-            height: 15px;
-
-            border:
-                2px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .35
-                );
-
-            border-top-color:
-                white;
-
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
             border-radius: 50%;
-
-            animation:
-                spin .7s linear infinite;
-
+            animation: spin 0.7s linear infinite;
+            display: none;
         }
 
-
-        .loading .spinner {
-
+        .btn-submit.loading .spinner {
             display: inline-block;
-
         }
 
+        .btn-submit.loading .btn-text {
+            display: none;
+        }
 
         @keyframes spin {
-
-            to {
-
-                transform:
-                    rotate(360deg);
-
-            }
-
+            to { transform: rotate(360deg); }
         }
 
-
-        .security-note {
-            margin-top: 17px;
-            text-align: center;
-            color: #68738a;
-
-            font-size: 10px;
-
-            line-height: 1.5;
-
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 850px) {
-
-            .page {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .left-panel {
-
-                display: none;
-
-            }
-
-
-            .right-panel {
-
-                min-height:
-                    700px;
-
-                padding:
-                    30px 22px;
-
-            }
-
-        }
-
-
-        @media (max-width: 500px) {
-            body {
-                padding: 12px 8px;
-            }
-
-            .page {
-                border-radius: 16px;
-                min-height: auto;
-                box-shadow: 0 10px 30px rgba(24, 32, 51, 0.08);
-            }
-
-            .access-options {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .right-panel {
-                min-height: auto;
-                padding: 24px 16px;
-            }
-
-            .heading h2 {
-                font-size: 20px;
-            }
-
-            .submit-btn {
-                height: 44px;
-            }
-        }
-
     </style>
-
 </head>
-
-
 <body>
 
+    <!-- Ambient glowing backdrop for high-end look -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-<div class="page">
+    <main class="auth-container">
+        <!-- Top Branding Header -->
+        <header class="auth-header">
+            <a href="/" class="brand-badge" title="BugFlow - Aroma">
+                <div class="brand-logo-icon">B</div>
+                <div class="brand-title-wrap">
+                    <span class="brand-title">BugFlow</span>
+                    <span class="brand-pill">AROMA</span>
+                </div>
+            </a>
+            <button type="button" class="btn-close" id="btnClose" title="Close" aria-label="Close">
+                <span class="material-symbols-outlined" style="font-size:20px;">close</span>
+            </button>
+        </header>
 
-
-    <!-- =====================================================
-         LEFT BRANDING PANEL
-    ====================================================== -->
-
-    <section class="left-panel">
-
-
-        <div class="brand">
-
-
-            <div class="logo">
-                B
-            </div>
-
-
-            <div class="brand-name">
-                BugFlow
-            </div>
-
-
+        <!-- Dynamic Title -->
+        <div class="title-group">
+            <h1 id="headingTitle">Create Your Workspace</h1>
+            <p id="headingSub">Join the defect intelligence & sprint ecosystem</p>
         </div>
 
-
-        <div class="hero">
-
-
-            <div class="eyebrow">
-                Issue Tracking Platform
-            </div>
-
-
-            <h1>
-                Track bugs.<br>
-
-                <span>
-                    Fix faster.
-                </span>
-            </h1>
-
-
-            <p>
-                A centralized issue tracking system
-                for reporting, managing, reviewing,
-                and resolving software defects.
-            </p>
-
-
-            <div class="features">
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        🐞
-                    </div>
-
-                    <span>
-                        Detailed defect reporting
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        📊
-                    </div>
-
-                    <span>
-                        Live dashboards and status tracking
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        🔐
-                    </div>
-
-                    <span>
-                        Role-based user and admin access
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
+        <!-- Tab Toggle (Sign In / Sign Up) -->
+        <div class="tab-toggle" role="tablist">
+            <button type="button" class="tab-btn" id="tabSignIn" role="tab" aria-selected="false">
+                <span class="material-symbols-outlined" style="font-size:16px;">login</span>
+                <span>Sign In</span>
+            </button>
+            <button type="button" class="tab-btn active" id="tabSignUp" role="tab" aria-selected="true">
+                <span class="material-symbols-outlined" style="font-size:16px;">person_add</span>
+                <span>Sign Up</span>
+            </button>
         </div>
 
-
-        <div class="footer">
-            BugFlow · Software Issue Management System
+        <!-- Alert Notification Box -->
+        <div class="alert-box" id="alertBox">
+            <span class="material-symbols-outlined" id="alertIcon" style="font-size:18px;">error</span>
+            <span id="alertMsg" style="flex:1;"></span>
         </div>
 
+        <!-- =========================================================================
+             FORM (HANDLES BOTH SIGN IN & SIGN UP)
+        ========================================================================= -->
+        <form id="authForm" novalidate>
 
-    </section>
-
-
-    <!-- =====================================================
-         RIGHT LOGIN PANEL
-    ====================================================== -->
-
-    <section class="right-panel">
-
-
-        <div class="login-area">
-
-
-            <div class="login-heading">
-
-                <h2 id="loginTitle">
-                    Choose your access
-                </h2>
-
-                <p id="loginSubtitle">
-                    Select Admin or User to continue.
-                </p>
-
-            </div>
-
-
-            <!-- =================================================
-                 ADMIN / USER OPTIONS
-            ================================================== -->
-
-            <div class="access-label">
-                Continue as
-            </div>
-
-
-            <div class="access-options">
-
-
-                <!-- ADMIN -->
-
-                <button
-                    type="button"
-                    id="adminOption"
-                    class="access-card active"
-                >
-
-                    <div class="access-icon">
-                        🛡️
+            <!-- SELECT ROLE (4 Roles: Admin, Senior Dev, Developer, QA Tester) -->
+            <div class="role-section" id="roleSection">
+                <label class="section-label">Select Role</label>
+                <div class="role-grid">
+                    <!-- 1. Admin -->
+                    <div class="role-card" data-role="admin">
+                        <div class="role-card-icon">
+                            <span class="material-symbols-outlined" style="font-size:18px;">admin_panel_settings</span>
+                        </div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">Admin</div>
+                            <div class="role-card-sub">Full Governance</div>
+                        </div>
                     </div>
 
-
-                    <div class="access-title">
-                        Admin
+                    <!-- 2. Senior Developer -->
+                    <div class="role-card" data-role="senior_dev">
+                        <div class="role-card-icon">
+                            <span class="material-symbols-outlined" style="font-size:18px;">terminal</span>
+                        </div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">Senior Dev</div>
+                            <div class="role-card-sub">Architecture &amp; Lead</div>
+                        </div>
                     </div>
 
-
-                    <div class="access-description">
-                        Manage defects, users and system actions
+                    <!-- 3. Developer -->
+                    <div class="role-card selected" data-role="developer">
+                        <div class="role-card-icon">
+                            <span class="material-symbols-outlined" style="font-size:18px;">code</span>
+                        </div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">Developer</div>
+                            <div class="role-card-sub">Fixes &amp; Code Sprint</div>
+                        </div>
                     </div>
 
-                </button>
-
-
-                <!-- USER -->
-
-                <button
-                    type="button"
-                    id="userOption"
-                    class="access-card"
-                >
-
-                    <div class="access-icon">
-                        👤
+                    <!-- 4. QA Tester -->
+                    <div class="role-card" data-role="tester">
+                        <div class="role-card-icon">
+                            <span class="material-symbols-outlined" style="font-size:18px;">rule</span>
+                        </div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">QA Tester</div>
+                            <div class="role-card-sub">Defects &amp; Sprints</div>
+                        </div>
                     </div>
-
-
-                    <div class="access-title">
-                        User
-                    </div>
-
-
-                    <div class="access-description">
-                        Report defects and track your issues
-                    </div>
-
-                </button>
-
-
-            </div>
-
-
-            <!-- =================================================
-                 SELECTED ACCESS
-            ================================================== -->
-
-            <div class="selected-access">
-
-                <span id="selectedIcon">
-                    🛡️
-                </span>
-
-                <span>
-
-                    Signing in as
-
-                    <strong id="selectedText">
-                        Admin
-                    </strong>
-
-                </span>
-
-            </div>
-
-
-            <!-- MESSAGE -->
-
-            <div
-                id="message"
-                class="message"
-            ></div>
-
-
-            <!-- =================================================
-                 LOGIN FORM
-            ================================================== -->
-
-            <form id="loginForm">
-
-
-                <div class="form-group">
-
-
-                    <label for="email">
-                        Email
-                    </label>
-
-
-                    <input
-                        id="email"
-                        type="email"
-                        autocomplete="email"
-                        placeholder="Enter admin email"
-                        required
-                    >
-
-
                 </div>
-
-
-                <div class="form-group">
-
-
-                    <label for="password">
-                        Password
-                    </label>
-
-
-                    <div class="input-wrapper">
-
-
-                        <input
-                            id="password"
-                            type="password"
-                            autocomplete="current-password"
-                            placeholder="Enter admin password"
-                            required
-                        >
-
-
-                        <button
-                            type="button"
-                            id="passwordToggle"
-                            class="password-toggle"
-                            aria-label="Show password"
-                        >
-                            ◉
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    id="loginButton"
-                    class="login-button"
-                >
-
-                    <span class="button-content">
-
-                        <span
-                            id="spinner"
-                            class="spinner"
-                        ></span>
-
-                        <span id="buttonText">
-                            Sign In as Admin
-                        </span>
-
-                    </span>
-
-                </button>
-
-
-            </form>
-
-
-            <div class="security-note">
-                Your session is protected by BugFlow authentication.
             </div>
 
+            <!-- Full Name (Only for Sign Up) -->
+            <div class="form-group" id="groupFullName">
+                <label class="form-label" for="inputFullName">Full Name</label>
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">person</span>
+                    <input type="text" id="inputFullName" class="form-input" placeholder="e.g. Alex Morgan" autocomplete="name">
+                </div>
+            </div>
 
+            <!-- Work Email -->
+            <div class="form-group">
+                <label class="form-label" for="inputEmail">Work Email</label>
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">mail</span>
+                    <input type="email" id="inputEmail" class="form-input" placeholder="name@company.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <!-- Quick Demo Personas (shown on Sign In tab for instant test login) -->
+            <div class="demo-bar" id="demoBar" style="display:none;">
+                <span class="demo-label">Quick Sign In:</span>
+                <button type="button" class="demo-pill" data-demo="admin">Admin</button>
+                <button type="button" class="demo-pill" data-demo="senior_dev">Sr. Dev</button>
+                <button type="button" class="demo-pill" data-demo="developer">Developer</button>
+                <button type="button" class="demo-pill" data-demo="tester">Tester</button>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label class="form-label" for="inputPassword" id="labelPassword">Password (8+ chars)</label>
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">lock</span>
+                    <input type="password" id="inputPassword" class="form-input" placeholder="At least 8 characters" autocomplete="current-password" required>
+                    <button type="button" class="password-toggle-btn" id="btnTogglePassword" aria-label="Toggle password visibility">
+                        <span class="material-symbols-outlined" id="iconEye" style="font-size:18px;">visibility</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirm Password (Only for Sign Up) -->
+            <div class="form-group" id="groupConfirmPassword">
+                <label class="form-label" for="inputConfirmPassword">Confirm Password</label>
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">lock</span>
+                    <input type="password" id="inputConfirmPassword" class="form-input" placeholder="Confirm your password" autocomplete="new-password">
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit" id="btnSubmit">
+                <span class="spinner"></span>
+                <span class="btn-text" id="btnSubmitText">Create Account Free ✨</span>
+            </button>
+        </form>
+
+        <!-- Footer Switch Link -->
+        <div class="auth-footer">
+            <span id="footerPrompt">Already registered?</span>
+            <a class="link-switch" id="linkSwitch">Sign In instead</a>
         </div>
+    </main>
 
+    <script>
+        // State variables
+        let currentMode = "signup"; // "signin" or "signup"
+        let selectedRole = "developer";
 
-    </section>
+        // Element references
+        const tabSignIn = document.getElementById("tabSignIn");
+        const tabSignUp = document.getElementById("tabSignUp");
+        const headingTitle = document.getElementById("headingTitle");
+        const headingSub = document.getElementById("headingSub");
+        const roleSection = document.getElementById("roleSection");
+        const groupFullName = document.getElementById("groupFullName");
+        const groupConfirmPassword = document.getElementById("groupConfirmPassword");
+        const labelPassword = document.getElementById("labelPassword");
+        const btnSubmit = document.getElementById("btnSubmit");
+        const btnSubmitText = document.getElementById("btnSubmitText");
+        const footerPrompt = document.getElementById("footerPrompt");
+        const linkSwitch = document.getElementById("linkSwitch");
+        const demoBar = document.getElementById("demoBar");
 
+        const inputFullName = document.getElementById("inputFullName");
+        const inputEmail = document.getElementById("inputEmail");
+        const inputPassword = document.getElementById("inputPassword");
+        const inputConfirmPassword = document.getElementById("inputConfirmPassword");
+        const btnTogglePassword = document.getElementById("btnTogglePassword");
+        const iconEye = document.getElementById("iconEye");
+        const btnClose = document.getElementById("btnClose");
 
-</div>
+        const alertBox = document.getElementById("alertBox");
+        const alertMsg = document.getElementById("alertMsg");
+        const alertIcon = document.getElementById("alertIcon");
 
+        const roleCards = document.querySelectorAll(".role-card");
 
-<script>
+        // Role Selection
+        roleCards.forEach(card => {
+            card.addEventListener("click", () => {
+                roleCards.forEach(c => c.classList.remove("selected"));
+                card.classList.add("selected");
+                selectedRole = card.getAttribute("data-role");
+            });
+        });
 
-    // =========================================================
-    // ELEMENTS
-    // =========================================================
+        // Toggle Password Visibility
+        btnTogglePassword.addEventListener("click", () => {
+            const isPassword = inputPassword.type === "password";
+            inputPassword.type = isPassword ? "text" : "password";
+            if (inputConfirmPassword) {
+                inputConfirmPassword.type = isPassword ? "text" : "password";
+            }
+            iconEye.textContent = isPassword ? "visibility_off" : "visibility";
+        });
 
-    const adminOption =
-        document.getElementById(
-            "adminOption"
-        );
+        // Close button
+        btnClose.addEventListener("click", () => {
+            window.location.href = "/";
+        });
 
-
-    const userOption =
-        document.getElementById(
-            "userOption"
-        );
-
-
-    const loginTitle =
-        document.getElementById(
-            "loginTitle"
-        );
-
-
-    const loginSubtitle =
-        document.getElementById(
-            "loginSubtitle"
-        );
-
-
-    const selectedIcon =
-        document.getElementById(
-            "selectedIcon"
-        );
-
-
-    const selectedText =
-        document.getElementById(
-            "selectedText"
-        );
-
-
-    const emailInput =
-        document.getElementById(
-            "email"
-        );
-
-
-    const passwordInput =
-        document.getElementById(
-            "password"
-        );
-
-
-    const passwordToggle =
-        document.getElementById(
-            "passwordToggle"
-        );
-
-
-    const loginForm =
-        document.getElementById(
-            "loginForm"
-        );
-
-
-    const loginButton =
-        document.getElementById(
-            "loginButton"
-        );
-
-
-    const buttonText =
-        document.getElementById(
-            "buttonText"
-        );
-
-
-    const message =
-        document.getElementById(
-            "message"
-        );
-
-
-    // =========================================================
-    // CURRENT ACCESS
-    // =========================================================
-
-    let selectedAccess = "admin";
-
-
-    // =========================================================
-    // ACCESS DETAILS
-    // =========================================================
-
-    const accessData = {
-
-        admin: {
-
-            label:
-                "Admin",
-
-            icon:
-                "🛡️",
-
-            title:
-                "Admin Login",
-
-            subtitle:
-                "Sign in to manage your BugFlow system.",
-
-            emailPlaceholder:
-                "Enter admin email",
-
-            passwordPlaceholder:
-                "Enter admin password",
-
-            button:
-                "Sign In as Admin"
-
-        },
-
-
-        user: {
-
-            label:
-                "User",
-
-            icon:
-                "👤",
-
-            title:
-                "User Login",
-
-            subtitle:
-                "Sign in to continue to your BugFlow dashboard.",
-
-            emailPlaceholder:
-                "Enter user email",
-
-            passwordPlaceholder:
-                "Enter user password",
-
-            button:
-                "Sign In as User"
-
+        // Show feedback alert
+        function showAlert(msg, type = "error") {
+            alertBox.className = `alert-box show alert-${type}`;
+            alertMsg.textContent = msg;
+            alertIcon.textContent = type === "error" ? "error" : "check_circle";
         }
 
-    };
-
-
-    // =========================================================
-    // MESSAGE
-    // =========================================================
-
-    function showMessage(
-        text,
-        type
-    ) {
-
-        message.className =
-            `message ${type}`;
-
-        message.textContent =
-            text;
-
-    }
-
-
-    function clearMessage() {
-
-        message.className =
-            "message";
-
-        message.textContent =
-            "";
-
-    }
-
-
-    // =========================================================
-    // SELECT ACCESS
-    // =========================================================
-
-    function selectAccess(
-        access
-    ) {
-
-        selectedAccess =
-            access;
-
-
-        const data =
-            accessData[
-                access
-            ];
-
-
-        adminOption.classList.toggle(
-            "active",
-            access === "admin"
-        );
-
-
-        userOption.classList.toggle(
-            "active",
-            access === "user"
-        );
-
-
-        loginTitle.textContent =
-            data.title;
-
-
-        loginSubtitle.textContent =
-            data.subtitle;
-
-
-        selectedIcon.textContent =
-            data.icon;
-
-
-        selectedText.textContent =
-            data.label;
-
-
-        emailInput.placeholder =
-            data.emailPlaceholder;
-
-
-        passwordInput.placeholder =
-            data.passwordPlaceholder;
-
-
-        buttonText.textContent =
-            data.button;
-
-
-        clearMessage();
-
-    }
-
-
-    // =========================================================
-    // ADMIN CLICK
-    // =========================================================
-
-    adminOption.addEventListener(
-        "click",
-        function () {
-
-            selectAccess(
-                "admin"
-            );
-
+        function clearAlert() {
+            alertBox.className = "alert-box";
+            alertMsg.textContent = "";
         }
-    );
 
+        // Switch Mode (Sign In <-> Sign Up)
+        function setMode(mode) {
+            currentMode = mode;
+            clearAlert();
 
-    // =========================================================
-    // USER CLICK
-    // =========================================================
+            if (mode === "signup") {
+                tabSignUp.classList.add("active");
+                tabSignUp.setAttribute("aria-selected", "true");
+                tabSignIn.classList.remove("active");
+                tabSignIn.setAttribute("aria-selected", "false");
 
-    userOption.addEventListener(
-        "click",
-        function () {
+                headingTitle.textContent = "Create Your Workspace";
+                headingSub.textContent = "Join the defect intelligence & sprint ecosystem";
 
-            selectAccess(
-                "user"
-            );
+                roleSection.style.display = "block";
+                groupFullName.style.display = "block";
+                groupConfirmPassword.style.display = "block";
+                demoBar.style.display = "none";
 
+                labelPassword.textContent = "Password (8+ chars)";
+                inputPassword.placeholder = "At least 8 characters";
+                btnSubmitText.textContent = "Create Account Free ✨";
+
+                footerPrompt.textContent = "Already registered?";
+                linkSwitch.textContent = "Sign In instead";
+            } else {
+                tabSignIn.classList.add("active");
+                tabSignIn.setAttribute("aria-selected", "true");
+                tabSignUp.classList.remove("active");
+                tabSignUp.setAttribute("aria-selected", "false");
+
+                headingTitle.textContent = "Sign In to BugFlow";
+                headingSub.textContent = "Access your role-based defect & sprint workspace";
+
+                roleSection.style.display = "block";
+                groupFullName.style.display = "none";
+                groupConfirmPassword.style.display = "none";
+                demoBar.style.display = "flex";
+
+                labelPassword.textContent = "Password";
+                inputPassword.placeholder = "Enter your password";
+                btnSubmitText.textContent = "Sign In to Workspace →";
+
+                footerPrompt.textContent = "Need an account?";
+                linkSwitch.textContent = "Sign Up instead";
+            }
         }
-    );
 
+        tabSignIn.addEventListener("click", () => setMode("signin"));
+        tabSignUp.addEventListener("click", () => setMode("signup"));
+        linkSwitch.addEventListener("click", (e) => {
+            e.preventDefault();
+            setMode(currentMode === "signup" ? "signin" : "signup");
+        });
 
-    // =========================================================
-    // PASSWORD SHOW / HIDE
-    // =========================================================
+        // Demo Personas for Quick Sign In
+        const DEMO_ACCOUNTS = {
+            admin: { email: "admin@bugflow.io", pass: "admin123", role: "admin" },
+            senior_dev: { email: "senior@bugflow.io", pass: "senior123", role: "senior_dev" },
+            developer: { email: "dev@bugflow.io", pass: "dev123", role: "developer" },
+            tester: { email: "tester@bugflow.io", pass: "tester123", role: "tester" }
+        };
 
-    passwordToggle.addEventListener(
-        "click",
-        function () {
+        document.querySelectorAll(".demo-pill").forEach(pill => {
+            pill.addEventListener("click", () => {
+                const key = pill.getAttribute("data-demo");
+                const creds = DEMO_ACCOUNTS[key];
+                if (creds) {
+                    inputEmail.value = creds.email;
+                    inputPassword.value = creds.pass;
+                    // Auto select the card
+                    roleCards.forEach(c => {
+                        if (c.getAttribute("data-role") === creds.role) {
+                            c.click();
+                        }
+                    });
+                    showAlert(`Filled demo credentials for ${pill.textContent}! Click Sign In below.`, "success");
+                }
+            });
+        });
 
-            const hidden =
-                passwordInput.type ===
-                "password";
-
-
-            passwordInput.type =
-                hidden
-                    ? "text"
-                    : "password";
-
-
-            passwordToggle.textContent =
-                hidden
-                    ? "◉"
-                    : "◉";
-
-
-            passwordToggle.setAttribute(
-                "aria-label",
-                hidden
-                    ? "Hide password"
-                    : "Show password"
-            );
-
+        // Workspace redirect helper based on database role
+        function redirectToWorkspace(role) {
+            const r = String(role || "").trim().toLowerCase();
+            if (r === "admin") {
+                window.location.href = "/admin-ui";
+            } else if (r === "developer" || r === "dev") {
+                window.location.href = "/developer-ui";
+            } else if (r === "tester" || r === "qa" || r === "qa_tester") {
+                window.location.href = "/tester-ui";
+            } else if (r === "senior_dev" || r === "senior_developer") {
+                window.location.href = "/senior-developer-ui";
+            } else {
+                window.location.href = "/user-ui";
+            }
         }
-    );
 
+        // Form Submission
+        document.getElementById("authForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            clearAlert();
 
-    // =========================================================
-    // LOGIN
-    // =========================================================
+            const email = inputEmail.value.trim();
+            const password = inputPassword.value;
 
-    loginForm.addEventListener(
-        "submit",
-        async function (
-            event
-        ) {
-
-            event.preventDefault();
-
-
-            clearMessage();
-
-
-            const email =
-                emailInput.value.trim();
-
-
-            const password =
-                passwordInput.value;
-
-
-            if (
-                !email ||
-                !password
-            ) {
-
-                showMessage(
-                    "Please enter your email and password.",
-                    "error"
-                );
-
+            if (!email || !password) {
+                showAlert("Please enter your email and password.");
                 return;
             }
 
+            if (currentMode === "signup") {
+                const fullName = inputFullName.value.trim();
+                const confirmPassword = inputConfirmPassword.value;
 
-            loginButton.disabled =
-                true;
+                if (!fullName) {
+                    showAlert("Please enter your full name.");
+                    inputFullName.focus();
+                    return;
+                }
+                if (password.length < 6) {
+                    showAlert("Password must be at least 6 characters.");
+                    inputPassword.focus();
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showAlert("Passwords do not match. Please re-type.");
+                    inputConfirmPassword.focus();
+                    return;
+                }
 
-
-            loginButton.classList.add(
-                "loading"
-            );
-
-
-            buttonText.textContent =
-                "Signing In...";
-
-
-            try {
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * We send ONLY email and password.
-                 *
-                 * We do NOT send admin/user role.
-                 *
-                 * The backend decides the actual
-                 * account role from PostgreSQL.
-                 */
-
-                const response =
-                    await fetch(
-                        "/login",
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    email:
-                                        email,
-
-                                    password:
-                                        password
-
-                                })
-
-                        }
-                    );
-
-
-                let data = {};
-
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add("loading");
 
                 try {
+                    const res = await fetch("/register", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name: fullName,
+                            email: email,
+                            password: password,
+                            role: selectedRole
+                        })
+                    });
 
-                    data =
-                        await response.json();
+                    const data = await res.json();
 
-                } catch (
-                    error
-                ) {
-
-                    data = {};
-
-                }
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.detail ||
-                        "Invalid email or password."
-                    );
-
-                }
-
-
-                if (
-                    !data.access_token
-                ) {
-
-                    throw new Error(
-                        "Login succeeded but no session token was returned."
-                    );
-
-                }
-
-
-                // -------------------------------------------------
-                // Store authentication session
-                // -------------------------------------------------
-
-                localStorage.setItem(
-                    "access_token",
-                    data.access_token
-                );
-
-                localStorage.setItem(
-                    "bugflow_token",
-                    data.access_token
-                );
-
-
-                localStorage.setItem(
-                    "bugflow_token_type",
-                    data.token_type ||
-                    "bearer"
-                );
-
-
-                localStorage.setItem(
-                    "bugflow_user",
-                    JSON.stringify(
-                        data
-                    )
-                );
-
-
-                // -------------------------------------------------
-                // Get actual database role
-                // -------------------------------------------------
-
-                const actualRole =
-                    String(
-                        data.role ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
-
-                // -------------------------------------------------
-                // Verify selected access matches account
-                // -------------------------------------------------
-
-                if (
-                    selectedAccess ===
-                    "admin"
-                ) {
-
-                    if (
-                        actualRole !==
-                        "admin"
-                    ) {
-
-                        throw new Error(
-                            "This account is not an Admin account. Please select User."
-                        );
-
+                    if (!res.ok) {
+                        throw new Error(data.detail || "Registration failed. Please try again.");
                     }
 
-                } else {
-
-                    if (
-                        actualRole ===
-                        "admin"
-                    ) {
-
-                        throw new Error(
-                            "This is an Admin account. Please select Admin."
-                        );
-
+                    // Save session tokens
+                    if (data.access_token) {
+                        localStorage.setItem("access_token", data.access_token);
+                        localStorage.setItem("bugflow_token", data.access_token);
+                        localStorage.setItem("bugflow_token_type", data.token_type || "bearer");
+                        localStorage.setItem("bugflow_user", JSON.stringify(data));
+                        localStorage.setItem("bugflow_workspace_role", data.role || selectedRole);
                     }
 
+                    showAlert(`Account created successfully! Welcome, ${data.name || fullName}! Redirecting...`, "success");
+                    setTimeout(() => {
+                        redirectToWorkspace(data.role || selectedRole);
+                    }, 800);
+
+                } catch (err) {
+                    showAlert(err.message);
+                    btnSubmit.disabled = false;
+                    btnSubmit.classList.remove("loading");
                 }
 
+            } else {
+                // SIGN IN
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add("loading");
 
-                // -------------------------------------------------
-                // Success
-                // -------------------------------------------------
+                try {
+                    const res = await fetch("/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password })
+                    });
 
-                showMessage(
-                    `Welcome, ${
-                        data.name ||
-                        accessData[
-                            selectedAccess
-                        ].label
-                    }! Redirecting...`,
-                    "success"
-                );
+                    const data = await res.json();
 
+                    if (!res.ok) {
+                        throw new Error(data.detail || "Invalid email or password.");
+                    }
 
-                setTimeout(
-                    function () {
+                    if (!data.access_token) {
+                        throw new Error("No session token was returned from login.");
+                    }
 
+                    localStorage.setItem("access_token", data.access_token);
+                    localStorage.setItem("bugflow_token", data.access_token);
+                    localStorage.setItem("bugflow_token_type", data.token_type || "bearer");
+                    localStorage.setItem("bugflow_user", JSON.stringify(data));
+                    localStorage.setItem("bugflow_workspace_role", data.role || selectedRole);
 
-                        if (actualRole === "admin") {
-                            window.location.href = "/admin-ui";
-                        } else if (actualRole === "developer") {
-                            window.location.href = "/developer-ui";
-                        } else if (actualRole === "tester") {
-                            window.location.href = "/tester-ui";
-                        } else if (actualRole === "senior_dev" || actualRole === "senior_developer") {
-                            window.location.href = "/senior-developer-ui";
-                        } else {
-                            window.location.href = "/user-ui";
-                        }
+                    showAlert(`Welcome back, ${data.name || "User"}! Redirecting to your workspace...`, "success");
+                    setTimeout(() => {
+                        redirectToWorkspace(data.role);
+                    }, 600);
 
-
-                    },
-                    500
-                );
-
-
-            } catch (
-                error
-            ) {
-
-
-                // Remove session if verification fails.
-
-                localStorage.removeItem(
-                    "access_token"
-                );
-
-                localStorage.removeItem(
-                    "bugflow_token"
-                );
-
-                localStorage.removeItem(
-                    "bugflow_token_type"
-                );
-
-                localStorage.removeItem(
-                    "bugflow_user"
-                );
-
-
-                showMessage(
-                    error.message ||
-                    "Login failed. Please try again.",
-                    "error"
-                );
-
-
-                loginButton.disabled =
-                    false;
-
-
-                loginButton.classList.remove(
-                    "loading"
-                );
-
-
-                buttonText.textContent =
-                    accessData[
-                        selectedAccess
-                    ].button;
-
+                } catch (err) {
+                    showAlert(err.message);
+                    btnSubmit.disabled = false;
+                    btnSubmit.classList.remove("loading");
+                }
             }
+        });
 
-        }
-    );
-
-
-    // =========================================================
-    // DEFAULT
-    // =========================================================
-
-    selectAccess(
-        "admin"
-    );
-
-</script>
-
-
+        // Initialize: default to Sign Up view as shown in user's image
+        setMode("signup");
+    </script>
 </body>
-
 </html>
