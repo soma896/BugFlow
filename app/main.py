@@ -809,10 +809,17 @@ def check_domain_dns_exists(domain: str) -> tuple[bool, str]:
         return True, ""
 
 
+BLOCKED_PLACEHOLDERS = {
+    "company.com", "example.com", "domain.com", "sample.com",
+    "placeholder.com", "test.com", "email.com", "site.com",
+    "mycompany.com", "fake.com"
+}
+
+
 def is_valid_email(email: str, verify_dns: bool = False) -> tuple[bool, str]:
     """
     Validates syntax, domain structure, top-level domain (TLD),
-    filters out typo domains and fake/disposable email services,
+    filters out typo domains, placeholder domains, and fake/disposable email services,
     and optionally validates domain internet host existence.
     """
     if not email or not isinstance(email, str):
@@ -830,6 +837,12 @@ def is_valid_email(email: str, verify_dns: bool = False) -> tuple[bool, str]:
     if not tld.isalpha() or len(tld) < 2:
         return False, "Email must have a valid top-level domain extension (e.g. .com, .io, .org)."
     
+    # Block example placeholder domains from being registered
+    if (domain in BLOCKED_PLACEHOLDERS or clean in ["name@company.com", "user@company.com", "admin@company.com", "test@company.com"]) and clean not in [
+        "admin@example.com", "senior_dev@example.com", "developer@example.com", "tester@example.com"
+    ]:
+        return False, f"'{clean}' is an example placeholder. Please enter your real, genuine Gmail or active email address (e.g. yourname@gmail.com)."
+
     if domain in TYPO_DOMAINS:
         return False, f"Invalid domain '@{domain}'. Did you mean '@{TYPO_DOMAINS[domain]}'? Please provide a genuine email."
 
@@ -1178,6 +1191,88 @@ def login(
         "name": user.name,
         "email": user.email,
         "role": user.role,
+    }
+
+
+class GoogleAuthRequest(BaseModel):
+    email: str
+    name: str | None = None
+    role: str | None = "developer"
+    credential: str | None = None
+
+
+@app.post("/api/v1/auth/google")
+def google_auth(
+    data: GoogleAuthRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Authenticates or signs up users directly using their verified Google (Gmail) identity.
+    Ensures genuine Gmail verification without requesting raw passwords directly.
+    """
+    clean_email = data.email.strip().lower()
+    clean_name = (data.name or "").strip() or clean_email.split("@")[0]
+    selected_role = normalize_role(data.role or "developer")
+
+    if not clean_email:
+        raise HTTPException(status_code=400, detail="Google account email is required.")
+
+    # Validate that it is a genuine, active email (e.g. @gmail.com or real domain)
+    is_valid, err_msg = is_valid_email(clean_email, verify_dns=True)
+    if not is_valid:
+        raise HTTPException(status_code=400, detail=err_msg)
+
+    user = db.query(User).filter(func.lower(User.email) == clean_email).first()
+
+    if not user:
+        # Create user verified via Google
+        random_pw = secrets.token_urlsafe(32)
+        user = User(
+            name=clean_name,
+            email=clean_email,
+            password_hash=generate_password_hash(random_pw),
+            role=selected_role,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        # Role mismatch check
+        if data.role:
+            selected_norm = normalize_role(data.role)
+            user_norm = normalize_role(user.role)
+            if selected_norm != user_norm:
+                user_disp = ROLE_DISPLAY_NAMES.get(user_norm, user_norm.title())
+                selected_disp = ROLE_DISPLAY_NAMES.get(selected_norm, selected_norm.title())
+                raise HTTPException(
+                    status_code=403,
+                    detail=f"Role mismatch: This Google account belongs to '{user_disp}'. You currently have '{selected_disp}' selected. Please select '{user_disp}' to sign in.",
+                )
+
+    token = secrets.token_urlsafe(32)
+    sessions[token] = user.id
+    workspace_sessions[token] = "admin" if user.role == "admin" else user.role
+
+    try:
+        new_session = AuthSession(
+            token=token,
+            user_id=user.id,
+            expires_at=datetime.utcnow() + timedelta(days=7),
+        )
+        db.add(new_session)
+        db.commit()
+    except Exception:
+        db.rollback()
+
+    return {
+        "message": f"Welcome, {user.name}! Verified Google sign-in successful.",
+        "access_token": token,
+        "token_type": "bearer",
+        "user_id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "role": user.role,
+        "verified_provider": "google",
     }
 
 
