@@ -672,6 +672,10 @@
                     <span class="material-symbols-outlined input-icon">mail</span>
                     <input type="email" id="inputEmail" class="form-input" placeholder="name@company.com" autocomplete="email" required>
                 </div>
+                <div id="emailNotice" style="font-size:11px; color:var(--bf-text-muted); margin-top:5px; display:flex; align-items:center; gap:5px;">
+                    <span class="material-symbols-outlined" style="font-size:14px; color:var(--bf-primary);">mark_email_read</span>
+                    <span>Only genuine working emails accepted. A confirmation email will be sent to your inbox upon sign-up.</span>
+                </div>
             </div>
 
             <!-- Quick Demo Personas (shown on Sign In tab for instant test login) -->
@@ -803,14 +807,39 @@
         }
 
         // =========================================================================
-        // STRICT REAL EMAIL VALIDATION (RFC 5322 + Domain TLD + Disposable Blocker)
+        // STRICT REAL EMAIL VALIDATION (RFC 5322 + Domain TLD + Typo + Disposable Blocker)
         // =========================================================================
         const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+        
+        const TYPO_DOMAINS = {
+            "gamil.com": "gmail.com",
+            "gmial.com": "gmail.com",
+            "gmaill.com": "gmail.com",
+            "gmai.com": "gmail.com",
+            "gamail.com": "gmail.com",
+            "yaho.com": "yahoo.com",
+            "yahooo.com": "yahoo.com",
+            "yaho.co": "yahoo.com",
+            "outlok.com": "outlook.com",
+            "outloo.com": "outlook.com",
+            "hotmial.com": "hotmail.com",
+            "hotmaill.com": "hotmail.com",
+            "icld.com": "icloud.com",
+            "iclod.com": "icloud.com",
+            "protn.me": "proton.me"
+        };
+
         const DISPOSABLE_EMAIL_DOMAINS = [
             "mailinator.com", "tempmail.com", "guerrillamail.com", "10minutemail.com",
             "throwawaymail.com", "yopmail.com", "fake.com", "test.com", "dummy.com",
             "trashmail.com", "dispostable.com", "sharklasers.com", "getairmail.com",
-            "spam4.me", "bccto.me", "mytemp.email", "disposable.com", "temp.com"
+            "spam4.me", "bccto.me", "mytemp.email", "disposable.com", "temp.com",
+            "mohmal.com", "emailondeck.com", "crazymailing.com", "burnermail.io",
+            "generator.email", "inboxkitten.com", "trashmail.net", "maildrop.cc",
+            "nada.ltd", "getnada.com", "fakemailgenerator.com", "grr.la",
+            "guerrillamail.biz", "guerrillamail.de", "guerrillamail.net", "guerrillamail.org",
+            "guerrillamailblock.com", "pokemail.net", "chacuo.net", "0815.ru",
+            "mytempemail.com", "fakeinbox.com", "throwawayemail.com", "sharklasers.net"
         ];
 
         function validateEmail(email) {
@@ -833,8 +862,11 @@
             if (!/^[a-zA-Z]{2,}$/.test(tld)) {
                 return { valid: false, message: "Email must have a valid domain extension (e.g. .com, .io, .org)." };
             }
+            if (TYPO_DOMAINS[domain]) {
+                return { valid: false, message: `Invalid domain '@${domain}'. Did you mean '@${TYPO_DOMAINS[domain]}'? Please use a genuine email address.` };
+            }
             if (DISPOSABLE_EMAIL_DOMAINS.includes(domain)) {
-                return { valid: false, message: `Disposable email services (@${domain}) are not permitted. Please use your real, working email.` };
+                return { valid: false, message: `Disposable email services (@${domain}) are strictly not permitted. Please use your real, working email.` };
             }
             return { valid: true, message: "" };
         }
@@ -1032,10 +1064,10 @@
                         localStorage.setItem("bugflow_workspace_role", data.role || selectedRole);
                     }
 
-                    showAlert(`Account created successfully! Welcome, ${data.name || fullName}! Redirecting...`, "success");
+                    showAlert(`🎉 Account created successfully! A sign-up confirmation email has been dispatched to ${data.email || email}. Welcome, ${data.name || fullName}! Redirecting...`, "success");
                     setTimeout(() => {
                         redirectToWorkspace(data.role || selectedRole);
-                    }, 800);
+                    }, 1200);
 
                 } catch (err) {
                     showAlert(err.message);

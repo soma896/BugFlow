@@ -161,6 +161,22 @@ Use the following verified credentials to log in to your live BugFlow Aroma work
 | **💻 Developer** | `dev@bugflow.io` / `developer@example.com` | `Developer@123` *(or `dev123`)* | Developer Workspace (`/developer-ui`) |
 | **🧪 QA Tester** | `tester@bugflow.io` / `tester@example.com` | `Tester@123` *(or `tester123`)* | QA Tester Workspace (`/tester-ui`) |
 
+### 6.1 Email Notification Service (SMTP Setup)
+
+BugFlow Aroma automatically dispatches an email notification to every new user when they sign up:
+- **Email Subject:** `🎉 Welcome to BugFlow Aroma - You signed up successfully!`
+- **Content:** Branded confirmation notification with full name, email, assigned workspace role, registration time, and dashboard login portal link.
+
+To enable live email delivery to real recipient inboxes from Render:
+1. Open your **Render Dashboard** &rarr; Select your Web Service (`bugflow-web`) &rarr; **Environment** tab.
+2. Add the following environment variables:
+   - `SMTP_HOST`: `smtp.gmail.com` *(or your company SMTP provider)*
+   - `SMTP_PORT`: `587`
+   - `SMTP_USER`: `your-email@gmail.com`
+   - `SMTP_PASS`: `your-16-character-app-password` *(For Gmail: Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App Passwords)*
+   - `SMTP_FROM`: `BugFlow Aroma <notifications@bugflow.io>`
+3. Click **Save Changes**. Render will automatically redeploy and all sign-up notifications will land directly in users' real inboxes!
+
 ---
 
 ## 7. Post-Deployment Verification Checklist

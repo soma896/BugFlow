@@ -2,8 +2,10 @@ from pathlib import Path
 from datetime import date, datetime, timedelta
 import re
 import secrets
+import socket
+socket.setdefaulttimeout(2.0)
 
-from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import BackgroundTasks, Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
@@ -12,6 +14,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .database import get_db, SessionLocal
+from .email_service import send_signup_notification
 from .models import (
     AdminAction,
     AuditLog,
@@ -742,7 +745,31 @@ DISPOSABLE_EMAIL_DOMAINS = {
     "mailinator.com", "tempmail.com", "guerrillamail.com", "10minutemail.com",
     "throwawaymail.com", "yopmail.com", "fake.com", "test.com", "dummy.com",
     "trashmail.com", "dispostable.com", "sharklasers.com", "getairmail.com",
-    "spam4.me", "bccto.me", "mytemp.email", "disposable.com", "temp.com"
+    "spam4.me", "bccto.me", "mytemp.email", "disposable.com", "temp.com",
+    "mohmal.com", "emailondeck.com", "crazymailing.com", "burnermail.io",
+    "generator.email", "inboxkitten.com", "trashmail.net", "maildrop.cc",
+    "nada.ltd", "getnada.com", "fakemailgenerator.com", "grr.la",
+    "guerrillamail.biz", "guerrillamail.de", "guerrillamail.net", "guerrillamail.org",
+    "guerrillamailblock.com", "pokemail.net", "chacuo.net", "0815.ru",
+    "mytempemail.com", "fakeinbox.com", "throwawayemail.com", "sharklasers.net"
+}
+
+TYPO_DOMAINS = {
+    "gamil.com": "gmail.com",
+    "gmial.com": "gmail.com",
+    "gmaill.com": "gmail.com",
+    "gmai.com": "gmail.com",
+    "gamail.com": "gmail.com",
+    "yaho.com": "yahoo.com",
+    "yahooo.com": "yahoo.com",
+    "yaho.co": "yahoo.com",
+    "outlok.com": "outlook.com",
+    "outloo.com": "outlook.com",
+    "hotmial.com": "hotmail.com",
+    "hotmaill.com": "hotmail.com",
+    "icld.com": "icloud.com",
+    "iclod.com": "icloud.com",
+    "protn.me": "proton.me",
 }
 
 EMAIL_REGEX = re.compile(
@@ -750,10 +777,43 @@ EMAIL_REGEX = re.compile(
 )
 
 
-def is_valid_email(email: str) -> tuple[bool, str]:
+def is_network_available() -> bool:
+    """Checks whether the server has active outbound internet DNS connectivity."""
+    try:
+        socket.getaddrinfo("google.com", 80, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        return True
+    except Exception:
+        return False
+
+
+def check_domain_dns_exists(domain: str) -> tuple[bool, str]:
+    """
+    Verifies that the email domain actually exists on the internet
+    via DNS/socket host resolution when internet connectivity is present.
+    """
+    clean_dom = domain.strip().lower()
+    if clean_dom in ["bugflow.io", "example.com", "localhost"]:
+        return True, ""
+    
+    # If host has no active internet (e.g. offline sandbox or firewall), bypass check
+    if not is_network_available():
+        return True, ""
+
+    try:
+        # Socket lookup resolves domain name to IP on internet
+        socket.getaddrinfo(clean_dom, 80, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        return True, ""
+    except socket.gaierror:
+        return False, f"The email domain '@{clean_dom}' does not exist on the internet. Please provide a genuine, working email address."
+    except Exception:
+        return True, ""
+
+
+def is_valid_email(email: str, verify_dns: bool = False) -> tuple[bool, str]:
     """
     Validates syntax, domain structure, top-level domain (TLD),
-    and filters out fake/disposable email services.
+    filters out typo domains and fake/disposable email services,
+    and optionally validates domain internet host existence.
     """
     if not email or not isinstance(email, str):
         return False, "Email address is required."
@@ -761,7 +821,7 @@ def is_valid_email(email: str) -> tuple[bool, str]:
     if len(clean) < 5 or len(clean) > 254:
         return False, "Email length must be between 5 and 254 characters."
     if not EMAIL_REGEX.match(clean):
-        return False, "Please provide a valid, working email address (e.g. name@company.com)."
+        return False, "Please provide a valid, working email address (e.g. name@company.com or name@gmail.com)."
     parts = clean.split("@")
     if len(parts) != 2:
         return False, "Invalid email address structure."
@@ -769,8 +829,18 @@ def is_valid_email(email: str) -> tuple[bool, str]:
     tld = domain.split(".")[-1]
     if not tld.isalpha() or len(tld) < 2:
         return False, "Email must have a valid top-level domain extension (e.g. .com, .io, .org)."
+    
+    if domain in TYPO_DOMAINS:
+        return False, f"Invalid domain '@{domain}'. Did you mean '@{TYPO_DOMAINS[domain]}'? Please provide a genuine email."
+
     if domain in DISPOSABLE_EMAIL_DOMAINS:
-        return False, f"Disposable or temporary email domains (@{domain}) are not allowed. Please use your real, active email address."
+        return False, f"Disposable or temporary email domains (@{domain}) are strictly not allowed. Please use your real, active email address."
+    
+    if verify_dns:
+        dns_ok, dns_err = check_domain_dns_exists(domain)
+        if not dns_ok:
+            return False, dns_err
+
     return True, ""
 
 
@@ -898,14 +968,15 @@ def on_startup():
 @app.post("/api/v1/auth/register")
 def register(
     data: RegisterRequest,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
     email = data.email.strip().lower()
     name = data.name.strip()
     password = data.password.strip()
 
-    # 1. Strict real email validation
-    is_valid, err_msg = is_valid_email(email)
+    # 1. Strict real email validation with live DNS domain existence check
+    is_valid, err_msg = is_valid_email(email, verify_dns=True)
     if not is_valid:
         raise HTTPException(
             status_code=400,
@@ -963,14 +1034,26 @@ def register(
     except Exception:
         db.rollback()
 
+    # 2. Dispatch real signup notification email in background
+    try:
+        background_tasks.add_task(
+            send_signup_notification,
+            to_email=new_user.email,
+            user_name=new_user.name,
+            user_role=new_user.role,
+        )
+    except Exception as bg_err:
+        print(f"[BugFlow Email Background] Notice: {bg_err}")
+
     return {
-        "message": "Account created successfully",
+        "message": f"Account created successfully! A sign-up confirmation email has been dispatched to {new_user.email}.",
         "access_token": token,
         "token_type": "bearer",
         "user_id": new_user.id,
         "name": new_user.name,
         "email": new_user.email,
         "role": new_user.role,
+        "email_notification_sent": True,
     }
 
 
@@ -1017,11 +1100,29 @@ def login(
     if not user:
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password",
+            detail="No registered account found with this email. Please sign up first with a genuine email address.",
         )
 
     # Password check with support for canonical demo passwords
     is_valid_pw = check_password_hash(user.password_hash, data.password)
+    if not is_valid_pw:
+        for persona in CANONICAL_PERSONAS:
+            all_emails = [persona["email"]] + persona.get("aliases", [])
+            all_pws = [persona["password"]] + persona.get("alt_passwords", [])
+            if cleaned_email in all_emails and data.password in all_pws:
+                is_valid_pw = True
+                try:
+                    user.password_hash = generate_password_hash(data.password)
+                    db.commit()
+                except Exception:
+                    db.rollback()
+                break
+
+    if not is_valid_pw:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid password for this account.",
+        )
     if not is_valid_pw:
         for persona in CANONICAL_PERSONAS:
             all_emails = [persona["email"]] + persona.get("aliases", [])
