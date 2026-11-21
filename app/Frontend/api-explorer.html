@@ -1,10 +1,28 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BugFlow | REST API Explorer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="/design-system.css">
 <style>
+:root {
+    --bf-blue: #2563eb;
+    --bf-blue-hover: #1d4ed8;
+    --bf-blue-light: #eff6ff;
+    --bf-blue-subtle: #dbeafe;
+    --bf-surface: #ffffff;
+    --bf-surface-subtle: #f8fafc;
+    --bf-border: #e2e8f0;
+    --bf-text-primary: #0f172a;
+    --bf-text-secondary: #475569;
+    --bf-text-muted: #94a3b8;
+    --bf-green: #10b981;
+    --bf-sidebar-width: 256px;
+    --bf-header-height: 56px;
+}
 *{box-sizing:border-box}
 body{
     margin:0;
@@ -12,47 +30,163 @@ body{
     color:#273449;
     font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     font-size:13px;
+    -webkit-font-smoothing:antialiased;
 }
 .wrap{display:flex;min-height:100vh}
 
-/* Sidebar */
-.side{
-    width:225px;
-    background:linear-gradient(180deg,#111e33,#0d1726);
-    border-right:1px solid #1c2d44;
-    padding:22px 14px;
-    position:fixed;
-    top:0;
-    bottom:0;
-    z-index:100;
+/* Enterprise White Sidebar */
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--bf-sidebar-width);
+    background-color: var(--bf-surface);
+    border-right: 1px solid var(--bf-border);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
 }
-.brand{
-    display:flex;gap:10px;align-items:center;
-    font-weight:900;font-size:18px;margin:4px 8px 30px;color:#fff;
+.brand {
+    height: var(--bf-header-height);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--bf-border);
 }
-.logo{
-    width:40px;height:40px;border-radius:11px;
-    background:linear-gradient(135deg,#3f66d8,#2a51c7);
-    color:#fff;display:grid;place-items:center;font-weight:900;
+.brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    flex-shrink: 0;
 }
-.label{
-    font-size:9px;letter-spacing:.13em;color:#7d8fa9;
-    font-weight:800;margin:0 9px 11px;text-transform:uppercase;
+.brand-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
 }
-.nav a{
-    display:flex;align-items:center;gap:10px;text-decoration:none;
-    color:#9cadc0;padding:11px 12px;border-radius:8px;
-    font-size:12px;font-weight:600;margin:3px 0;transition:all .15s;
+.brand-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bf-text-primary);
+    letter-spacing: -0.01em;
 }
-.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
-.nav a.active{background:#3B66D9;color:#fff}
-.nav-icon{font-size:14px;width:18px;text-align:center}
+.brand-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bf-text-muted);
+    margin-top: 1px;
+}
+.sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.side-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--bf-text-muted);
+    padding: 4px 10px 2px;
+}
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--bf-text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+}
+.nav-link:hover {
+    background-color: var(--bf-surface-subtle);
+    color: var(--bf-text-primary);
+}
+.nav-link.active {
+    background-color: var(--bf-blue-light);
+    color: var(--bf-blue);
+    border-left-color: var(--bf-blue);
+    font-weight: 600;
+}
+.nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    color: inherit;
+}
+.material-symbols-outlined {
+    font-size: 18px;
+    line-height: 1;
+    vertical-align: middle;
+    user-select: none;
+}
+.sidebar-footer {
+    padding: 12px 14px;
+    border-top: 1px solid var(--bf-border);
+    background-color: var(--bf-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.fastapi-status-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background-color: var(--bf-surface-subtle);
+    border: 1px solid var(--bf-border);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+}
+.status-dot-green {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--bf-green);
+    display: inline-block;
+}
+.doc-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--bf-text-secondary);
+    padding: 2px 4px;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+.doc-link:hover { color: var(--bf-text-primary); }
 
 /* Main */
 .main{
-    margin-left:225px;
-    width:calc(100% - 225px);
+    margin-left:var(--bf-sidebar-width);
+    width:calc(100% - var(--bf-sidebar-width));
     padding:28px 36px 60px;
+    min-height:100vh;
 }
 .top{
     display:flex;justify-content:space-between;
@@ -215,7 +349,7 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
    ============================================= */
 @media (max-width: 1024px) {
   .bf-mobile-topbar { display:flex !important; }
-  body { padding-top: 52px; }
+  body { padding-top: 56px; }
   .main {
     margin-left: 0 !important;
     width: 100% !important;
@@ -226,63 +360,105 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
     gap: 12px !important;
   }
   h1 { font-size: 20px !important; }
-}</style>
-<link rel="stylesheet" href="/design-system.css">
+  .explorer-layout { grid-template-columns: 1fr !important; }
+}
+</style>
 </head>
 <body>
 
 <div class="wrap">
 
 <!-- MOBILE TOP BAR (hamburger injected here by responsive-shell.js) -->
-<header class="bf-mobile-topbar" style="display:none;position:fixed;top:0;left:0;right:0;height:52px;background:#111e33;z-index:200;align-items:center;padding:0 14px;gap:12px;">
-    <div class="logo" style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#3f66d8,#2a51c7);color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px;flex-shrink:0;">B</div>
-    <span style="color:#fff;font-weight:700;font-size:15px;">BugFlow</span>
+<header class="bf-mobile-topbar" style="display:none;position:fixed;top:0;left:0;right:0;height:56px;background:#ffffff;border-bottom:1px solid #e2e8f0;z-index:200;align-items:center;padding:0 16px;gap:12px;">
+    <div class="brand-logo" style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;flex-shrink:0;">B</div>
+    <span style="color:#0f172a;font-weight:700;font-size:15px;letter-spacing:-0.01em;">BugFlow</span>
 </header>
 
-<!-- SIDEBAR -->
-<aside class="side">
-    <div class="brand">
-        <div class="logo">B</div>
-        <span>BugFlow</span>
+<!-- ============================================================================
+     LEFT SIDEBAR NAVIGATION (ENTERPRISE WHITE)
+============================================================================ -->
+<aside class="sidebar">
+    <div>
+        <!-- Brand Logo Header -->
+        <div class="brand">
+            <div class="brand-logo">B</div>
+            <div class="brand-info">
+                <span class="brand-name">BugFlow</span>
+                <span class="brand-subtitle">DevOps Defect Suite</span>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation Groups -->
+        <div class="sidebar-scroll">
+            <nav class="nav">
+                <!-- Group 1: Overview -->
+                <div class="side-label">Overview</div>
+                <a href="/admin-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">dashboard</span></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+
+                <!-- Group 2: Work Management -->
+                <div class="side-label" style="margin-top:6px;">Work Management</div>
+                <a href="/all-defects-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">bug_report</span></span>
+                    <span class="nav-text">All Defects</span>
+                </a>
+                <a href="/milestone2-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">sprint</span></span>
+                    <span class="nav-text">Sprint Management</span>
+                </a>
+                <a href="/team-collaboration-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">group</span></span>
+                    <span class="nav-text">Team Collaboration</span>
+                </a>
+
+                <!-- Group 3: Analytics -->
+                <div class="side-label" style="margin-top:6px;">Analytics</div>
+                <a href="/analytics-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">insights</span></span>
+                    <span class="nav-text">Analytics Reports</span>
+                </a>
+
+                <!-- Group 4: Integrations -->
+                <div class="side-label" style="margin-top:6px;">Integrations</div>
+                <a href="/integrations-ui" class="nav-link">
+                    <span class="nav-icon"><span class="material-symbols-outlined">source_environment</span></span>
+                    <span class="nav-text">Integrations &amp; CI/CD</span>
+                </a>
+                <a href="/api-explorer-ui" class="nav-link active">
+                    <span class="nav-icon"><span class="material-symbols-outlined">api</span></span>
+                    <span class="nav-text">API Explorer</span>
+                </a>
+
+                <!-- Group 5: System & Workspace -->
+                <div class="side-label" style="margin-top:6px;">Workspace</div>
+                <a href="#" class="nav-link" id="sideSwitchBtn">
+                    <span class="nav-icon"><span class="material-symbols-outlined">swap_horiz</span></span>
+                    <span class="nav-text">Switch Workspace</span>
+                </a>
+                <a href="/login-ui" class="nav-link" id="logoutLink">
+                    <span class="nav-icon"><span class="material-symbols-outlined">logout</span></span>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </div>
     </div>
-    <div class="label">Administration</div>
-    <nav class="nav">
-        <a href="/admin-ui">
-            <span class="nav-icon">&#127968;</span>
-            <span>Dashboard</span>
+
+    <!-- Sidebar Bottom Telemetry -->
+    <div class="sidebar-footer">
+        <div class="fastapi-status-box">
+            <div style="display:flex; align-items:center; gap:6px;">
+                <span class="status-dot-green"></span>
+                <span style="color:var(--bf-text-secondary);">FastAPI Core v2.4.0</span>
+            </div>
+            <span style="color:var(--bf-blue); font-weight:600;">Online</span>
+        </div>
+        <a href="/docs" target="_blank" rel="noopener noreferrer" class="doc-link">
+            <span>Documentation</span>
+            <span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span>
         </a>
-        <a href="/all-defects-ui">
-            <span class="nav-icon">&#128027;</span>
-            <span>All Defects</span>
-        </a>
-        <a href="/analytics-ui">
-            <span class="nav-icon">&#128202;</span>
-            <span>Analytics Reports</span>
-        </a>
-        <a href="/milestone2-ui">
-            <span class="nav-icon">&#127939;</span>
-            <span>Sprint Management</span>
-        </a>
-        <a href="/team-collaboration-ui">
-            <span class="nav-icon">&#128101;</span>
-            <span>Team Collaboration</span>
-        </a>        <a href="/integrations-ui">
-            <span class="nav-icon">&#9889;</span>
-            <span>Integrations &amp; CI/CD</span>
-        </a>
-        <a class="active" href="/api-explorer-ui">
-            <span class="nav-icon">&#9881;&#65039;</span>
-            <span>API Explorer</span>
-        </a>
-        <a href="#" id="sideSwitchBtn">
-            <span class="nav-icon">&#8617;</span>
-            <span>Switch Workspace</span>
-        </a>
-        <a href="/login-ui" id="logoutLink">
-            <span class="nav-icon">&#128682;</span>
-            <span>Logout</span>
-        </a>
-    </nav>
+    </div>
 </aside>
 
 <!-- MAIN CONTENT -->
@@ -297,7 +473,7 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
 
     <div class="switcher-container">
         <button class="switch-btn" id="switchDropdownBtn" type="button">
-            <span>Switch Workspace</span> &#9662;
+            <span>Switch Workspace</span> <span class="material-symbols-outlined" style="font-size:16px;">expand_more</span>
         </button>
         <div class="switch-dropdown" id="switchDropdown">
             <div style="font-size:10px;font-weight:800;color:#94a3b8;padding:4px 8px;text-transform:uppercase;">Switch Workspace</div>
@@ -305,6 +481,7 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
             <button class="switch-item" data-role="tester"><span class="role-badge">T</span> Hinata (Tester)</button>
             <button class="switch-item" data-role="developer"><span class="role-badge">D</span> Sasuke (Developer)</button>
             <button class="switch-item" data-role="senior_dev"><span class="role-badge">S</span> Itachi (Senior Developer)</button>
+            <button class="switch-item" data-role="user"><span class="role-badge">U</span> User Workspace</button>
         </div>
     </div>
 </header>
@@ -335,8 +512,8 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
         <div class="url-bar">
             <div class="url-method method-get" id="epMethodBadge">GET</div>
             <input type="text" class="url-input" id="epUrlInput" value="/api/v1/issues?limit=10">
-            <button class="btn-send" id="epSendBtn" onclick="executeApiCall()">
-                <span>&#9654;</span> Send
+            <button class="btn-send" id="epSendBtn" onclick="executeApiCall()" style="display:inline-flex;align-items:center;gap:6px;">
+                <span class="material-symbols-outlined" style="font-size:16px;">send</span> Send
             </button>
         </div>
 
@@ -379,13 +556,22 @@ h1{margin:4px 0 2px;font-size:26px;color:#182033;font-weight:800}
 
 <script>
 // Workspace switcher
-const workspaceDestinations = { admin: "/admin-ui", tester: "/tester-ui", developer: "/developer-ui", senior_dev: "/senior-developer-ui" };
+const workspaceDestinations = { admin: "/admin-ui", tester: "/tester-ui", developer: "/developer-ui", senior_dev: "/senior-developer-ui", user: "/user-ui" };
 const switchBtn = document.getElementById("switchDropdownBtn");
 const switchDrop = document.getElementById("switchDropdown");
 const sideSwitch = document.getElementById("sideSwitchBtn");
 function toggleSwitcher(e) { if (e) e.stopPropagation(); switchDrop.classList.toggle("show"); }
 if (switchBtn) switchBtn.addEventListener("click", toggleSwitcher);
 if (sideSwitch) sideSwitch.addEventListener("click", (e) => { e.preventDefault(); toggleSwitcher(e); });
+
+const logoutLink = document.getElementById("logoutLink");
+if (logoutLink) {
+    logoutLink.addEventListener("click", () => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("bugflow_token");
+        localStorage.removeItem("bugflow_workspace_role");
+    });
+}
 document.querySelectorAll(".switch-item").forEach(item => {
     item.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -527,7 +713,7 @@ async function executeApiCall() {
     const respBox = document.getElementById("respBox");
 
     btn.disabled = true;
-    btn.innerHTML = `<span>&#9203;</span> Running...`;
+    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">hourglass_top</span> Running...`;
     respStatus.className = "resp-badge";
     respStatus.textContent = "Loading...";
 
@@ -545,7 +731,7 @@ async function executeApiCall() {
         } catch (e) {
             alert("Invalid JSON body: " + e.message);
             btn.disabled = false;
-            btn.innerHTML = `<span>&#9654;</span> Send`;
+            btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">send</span> Send`;
             return;
         }
     }
@@ -572,7 +758,7 @@ async function executeApiCall() {
         respBox.textContent = `Fetch Failed: ${err.message}`;
     } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>&#9654;</span> Send`;
+        btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">send</span> Send`;
     }
 }
 
