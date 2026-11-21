@@ -326,8 +326,10 @@
     }
 
     // 2. Find anchor container in header
-    let container = document.querySelector(".header-actions");
+    let container = document.querySelector(".top-actions");
+    if (!container) container = document.querySelector(".header-right");
     if (!container) container = document.querySelector(".switcher-container");
+    if (!container) container = document.querySelector(".header-actions");
     if (!container) container = document.querySelector(".topbar");
     if (!container) container = document.querySelector("header.top, header.topbar, header");
     if (!container) return;
@@ -377,8 +379,11 @@
       document.body.appendChild(toast);
     }
 
-    // Insert wrapper into container
-    if (container.firstChild) {
+    // Insert wrapper into container cleanly
+    const profileWidget = container.querySelector(".user-profile-widget") || container.querySelector(".profile") || null;
+    if (profileWidget) {
+      container.insertBefore(wrapper, profileWidget);
+    } else if (container.firstChild) {
       container.insertBefore(wrapper, container.firstChild);
     } else {
       container.appendChild(wrapper);

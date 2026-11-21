@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -3651,6 +3651,15 @@
                 storedUser
             );
 
+        if (currentUser) {
+            if (!currentUser.user_id && currentUser.id) {
+                currentUser.user_id = currentUser.id;
+            }
+            if (!currentUser.id && currentUser.user_id) {
+                currentUser.id = currentUser.user_id;
+            }
+        }
+
     } catch (error) {
 
         localStorage.clear();
@@ -4205,59 +4214,64 @@
         }
 
         defectsLoading = true;
-
         defectsLoaded = false;
 
-        document.getElementById(
-            "tableLoading"
-        ).style.display = "block";
+        const elLoading = document.getElementById("tableLoading");
+        const elEmpty = document.getElementById("tableEmpty");
+        const elWrapper = document.getElementById("tableWrapper");
 
-        document.getElementById(
-            "tableEmpty"
-        ).style.display = "none";
-
-        document.getElementById(
-            "tableWrapper"
-        ).style.display = "none";
-
+        if (elLoading) elLoading.style.display = "block";
+        if (elEmpty) elEmpty.style.display = "none";
+        if (elWrapper) elWrapper.style.display = "none";
 
         try {
+            const uid = currentUser?.user_id || currentUser?.id;
+            let data = null;
 
-            const response =
-                await apiFetch(
-                    `/users/${currentUser.user_id}/defects`
-                );
+            if (uid && !isNaN(Number(uid))) {
+                try {
+                    const response = await apiFetch(`/users/${uid}/defects`);
+                    if (response && response.ok) {
+                        data = await response.json();
+                    }
+                } catch (errUser) {
+                    console.warn("User-specific defects fetch notice, falling back to /defects:", errUser);
+                }
+            }
 
+            if (!Array.isArray(data)) {
+                try {
+                    const response = await apiFetch("/defects");
+                    if (response && response.ok) {
+                        const raw = await response.json();
+                        if (Array.isArray(raw)) {
+                            if (uid && !isNaN(Number(uid))) {
+                                data = raw.filter(d => Number(d.user_id) === Number(uid));
+                            } else {
+                                data = raw;
+                            }
+                        }
+                    }
+                } catch (errAll) {
+                    console.warn("Fallback /defects fetch notice:", errAll);
+                }
+            }
 
-            allDefects =
-                await response.json();
-
+            allDefects = Array.isArray(data) ? data : [];
             defectsLoaded = true;
 
-
             updateStats();
-
             renderRecent();
-
             renderDashboardEnhancements();
-
             renderTable();
-
             updateNextDefectId(false);
 
         } catch (error) {
-
-            console.error(
-                "Failed to load defects:",
-                error
-            );
-
+            console.error("Failed to load defects:", error);
+            allDefects = [];
         } finally {
-
             defectsLoading = false;
-
             renderTable();
-
         }
 
     }
@@ -4269,38 +4283,23 @@
 
     function updateStats() {
 
-        const pending =
-            allDefects.filter(
-                defect =>
-                    defect.status ===
-                    "Pending"
-            ).length;
+        const pending = allDefects.filter(defect => {
+            const s = String(defect.status || "").trim().toLowerCase();
+            return s === "pending" || s === "open" || s === "new" || s === "reported" || s === "assigned" || s === "triaged";
+        }).length;
 
+        const resolved = allDefects.filter(defect => {
+            const s = String(defect.status || "").trim().toLowerCase();
+            return s === "resolved" || s === "closed" || s === "verified";
+        }).length;
 
-        const resolved =
-            allDefects.filter(
-                defect =>
-                    defect.status ===
-                    "Resolved"
-            ).length;
+        const elTotal = document.getElementById("totalCount");
+        const elPending = document.getElementById("pendingCount");
+        const elResolved = document.getElementById("resolvedCount");
 
-
-        document.getElementById(
-            "totalCount"
-        ).textContent =
-            allDefects.length;
-
-
-        document.getElementById(
-            "pendingCount"
-        ).textContent =
-            pending;
-
-
-        document.getElementById(
-            "resolvedCount"
-        ).textContent =
-            resolved;
+        if (elTotal) elTotal.textContent = allDefects.length;
+        if (elPending) elPending.textContent = pending;
+        if (elResolved) elResolved.textContent = resolved;
 
     }
 
@@ -4317,17 +4316,20 @@
 
         const total = allDefects.length;
 
-        const pending = allDefects.filter(
-            d => d.status === "Pending"
-        ).length;
+        const pending = allDefects.filter(d => {
+            const s = String(d.status || "").trim().toLowerCase();
+            return s === "pending" || s === "open" || s === "new" || s === "reported" || s === "assigned" || s === "triaged";
+        }).length;
 
-        const resolved = allDefects.filter(
-            d => d.status === "Resolved"
-        ).length;
+        const resolved = allDefects.filter(d => {
+            const s = String(d.status || "").trim().toLowerCase();
+            return s === "resolved" || s === "closed" || s === "verified";
+        }).length;
 
-        const rejected = allDefects.filter(
-            d => d.status === "Rejected"
-        ).length;
+        const rejected = allDefects.filter(d => {
+            const s = String(d.status || "").trim().toLowerCase();
+            return s === "rejected" || s === "duplicate" || s === "invalid";
+        }).length;
 
 
         // 1. Defect Status Overview Mini Cards
@@ -5143,14 +5145,26 @@
     // DEFECT ID HELPER
     // =========================================================
 
-    function updateNextDefectId(force = false) {
+    async function updateNextDefectId(force = false) {
         const input = document.getElementById("defectId");
         if (!input) return;
         if (force || !input.value) {
-            let nextId = 1;
+            let nextId = 53;
             if (Array.isArray(allDefects) && allDefects.length > 0) {
-                const maxId = Math.max(...allDefects.map(d => Number(d.id) || 0));
-                nextId = maxId + 1;
+                const maxLocal = Math.max(...allDefects.map(d => Number(d.id) || 0));
+                nextId = Math.max(53, maxLocal + 1);
+            }
+            try {
+                const res = await apiFetch("/defects?limit=1");
+                if (res && res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        const globalMax = Math.max(...list.map(d => Number(d.id) || 0));
+                        nextId = Math.max(nextId, globalMax + 1);
+                    }
+                }
+            } catch (e) {
+                // fallback to local calculation
             }
             input.value = nextId;
         }
@@ -5190,10 +5204,12 @@
                     ? defectIdInput.value.trim()
                     : "";
 
+                const uid = currentUser?.user_id || currentUser?.id || 1;
+
                 const payload = {
 
                     user_id:
-                        currentUser.user_id,
+                        uid,
 
                     defect_id:
                         defectIdVal || null,
@@ -5258,7 +5274,6 @@
 
 
                 if (
-                    !defectIdVal ||
                     !payload.title ||
                     !payload.description ||
                     !payload.category ||

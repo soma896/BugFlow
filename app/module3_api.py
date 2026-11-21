@@ -2237,7 +2237,7 @@ def list_notifications(
             query = query.filter(
                 or_(
                     Notification.target_role.ilike("admin"),
-                    Notification.target_role == None,
+                    Notification.target_role.is_(None),
                     Notification.target_role == "all",
                     Notification.category == "DEFECT_CREATED",
                 )
@@ -2246,7 +2246,7 @@ def list_notifications(
             query = query.filter(
                 or_(
                     Notification.target_role.ilike(norm_r),
-                    Notification.target_role == None,
+                    Notification.target_role.is_(None),
                     Notification.target_role == "all",
                 )
             )
@@ -2271,7 +2271,7 @@ def list_notifications(
                 "target_role": n.target_role,
                 "link": n.link,
                 "is_read": n.is_read,
-                "created_at": n.created_at.isoformat(),
+                "created_at": n.created_at.isoformat() if n.created_at else datetime.utcnow().isoformat(),
             }
             for n in notifications
         ],
