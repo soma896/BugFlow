@@ -38,7 +38,11 @@ def init_db():
     try:
         user_count = db.query(User).count()
         if user_count > 0:
-            print(f"[BugFlow] Database already populated ({user_count} users found). Skipping seeding.")
+            print(f"[BugFlow] Database already populated ({user_count} users found).")
+            print("[BugFlow] Ensuring canonical persona accounts (Admin, Senior Dev, Developer, QA Tester)...")
+            from app.main import ensure_canonical_persona_accounts
+            ensure_canonical_persona_accounts(db)
+            print("[BugFlow] Canonical accounts verified.")
             return
 
         seed_file = os.path.join(os.path.dirname(__file__), "seed_data.json")

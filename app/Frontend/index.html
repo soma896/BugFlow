@@ -676,11 +676,14 @@
 
             <!-- Quick Demo Personas (shown on Sign In tab for instant test login) -->
             <div class="demo-bar" id="demoBar" style="display:none;">
-                <span class="demo-label">Quick Sign In:</span>
-                <button type="button" class="demo-pill" data-demo="admin">Admin</button>
-                <button type="button" class="demo-pill" data-demo="senior_dev">Sr. Dev</button>
-                <button type="button" class="demo-pill" data-demo="developer">Developer</button>
-                <button type="button" class="demo-pill" data-demo="tester">Tester</button>
+                <span class="demo-label">Demo Logins:</span>
+                <button type="button" class="demo-pill" data-demo="admin" title="admin@bugflow.io / Admin@123">👑 Admin</button>
+                <button type="button" class="demo-pill" data-demo="senior_dev" title="senior@bugflow.io / Senior@123">⚡ Sr. Dev</button>
+                <button type="button" class="demo-pill" data-demo="developer" title="dev@bugflow.io / Developer@123">💻 Developer</button>
+                <button type="button" class="demo-pill" data-demo="tester" title="tester@bugflow.io / Tester@123">🧪 QA Tester</button>
+            </div>
+            <div id="demoHint" style="display:none; font-size:11px; color:var(--bf-text-muted); margin-top:-10px; margin-bottom:14px; text-align:center;">
+                Demo Passwords: <code style="font-family:'JetBrains Mono',monospace; background:#f1f5f9; padding:2px 4px; border-radius:4px; color:var(--bf-text-secondary);">RoleName@123</code> (e.g. <code>Admin@123</code>, <code>Tester@123</code>)
             </div>
 
             <!-- Password -->
@@ -737,6 +740,7 @@
         const footerPrompt = document.getElementById("footerPrompt");
         const linkSwitch = document.getElementById("linkSwitch");
         const demoBar = document.getElementById("demoBar");
+        const demoHint = document.getElementById("demoHint");
 
         const inputFullName = document.getElementById("inputFullName");
         const inputEmail = document.getElementById("inputEmail");
@@ -753,11 +757,21 @@
         const roleCards = document.querySelectorAll(".role-card");
 
         // Role Selection
+        function selectRole(roleKey) {
+            selectedRole = roleKey;
+            roleCards.forEach(c => {
+                if (c.getAttribute("data-role") === roleKey) {
+                    c.classList.add("selected");
+                } else {
+                    c.classList.remove("selected");
+                }
+            });
+        }
+
         roleCards.forEach(card => {
             card.addEventListener("click", () => {
-                roleCards.forEach(c => c.classList.remove("selected"));
-                card.classList.add("selected");
-                selectedRole = card.getAttribute("data-role");
+                selectRole(card.getAttribute("data-role"));
+                clearAlert();
             });
         });
 
@@ -788,10 +802,73 @@
             alertMsg.textContent = "";
         }
 
+        // =========================================================================
+        // STRICT REAL EMAIL VALIDATION (RFC 5322 + Domain TLD + Disposable Blocker)
+        // =========================================================================
+        const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+        const DISPOSABLE_EMAIL_DOMAINS = [
+            "mailinator.com", "tempmail.com", "guerrillamail.com", "10minutemail.com",
+            "throwawaymail.com", "yopmail.com", "fake.com", "test.com", "dummy.com",
+            "trashmail.com", "dispostable.com", "sharklasers.com", "getairmail.com",
+            "spam4.me", "bccto.me", "mytemp.email", "disposable.com", "temp.com"
+        ];
+
+        function validateEmail(email) {
+            if (!email || typeof email !== "string") {
+                return { valid: false, message: "Work email is required." };
+            }
+            const clean = email.trim();
+            if (clean.length < 5 || clean.length > 254) {
+                return { valid: false, message: "Email length must be between 5 and 254 characters." };
+            }
+            if (!EMAIL_REGEX.test(clean)) {
+                return { valid: false, message: "Please enter a valid, working email address (e.g. name@company.com or name@gmail.com)." };
+            }
+            const parts = clean.split("@");
+            if (parts.length !== 2) {
+                return { valid: false, message: "Invalid email format." };
+            }
+            const domain = parts[1].toLowerCase();
+            const tld = domain.split(".").pop();
+            if (!/^[a-zA-Z]{2,}$/.test(tld)) {
+                return { valid: false, message: "Email must have a valid domain extension (e.g. .com, .io, .org)." };
+            }
+            if (DISPOSABLE_EMAIL_DOMAINS.includes(domain)) {
+                return { valid: false, message: `Disposable email services (@${domain}) are not permitted. Please use your real, working email.` };
+            }
+            return { valid: true, message: "" };
+        }
+
+        // Live visual indicator on email input
+        inputEmail.addEventListener("blur", () => {
+            const val = inputEmail.value.trim();
+            const parent = inputEmail.closest(".input-group");
+            if (val) {
+                const res = validateEmail(val);
+                if (!res.valid) {
+                    parent.classList.add("input-error");
+                    showAlert(res.message, "error");
+                } else {
+                    parent.classList.remove("input-error");
+                    if (alertMsg.textContent === res.message) {
+                        clearAlert();
+                    }
+                }
+            } else {
+                parent.classList.remove("input-error");
+            }
+        });
+
+        inputEmail.addEventListener("input", () => {
+            const parent = inputEmail.closest(".input-group");
+            parent.classList.remove("input-error");
+        });
+
         // Switch Mode (Sign In <-> Sign Up)
         function setMode(mode) {
             currentMode = mode;
             clearAlert();
+            inputEmail.closest(".input-group").classList.remove("input-error");
 
             if (mode === "signup") {
                 tabSignUp.classList.add("active");
@@ -806,6 +883,7 @@
                 groupFullName.style.display = "block";
                 groupConfirmPassword.style.display = "block";
                 demoBar.style.display = "none";
+                if (demoHint) demoHint.style.display = "none";
 
                 labelPassword.textContent = "Password (8+ chars)";
                 inputPassword.placeholder = "At least 8 characters";
@@ -826,6 +904,7 @@
                 groupFullName.style.display = "none";
                 groupConfirmPassword.style.display = "none";
                 demoBar.style.display = "flex";
+                if (demoHint) demoHint.style.display = "block";
 
                 labelPassword.textContent = "Password";
                 inputPassword.placeholder = "Enter your password";
@@ -843,12 +922,12 @@
             setMode(currentMode === "signup" ? "signin" : "signup");
         });
 
-        // Demo Personas for Quick Sign In
+        // Verified Demo Credentials for quick testing
         const DEMO_ACCOUNTS = {
-            admin: { email: "admin@bugflow.io", pass: "admin123", role: "admin" },
-            senior_dev: { email: "senior@bugflow.io", pass: "senior123", role: "senior_dev" },
-            developer: { email: "dev@bugflow.io", pass: "dev123", role: "developer" },
-            tester: { email: "tester@bugflow.io", pass: "tester123", role: "tester" }
+            admin: { email: "admin@bugflow.io", pass: "Admin@123", role: "admin", label: "Admin" },
+            senior_dev: { email: "senior@bugflow.io", pass: "Senior@123", role: "senior_dev", label: "Senior Dev" },
+            developer: { email: "dev@bugflow.io", pass: "Developer@123", role: "developer", label: "Developer" },
+            tester: { email: "tester@bugflow.io", pass: "Tester@123", role: "tester", label: "QA Tester" }
         };
 
         document.querySelectorAll(".demo-pill").forEach(pill => {
@@ -858,13 +937,9 @@
                 if (creds) {
                     inputEmail.value = creds.email;
                     inputPassword.value = creds.pass;
-                    // Auto select the card
-                    roleCards.forEach(c => {
-                        if (c.getAttribute("data-role") === creds.role) {
-                            c.click();
-                        }
-                    });
-                    showAlert(`Filled demo credentials for ${pill.textContent}! Click Sign In below.`, "success");
+                    selectRole(creds.role);
+                    inputEmail.closest(".input-group").classList.remove("input-error");
+                    showAlert(`Loaded ${creds.label} credentials (${creds.email} / ${creds.pass}). Click Sign In to proceed!`, "success");
                 }
             });
         });
@@ -872,7 +947,7 @@
         // Workspace redirect helper based on database role
         function redirectToWorkspace(role) {
             const r = String(role || "").trim().toLowerCase();
-            if (r === "admin") {
+            if (r === "admin" || r === "system_administrator") {
                 window.location.href = "/admin-ui";
             } else if (r === "developer" || r === "dev") {
                 window.location.href = "/developer-ui";
@@ -893,8 +968,18 @@
             const email = inputEmail.value.trim();
             const password = inputPassword.value;
 
-            if (!email || !password) {
-                showAlert("Please enter your email and password.");
+            // 1. Validate real email
+            const emailCheck = validateEmail(email);
+            if (!emailCheck.valid) {
+                inputEmail.closest(".input-group").classList.add("input-error");
+                showAlert(emailCheck.message, "error");
+                inputEmail.focus();
+                return;
+            }
+
+            if (!password) {
+                showAlert("Please enter your password.");
+                inputPassword.focus();
                 return;
             }
 
@@ -902,18 +987,18 @@
                 const fullName = inputFullName.value.trim();
                 const confirmPassword = inputConfirmPassword.value;
 
-                if (!fullName) {
-                    showAlert("Please enter your full name.");
+                if (!fullName || fullName.length < 2) {
+                    showAlert("Please enter your full name (at least 2 characters).");
                     inputFullName.focus();
                     return;
                 }
-                if (password.length < 6) {
-                    showAlert("Password must be at least 6 characters.");
+                if (password.length < 8) {
+                    showAlert("Password must be at least 8 characters.");
                     inputPassword.focus();
                     return;
                 }
                 if (password !== confirmPassword) {
-                    showAlert("Passwords do not match. Please re-type.");
+                    showAlert("Passwords do not match. Please re-enter.");
                     inputConfirmPassword.focus();
                     return;
                 }
@@ -936,10 +1021,9 @@
                     const data = await res.json();
 
                     if (!res.ok) {
-                        throw new Error(data.detail || "Registration failed. Please try again.");
+                        throw new Error(data.detail || "Registration failed. Please check your details.");
                     }
 
-                    // Save session tokens
                     if (data.access_token) {
                         localStorage.setItem("access_token", data.access_token);
                         localStorage.setItem("bugflow_token", data.access_token);
@@ -968,7 +1052,11 @@
                     const res = await fetch("/login", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email, password })
+                        body: JSON.stringify({ 
+                            email: email, 
+                            password: password,
+                            role: selectedRole 
+                        })
                     });
 
                     const data = await res.json();
@@ -981,13 +1069,23 @@
                         throw new Error("No session token was returned from login.");
                     }
 
+                    // Client-side role mismatch verification
+                    const accountRole = String(data.role || "").toLowerCase();
+                    const activeRole = String(selectedRole || "").toLowerCase();
+                    const normAccount = accountRole === "system_administrator" ? "admin" : accountRole;
+                    const normActive = activeRole === "system_administrator" ? "admin" : activeRole;
+
+                    if (normAccount && normActive && normAccount !== normActive) {
+                        throw new Error(`Role mismatch: This account is registered as '${data.role}'. Please select '${data.role}' to sign in.`);
+                    }
+
                     localStorage.setItem("access_token", data.access_token);
                     localStorage.setItem("bugflow_token", data.access_token);
                     localStorage.setItem("bugflow_token_type", data.token_type || "bearer");
                     localStorage.setItem("bugflow_user", JSON.stringify(data));
                     localStorage.setItem("bugflow_workspace_role", data.role || selectedRole);
 
-                    showAlert(`Welcome back, ${data.name || "User"}! Redirecting to your workspace...`, "success");
+                    showAlert(`Welcome back, ${data.name || "User"}! Redirecting to workspace...`, "success");
                     setTimeout(() => {
                         redirectToWorkspace(data.role);
                     }, 600);
@@ -1000,8 +1098,13 @@
             }
         });
 
-        // Initialize: default to Sign Up view as shown in user's image
-        setMode("signup");
+        // Initialize: default to Sign Up view as shown in user's image, or Sign In if requested
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("mode") === "signin") {
+            setMode("signin");
+        } else {
+            setMode("signup");
+        }
     </script>
 </body>
 </html>

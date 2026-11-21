@@ -152,13 +152,14 @@ When the Web Service boots up, `python init_live_db.py` executes before the serv
 
 ## 6. Default Login Credentials
 
-Use the following credentials to log in to your live BugFlow application:
+Use the following verified credentials to log in to your live BugFlow Aroma workspaces:
 
-| Role | Email | Password | Access Rights |
+| Role | Email (Primary / Alias) | Password | Target Workspace |
 | :--- | :--- | :--- | :--- |
-| **System Administrator** | `admin@example.com` | `Admin@123` | Full access to Admin UI, all defects, team collaboration, reports, and system settings |
-| **User / Developer** | `manoj@example.com` | `Admin@123` *(or registered pw)* | Defect management, status updates, team collaboration |
-| **User / Tester** | `sekharsoma4691@gmail.com` | `Admin@123` *(or registered pw)* | Defect reporting, verification, workspace views |
+| **👑 Admin (System Administrator)** | `admin@bugflow.io` / `admin@example.com` | `Admin@123` *(or `admin123`)* | Admin Control Center (`/admin-ui`) |
+| **⚡ Senior Developer** | `senior@bugflow.io` / `senior_dev@example.com` | `Senior@123` *(or `senior123`)* | Senior Developer Workspace (`/senior-developer-ui`) |
+| **💻 Developer** | `dev@bugflow.io` / `developer@example.com` | `Developer@123` *(or `dev123`)* | Developer Workspace (`/developer-ui`) |
+| **🧪 QA Tester** | `tester@bugflow.io` / `tester@example.com` | `Tester@123` *(or `tester123`)* | QA Tester Workspace (`/tester-ui`) |
 
 ---
 

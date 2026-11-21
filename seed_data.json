@@ -2,9 +2,9 @@
   "users": [
     {
       "id": 1,
-      "name": "Admin",
+      "name": "Naruto Uzumaki (Admin)",
       "email": "admin@example.com",
-      "password_hash": "scrypt:32768:8:1$0b9w6FLm6J1X2aWx$008ba7f032f39c812d790d83ae425c8d23cc499389bc71d189fb1e0ab6e0bda0947bc95fb0b478e71998a35566a0fed4e0a7b6333141adc496143e743a11eb02",
+      "password_hash": "scrypt:32768:8:1$3zUPYpsbUDZxAUmJ$dfabb60ffa5942dec56bbb41c935dc980c5b62e47df344f7bcc35e98a819a241be7989960bad9f7731ebcfb877cbe33c9d18114fc55c63a842d85d73ebf0fd26",
       "role": "admin",
       "created_at": "2026-08-26T02:48:45.344652"
     },
@@ -23,6 +23,62 @@
       "password_hash": "scrypt:32768:8:1$pZcjWPOsj4aOQGE9$0f722b954ab4be309feb58e164af81541f6c411fd4c04715db7d6f65b78b657deac6d44b98986c0bbf8601310f8e181f68022500e66add8e07e1ca2dc307790a",
       "role": "user",
       "created_at": "2026-08-26T07:01:41.166295"
+    },
+    {
+      "id": 4,
+      "name": "Naruto Uzumaki",
+      "email": "admin@bugflow.io",
+      "password_hash": "scrypt:32768:8:1$7oEGVr9OqjFhti8U$5275bf8916149652044d862450fa222df01251117c286a851a36dad7033143474f898d6877c860292c21d2aabaa26621a6b7f3b14e00cb39837bfd0b6f3c876e",
+      "role": "admin",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 5,
+      "name": "Itachi Uchiha",
+      "email": "senior@bugflow.io",
+      "password_hash": "scrypt:32768:8:1$beEP5izGL0EME30k$8175005b716fb4c232082d039563653fc0ffec908bd11eb72e393b2a79daa1f93ee72f5737c068947a5de57192f166d659553f152068c4e99040edc298343f16",
+      "role": "senior_dev",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 6,
+      "name": "Sasuke Uchiha",
+      "email": "dev@bugflow.io",
+      "password_hash": "scrypt:32768:8:1$W4Z3EfijZhbhtijM$966778502a7a85886a494d9813e55a5482ab20f80d1fbabac48615e29a98fdb37d6e9ec473cf0088cd18169c62514785fd356c9a3e59b61dbd10bd49fcb344ca",
+      "role": "developer",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 7,
+      "name": "Hinata Hyuga",
+      "email": "tester@bugflow.io",
+      "password_hash": "scrypt:32768:8:1$1SjmZ6VdGzGG7klV$30e525239ecca6710bdd218fd5b1508707b5164975bedaa81aafb6793d82b259cd4baee975f4aea2ece11b95d174bb3a0b41258bcb55a443099f0778df2fe05d",
+      "role": "tester",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 8,
+      "name": "Sasuke Uchiha (Dev)",
+      "email": "developer@example.com",
+      "password_hash": "scrypt:32768:8:1$tEyeyTPXxDMnVxUz$5dd520f784ff593c310e5c13271a153a8fa94cb935eac2fc6ae564cd2b94d0de572243b0b96d38f031e7c2bd41f775e6f64c567f386f2c7b513394a171c6580e",
+      "role": "developer",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 9,
+      "name": "Hinata Hyuga (QA)",
+      "email": "tester@example.com",
+      "password_hash": "scrypt:32768:8:1$T19b0OzF7CecxfCq$23ca23bd7f551dd6c2ee8fe7104a6d7e0ac9ba5f4dadfe19abc2ea99e15c46fe06143be5a2fe2623136fb3d291b9cc513a277dc5ffd5131e5dab172b76434175",
+      "role": "tester",
+      "created_at": "2026-08-26T02:48:45.344652"
+    },
+    {
+      "id": 10,
+      "name": "Itachi Uchiha (Sr Dev)",
+      "email": "senior_dev@example.com",
+      "password_hash": "scrypt:32768:8:1$kCLainlT42L3ELod$b19f50ad058db69f21930c64cda472dc114ca810d6ee4299e4d255bb951acdb6ddcf729bb324b26c8f1ea70665f384f3f05ccbb7a3d75bc66e5596b8dd559245",
+      "role": "senior_dev",
+      "created_at": "2026-08-26T02:48:45.344652"
     }
   ],
   "sprints": [
