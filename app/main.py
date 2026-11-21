@@ -1507,7 +1507,7 @@ def create_defect(
             message=f"User {reporter_name} created new bug: #{defect.id} '{defect.title}' [Category: {defect.category or 'General'}, Priority: {defect.priority or 'Normal'}]. Requires triage & assignment.",
             category="DEFECT_CREATED",
             target_role="admin",
-            link="/all-defects-ui",
+            link=f"/all-defects-ui?defect_id={defect.id}",
             created_at=datetime.utcnow(),
         )
         db.add(admin_notif)
@@ -1557,6 +1557,43 @@ def get_defects(
         .order_by(Defect.id.desc())
         .all()
     )
+
+
+@app.get("/defects/{defect_id}")
+def get_defect_by_id(
+    defect_id: int,
+    db: Session = Depends(get_db),
+):
+    defect = db.query(Defect).filter(Defect.id == defect_id).first()
+    if not defect:
+        raise HTTPException(status_code=404, detail=f"Defect #{defect_id} not found")
+
+    reporter = db.query(User).filter(User.id == defect.user_id).first()
+    assigned_user = (
+        db.query(User).filter(User.id == defect.assigned_user_id).first()
+        if getattr(defect, "assigned_user_id", None)
+        else None
+    )
+
+    return {
+        "id": defect.id,
+        "title": defect.title,
+        "description": defect.description,
+        "category": defect.category or "General",
+        "priority": defect.priority or "Normal",
+        "status": defect.status or "Pending",
+        "environment": defect.environment or "Production Cluster",
+        "reproduction_steps": defect.reproduction_steps or "No reproduction steps provided.",
+        "expected_result": defect.expected_result or "None specified",
+        "actual_result": defect.actual_result or "None specified",
+        "assigned_role": defect.assigned_role or "Unassigned",
+        "assigned_user_id": getattr(defect, "assigned_user_id", None),
+        "assigned_user_name": assigned_user.name if assigned_user else None,
+        "user_id": defect.user_id,
+        "user_name": reporter.name if reporter else f"User #{defect.user_id}",
+        "reporter_name": reporter.name if reporter else f"User #{defect.user_id}",
+        "created_at": defect.created_at.isoformat() if defect.created_at else None,
+    }
 
 
 @app.get("/users/{user_id}/defects")
@@ -1851,13 +1888,14 @@ def assign_defect(
         assigned_name = assigned_user.name if assigned_user else role_disp
 
         role_target_links = {
-            "developer": "/developer-ui",
-            "tester": "/tester-ui",
-            "senior_dev": "/senior-developer-ui",
-            "senior_developer": "/senior-developer-ui",
-            "admin": "/admin-ui",
+            "developer": f"/developer-defects-ui?defect_id={defect.id}",
+            "tester": f"/tester-defects-ui?defect_id={defect.id}",
+            "senior_dev": f"/senior-developer-defects-ui?defect_id={defect.id}",
+            "senior_developer": f"/senior-developer-defects-ui?defect_id={defect.id}",
+            "admin": f"/all-defects-ui?defect_id={defect.id}",
+            "user": f"/user-ui?defect_id={defect.id}",
         }
-        target_link = role_target_links.get(norm_role, "/all-defects-ui")
+        target_link = role_target_links.get(norm_role, f"/all-defects-ui?defect_id={defect.id}")
 
         assign_notif = Notification(
             title=f"Bug Assigned: #{defect.id} - {defect.title}",

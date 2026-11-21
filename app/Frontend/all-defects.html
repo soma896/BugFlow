@@ -3366,8 +3366,21 @@ async function updateStatus(defectId, newStatus) {
 }
 
 // Modal View Details
-function openDetails(defectId) {
-    const defect = allDefects.find(item => Number(item.id) === Number(defectId));
+async function openDetails(defectId) {
+    let defect = allDefects.find(item => Number(item.id) === Number(defectId));
+    if (!defect) {
+        try {
+            defect = await apiFetch(`/defects/${defectId}`);
+            if (defect && defect.id) {
+                if (!allDefects.some(d => Number(d.id) === Number(defect.id))) {
+                    allDefects.unshift(defect);
+                    renderTable();
+                }
+            }
+        } catch (e) {
+            console.warn("Could not fetch defect details:", e);
+        }
+    }
     if (!defect) return;
 
     document.getElementById("modalTitle").textContent = defect.title;

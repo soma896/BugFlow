@@ -1273,13 +1273,30 @@ function renderTable(){
    DETAILS
 ========================================================= */
 
-function openDetails(id){
+async function openDetails(id){
 
-    const defect =
+    let defect =
         allDefects.find(
             item =>
                 Number(item.id) === Number(id)
         );
+
+    if(!defect){
+        try {
+            const res = await fetch(`/defects/${id}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                defect = await res.json();
+                if (!allDefects.some(d => Number(d.id) === Number(defect.id))) {
+                    allDefects.unshift(defect);
+                    renderTable();
+                }
+            }
+        } catch (e) {
+            console.warn("Could not fetch defect details:", e);
+        }
+    }
 
     if(!defect){
         return;

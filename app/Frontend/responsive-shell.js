@@ -456,6 +456,56 @@
         .replace(/'/g, "&#039;");
     }
 
+    function extractDefectId(item) {
+      if (item && item.defect_id) return item.defect_id;
+      const text = `${item?.title || ""} ${item?.message || ""} ${item?.link || ""}`;
+      const match = text.match(/#(\d+)/) || text.match(/[?&]defect_id=(\d+)/i) || text.match(/[?&]id=(\d+)/i);
+      return match ? match[1] : null;
+    }
+
+    function openNotificationDefect(link, defectId) {
+      const curPath = window.location.pathname.toLowerCase();
+      const targetPath = (link || "").split("?")[0].toLowerCase();
+
+      // If openDetails exists on current page AND current page is a defects page or matches destination:
+      if (defectId && typeof window.openDetails === "function" && (curPath === targetPath || curPath.includes("defect") || curPath.includes("user"))) {
+        if (dropdown) dropdown.style.display = "none";
+        window.openDetails(defectId);
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.set("defect_id", defectId);
+          window.history.pushState({}, "", u.toString());
+        } catch (e) {}
+        return;
+      }
+
+      // Otherwise navigate to the target defect link (which includes ?defect_id=...)
+      if (link) {
+        window.location.href = link;
+      } else if (defectId) {
+        window.location.href = `/all-defects-ui?defect_id=${defectId}`;
+      }
+    }
+
+    // Auto-open defect if ?defect_id=... is present in the URL query string
+    function checkAndAutoOpenDefect() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get("defect_id") || urlParams.get("id");
+      if (!targetId) return;
+
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        if (typeof window.openDetails === "function") {
+          window.openDetails(targetId);
+          clearInterval(interval);
+        } else if (attempts >= 30) {
+          clearInterval(interval);
+        }
+      }, 150);
+    }
+    checkAndAutoOpenDefect();
+
     function showToast(item) {
       const toastTitle = document.getElementById("bfToastTitle");
       const toastMsg = document.getElementById("bfToastMsg");
@@ -470,7 +520,8 @@
         try {
           await fetch(`/api/v1/notifications/read?notification_id=${item.id}`, { method: "POST" });
         } catch (e) {}
-        if (item.link) window.location.href = item.link;
+        const defectId = extractDefectId(item);
+        openNotificationDefect(item.link, defectId);
       };
 
       setTimeout(() => {
@@ -519,10 +570,11 @@
             const iconClass = isDefect ? "defect" : "assign";
             const iconSymbol = isDefect ? "🐞" : "📥";
             const unreadClass = item.is_read ? "" : "unread";
-            const targetLink = item.link || (currentRole === "admin" ? "/all-defects-ui" : "/developer-ui");
+            const targetLink = item.link || (currentRole === "admin" ? "/all-defects-ui" : "/developer-defects-ui");
+            const defectId = extractDefectId(item) || "";
 
             return `
-              <div class="bf-notif-item ${unreadClass}" data-id="${item.id}" data-link="${targetLink}">
+              <div class="bf-notif-item ${unreadClass}" data-id="${item.id}" data-link="${targetLink}" data-defect-id="${defectId}">
                 <div class="bf-notif-icon-box ${iconClass}">${iconSymbol}</div>
                 <div class="bf-notif-item-body">
                   <div class="bf-notif-item-title">${escapeHtml(item.title)}</div>
@@ -538,10 +590,11 @@
             itemEl.addEventListener("click", async () => {
               const notifId = itemEl.getAttribute("data-id");
               const link = itemEl.getAttribute("data-link");
+              const defectId = itemEl.getAttribute("data-defect-id");
               try {
                 await fetch(`/api/v1/notifications/read?notification_id=${notifId}`, { method: "POST" });
               } catch (e) {}
-              if (link) window.location.href = link;
+              openNotificationDefect(link, defectId);
             });
           });
         }

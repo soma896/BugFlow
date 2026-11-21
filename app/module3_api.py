@@ -618,7 +618,12 @@ def assign_issue(
         message=f"Defect #{defect.id} '{defect.title}' was assigned to {persona_name} ({target_role}).",
         category="ASSIGNMENT",
         target_role=target_role,
-        link=f"/{target_role}-defects-ui" if target_role != "senior_dev" else "/senior-developer-defects-ui",
+        link=(
+            f"/developer-defects-ui?defect_id={defect.id}" if target_role == "developer"
+            else f"/tester-defects-ui?defect_id={defect.id}" if target_role == "tester"
+            else f"/senior-developer-defects-ui?defect_id={defect.id}" if target_role == "senior_dev"
+            else f"/all-defects-ui?defect_id={defect.id}"
+        ),
     )
 
     return {
@@ -2259,22 +2264,42 @@ def list_notifications(
 
     notifications = query.order_by(desc(Notification.id)).limit(limit_val).all()
 
+    items = []
+    for n in notifications:
+        defect_num = None
+        if n.title:
+            m = re.search(r"#(\d+)", n.title)
+            if m:
+                defect_num = int(m.group(1))
+        if not defect_num and n.message:
+            m = re.search(r"#(\d+)", n.message)
+            if m:
+                defect_num = int(m.group(1))
+
+        clean_link = n.link
+        if defect_num:
+            if not clean_link:
+                clean_link = f"/all-defects-ui?defect_id={defect_num}"
+            elif "defect_id=" not in clean_link:
+                sep = "&" if "?" in clean_link else "?"
+                clean_link = f"{clean_link}{sep}defect_id={defect_num}"
+
+        items.append({
+            "id": n.id,
+            "title": n.title,
+            "message": n.message,
+            "category": n.category,
+            "target_role": n.target_role,
+            "link": clean_link,
+            "defect_id": defect_num,
+            "is_read": n.is_read,
+            "created_at": n.created_at.isoformat() if n.created_at else datetime.utcnow().isoformat(),
+        })
+
     return {
         "unread_count": unread_count,
-        "total": len(notifications),
-        "items": [
-            {
-                "id": n.id,
-                "title": n.title,
-                "message": n.message,
-                "category": n.category,
-                "target_role": n.target_role,
-                "link": n.link,
-                "is_read": n.is_read,
-                "created_at": n.created_at.isoformat() if n.created_at else datetime.utcnow().isoformat(),
-            }
-            for n in notifications
-        ],
+        "total": len(items),
+        "items": items,
     }
 
 
