@@ -28,6 +28,7 @@ from .models import (
     Issue,
     IssueStatus,
     IssueType,
+    Notification,
     Priority,
     Severity,
     Sprint,
@@ -1476,6 +1477,26 @@ def create_defect(
         except Exception:
             pass
 
+    # Emit in-app notification for Admin (User created new bug)
+    try:
+        reporter = db.query(User).filter(User.id == user_id).first() if user_id else None
+        reporter_name = reporter.name if reporter else (f"User #{user_id}" if user_id else "User")
+
+        admin_notif = Notification(
+            title=f"New Defect Reported: #{defect.id} - {defect.title}",
+            message=f"User {reporter_name} created new bug: #{defect.id} '{defect.title}' [Category: {defect.category or 'General'}, Priority: {defect.priority or 'Normal'}]. Requires triage & assignment.",
+            category="DEFECT_CREATED",
+            target_role="admin",
+            link="/all-defects-ui",
+            created_at=datetime.utcnow(),
+        )
+        db.add(admin_notif)
+        db.commit()
+        print(f"[BugFlow Notifications] Admin notified: User {reporter_name} created bug #{defect.id} '{defect.title}'")
+    except Exception as notif_err:
+        db.rollback()
+        print(f"[Defect Notification] Notice: {notif_err}")
+
     return defect
 
 
@@ -1798,6 +1819,47 @@ def assign_defect(
 
     db.commit()
     db.refresh(defect)
+
+    # Emit in-app notification to the assigned role / user
+    try:
+        norm_role = normalize_role(role)
+        role_disp = ROLE_DISPLAY_NAMES.get(norm_role, role.title())
+        assigned_user = db.query(User).filter(User.id == defect.assigned_user_id).first() if defect.assigned_user_id else None
+        assigned_name = assigned_user.name if assigned_user else role_disp
+
+        role_target_links = {
+            "developer": "/developer-ui",
+            "tester": "/tester-ui",
+            "senior_dev": "/senior-developer-ui",
+            "senior_developer": "/senior-developer-ui",
+            "admin": "/admin-ui",
+        }
+        target_link = role_target_links.get(norm_role, "/all-defects-ui")
+
+        assign_notif = Notification(
+            title=f"Bug Assigned: #{defect.id} - {defect.title}",
+            message=f"Admin assigned defect #{defect.id} '{defect.title}' [{defect.priority or 'Normal'} Priority, {defect.category or 'General'}] to {assigned_name} ({role_disp}) for resolution.",
+            category="ASSIGNMENT",
+            target_role=norm_role,
+            user_id=defect.assigned_user_id,
+            link=target_link,
+            created_at=datetime.utcnow(),
+        )
+        db.add(assign_notif)
+
+        # Record admin action activity entry
+        admin_action_entry = AdminAction(
+            admin_id=1,
+            defect_id=defect.id,
+            action=f"ASSIGNED_TO_{norm_role.upper()}",
+            created_at=datetime.utcnow(),
+        )
+        db.add(admin_action_entry)
+        db.commit()
+        print(f"[BugFlow Notifications] Persona {role_disp} notified: Bug #{defect.id} assigned to them")
+    except Exception as notif_err:
+        db.rollback()
+        print(f"[Assignment Notification] Notice: {notif_err}")
 
     role_display_map = {
         "tester": "Hinata (Tester)",

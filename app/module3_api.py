@@ -2214,20 +2214,50 @@ def list_cicd_runs(db: Session = Depends(get_db)):
 
 @router.get("/notifications", summary="Retrieve recent system and integration notifications")
 def list_notifications(
-    category: str | None = Query(None, description="Filter by category (GITHUB, CICD, WORKFLOW, ASSIGNMENT)"),
+    category: str | None = Query(None, description="Filter by category (GITHUB, CICD, WORKFLOW, ASSIGNMENT, DEFECT_CREATED)"),
+    role: str | None = Query(None, description="Filter by target role (admin, developer, tester, senior_dev)"),
     unread_only: bool = Query(False),
     limit: int = Query(30, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Retrieve in-app notifications."""
+    """Retrieve in-app notifications with role-specific targeting."""
+    cat_val = category.default if hasattr(category, "default") else category
+    unread_val = unread_only.default if hasattr(unread_only, "default") else bool(unread_only)
+    role_val = role.default if hasattr(role, "default") else role
+    limit_val = int(limit.default if hasattr(limit, "default") else (limit or 30))
+
     query = db.query(Notification)
-    if category:
-        query = query.filter(Notification.category.ilike(f"%{category}%"))
-    if unread_only:
+
+    if cat_val:
+        query = query.filter(Notification.category.ilike(f"%{cat_val}%"))
+
+    if role_val:
+        norm_r = normalize_role(role_val)
+        if norm_r == "admin":
+            query = query.filter(
+                or_(
+                    Notification.target_role.ilike("admin"),
+                    Notification.target_role == None,
+                    Notification.target_role == "all",
+                    Notification.category == "DEFECT_CREATED",
+                )
+            )
+        else:
+            query = query.filter(
+                or_(
+                    Notification.target_role.ilike(norm_r),
+                    Notification.target_role == None,
+                    Notification.target_role == "all",
+                )
+            )
+
+    unread_query = query.filter(Notification.is_read == False)
+    unread_count = unread_query.count()
+
+    if unread_val:
         query = query.filter(Notification.is_read == False)
 
-    notifications = query.order_by(desc(Notification.id)).limit(limit).all()
-    unread_count = db.query(Notification).filter(Notification.is_read == False).count()
+    notifications = query.order_by(desc(Notification.id)).limit(limit_val).all()
 
     return {
         "unread_count": unread_count,
@@ -2250,12 +2280,14 @@ def list_notifications(
 
 @router.post("/notifications/read", summary="Mark notifications as read")
 def mark_notifications_read(
+    payload: dict | None = None,
     notification_id: int | None = Query(None, description="Specific ID, or omit to mark all read"),
     db: Session = Depends(get_db),
 ):
     """Mark notifications as read."""
-    if notification_id:
-        notif = db.query(Notification).filter(Notification.id == notification_id).first()
+    target_id = notification_id or (payload.get("notification_id") if isinstance(payload, dict) else None)
+    if target_id:
+        notif = db.query(Notification).filter(Notification.id == target_id).first()
         if notif:
             notif.is_read = True
     else:

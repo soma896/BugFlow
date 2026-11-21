@@ -278,32 +278,7 @@
         }
 
         .heading-icon {
-            width: 42px;
-            height: 42px;
-
-            display: grid;
-            place-items: center;
-
-            border-radius: 11px;
-
-            background:
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .11
-                );
-
-            border:
-                1px solid
-                rgba(
-                    112,
-                    92,
-                    244,
-                    .18
-                );
-
-            color: #aba0ff;
+            display: none !important;
         }
 
         .heading h1 {
@@ -2330,15 +2305,6 @@
 
             <div class="heading">
 
-
-                <div
-                    id="headingIcon"
-                    class="heading-icon"
-                >
-                    &#127968;
-                </div>
-
-
                 <div>
 
                     <h1 id="pageTitle">
@@ -4115,12 +4081,6 @@
             );
 
 
-        const icon =
-            document.getElementById(
-                "headingIcon"
-            );
-
-
         if (
             view ===
             "dashboard"
@@ -4131,9 +4091,6 @@
 
             description.textContent =
                 "Track your reported defects.";
-
-            icon.textContent =
-                "&#127968;";
 
             loadDefects();
 
@@ -4150,9 +4107,6 @@
 
             description.textContent =
                 "Submit a detailed defect report.";
-
-            icon.textContent =
-                "&#128027;";
 
             clearMessage();
 
@@ -4171,9 +4125,6 @@
 
             description.textContent =
                 "View your submitted defects and assignments.";
-
-            icon.textContent =
-                "&#128221;";
 
             renderTable();
 
