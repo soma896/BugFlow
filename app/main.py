@@ -1479,11 +1479,33 @@ def create_defect(
     }
 
     defect = Defect(**defect_kwargs)
-
     db.add(defect)
+
+    # 1. Atomic Admin In-App Notification (Committed together with Defect)
+    try:
+        reporter = db.query(User).filter(User.id == user_id).first() if user_id else None
+        reporter_name = reporter.name if reporter else (f"User #{user_id}" if user_id else "User")
+        admin_user = db.query(User).filter(func.lower(User.role) == "admin").first()
+
+        admin_notif = Notification(
+            user_id=admin_user.id if admin_user else 1,
+            title=f"New Defect Reported: #{defect.id} - {defect.title}",
+            message=f"User {reporter_name} created new bug: #{defect.id} '{defect.title}' [Category: {defect.category or 'General'}, Priority: {defect.priority or 'Normal'}]. Requires triage & assignment.",
+            category="DEFECT_CREATED",
+            target_role="admin",
+            link=f"/all-defects-ui?defect_id={defect.id}",
+            is_read=False,
+            created_at=datetime.utcnow(),
+        )
+        db.add(admin_notif)
+        print(f"[BugFlow Notifications] Admin notified: User {reporter_name} created bug #{defect.id} '{defect.title}'")
+    except Exception as notif_prep_err:
+        print(f"[Defect Notification] Notice during prep: {notif_prep_err}")
+
     db.commit()
     db.refresh(defect)
 
+    # 2. Sequence Synchronization (Executed cleanly in isolated block)
     if custom_id is not None:
         try:
             db.execute(
@@ -1493,29 +1515,8 @@ def create_defect(
                 )
             )
             db.commit()
-            db.refresh(defect)
         except Exception:
-            pass
-
-    # Emit in-app notification for Admin (User created new bug)
-    try:
-        reporter = db.query(User).filter(User.id == user_id).first() if user_id else None
-        reporter_name = reporter.name if reporter else (f"User #{user_id}" if user_id else "User")
-
-        admin_notif = Notification(
-            title=f"New Defect Reported: #{defect.id} - {defect.title}",
-            message=f"User {reporter_name} created new bug: #{defect.id} '{defect.title}' [Category: {defect.category or 'General'}, Priority: {defect.priority or 'Normal'}]. Requires triage & assignment.",
-            category="DEFECT_CREATED",
-            target_role="admin",
-            link=f"/all-defects-ui?defect_id={defect.id}",
-            created_at=datetime.utcnow(),
-        )
-        db.add(admin_notif)
-        db.commit()
-        print(f"[BugFlow Notifications] Admin notified: User {reporter_name} created bug #{defect.id} '{defect.title}'")
-    except Exception as notif_err:
-        db.rollback()
-        print(f"[Defect Notification] Notice: {notif_err}")
+            db.rollback()
 
     return defect
 

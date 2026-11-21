@@ -116,15 +116,17 @@
     const path = window.location.pathname.toLowerCase();
     if (path === "/" || path === "/index.html" || path.endsWith("/login")) return;
 
-    // Detect user role
+    // Detect user role based on the current workspace page first
     function getRole() {
+      const p = window.location.pathname.toLowerCase();
+      if (p.includes("admin") || p.includes("all-defect")) return "admin";
+      if (p.includes("senior")) return "senior_dev";
+      if (p.includes("developer")) return "developer";
+      if (p.includes("tester")) return "tester";
+      if (p.includes("user")) return "user";
+
       const stored = localStorage.getItem("bugflow_workspace_role");
       if (stored) return stored.toLowerCase().trim();
-      if (path.includes("senior")) return "senior_dev";
-      if (path.includes("developer")) return "developer";
-      if (path.includes("tester")) return "tester";
-      if (path.includes("user")) return "user";
-      if (path.includes("admin")) return "admin";
       return "admin";
     }
 
@@ -603,9 +605,20 @@
       }
     }
 
-    // Initial fetch and poll every 12 seconds
+    // Expose global notification fetcher
+    window.fetchBugFlowNotifications = fetchNotifications;
+
+    // Initial fetch, fast polling every 4 seconds
     fetchNotifications();
-    setInterval(fetchNotifications, 12000);
+    setInterval(fetchNotifications, 4000);
+
+    // Instant refresh when user switches tabs or window gains focus
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        fetchNotifications();
+      }
+    });
+    window.addEventListener("focus", fetchNotifications);
   }
 
   // Run on DOM ready

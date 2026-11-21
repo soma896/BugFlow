@@ -2459,10 +2459,16 @@
 
     // Refresh Handlers
     const refreshBtn = document.getElementById("refreshButton");
-    if (refreshBtn) refreshBtn.addEventListener("click", loadDashboard);
+    if (refreshBtn) refreshBtn.addEventListener("click", () => {
+        loadDashboard();
+        if (typeof window.fetchBugFlowNotifications === "function") window.fetchBugFlowNotifications();
+    });
 
     const refreshQuick = document.getElementById("refreshQuick");
-    if (refreshQuick) refreshQuick.addEventListener("click", loadDashboard);
+    if (refreshQuick) refreshQuick.addEventListener("click", () => {
+        loadDashboard();
+        if (typeof window.fetchBugFlowNotifications === "function") window.fetchBugFlowNotifications();
+    });
 
     const exportQuick = document.getElementById("exportQuick");
     if (exportQuick) exportQuick.addEventListener("click", exportData);
